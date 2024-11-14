@@ -1,15 +1,15 @@
-import { Box } from "@mui/material";
-import "./App.css";
+import AboutMe from "./components/AboutMe";
 import BackgroundParticles from "./components/BackgroundParticles";
 import Introduction from "./components/Introduction";
+import Skills from "./components/Skills";
 
 function App() {
   return (
     <>
       <BackgroundParticles />
-      <Box sx={{ position: "relative", zIndex: 10 }}>
-        <Introduction />
-      </Box>
+      <Introduction />
+      <AboutMe />
+      <Skills />
     </>
   );
 }

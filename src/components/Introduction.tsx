@@ -1,25 +1,57 @@
 import { TypeAnimation } from "react-type-animation";
-import { Box, Avatar, Typography, IconButton } from "@mui/material";
-import { LinkedIn, GitHub } from "@mui/icons-material";
+import { Box, Avatar, Typography, IconButton, Button } from "@mui/material";
+import { LinkedIn, GitHub, Download } from "@mui/icons-material";
+import useWindowDimensions from "../hooks/useWindowDimensions";
 
 import profileImage from "../assets/profile.jpeg";
 
 function Introduction() {
+  const { height, width } = useWindowDimensions();
+
   return (
-    <>
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
+    <Box
+      sx={{
+        position: "relative",
+        zIndex: 10,
+        height,
+        width,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
         <Avatar
           alt="Millroy Fernandes"
           src={profileImage}
           sx={{ width: 150, height: 150 }}
         />
       </Box>
-      <Typography variant="h2" component="span">
-        Hi, I am{" "}
-      </Typography>
-      <Typography variant="h2" color="error" component="span" fontWeight="bold">
-        Millroy Fernandes
-      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "14px",
+        }}
+      >
+        <Typography variant="h2" component="span">
+          Hi, I am
+        </Typography>
+        <Typography
+          variant="h2"
+          color="error"
+          component="span"
+          fontWeight="bold"
+        >
+          Millroy Fernandes
+        </Typography>
+      </Box>
       <TypeAnimation
         sequence={[
           "Software Engineer",
@@ -41,7 +73,7 @@ function Introduction() {
       <Box sx={{ padding: "10px" }}>
         <IconButton
           aria-label="linkedin"
-          color="primary"
+          style={{ color: "#0a66c2" }}
           onClick={() =>
             window.open(
               "https://www.linkedin.com/in/millroy-fernandes-5a2688102/",
@@ -53,7 +85,7 @@ function Introduction() {
         </IconButton>
         <IconButton
           aria-label="github"
-          color="primary"
+          style={{ color: "#ffffff" }}
           onClick={() =>
             window.open("https://www.github.com/millroy094/", "_blank")
           }
@@ -61,7 +93,19 @@ function Introduction() {
           <GitHub />
         </IconButton>
       </Box>
-    </>
+      <Button
+        variant="contained"
+        endIcon={<Download />}
+        onClick={() =>
+          window.open(
+            "https://drive.google.com/file/d/1QMmx_J6Lvh2yzW9fUQxaJROLdopT26a2/view?usp=drive_link",
+            "_blank"
+          )
+        }
+      >
+        Download resume
+      </Button>
+    </Box>
   );
 }
 
