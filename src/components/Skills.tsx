@@ -7,9 +7,9 @@ import {
   SiHelm,
   SiTerraform,
 } from "@icons-pack/react-simple-icons";
-import { motion } from "motion/react";
 import Lottie from "react-lottie";
 import SkillsLottie from "../lotties/skills.json";
+import GrowOnHover from "../hoc/GrowOnHover";
 
 function Skills() {
   const skills = [
@@ -53,7 +53,7 @@ function Skills() {
     <Grid
       container
       justifyContent="center"
-      sx={{ zIndex: 10, position: "relative" }}
+      sx={{ zIndex: 10, position: "relative", marginBottom: "60px" }}
     >
       <Grid container size={{ md: 3, sm: 0, xs: 0 }}>
         <Lottie options={defaultOptions} height={400} width={400} />
@@ -89,15 +89,7 @@ function Skills() {
               key={skill.key}
               size={{ lg: 1, md: 2, sm: 2, xs: 2 }}
             >
-              <motion.div
-                whileHover={{
-                  scale: 1.5,
-                  transition: { duration: 1 },
-                }}
-                whileTap={{ scale: 0.9 }}
-              >
-                {skill}
-              </motion.div>
+              <GrowOnHover scale={1.5}>{skill}</GrowOnHover>
             </Grid>
           ))}
         </Grid>

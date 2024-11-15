@@ -1,6 +1,8 @@
 import AboutMe from "./components/AboutMe";
 import BackgroundParticles from "./components/BackgroundParticles";
+import EducationAndExperience from "./components/EducationAndExpierence";
 import Introduction from "./components/Introduction";
+import Projects from "./components/Projects";
 import Skills from "./components/Skills";
 
 function App() {
@@ -10,6 +12,8 @@ function App() {
       <Introduction />
       <AboutMe />
       <Skills />
+      <EducationAndExperience />
+      <Projects />
     </>
   );
 }

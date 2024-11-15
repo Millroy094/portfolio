@@ -24,7 +24,6 @@ function Introduction() {
       }}
       alignContent="center"
       justifyItems="center"
-      direction="column"
     >
       <Grid justifyContent="center">
         <Avatar
