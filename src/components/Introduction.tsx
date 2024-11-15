@@ -11,6 +11,7 @@ import { LinkedIn, GitHub, Download } from "@mui/icons-material";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 
 import profileImage from "../assets/profile.jpeg";
+import { introduction } from "../configuration";
 
 function Introduction() {
   const { height } = useWindowDimensions();
@@ -27,7 +28,7 @@ function Introduction() {
     >
       <Grid justifyContent="center">
         <Avatar
-          alt="Millroy Fernandes"
+          alt={introduction.name}
           src={profileImage}
           sx={{ width: 150, height: 150, marginBottom: 2 }}
         />
@@ -47,46 +48,37 @@ function Introduction() {
           fontWeight="bold"
           fontSize={{ xs: 20, sm: 40, md: 60, lg: 60 }}
         >
-          Millroy Fernandes
+          {introduction.name}
         </Typography>
       </Grid>
       <TypeAnimation
-        sequence={[
-          "Software Engineer",
-          1000,
-          "DevOps Engineer",
-          1000,
-          "Automation QA Engineer",
-          1000,
-        ]}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        sequence={introduction.roles.reduce((squence: any[], role) => {
+          squence.push(role);
+          squence.push(1000);
+          return squence;
+        }, [])}
         wrapper="div"
         speed={50}
         style={{ fontSize: "2em", display: "block" }}
         repeat={Infinity}
       />
       <Typography variant="caption" component="span">
-        Hungry for knowledge and inspired by change
+        {introduction.punchLine}
       </Typography>
 
       <Box sx={{ padding: "10px" }}>
         <IconButton
           aria-label="linkedin"
           style={{ color: "#0a66c2" }}
-          onClick={() =>
-            window.open(
-              "https://www.linkedin.com/in/millroy-fernandes-5a2688102/",
-              "_blank"
-            )
-          }
+          onClick={() => window.open(introduction.linkedinUrl, "_blank")}
         >
           <LinkedIn />
         </IconButton>
         <IconButton
           aria-label="github"
           style={{ color: "#ffffff" }}
-          onClick={() =>
-            window.open("https://www.github.com/millroy094/", "_blank")
-          }
+          onClick={() => window.open(introduction.githubUrl, "_blank")}
         >
           <GitHub />
         </IconButton>
@@ -94,12 +86,7 @@ function Introduction() {
       <Button
         variant="contained"
         endIcon={<Download />}
-        onClick={() =>
-          window.open(
-            "https://drive.google.com/file/d/1QMmx_J6Lvh2yzW9fUQxaJROLdopT26a2/view?usp=drive_link",
-            "_blank"
-          )
-        }
+        onClick={() => window.open(introduction.resumeUrl, "_blank")}
       >
         Download resume
       </Button>

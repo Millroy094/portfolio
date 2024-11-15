@@ -5,43 +5,20 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  createTheme,
   Grid2 as Grid,
   Typography,
+  CssBaseline,
+  ThemeProvider,
 } from "@mui/material";
+import { projects } from "../configuration";
 
 function Projects() {
-  const projects = [
-    {
-      title: "OpenId Connect Auth Server",
-      description:
-        "OIDC server with OIDC features it also comes with user management features and additional security features like MFA and Passkey.",
-      url: "https://github.com/Millroy094/oauth-server",
+  const darkTheme = createTheme({
+    palette: {
+      mode: "dark",
     },
-    {
-      title: "Keycloak Cluster",
-      description:
-        "My first go at using terraform, AWS, and github actions to build a CI/CD pipeline. The project comprised of deploying a Keycloak docker container into Amazon ECS.",
-      url: "https://github.com/Millroy094/keycloak-cluster-aws-terraform",
-    },
-    {
-      title: "Recipe App",
-      description:
-        "A simple app to store & manage recipes. This was part of a senior developer interview I took on and was by far the best version they saw.",
-      url: "https://github.com/Millroy094/recipe-book",
-    },
-    {
-      title: "Travel Planner",
-      description:
-        "My first Node.JS project and my entry into the web development world. This is a backend api meshing up weather and google maps data together.",
-      url: "https://github.com/Millroy094/Travel-Planner",
-    },
-    {
-      title: "Zoo Simulator",
-      description:
-        "Again part of another interview application is a Zoo simulator designed with PHP backend and React.Js frontend",
-      url: "https://github.com/Millroy094/zoo-simulator",
-    },
-  ];
+  });
 
   return (
     <Grid
@@ -66,44 +43,50 @@ function Projects() {
           Projects
         </Typography>
       </Grid>
-      <Grid container spacing={2}>
-        {projects?.map((project) => (
-          <Grid
-            key={project.title}
-            container
-            size={{ lg: 3, md: 6, sm: 12, xs: 12 }}
-          >
-            <Card
-              sx={{
-                width: "100%",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-around",
-              }}
-            >
-              <CardHeader title={project.title} />
-              <CardContent>
-                <Typography>{project.description}</Typography>
-              </CardContent>
-              <CardActions
-                sx={{
-                  display: "flex",
-                  justifyContent: "end",
-                }}
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+
+        <Grid container spacing={2}>
+          {projects?.map(
+            (project: { title: string; description: string; url: string }) => (
+              <Grid
+                key={project.title}
+                container
+                size={{ lg: 3, md: 6, sm: 12, xs: 12 }}
               >
-                <Button
-                  color="error"
-                  variant="contained"
-                  endIcon={<GitHub />}
-                  onClick={() => window.open(project.url, "_blank")}
+                <Card
+                  sx={{
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-around",
+                  }}
                 >
-                  View Repo
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+                  <CardHeader title={project.title} />
+                  <CardContent>
+                    <Typography>{project.description}</Typography>
+                  </CardContent>
+                  <CardActions
+                    sx={{
+                      display: "flex",
+                      justifyContent: "end",
+                    }}
+                  >
+                    <Button
+                      color="error"
+                      variant="contained"
+                      endIcon={<GitHub />}
+                      onClick={() => window.open(project.url, "_blank")}
+                    >
+                      View Repo
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            )
+          )}
+        </Grid>
+      </ThemeProvider>
     </Grid>
   );
 }

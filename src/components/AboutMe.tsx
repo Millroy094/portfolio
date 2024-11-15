@@ -2,6 +2,7 @@ import { Grid2 as Grid, Typography } from "@mui/material";
 import Lottie from "react-lottie";
 import AboutMeLottie from "../lotties/about-me.json";
 import GrowOnHover from "../hoc/GrowOnHover";
+import { aboutMe } from "../configuration";
 
 function AboutMe() {
   const defaultOptions = {
@@ -53,25 +54,13 @@ function AboutMe() {
             </Typography>
           </Grid>
           <Grid container>
-            <GrowOnHover>
-              <Typography variant="body1" fontSize="20px">
-                I've been a developer for about 6+ years, I've climbed my way up
-                from a customer service advisor to a support engineer to a
-                software engineer and since then I've been on this amazing
-                journey where there is always something to learn. I am well
-                versed with not only the dev world but everything outside and
-                everything in between. Well through my whole career my only goal
-                has been to learn, to do the right thing, and be better than my
-                past self.
-              </Typography>
-            </GrowOnHover>
-            <GrowOnHover>
-              <Typography variant="body1" fontSize="20px">
-                I've trained myself up as a DevOps and a QA engineer as much as
-                my fullstack experience because I feel as Dev you need to know
-                how important these roles are.
-              </Typography>
-            </GrowOnHover>
+            {aboutMe?.map((text) => (
+              <GrowOnHover key={text}>
+                <Typography variant="body1" fontSize="20px">
+                  {text}
+                </Typography>
+              </GrowOnHover>
+            ))}
           </Grid>
         </Grid>
       </Grid>
