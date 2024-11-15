@@ -62,7 +62,7 @@ function Introduction() {
           }, [])}
           wrapper="div"
           speed={50}
-          style={{ fontSize: "2em", display: "block" }}
+          style={{ fontSize: "1em", display: "block" }}
           repeat={Infinity}
         />
       </Grid>
