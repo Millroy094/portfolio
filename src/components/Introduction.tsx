@@ -1,46 +1,44 @@
 import { TypeAnimation } from "react-type-animation";
-import { Box, Avatar, Typography, IconButton, Button } from "@mui/material";
+import {
+  Grid2 as Grid,
+  Box,
+  Avatar,
+  Typography,
+  IconButton,
+  Button,
+} from "@mui/material";
 import { LinkedIn, GitHub, Download } from "@mui/icons-material";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 
 import profileImage from "../assets/profile.jpeg";
 
 function Introduction() {
-  const { height, width } = useWindowDimensions();
+  const { height } = useWindowDimensions();
 
   return (
-    <Box
+    <Grid
       sx={{
         position: "relative",
         zIndex: 10,
         height,
-        width,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
       }}
+      alignContent="center"
+      justifyItems="center"
+      direction="column"
     >
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
+      <Grid justifyContent="center">
         <Avatar
           alt="Millroy Fernandes"
           src={profileImage}
-          sx={{ width: 150, height: 150 }}
+          sx={{ width: 150, height: 150, marginBottom: 2 }}
         />
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "14px",
-        }}
-      >
-        <Typography variant="h2" component="span">
+      </Grid>
+      <Grid container justifyContent="center" spacing={1}>
+        <Typography
+          variant="h2"
+          component="span"
+          fontSize={{ xs: 20, sm: 40, md: 60, lg: 60 }}
+        >
           Hi, I am
         </Typography>
         <Typography
@@ -48,10 +46,11 @@ function Introduction() {
           color="error"
           component="span"
           fontWeight="bold"
+          fontSize={{ xs: 20, sm: 40, md: 60, lg: 60 }}
         >
           Millroy Fernandes
         </Typography>
-      </Box>
+      </Grid>
       <TypeAnimation
         sequence={[
           "Software Engineer",
@@ -105,7 +104,7 @@ function Introduction() {
       >
         Download resume
       </Button>
-    </Box>
+    </Grid>
   );
 }
 
