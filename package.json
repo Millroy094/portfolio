@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@icons-pack/react-simple-icons": "^10.1.0",
     "@mui/icons-material": "^6.1.7",
     "@mui/material": "^6.1.7",
     "@mui/styled-engine-sc": "^6.1.7",
@@ -22,6 +23,7 @@
     "react-awesome-reveal": "^4.2.14",
     "react-dom": "^18.3.1",
     "react-loader-spinner": "^6.1.6",
+    "react-lottie": "^1.2.4",
     "react-spring": "^9.7.4",
     "react-type-animation": "^3.2.0",
     "styled-components": "^6.1.13",
@@ -31,6 +33,7 @@
     "@eslint/js": "^9.13.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "@types/react-lottie": "^1.2.10",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "eslint": "^9.13.0",
     "eslint-plugin-react-hooks": "^5.0.0",
