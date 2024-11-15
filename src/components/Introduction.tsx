@@ -16,7 +16,7 @@ import { introduction } from "../configuration";
 
 function Introduction() {
   const { height } = useWindowDimensions();
-  const isBelowMidSize = useMediaQuery((theme) => theme.breakpoints.between('xs', 'md'));
+  const isBelowMidSize = useMediaQuery('(min-width:600px) and (max-width:959px)');
   return (
     <Grid
       sx={{
