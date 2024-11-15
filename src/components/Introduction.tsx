@@ -8,6 +8,7 @@ import {
   Button,
 } from "@mui/material";
 import { LinkedIn, GitHub, Download } from "@mui/icons-material";
+import useMediaQuery from '@mui/material/useMediaQuery';
 import useWindowDimensions from "../hooks/useWindowDimensions";
 
 import profileImage from "../assets/profile.jpeg";
@@ -15,7 +16,7 @@ import { introduction } from "../configuration";
 
 function Introduction() {
   const { height } = useWindowDimensions();
-
+  const isBelowMidSize = useMediaQuery(theme.breakpoints.down('md'));
   return (
     <Grid
       sx={{
@@ -62,7 +63,7 @@ function Introduction() {
           }, [])}
           wrapper="div"
           speed={50}
-          style={{ fontSize: "1em", display: "block" }}
+          style={{ fontSize: isBelowMidSize? "1em" : "2em", display: "block" }}
           repeat={Infinity}
         />
       </Grid>
