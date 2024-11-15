@@ -9,6 +9,7 @@ import {
   TimelineSeparator,
 } from "@mui/lab";
 import { Grid2 as Grid, Typography } from "@mui/material";
+import GrowOnHover from "../hoc/GrowOnHover";
 
 interface ITimelineItem {
   year: number;
@@ -40,19 +41,21 @@ function HistoryTimeline(props: Readonly<IHistoryTimelineProps>) {
       </Typography>
       <Timeline sx={{ width: "100%" }}>
         {timeline?.map((t: ITimelineItem, index: number) => (
-          <TimelineItem key={t.title}>
-            <TimelineOppositeContent>{t.year}</TimelineOppositeContent>
-            <TimelineSeparator>
-              <TimelineDot color="error">{t.Icon}</TimelineDot>
-              {index !== timeline.length - 1 && <TimelineConnector />}
-            </TimelineSeparator>
-            <TimelineContent sx={{ flex: 2 }}>
-              <Typography variant="h6" component="span">
-                {t.title}
-              </Typography>
-              <Typography>{t.subTitle}</Typography>
-            </TimelineContent>
-          </TimelineItem>
+          <GrowOnHover key={t.title}>
+            <TimelineItem>
+              <TimelineOppositeContent>{t.year}</TimelineOppositeContent>
+              <TimelineSeparator>
+                <TimelineDot color="error">{t.Icon}</TimelineDot>
+                {index !== timeline.length - 1 && <TimelineConnector />}
+              </TimelineSeparator>
+              <TimelineContent sx={{ flex: 2 }}>
+                <Typography variant="h6" component="span">
+                  {t.title}
+                </Typography>
+                <Typography>{t.subTitle}</Typography>
+              </TimelineContent>
+            </TimelineItem>
+          </GrowOnHover>
         ))}
       </Timeline>
     </Grid>

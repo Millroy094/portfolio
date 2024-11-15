@@ -12,6 +12,7 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import { projects } from "../configuration";
+import GrowOnHover from "../hoc/GrowOnHover";
 
 function Projects() {
   const darkTheme = createTheme({
@@ -54,34 +55,37 @@ function Projects() {
                 container
                 size={{ lg: 3, md: 6, sm: 12, xs: 12 }}
               >
-                <Card
-                  sx={{
-                    width: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-around",
-                  }}
-                >
-                  <CardHeader title={project.title} />
-                  <CardContent>
-                    <Typography>{project.description}</Typography>
-                  </CardContent>
-                  <CardActions
+                <GrowOnHover>
+                  <Card
                     sx={{
+                      width: "100%",
                       display: "flex",
-                      justifyContent: "end",
+                      flexDirection: "column",
+                      justifyContent: "space-around",
+                      minHeight: "250px",
                     }}
                   >
-                    <Button
-                      color="error"
-                      variant="contained"
-                      endIcon={<GitHub />}
-                      onClick={() => window.open(project.url, "_blank")}
+                    <CardHeader title={project.title} />
+                    <CardContent>
+                      <Typography>{project.description}</Typography>
+                    </CardContent>
+                    <CardActions
+                      sx={{
+                        display: "flex",
+                        justifyContent: "end",
+                      }}
                     >
-                      View Repo
-                    </Button>
-                  </CardActions>
-                </Card>
+                      <Button
+                        color="error"
+                        variant="contained"
+                        endIcon={<GitHub />}
+                        onClick={() => window.open(project.url, "_blank")}
+                      >
+                        View Repo
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </GrowOnHover>
               </Grid>
             )
           )}
