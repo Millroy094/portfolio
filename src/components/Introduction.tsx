@@ -23,10 +23,11 @@ function Introduction() {
         zIndex: 10,
         height,
       }}
+      overflow="auto"
       alignContent="center"
       justifyItems="center"
     >
-      <Grid justifyContent="center">
+      <Grid container justifyContent="center">
         <Avatar
           alt={introduction.name}
           src={profileImage}
@@ -51,45 +52,53 @@ function Introduction() {
           {introduction.name}
         </Typography>
       </Grid>
-      <TypeAnimation
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        sequence={introduction.roles.reduce((squence: any[], role) => {
-          squence.push(role);
-          squence.push(1000);
-          return squence;
-        }, [])}
-        wrapper="div"
-        speed={50}
-        style={{ fontSize: "2em", display: "block" }}
-        repeat={Infinity}
-      />
-      <Typography variant="caption" component="span">
-        {introduction.punchLine}
-      </Typography>
+      <Grid container justifyContent="center">
+        <TypeAnimation
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          sequence={introduction.roles.reduce((squence: any[], role) => {
+            squence.push(role);
+            squence.push(1000);
+            return squence;
+          }, [])}
+          wrapper="div"
+          speed={50}
+          style={{ fontSize: "2em", display: "block" }}
+          repeat={Infinity}
+        />
+      </Grid>
+      <Grid container alignItems="center" direction="column">
+        <Typography variant="caption" component="span">
+          {introduction.punchLine}
+        </Typography>
 
-      <Box sx={{ padding: "10px" }}>
-        <IconButton
-          aria-label="linkedin"
-          style={{ color: "#0a66c2" }}
-          onClick={() => window.open(introduction.linkedinUrl, "_blank")}
+        <Box
+          sx={{ padding: "10px", display: "flex", justifyContent: "center" }}
         >
-          <LinkedIn />
-        </IconButton>
-        <IconButton
-          aria-label="github"
-          style={{ color: "#ffffff" }}
-          onClick={() => window.open(introduction.githubUrl, "_blank")}
+          <IconButton
+            aria-label="linkedin"
+            style={{ color: "#0a66c2" }}
+            onClick={() => window.open(introduction.linkedinUrl, "_blank")}
+          >
+            <LinkedIn />
+          </IconButton>
+          <IconButton
+            aria-label="github"
+            style={{ color: "#ffffff" }}
+            onClick={() => window.open(introduction.githubUrl, "_blank")}
+          >
+            <GitHub />
+          </IconButton>
+        </Box>
+
+        <Button
+          sx={{ alignSelf: "center" }}
+          variant="contained"
+          endIcon={<Download />}
+          onClick={() => window.open(introduction.resumeUrl, "_blank")}
         >
-          <GitHub />
-        </IconButton>
-      </Box>
-      <Button
-        variant="contained"
-        endIcon={<Download />}
-        onClick={() => window.open(introduction.resumeUrl, "_blank")}
-      >
-        Download resume
-      </Button>
+          Download resume
+        </Button>
+      </Grid>
     </Grid>
   );
 }
