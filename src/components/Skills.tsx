@@ -23,7 +23,12 @@ function Skills() {
       <Grid container size={{ md: 3, sm: 0, xs: 0 }}>
         <Lottie options={defaultOptions} height={400} width={400} />
       </Grid>
-      <Grid container size={{ md: 9, sm: 12, xs: 12 }} sx={{ padding: "40px" }}>
+      <Grid
+        container
+        size={{ md: 9, sm: 12, xs: 12 }}
+        sx={{ padding: "40px" }}
+        spacing={2}
+      >
         <Grid container spacing={2}>
           <Typography
             variant="overline"
