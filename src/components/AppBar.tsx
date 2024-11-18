@@ -128,8 +128,7 @@ function PortfolioAppBar() {
                 height: "45px",
                 overflow: "hidden",
                 justifyContent: "center",
-                alignItems: "center",
-                marginRight: "20px",
+                width: "100%",
               }}
             >
               <Link smooth duration={1000} delay={100} spy to="introduction">
