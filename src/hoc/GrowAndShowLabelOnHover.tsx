@@ -19,6 +19,14 @@ const labelMotion = {
       ease: "easeIn",
     },
   },
+  tap: {
+    opacity: 1,
+    transition: {
+      duration: 0.4,
+      type: "tween",
+      ease: "easeIn",
+    },
+  },
 };
 
 function GrowAndShowLabelOnHover(
