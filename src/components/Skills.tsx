@@ -62,7 +62,7 @@ function Skills() {
               container
               key={skill.key}
               aria-label={skill.key!}
-              size={{ lg: 1, md: 2, sm: 2, xs: 2 }}
+              size={{ lg: 1, md: 2, sm: 3, xs: 4 }}
             >
               <GrowAndShowLabelOnHover label={skill.key!} scale={1.5}>
                 {skill}
