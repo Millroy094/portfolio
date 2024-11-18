@@ -23,6 +23,7 @@ function EducationAndExperience() {
       <Grid
         container
         size={{ lg: 3, sm: 0, xs: 0 }}
+        sx={{ display: { lg: "flex", sm: "none", xs: "none" } }}
         justifyContent="center"
         alignItems="center"
       >
