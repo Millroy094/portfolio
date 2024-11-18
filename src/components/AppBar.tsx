@@ -30,7 +30,10 @@ function PortfolioAppBar() {
   return (
     <AppBar position="static" sx={{ background: "none" }}>
       <Container maxWidth="xl" sx={{ padding: { xs: "0" } }}>
-        <Toolbar disableGutters>
+        <Toolbar
+          disableGutters
+          sx={{ display: { xs: "block", sm: "block", md: "flex" } }}
+        >
           <Box
             sx={{
               display: { xs: "none", md: "flex" },
