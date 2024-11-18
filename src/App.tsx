@@ -1,26 +1,26 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 import {
   Element,
   Events,
   animateScroll as scroll,
   scrollSpy,
-} from "react-scroll";
-import AboutMe from "./components/AboutMe";
-import BackgroundParticles from "./components/BackgroundParticles";
-import EducationAndExperience from "./components/EducationAndExpierence";
-import Introduction from "./components/Introduction";
-import Projects from "./components/Projects";
-import Skills from "./components/Skills";
-import { Fab, Grid2 as Grid } from "@mui/material";
-import { ArrowCircleUp } from "@mui/icons-material";
+} from 'react-scroll';
+import AboutMe from './components/AboutMe';
+import BackgroundParticles from './components/BackgroundParticles';
+import EducationAndExperience from './components/EducationAndExpierence';
+import Introduction from './components/Introduction';
+import Projects from './components/Projects';
+import Skills from './components/Skills';
+import { Fab, Grid2 as Grid } from '@mui/material';
+import { SwipeUp } from '@mui/icons-material';
 
 function App() {
   useEffect(() => {
     scrollSpy.update();
 
     return () => {
-      Events.scrollEvent.remove("begin");
-      Events.scrollEvent.remove("end");
+      Events.scrollEvent.remove('begin');
+      Events.scrollEvent.remove('end');
     };
   }, []);
 
@@ -31,42 +31,42 @@ function App() {
   return (
     <>
       <BackgroundParticles />
-      <Element name="introduction">
+      <Element name='introduction'>
         <Introduction />
       </Element>
-      <Element name="aboutme">
+      <Element name='aboutme'>
         <AboutMe />
       </Element>
-      <Element name="skills">
+      <Element name='skills'>
         <Skills />
       </Element>
-      <Element name="educationandexperience">
+      <Element name='educationandexperience'>
         <EducationAndExperience />
       </Element>
-      <Element name="projects">
+      <Element name='projects'>
         <Projects />
       </Element>
       <Grid
         container
-        justifyContent="end"
+        justifyContent='end'
         p={1}
         sx={{
           margin: 0,
-          top: "auto",
+          top: 'auto',
           right: 20,
           bottom: 20,
-          left: "auto",
-          position: "fixed",
+          left: 'auto',
+          position: 'fixed',
           zIndex: 100,
         }}
       >
         <Fab
-          color="error"
-          aria-label="add"
+          color='error'
+          aria-label='add'
           onClick={scrollToTop}
-          sx={{ "&.MuiFab-root:focus": { outline: "none" } }}
+          sx={{ '&.MuiFab-root:focus': { outline: 'none' } }}
         >
-          <ArrowCircleUp />
+          <SwipeUp />
         </Fab>
       </Grid>
     </>
