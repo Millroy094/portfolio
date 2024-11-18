@@ -1,0 +1,3 @@
+Sitemap: https://https://millroy094.github.io/portfolio/sitemap.xml
+User-agent: *
+Allow: /
