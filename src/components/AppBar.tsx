@@ -124,11 +124,10 @@ function PortfolioAppBar() {
               sx={{
                 display: "flex",
                 background: "white",
-                width: "50px",
+                width: "100%",
                 height: "45px",
                 overflow: "hidden",
                 justifyContent: "center",
-                width: "100%",
               }}
             >
               <Link smooth duration={1000} delay={100} spy to="introduction">
