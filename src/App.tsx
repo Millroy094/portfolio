@@ -39,7 +39,6 @@ function App() {
   return (
     <>
       <BackgroundParticles />
-
       <Element name="introduction">
         <Introduction />
       </Element>

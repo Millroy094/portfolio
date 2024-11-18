@@ -83,6 +83,15 @@ function PortfolioAppBar() {
                 vertical: "top",
                 horizontal: "left",
               }}
+              style={{
+                transform: "translateX(-18px) translateY(0px)",
+              }}
+              MenuListProps={{
+                style: {
+                  padding: 0,
+                  margin: 0,
+                },
+              }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
