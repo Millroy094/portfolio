@@ -49,6 +49,7 @@ function PortfolioAppBar() {
               delay={100}
               offset={0}
               to="introduction"
+              spy
             >
               <Logo />
             </Link>
@@ -103,6 +104,7 @@ function PortfolioAppBar() {
                 <MenuItem key={page}>
                   <Link
                     smooth
+                    spy
                     duration={1000}
                     delay={100}
                     to={page.toLowerCase().replace(/\s/g, "")}
@@ -130,7 +132,7 @@ function PortfolioAppBar() {
                 marginRight: "20px",
               }}
             >
-              <Link smooth duration={1000} delay={100} to="introduction">
+              <Link smooth duration={1000} delay={100} spy to="introduction">
                 <Logo />
               </Link>
             </Box>
@@ -139,14 +141,15 @@ function PortfolioAppBar() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 <Link
                   smooth
                   duration={1000}
                   delay={100}
+                  spy
                   to={page.toLowerCase().replace(/\s/g, "")}
+                  onClick={handleCloseNavMenu}
                 >
                   <Typography variant="button" fontWeight="bold" color="white">
                     {page}
