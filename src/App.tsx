@@ -59,7 +59,7 @@ function App() {
       <Element name='projects'>
         <Projects />
       </Element>
-      <AnimatePresence AnimatePresence mode='wait'>
+      <AnimatePresence mode='wait'>
         {scrollOffset > height && (
           <Grid
             container
