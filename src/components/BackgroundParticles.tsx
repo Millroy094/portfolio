@@ -1,11 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
-import Particles, { initParticlesEngine } from "@tsparticles/react";
+import { useEffect, useMemo, useState } from 'react';
+import Particles, { initParticlesEngine } from '@tsparticles/react';
 import {
   type ISourceOptions,
   MoveDirection,
   OutMode,
-} from "@tsparticles/engine";
-import { loadSlim } from "@tsparticles/slim";
+} from '@tsparticles/engine';
+import { loadSlim } from '@tsparticles/slim';
 
 function BackgroundParticles() {
   const [init, setInit] = useState(false);
@@ -22,7 +22,7 @@ function BackgroundParticles() {
     () => ({
       background: {
         color: {
-          value: "#000000",
+          value: '#000000',
         },
       },
       fpsLimit: 120,
@@ -30,7 +30,7 @@ function BackgroundParticles() {
         events: {
           onHover: {
             enable: true,
-            mode: "bubble",
+            mode: 'bubble',
           },
         },
         modes: {
@@ -38,17 +38,17 @@ function BackgroundParticles() {
             opacity: 0.8,
             size: 10,
             color: {
-              value: "#ff0000",
+              value: '#ff0000',
             },
           },
         },
       },
       particles: {
         color: {
-          value: "#ffffff",
+          value: '#ffffff',
         },
         links: {
-          color: "#ffffff",
+          color: '#ffffff',
           distance: 100,
           enable: true,
           opacity: 0.5,
@@ -74,7 +74,7 @@ function BackgroundParticles() {
           value: 0.2,
         },
         shape: {
-          type: "circle",
+          type: 'circle',
         },
         size: {
           value: { min: 1, max: 5 },
@@ -82,12 +82,12 @@ function BackgroundParticles() {
       },
       detectRetina: true,
     }),
-    []
+    [],
   );
 
   return (
     init && (
-      <Particles id="tsparticles" options={options} style={{ zIndex: 1 }} />
+      <Particles id='tsparticles' options={options} style={{ zIndex: 1 }} />
     )
   );
 }
