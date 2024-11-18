@@ -91,12 +91,13 @@ function PortfolioAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page}>
                   <Link
                     smooth
                     duration={1000}
                     delay={100}
                     to={page.toLowerCase().replace(/\s/g, "")}
+                    onClick={handleCloseNavMenu}
                   >
                     <Typography
                       variant="caption"

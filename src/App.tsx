@@ -58,7 +58,7 @@ function App() {
       <Grid
         container
         justifyContent="end"
-        p={3}
+        p={1}
         sx={{
           margin: 0,
           top: "auto",
