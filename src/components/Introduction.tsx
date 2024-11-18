@@ -83,15 +83,21 @@ function Introduction() {
           >
             <IconButton
               aria-label="linkedin"
-              style={{ color: "#0a66c2" }}
               onClick={() => window.open(introduction.linkedinUrl, "_blank")}
+              sx={{
+                "&.MuiButton-root:focus": { outline: "none" },
+                color: "#0a66c2",
+              }}
             >
               <LinkedIn />
             </IconButton>
             <IconButton
               aria-label="github"
-              style={{ color: "#ffffff" }}
               onClick={() => window.open(introduction.githubUrl, "_blank")}
+              sx={{
+                "&.MuiButton-root:focus": { outline: "none" },
+                color: "#ffffff",
+              }}
             >
               <GitHub />
             </IconButton>

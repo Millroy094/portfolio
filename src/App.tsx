@@ -60,7 +60,12 @@ function App() {
           zIndex: 100,
         }}
       >
-        <Fab color="error" aria-label="add" onClick={scrollToTop}>
+        <Fab
+          color="error"
+          aria-label="add"
+          onClick={scrollToTop}
+          sx={{ "&.MuiButton-root:focus": { outline: "none" } }}
+        >
           <ArrowCircleUp />
         </Fab>
       </Grid>

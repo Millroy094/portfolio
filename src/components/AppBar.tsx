@@ -142,7 +142,12 @@ function PortfolioAppBar() {
             {pages.map((page) => (
               <Button
                 key={page}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{
+                  my: 2,
+                  color: "white",
+                  display: "block",
+                  "&.MuiButton-root:focus": { outline: "none" },
+                }}
               >
                 <Link
                   smooth
