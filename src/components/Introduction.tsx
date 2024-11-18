@@ -85,7 +85,7 @@ function Introduction() {
               aria-label="linkedin"
               onClick={() => window.open(introduction.linkedinUrl, "_blank")}
               sx={{
-                "&.MuiButton-root:focus": { outline: "none" },
+                "&.MuiIconButton-root:focus": { outline: "none" },
                 color: "#0a66c2",
               }}
             >
@@ -95,7 +95,7 @@ function Introduction() {
               aria-label="github"
               onClick={() => window.open(introduction.githubUrl, "_blank")}
               sx={{
-                "&.MuiButton-root:focus": { outline: "none" },
+                "&.MuiIconButton-root:focus": { outline: "none" },
                 color: "#ffffff",
               }}
             >

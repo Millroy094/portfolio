@@ -64,7 +64,7 @@ function App() {
           color="error"
           aria-label="add"
           onClick={scrollToTop}
-          sx={{ "&.MuiButton-root:focus": { outline: "none" } }}
+          sx={{ "&.MuiFab-root:focus": { outline: "none" } }}
         >
           <ArrowCircleUp />
         </Fab>
