@@ -32,31 +32,36 @@ export const aboutMe = [
 ];
 
 export const skills = [
-  <StackIcon key="reactjs" name="reactjs" style={{ width: "40px" }} />,
-  <StackIcon key="redux" name="redux" style={{ width: "40px" }} />,
-  <StackIcon key="nodejs" name="nodejs" style={{ width: "40px" }} />,
-  <StackIcon key="typescript" name="typescript" style={{ width: "40px" }} />,
-  <SiExpress key="express" size={40} color="#ffffff" />,
-  <StackIcon key="graphql" name="graphql" style={{ width: "40px" }} />,
-  <StackIcon key="go" name="go" style={{ width: "40px" }} />,
-  <StackIcon key="java" name="java" style={{ width: "40px" }} />,
-  <StackIcon key="php" name="php" style={{ width: "40px" }} />,
-  <StackIcon key="laravel" name="laravel" style={{ width: "40px" }} />,
-  <StackIcon key="csharp" name="csharp" style={{ width: "40px" }} />,
-  <SiDotnet key="dotnet" size={40} color="#2088FF" />,
-  <StackIcon key="jest" name="jest" style={{ width: "40px" }} />,
-  <StackIcon key="cypress" name="cypress" style={{ width: "40px" }} />,
-  <StackIcon key="playwright" name="playwright" style={{ width: "40px" }} />,
-  <StackIcon key="mongodb" name="mongodb" style={{ width: "40px" }} />,
-  <StackIcon key="redis" name="redis" style={{ width: "40px" }} />,
-  <StackIcon key="mysql" name="mysql" style={{ width: "40px" }} />,
-  <StackIcon key="postgresql" name="postgresql" style={{ width: "40px" }} />,
-  <StackIcon key="docker" name="docker" style={{ width: "40px" }} />,
-  <StackIcon key="kubernetes" name="kubernetes" style={{ width: "40px" }} />,
-  <SiHelm key="helm" size={40} color="#0F1689" />,
-  <SiTerraform key="terraform" size={40} color="#844FBA" />,
-  <SiGithubactions key="githubactions" size={40} color="#2088FF" />,
-  <StackIcon key="aws" name="aws" style={{ width: "40px" }} />,
+  <StackIcon key="React.JS" name="reactjs" style={{ width: "40px" }} />,
+  <StackIcon
+    key="Redux"
+    name="redux"
+    style={{ width: "40px" }}
+    data-label="Redux"
+  />,
+  <StackIcon key="Node.JS" name="nodejs" style={{ width: "40px" }} />,
+  <StackIcon key="Typescript" name="typescript" style={{ width: "40px" }} />,
+  <SiExpress key="Express.JS" size={40} color="#ffffff" />,
+  <StackIcon key="GraphQl" name="graphql" style={{ width: "40px" }} />,
+  <StackIcon key="Go" name="go" style={{ width: "40px" }} />,
+  <StackIcon key="Java" name="java" style={{ width: "40px" }} />,
+  <StackIcon key="PHP" name="php" style={{ width: "40px" }} />,
+  <StackIcon key="Laravel" name="laravel" style={{ width: "40px" }} />,
+  <StackIcon key="C#" name="csharp" style={{ width: "40px" }} />,
+  <SiDotnet key=".Net" size={40} color="#2088FF" />,
+  <StackIcon key="Jest" name="jest" style={{ width: "40px" }} />,
+  <StackIcon key="Cypress.io" name="cypress" style={{ width: "40px" }} />,
+  <StackIcon key="Playwright" name="playwright" style={{ width: "40px" }} />,
+  <StackIcon key="Mongo DB" name="mongodb" style={{ width: "40px" }} />,
+  <StackIcon key="Redis" name="redis" style={{ width: "40px" }} />,
+  <StackIcon key="MySQL" name="mysql" style={{ width: "40px" }} />,
+  <StackIcon key="PostgreSQL" name="postgresql" style={{ width: "40px" }} />,
+  <StackIcon key="Docker" name="docker" style={{ width: "40px" }} />,
+  <StackIcon key="Kubernetes" name="kubernetes" style={{ width: "40px" }} />,
+  <SiHelm key="Helm" size={40} color="#0F1689" />,
+  <SiTerraform key="Terraform" size={40} color="#844FBA" />,
+  <SiGithubactions key="Github Actions" size={40} color="#2088FF" />,
+  <StackIcon key="AWS" name="aws" style={{ width: "40px" }} />,
 ];
 
 export const projects = [
