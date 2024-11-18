@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { ReactElement } from "react";
 import GrowOnHover from "./GrowOnHover";
 import { Typography } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 interface IGrowAndShowLabelOnHoverProps {
   children: ReactElement;
@@ -25,6 +26,8 @@ function GrowAndShowLabelOnHover(
   props: Readonly<IGrowAndShowLabelOnHoverProps>
 ) {
   const { children, label, scale } = props;
+  const isBelowMidSize = useMediaQuery("(max-width:959px)");
+
   return (
     <motion.div
       initial="rest"
@@ -38,9 +41,17 @@ function GrowAndShowLabelOnHover(
       }}
     >
       <GrowOnHover scale={scale}>{children}</GrowOnHover>
-      <motion.div variants={labelMotion}>
-        <Typography variant="caption">{label}</Typography>
-      </motion.div>
+      {isBelowMidSize ? (
+        <Typography variant="caption" textAlign="center">
+          {label}
+        </Typography>
+      ) : (
+        <motion.div variants={labelMotion}>
+          <Typography variant="caption" textAlign="center">
+            {label}
+          </Typography>
+        </motion.div>
+      )}
     </motion.div>
   );
 }

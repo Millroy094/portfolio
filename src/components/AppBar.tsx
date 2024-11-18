@@ -150,6 +150,7 @@ function PortfolioAppBar() {
                   spy
                   to={page.toLowerCase().replace(/\s/g, "")}
                   onClick={handleCloseNavMenu}
+                  offset={page === "About Me" ? 60 : 0}
                 >
                   <Typography variant="button" fontWeight="bold" color="white">
                     {page}

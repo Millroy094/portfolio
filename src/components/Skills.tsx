@@ -20,7 +20,11 @@ function Skills() {
       justifyContent="center"
       sx={{ zIndex: 10, position: "relative", marginBottom: "60px" }}
     >
-      <Grid container size={{ md: 3, sm: 0, xs: 0 }}>
+      <Grid
+        container
+        size={{ md: 3, sm: 0, xs: 0 }}
+        sx={{ display: { md: "flex", sm: "none", xs: "none", lg: "flex" } }}
+      >
         <Lottie options={defaultOptions} height={400} width={400} />
       </Grid>
       <Grid
