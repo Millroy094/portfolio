@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://millroy094.github.io/portfolio",
+  "homepage": "http://www.portfolio.informic.co.uk",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
