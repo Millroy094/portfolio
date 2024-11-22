@@ -44,7 +44,7 @@ export const skills = [
   <StackIcon key='Typescript' name='typescript' style={{ width: '40px' }} />,
   <SiExpress key='Express.JS' size={40} color='#ffffff' />,
   <StackIcon key='GraphQL' name='graphql' style={{ width: '40px' }} />,
-  <StackIcon key='Go' name='go' style={{ width: '40px' }} />,
+  <StackIcon key='Golang' name='go' style={{ width: '40px' }} />,
   <StackIcon key='Java' name='java' style={{ width: '40px' }} />,
   <StackIcon key='PHP' name='php' style={{ width: '40px' }} />,
   <StackIcon key='Laravel' name='laravel' style={{ width: '40px' }} />,
