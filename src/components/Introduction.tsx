@@ -14,6 +14,7 @@ import useWindowDimensions from "../hooks/useWindowDimensions";
 import profileImage from "../assets/profile.jpeg";
 import { introduction } from "../configuration";
 import PortfolioAppBar from "./AppBar";
+import { SiStackoverflow } from "@icons-pack/react-simple-icons";
 
 function Introduction() {
   const { height } = useWindowDimensions();
@@ -100,6 +101,18 @@ function Introduction() {
               }}
             >
               <GitHub />
+            </IconButton>
+            <IconButton
+              aria-label="stack-overflow"
+              onClick={() =>
+                window.open(introduction.stackOverflowUrl, "_blank")
+              }
+              sx={{
+                "&.MuiIconButton-root:focus": { outline: "none" },
+                color: "#ffffff",
+              }}
+            >
+              <SiStackoverflow key="StackOverflow" color="#F58025" />
             </IconButton>
           </Box>
 
