@@ -6,7 +6,7 @@
   "homepage": "http://www.portfolio.informic.co.uk",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && cp CNAME dist && touch dist/.nojekyll",
+    "build": "tsc -b && vite build && cp CNAME dist",
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
