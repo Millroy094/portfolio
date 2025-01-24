@@ -21,6 +21,7 @@ jobs:
       - name: Add _config.yml and .well-known
         run: |
           echo "include:\n  - \".well-known\"" > ./_config.yml
+          echo > dist/.nojekyll
           mkdir -p dist/.well-known/acme-challenge
           cp -r public/.well-known/* dist/.well-known/
 
