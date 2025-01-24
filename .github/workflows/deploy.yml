@@ -18,7 +18,7 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm ci
-      - name: Build & Deploy to GitHub Pages
+      - name: Build & Deploy
         run: |
           git config --global user.name $user_name
           git config --global user.email $user_email
