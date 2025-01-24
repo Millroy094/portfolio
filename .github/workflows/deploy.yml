@@ -20,8 +20,7 @@ jobs:
         run: npm ci
 
       - name: Add .well-known and .nojekyll
-        run: |
-          echo > ./.nojekyll
+        run: touch .nojekyll
       - name: Build & Deploy
         run: |
           git config --global user.name $user_name
