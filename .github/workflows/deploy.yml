@@ -12,18 +12,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Add _config.yml and .nojekyll
+        run: |
+          echo "include:\n  - \".well-known\"" > ./_config.yml
+          echo > dist/.nojekyll
+
       - name: Install dependencies
         run: npm ci
 
       - name: Build project
         run: npm run build
-
-      - name: Add _config.yml and .well-known
-        run: |
-          echo "include:\n  - \".well-known\"" > ./_config.yml
-          echo > dist/.nojekyll
-          mkdir -p dist/.well-known/acme-challenge
-          cp -r public/.well-known/* dist/.well-known/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
