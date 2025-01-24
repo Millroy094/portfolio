@@ -6,11 +6,11 @@
   "homepage": "http://www.portfolio.informic.co.uk",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && cp CNAME dist",
+    "build": "tsc -b && vite build && cp CNAME dist && touch .nojekyll",
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist --dotfiles"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
