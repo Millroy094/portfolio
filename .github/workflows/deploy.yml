@@ -20,7 +20,7 @@ jobs:
 
       - name: Add _config.yml and .well-known
         run: |
-          echo "include:\n  - \".well-known\"" > dist/_config.yml
+          echo "include:\n  - \".well-known\"" > ./_config.yml
           mkdir -p dist/.well-known/acme-challenge
           cp -r public/.well-known/* dist/.well-known/
 
