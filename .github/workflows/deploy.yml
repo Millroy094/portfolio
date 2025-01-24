@@ -18,6 +18,9 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm ci
+
+      - name: Add .well-known and .nojekyll
+        run: echo > .nojekyll
       - name: Build & Deploy
         run: |
           git config --global user.name $user_name
