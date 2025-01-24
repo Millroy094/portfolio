@@ -12,10 +12,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Add _config.yml and .nojekyll
+      - name: Add _config.yml
         run: |
           echo "include:\n  - \".well-known\"" > ./_config.yml
-          echo > dist/.nojekyll
 
       - name: Install dependencies
         run: npm ci
