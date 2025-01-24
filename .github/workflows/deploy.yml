@@ -18,8 +18,11 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Add _config.yml
-        run: echo "include:\n  - \".well-known\"" > dist/_config.yml
+      - name: Add .nojekyll and .well-known
+        run: |
+          echo > dist/.nojekyll
+          mkdir -p dist/.well-known/acme-challenge
+          cp -r public/.well-known/* dist/.well-known/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
