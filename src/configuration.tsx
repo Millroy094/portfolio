@@ -34,8 +34,10 @@ export const introduction = {
 };
 
 export const aboutMe = [
-  "I've been a developer for about 6+ years, I've climbed my way up from a customer service advisor to a support engineer to a software engineer and since then I've been on this amazing journey where there is always something to learn. I am well versed with not only the dev world but everything outside and everything in between. Through my whole career my only goal has been to learn, to do the right thing, and be better than my past self.",
-  "I've trained myself up as a DevOps and a QA engineer as much as my fullstack experience because I feel as Dev you need to know how important these roles are.",
+  "With over 6 years of experience in the tech industry, I’ve built my career from the ground up—starting as a customer service advisor, transitioning to a support engineer, and eventually growing into my role as a software engineer. Along the way, I’ve embraced every opportunity to learn, improve, and expand my skill set. My journey has been driven by a simple goal: to always do the right thing and to be better than I was yesterday.",
+  "I'm not only well-versed in full-stack development but have also trained myself extensively in DevOps and QA engineering. I strongly believe that a great developer should understand and appreciate the importance of every role that contributes to the software lifecycle.",
+  "Beyond the technical realm, I bring leadership and management experience to the table. I’ve led teams, mentored colleagues, and contributed to creating collaborative, high-performing work environments.",
+  "Technology is constantly evolving—and so am I.",
 ];
 
 export const skills = [
