@@ -152,7 +152,13 @@ export const workTimeline = [
   {
     year: 2023,
     title: "Alcumus",
-    subTitle: "Senior Software Developer Team Lead",
+    subTitle: "Software Development Manager & Senior Software Developer",
+    Icon: <Code />,
+  },
+  {
+    year: 2025,
+    title: "Institute of Physics Publishing",
+    subTitle: "Senior Software Developer",
     Icon: <Code />,
   },
 ];
