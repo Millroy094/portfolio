@@ -19,7 +19,12 @@ import {
 
 export const introduction = {
   name: "Millroy Fernandes",
-  roles: ["Software Engineer", "DevOps Engineer", "Automation QA Engineer"],
+  roles: [
+    "Software Engineer",
+    "DevOps Engineer",
+    "Automation QA Engineer",
+    "Software Development Manager",
+  ],
   punchLine: "Hungry for knowledge and inspired by change",
   stackOverflowUrl: "https://stackoverflow.com/users/1379158/millroy-fernandes",
   githubUrl: "https://www.github.com/millroy094/",
