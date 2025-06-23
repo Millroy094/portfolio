@@ -16,6 +16,7 @@ import {
   SiHelm,
   SiTerraform,
   SiSnowflake,
+  SiAuth0,
 } from '@icons-pack/react-simple-icons';
 
 export const introduction = {
@@ -67,8 +68,9 @@ export const skills = [
   <StackIcon key='Redis' name='redis' style={{ width: '40px' }} />,
   <StackIcon key='MySQL' name='mysql' style={{ width: '40px' }} />,
   <StackIcon key='PostgreSQL' name='postgresql' style={{ width: '40px' }} />,
-  <SiApachekafka key='Apache Kafa' size={40} color='#ffffff' />,
   <SiSnowflake key='Snowflake' size={40} color='#29B5E8' />,
+  <SiApachekafka key='Apache Kafa' size={40} color='#ffffff' />,
+  <SiAuth0 key='Auth0' size={40} color='#EB5424' />,
   <StackIcon key='Docker' name='docker' style={{ width: '40px' }} />,
   <StackIcon key='Kubernetes' name='kubernetes' style={{ width: '40px' }} />,
   <SiHelm key='Helm' size={40} color='#0F1689' />,
