@@ -23,7 +23,7 @@ import {
   SiTailwindcss,
   SiSass,
   SiHtml5,
-  SiCss,
+  SiCss3,
   SiWordpress,
 } from '@icons-pack/react-simple-icons';
 
@@ -51,8 +51,8 @@ export const aboutMe = [
 ];
 
 export const skills = [
-  <SiHtml5 key='HTML5' size={40} color='#E34F26' />,
-  <SiCss key='CSS' size={40} color='#663399' />,
+  <SiHtml5 key='HTML 5' size={40} color='#E34F26' />,
+  <SiCss3 key='CSS 3' size={40} color='#663399' />,
   <SiSass key='Sass' size={40} color='#CC6699' />,
   <SiTailwindcss key='Tailwind CSS' size={40} color='#06B6D4' />,
   <StackIcon key='React.JS' name='reactjs' style={{ width: '40px' }} />,
