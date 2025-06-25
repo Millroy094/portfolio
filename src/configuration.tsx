@@ -52,7 +52,12 @@ export const aboutMe = [
 ];
 
 export const skills = [
+  <SiHtml5 key='HTML 5' size={40} color='#E34F26' />,
+  <SiCss3 key='CSS 3' size={40} color='#663399' />,
+  <SiSass key='Sass' size={40} color='#CC6699' />,
+  <SiStyledcomponents key='Styled Components' size={40} color='#DB7093' />,
   <StackIcon key='React.JS' name='reactjs' style={{ width: '40px' }} />,
+  <SiMui key='Material UI' size={40} color='#007FFF' />,
   <StackIcon
     key='Redux'
     name='redux'
@@ -63,6 +68,7 @@ export const skills = [
   <StackIcon key='Typescript' name='typescript' style={{ width: '40px' }} />,
   <SiExpress key='Express.JS' size={40} color='#ffffff' />,
   <StackIcon key='Next.JS' name='nextjs2' style={{ width: '40px' }} />,
+  <SiTailwindcss key='Tailwind CSS' size={40} color='#06B6D4' />,
   <StackIcon key='GraphQL' name='graphql' style={{ width: '40px' }} />,
   <StackIcon key='Golang' name='go' style={{ width: '40px' }} />,
   <StackIcon key='Java' name='java' style={{ width: '40px' }} />,
@@ -72,12 +78,6 @@ export const skills = [
   <StackIcon key='C#' name='csharp' style={{ width: '40px' }} />,
   <SiDotnet key='.Net' size={40} color='#2088FF' />,
   <StackIcon key='Bash' name='bash' style={{ width: '40px' }} />,
-  <SiHtml5 key='HTML 5' size={40} color='#E34F26' />,
-  <SiCss3 key='CSS 3' size={40} color='#663399' />,
-  <SiSass key='Sass' size={40} color='#CC6699' />,
-  <SiTailwindcss key='Tailwind CSS' size={40} color='#06B6D4' />,
-  <SiMui key='Material UI' size={40} color='#007FFF' />,
-  <SiStyledcomponents key='Styled Components' size={40} color='#DB7093' />,
   <StackIcon key='Jest' name='jest' style={{ width: '40px' }} />,
   <StackIcon key='Cypress.io' name='cypress' style={{ width: '40px' }} />,
   <StackIcon key='Playwright' name='playwright' style={{ width: '40px' }} />,
