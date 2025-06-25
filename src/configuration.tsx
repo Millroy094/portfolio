@@ -26,6 +26,8 @@ import {
   SiCss3,
   SiWordpress,
   SiStyledcomponents,
+  SiKeycloak,
+  SiWebauthn,
 } from '@icons-pack/react-simple-icons';
 
 export const introduction = {
@@ -88,7 +90,6 @@ export const skills = [
   <SiSnowflake key='Snowflake' size={40} color='#29B5E8' />,
   <SiApachekafka key='Apache Kafa' size={40} color='#ffffff' />,
   <SiRabbitmq key='RabbitMQ' size={40} color='#FF6600' />,
-  <SiAuth0 key='Auth0' size={40} color='#EB5424' />,
   <StackIcon key='Docker' name='docker' style={{ width: '40px' }} />,
   <StackIcon key='Kubernetes' name='kubernetes' style={{ width: '40px' }} />,
   <SiHelm key='Helm' size={40} color='#0F1689' />,
@@ -97,6 +98,9 @@ export const skills = [
   <StackIcon key='AWS' name='aws' style={{ width: '40px' }} />,
   <StackIcon key='Azure' name='azure' style={{ width: '40px' }} />,
   <SiStripe key='Stripe' size={40} color='#635BFF' />,
+  <SiAuth0 key='Auth0' size={40} color='#EB5424' />,
+  <SiKeycloak key='Keycloak' size={40} color='#4D4D4D' />,
+  <SiWebauthn key='WebAuthn' size={40} color='#3423A6' />,
 ];
 
 export const projects = [
