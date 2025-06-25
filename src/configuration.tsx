@@ -55,9 +55,9 @@ export const skills = [
   <SiHtml5 key='HTML 5' size={40} color='#E34F26' />,
   <SiCss3 key='CSS 3' size={40} color='#663399' />,
   <SiSass key='Sass' size={40} color='#CC6699' />,
-  <SiStyledcomponents key='Styled Components' size={40} color='#DB7093' />,
   <StackIcon key='React.JS' name='reactjs' style={{ width: '40px' }} />,
   <SiMui key='Material UI' size={40} color='#007FFF' />,
+  <SiStyledcomponents key='Styled Components' size={40} color='#DB7093' />,
   <StackIcon
     key='Redux'
     name='redux'
