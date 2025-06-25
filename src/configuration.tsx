@@ -18,6 +18,7 @@ import {
   SiSnowflake,
   SiAuth0,
   SiRabbitmq,
+  SiStripe,
 } from '@icons-pack/react-simple-icons';
 
 export const introduction = {
@@ -62,6 +63,7 @@ export const skills = [
   <StackIcon key='Laravel' name='laravel' style={{ width: '40px' }} />,
   <StackIcon key='C#' name='csharp' style={{ width: '40px' }} />,
   <SiDotnet key='.Net' size={40} color='#2088FF' />,
+  <StackIcon key='Bash' name='bash' style={{ width: '40px' }} />,
   <StackIcon key='Jest' name='jest' style={{ width: '40px' }} />,
   <StackIcon key='Cypress.io' name='cypress' style={{ width: '40px' }} />,
   <StackIcon key='Playwright' name='playwright' style={{ width: '40px' }} />,
@@ -79,6 +81,8 @@ export const skills = [
   <SiTerraform key='Terraform' size={40} color='#844FBA' />,
   <SiGithubactions key='Github Actions' size={40} color='#2088FF' />,
   <StackIcon key='AWS' name='aws' style={{ width: '40px' }} />,
+  <StackIcon key='Azure' name='azure' style={{ width: '40px' }} />,
+  <SiStripe key='Stripe' size={40} color='#635BFF' />,
 ];
 
 export const projects = [
