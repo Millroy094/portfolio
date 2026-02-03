@@ -12,6 +12,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 
 import profileImage from "../assets/profile.jpeg";
+import awsCert from '../assets/aws-certified-solutions-architect-associate.png'
 import { introduction } from "../configuration";
 import PortfolioAppBar from "./AppBar";
 import { SiStackoverflow } from "@icons-pack/react-simple-icons";
@@ -78,7 +79,9 @@ function Introduction() {
           <Typography variant="caption" component="span">
             {introduction.punchLine}
           </Typography>
-
+          <Grid container justifyContent="center" p={4}>
+            <img width={200} height={200} src={awsCert}  alt='AWS Certificate' />
+          </Grid>
           <Box
             sx={{ padding: "10px", display: "flex", justifyContent: "center" }}
           >

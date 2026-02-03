@@ -9,8 +9,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import Logo from '../assets/Informic.svg?react';
 import { Link } from 'react-scroll';
+
 
 const pages = ['About Me', 'Skills', 'Education And Experience', 'Projects'];
 
@@ -34,30 +34,6 @@ function PortfolioAppBar() {
           disableGutters
           sx={{ display: { xs: 'block', sm: 'block', md: 'flex' } }}
         >
-          <Box
-            sx={{
-              display: { xs: 'none', md: 'flex' },
-              background: 'white',
-              width: '50px',
-              height: '45px',
-              overflow: 'hidden',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginRight: '20px',
-            }}
-          >
-            <Link
-              smooth
-              duration={1000}
-              delay={100}
-              offset={0}
-              to='introduction'
-              spy
-            >
-              <Logo />
-            </Link>
-          </Box>
-
           <Box
             sx={{
               flexGrow: 1,
@@ -124,20 +100,6 @@ function PortfolioAppBar() {
                 </MenuItem>
               ))}
             </Menu>
-            <Box
-              sx={{
-                display: 'flex',
-                background: 'white',
-                width: '100%',
-                height: '45px',
-                overflow: 'hidden',
-                justifyContent: 'center',
-              }}
-            >
-              <Link smooth duration={1000} delay={100} spy to='introduction'>
-                <Logo />
-              </Link>
-            </Box>
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
