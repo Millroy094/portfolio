@@ -21,6 +21,6 @@ resource "aws_amplify_domain_association" "portfolio_domain" {
 
   sub_domain {
     branch_name = aws_amplify_branch.deployment_branch.branch_name
-    prefix      = "www.portfolio"
+    prefix      = "www"
   }
 }
