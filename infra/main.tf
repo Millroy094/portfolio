@@ -13,3 +13,14 @@ resource "aws_amplify_branch" "deployment_branch" {
   enable_auto_build = true
   framework         = "Next.js - SSR"
 }
+
+
+resource "aws_amplify_domain_association" "portfolio_domain" {
+  app_id = aws_amplify_app.portfolio.id
+  domain_name = "millroyfernandes.com"
+
+  sub_domain {
+    branch_name = aws_amplify_branch.deployment_branch.branch_name
+    prefix      = "www.portfolio"
+  }
+}
