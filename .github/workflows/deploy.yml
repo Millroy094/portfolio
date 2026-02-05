@@ -153,10 +153,6 @@ jobs:
           COMMIT_TIME=$(git log -1 --pretty=%cI)
           echo "commit_time=$COMMIT_TIME" >> "$GITHUB_OUTPUT"
 
-      - name: Deploy Amplify Backend
-        working-directory: amplify
-        run: npx amplify backend push --yes
-
       - name: Start Amplify job
         run: |
           aws amplify start-job \

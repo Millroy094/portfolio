@@ -1,6 +1,12 @@
 version: 1
 applications:
   - appRoot: ""
+    backend:
+      phases:
+        build:
+          commands:
+            - npm ci --cache .mpm --prefer-offline
+            - npx ampx generate outputs $AWS_BRANCH --app-id $AWS_APP_ID
     frontend:
       phases:
         preBuild:
