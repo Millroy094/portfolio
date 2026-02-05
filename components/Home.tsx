@@ -18,7 +18,6 @@ import AboutMe from "@/components/AboutMe";
 import Skills from "@/components/Skills";
 import EducationAndExperience from "@/components/EducationAndExpierence";
 import Projects from "@/components/Projects";
-import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 
 export default function Home() {
