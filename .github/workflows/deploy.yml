@@ -117,6 +117,9 @@ jobs:
           sudo apt-get install -y jq
           npm install -g @aws-amplify/cli
 
+      - name: Deploy Amplify Backend
+        run: npx amplify backend push --yes
+
       - name: Get workspace ID
         id: get_workspace_id
         run: |
