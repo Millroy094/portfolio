@@ -1,0 +1,73 @@
+
+name: Terraform Format Lint and Docs
+
+on:
+  workflow_call:
+
+jobs:
+  check-changes:
+    name: Check for Terraform Changes
+    runs-on: ubuntu-latest
+    outputs:
+      tf_changed: ${{ steps.check.outputs.tf_changed }}
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v6
+
+      - name: Check for .tf or .tfvars changes
+        id: check
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          CHANGED=$(git diff --name-only origin/${{ github.base_ref }} HEAD | grep -E '\.tf$|\.tfvars$' || true)
+          if [ -z "$CHANGED" ]; then
+            echo "No Terraform files changed."
+            echo "tf_changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "Terraform files changed."
+            echo "tf_changed=true" >> $GITHUB_OUTPUT
+          fi
+
+  terraform-format-lint-docs:
+    name: Terraform Format Lint and Docs
+    needs: check-changes
+    if: needs.check-changes.outputs.tf_changed == 'true' && github.event_name == 'pull_request' && github.ref_name != 'develop' && github.ref_name != 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Format Terraform files
+        run: terraform fmt -recursive infra/
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v6
+        with:
+          tflint_version: latest
+
+      - name: Run TFLint on terraform directory
+        run: tflint --chdir=infra
+
+      - name: Install terraform-docs
+        run: |
+          curl -Lo terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/v0.20.0/terraform-docs-v0.20.0-linux-amd64.tar.gz
+          tar -xzf terraform-docs.tar.gz
+          chmod +x terraform-docs
+          mv terraform-docs /usr/local/bin/
+
+      - name: Generate docs for terraform
+        run: |
+            echo "Generating docs for terraform"
+            terraform-docs markdown table --output-file README.md --output-mode inject infra
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add infra/
+          git diff --cached --quiet || git commit -m "chore: format, lint, and update terraform docs"
+          git push origin HEAD:${{ github.head_ref }}

@@ -1,0 +1,184 @@
+name: Deploy via Terraform Cloud & AWS Amplify
+
+permissions:
+  id-token: write
+  contents: write
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'When true, runs in plan-only mode'
+        required: true
+        type: boolean
+
+env:
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  TF_ORG: ${{ vars.TF_ORG }}
+
+jobs:
+  terraform-format-lint-docs:
+    name: Terraform Format, Lint & Docs
+    uses: ./.github/workflows/terraform-format-lint-docs.yml
+
+  set-variables:
+    name: Calculate environment and dry run
+    runs-on: ubuntu-latest
+    outputs:
+      dry_run: ${{ steps.set-vars.outputs.dry_run }}
+    steps:
+    - name: Calculating dry run
+      id: set-vars
+      run: |
+        # If workflow_dispatch, use input environment
+        if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+          DRY_RUN="${{ github.event.inputs.dry_run }}"
+        else
+          # Determine dry_run
+          if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
+            DRY_RUN=true
+          else
+            DRY_RUN=false
+          fi
+        fi
+        
+        echo "dry_run=$DRY_RUN" >> $GITHUB_OUTPUT
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run TypeScript checks
+        run: npm run tsCheck
+
+      - name: Run linter
+        run: npm run lint -- --max-warnings=0
+
+  terraform-cloud-run:
+    name: Trigger Terraform Cloud Run
+    needs: [set-variables]
+    runs-on: ubuntu-latest
+    env:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+      TF_ORG: ${{ vars.TF_ORG }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Upload Terraform Cloud workspace configuration
+        uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.3.2
+        id: upload
+        with:
+          directory: .
+          workspace: portfolio
+          speculative: ${{ needs.set-variables.outputs.dry_run }}
+          token: ${{ env.TF_API_TOKEN }}
+          organization: ${{ env.TF_ORG }}
+
+      - name: Trigger Terraform Cloud Run
+        uses: hashicorp/tfc-workflows-github/actions/create-run@v1.3.2
+        with:
+          workspace: portfolio
+          configuration_version: ${{ steps.upload.outputs.configuration_version_id }}
+          plan_only: ${{ needs.set-variables.outputs.dry_run }}
+          token: ${{ env.TF_API_TOKEN }}
+          organization: ${{ env.TF_ORG }}
+
+  amplify-deploy:
+    if: needs.set-variables.outputs.dry_run != 'true'
+    name: AWS Amplify - Frontend Deployment
+    needs: [terraform-cloud-run, set-variables]
+    runs-on: ubuntu-latest
+    env:
+      AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+      TF_ORG: ${{ vars.TF_ORG }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Install AWS Amplify CLI
+        run: |
+          sudo apt-get install -y jq
+          npm install -g @aws-amplify/cli
+
+      - name: Get workspace ID
+        id: get_workspace_id
+        run: |
+          WORKSPACE_ID=$(curl -s \
+            --header "Authorization: Bearer ${{ env.TF_API_TOKEN }}" \
+            https://app.terraform.io/api/v2/organizations/${{ env.TF_ORG }}/workspaces/portfolio \
+            | jq -r '.data.id')
+          echo "workspace_id=$WORKSPACE_ID" >> $GITHUB_OUTPUT
+
+      - name: Get Terraform outputs
+        id: tf_outputs
+        uses: dnsbty/get-terraform-outputs-action@v2.2
+        with:
+          api-token: ${{ env.TF_API_TOKEN }}
+          workspace-id: ${{ steps.get_workspace_id.outputs.workspace_id }}
+          outputs: amplify_app_id
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v5.1.1
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Get Git info
+        id: git_info
+        run: |
+
+          echo "commit_id=${{ github.sha }}" >> "$GITHUB_OUTPUT"
+      
+          COMMIT_TITLE=$(git log -1 --pretty=%s | tr '\n' ' ')
+          COMMIT_TITLE_ESCAPED=$(printf '%s' "$COMMIT_TITLE" | sed -e 's/%/%%/g' -e 's/"/\\"/g')
+          echo "commit_title=$COMMIT_TITLE_ESCAPED" >> "$GITHUB_OUTPUT"
+      
+          COMMIT_TIME=$(git log -1 --pretty=%cI)
+          echo "commit_time=$COMMIT_TIME" >> "$GITHUB_OUTPUT"
+
+      - name: Start Amplify job
+        run: |
+          aws amplify start-job \
+            --app-id ${{ steps.tf_outputs.outputs.amplify_app_id }} \
+            --branch-name ${{ github.ref_name }} \
+            --commit-id ${{ steps.git_info.outputs.commit_id }} \
+            --commit-message "${{ steps.git_info.outputs.commit_title }}" \
+            --commit-time "${{ steps.git_info.outputs.commit_time }}" \
+            --job-type RELEASE \
+            --region ${{ env.AWS_REGION }}
+
+      - name: Wait for Amplify job to complete
+        uses: duckbytes/amplify-build-status@v2.2
+        with:
+          app-id: ${{ steps.tf_outputs.outputs.amplify_app_id }}
+          branch-name: ${{ github.ref_name }}
+          commit-id: ${{ github.sha }}
+          wait: true
+
+  bump-version:
+    needs: [set-variables, terraform-cloud-run, amplify-deploy]
+    name: Release Version
+    uses: ./.github/workflows/release-version.yml
+    with:
+      is_dry_run: ${{ needs.set-variables.outputs.dry_run == 'true' || github.event_name == 'workflow_dispatch'  }}
+

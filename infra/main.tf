@@ -10,7 +10,7 @@ resource "aws_amplify_branch" "deployment_branch" {
   app_id            = aws_amplify_app.portfolio.id
   branch_name       = "main"
   stage             = "PRODUCTION"
-  enable_auto_build = true
+  enable_auto_build = false
   framework         = "Next.js - SSR"
 }
 

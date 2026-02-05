@@ -1,0 +1,40 @@
+name: Release Version
+
+on:
+  workflow_call:
+    inputs:
+      is_dry_run:
+        required: true
+        type: boolean
+
+jobs:
+  bump-version:
+    name: Auto Bump, Tag & Changelog
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          dry_run: ${{ inputs.is_dry_run }}
+          release_branches: main
+
+      - name: Create a GitHub release
+        if: ${{ inputs.is_dry_run == false }}
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: |
+            ${{ steps.tag_version.outputs.changelog }}
+            
+            ---
+            **Workflow Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            **Workflow Ran By:** ${{ github.actor }}
+            **Commit:** ${{ github.sha }}
