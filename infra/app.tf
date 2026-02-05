@@ -4,6 +4,7 @@ resource "aws_amplify_app" "portfolio" {
   access_token = var.github_token
   build_spec   = file("${path.module}/amplify.yml")
   platform     = "WEB_COMPUTE"
+  iam_service_role_arn = aws_iam_role.amplify_service_role.arn
 }
 
 resource "aws_amplify_branch" "deployment_branch" {
