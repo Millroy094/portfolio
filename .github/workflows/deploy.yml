@@ -154,9 +154,8 @@ jobs:
           echo "commit_time=$COMMIT_TIME" >> "$GITHUB_OUTPUT"
 
       - name: Deploy Amplify Backend
-        run: |
-          npx amplify pull ${{ steps.tf_outputs.outputs.amplify_app_id }}
-          npx amplify backend push --yes
+        working-directory: amplify
+        run: npx amplify backend push --yes
 
       - name: Start Amplify job
         run: |
