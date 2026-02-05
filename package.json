@@ -2,6 +2,7 @@
   "name": "my-portfolio",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,6 +10,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@aws-amplify/ui-react": "^6.13.2",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@icons-pack/react-simple-icons": "^13.8.0",
@@ -19,6 +21,7 @@
     "@tsparticles/engine": "^3.5.0",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.5.0",
+    "aws-amplify": "^6.16.2",
     "framer-motion": "^11.11.17",
     "motion": "^11.11.17",
     "next": "16.1.6",
@@ -32,6 +35,8 @@
     "tech-stack-icons": "^3.5.8"
   },
   "devDependencies": {
+    "@aws-amplify/backend": "^1.20.0",
+    "@aws-amplify/backend-cli": "^1.8.2",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
