@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: 'When true, runs in plan-only mode'
+        description: 'When true, runs in plan only mode'
         required: true
         type: boolean
 
