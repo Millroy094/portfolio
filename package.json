@@ -40,7 +40,7 @@
     "@aws-amplify/backend-cli": "^1.8.2",
     "@aws-sdk/types": "^3.973.1",
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^25",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/react-lottie": "^1.2.10",
