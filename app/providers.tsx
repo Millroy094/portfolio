@@ -1,7 +1,7 @@
 'use client';
 
 import '@aws-amplify/ui-react/styles.css';
-import { configureAmplify } from '@/services/amplifyClient';
+import { configureAmplify } from '@/services/amplify/amplifyClient';
 
 export function Providers({ children }: { children: React.ReactNode }) {
     configureAmplify();
