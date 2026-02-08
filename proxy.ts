@@ -12,7 +12,7 @@ export async function proxy(request: NextRequest) {
             try {
                 const session = await fetchAuthSession(contextSpec);
                 return session.tokens !== undefined;
-            } catch (error) {
+            } catch {
                 return false;
             }
         }
