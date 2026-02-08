@@ -23,9 +23,9 @@ export const metadata = {
         description:
             "Explore the portfolio of Millroy Fernandes, a software engineer specializing in modern web technologies.",
         images: [
-            "https://www.portfolio.millroyfernandes.com/profile.jpeg"
+            "https://www.millroyfernandes.com/profile.jpeg"
         ],
-        url: "https://www.portfolio.millroyfernandes.com/",
+        url: "https://www.millroyfernandes.com/",
         type: "website",
     },
     icons: {
@@ -49,7 +49,7 @@ export default function RootLayout({
                     "@type": "Person",
                     name: "Millroy Fernandes",
                     jobTitle: "Software Engineer",
-                    url: "https://www.portfolio.millroyfernandes.com",
+                    url: "https://www.millroyfernandes.com",
                     sameAs: [
                         "https://www.linkedin.com/in/millroy-fernandes-5a2688102/",
                         "https://github.com/Millroy094",
