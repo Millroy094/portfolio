@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/admin/', '/login/'],
     },
-    sitemap: 'https://www.millroyfernandes.com',
+    sitemap: 'https://www.millroyfernandes.com/sitemap.xml',
   }
 }
