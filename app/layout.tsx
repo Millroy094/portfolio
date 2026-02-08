@@ -13,18 +13,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
+    metadataBase: new URL("https://www.millroyfernandes.com"),
+    alternates: {
+        canonical: "/", 
+    },
     title: "Millroy Fernandes | Software Engineer Portfolio",
-    description:
-        "Explore the portfolio of Millroy Fernandes, a software developer specializing in React.JS, Node.JS, Graphql, Express.JS, Docker, Kubernetes, Helm, Terraform, Github Actions, Cypress, Playwright, Jest, MongoDB, Redis, MySQL, Postgresql.",
+    description: "Explore the portfolio of Millroy Fernandes, a software developer specializing in React.JS, Node.JS, Graphql, Express.JS, Docker, Kubernetes, Helm, Terraform, Github Actions, Cypress, Playwright, Jest, MongoDB, Redis, MySQL, Postgresql.",
     keywords:
         "Software Developer, Software Engineer, DevOps Engineer, Portfolio, Projects",
     openGraph: {
         title: "Millroy Fernandes | Software Engineer Portfolio",
-        description:
-            "Explore the portfolio of Millroy Fernandes, a software engineer specializing in modern web technologies.",
-        images: [
-            "https://www.millroyfernandes.com/profile.jpeg"
-        ],
+        description: "Explore the portfolio of Millroy Fernandes, a software engineer specializing in modern web technologies.",
+        images: ["/profile.jpeg"],
         url: "https://www.millroyfernandes.com/",
         type: "website",
     },
