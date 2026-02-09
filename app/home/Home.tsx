@@ -8,16 +8,16 @@ import {
 } from 'react-scroll';
 import {Atom} from 'react-loading-indicators'
 import BackgroundParticles from "@/components/BackgroundParticles";
-import Introduction from "@/components/Introduction";
+import Introduction from "@/app/home/Introduction";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 import {useEffect, useState} from "react";
 import {AnimatePresence, motion} from "motion/react";
 import {Fab, Grid} from "@mui/material";
 import {SwipeUp} from "@mui/icons-material";
-import AboutMe from "@/components/AboutMe";
-import Skills from "@/components/Skills";
-import EducationAndExperience from "@/components/EducationAndExpierence";
-import Projects from "@/components/Projects";
+import AboutMe from "@/app/home/AboutMe";
+import Skills from "@/app/home/Skills";
+import EducationAndExperience from "@/app/home/EducationAndExpierence";
+import Projects from "@/app/home/Projects";
 import Box from "@mui/material/Box";
 
 export default function Home() {

@@ -2,7 +2,7 @@
 
 import { Grid } from "@mui/material";
 import Lottie from "react-lottie";
-import HistoryTimeline from "@/components/HistoryTimeline";
+import HistoryTimeline from "@/app/home/HistoryTimeline";
 import WorkAndEducationLottie from "@/assets/lotties/work-and-education.json";
 import { educationTimeline, workTimeline } from "@/configuration";
 

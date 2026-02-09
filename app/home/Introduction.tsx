@@ -16,7 +16,7 @@ import useWindowDimensions from "@/hooks/useWindowDimensions";
 import profileImage from "@/assets/images/profile.jpeg";
 import awsCert from '@/assets/images/aws-certified-solutions-architect-associate.png'
 import { introduction } from "@/configuration";
-import PortfolioAppBar from "@/components/AppBar";
+import PortfolioAppBar from "@/app/home/AppBar";
 import { SiStackoverflow } from "@icons-pack/react-simple-icons";
 
 function Introduction() {

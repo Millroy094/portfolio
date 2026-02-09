@@ -11,7 +11,7 @@ import {
 } from '@mui/lab';
 import { Grid, Typography } from '@mui/material';
 import { timelineContentClasses } from '@mui/lab/TimelineContent';
-import GrowOnHover from '../hoc/GrowOnHover';
+import GrowOnHover from '../../hoc/GrowOnHover';
 
 interface ITimelineItem {
   year: number;
