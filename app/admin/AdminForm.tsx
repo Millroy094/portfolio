@@ -14,15 +14,19 @@ import {
   FormHelperText,
   IconButton,
   Avatar,
-  Select,
-  MenuItem
 } from "@mui/material";
 import {
   DeleteSharp,
   ArrowUpwardSharp,
   ArrowDownwardSharp,
   Person2,
-  AddModerator, GitHub, School, EmojiTransportation, Engineering, AccountCircle, Save
+  AddModerator,
+  GitHub,
+  School,
+  EmojiTransportation,
+  Engineering,
+  AccountCircle,
+  Save
 } from "@mui/icons-material";
 import RichTextEditor from "@/components/controls/RichTextEditor";
 import { ProfileSchema, ProfileSchemaType } from "@/app/admin/schema";
@@ -30,6 +34,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import LinkTextField from "@/components/controls/LinkTextField";
 import AvatarCropper from "@/components/controls/AvatorCropper";
 import { useState } from "react";
+import SkillSelect from "@/components/controls/SkillSelect";
+import {SkillId} from "@/components/controls/SkillSelect/SkillRegistery";
 
 export default function AdminForm() {
   const {
@@ -105,42 +111,48 @@ export default function AdminForm() {
         className="flex flex-col p-8 gap-4"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Controller
-          name="avatar"
-          control={control}
-          render={({ field }) => (
-            <>
-              {field.value instanceof File ? (
-                <Image
-                  alt="profile picture"
-                  width={100}
-                  height={100}
-                  src={URL.createObjectURL(field.value)}
-                  className="h-24 w-24 rounded-full border object-cover"
-                />
-              ) : (
-                <Avatar sx={{ width: "100px", height: "100px" }}>
-                  <Person2 fontSize="large" />
-                </Avatar>
-              )}
+        <div className="flex md:flex-row flex-col-reverse justify-between items-end">
+          <div className="w-full md:w-1/4">
+            <TextField
+              label="Full Name"
+              fullWidth
+              {...register("fullName", { required: false })}
+              error={!!errors.fullName}
+              helperText={errors.fullName?.message ?? ""}
+            />
+          </div>
+          <div className="w-full md:w-1/16 flex justify-center mb-5">
+            <Controller
+              name="avatar"
+              control={control}
+              render={({ field }) => (
+                <>
+                  {field.value instanceof File ? (
+                    <Image
+                      alt="profile picture"
+                      width={100}
+                      height={100}
+                      src={URL.createObjectURL(field.value)}
+                      className="h-24 w-24 rounded-full border object-cover"
+                    />
+                  ) : (
+                    <Avatar sx={{ width: "100px", height: "100px" }}>
+                      <Person2 fontSize="large" />
+                    </Avatar>
+                  )}
 
-              <AvatarCropper
-                open={cropOpen}
-                file={cropFile}
-                onClose={() => setCropOpen(false)}
-                onCropped={(croppedFile: File) => field.onChange(croppedFile)}
-              />
-            </>
-          )}
-        />
-        <div className="w-full md:w-1/4">
-          <TextField
-            label="Full Name"
-            fullWidth
-            {...register("fullName", { required: false })}
-            error={!!errors.fullName}
-            helperText={errors.fullName?.message ?? ""}
-          />
+                  <AvatarCropper
+                    open={cropOpen}
+                    file={cropFile}
+                    onClose={() => setCropOpen(false)}
+                    onCropped={(croppedFile: File) =>
+                      field.onChange(croppedFile)
+                    }
+                  />
+                </>
+              )}
+            />
+          </div>
         </div>
 
         {roles.length > 0 && (
@@ -282,6 +294,25 @@ export default function AdminForm() {
             )}
           />
         </div>
+        <div>
+          <Controller
+            name="skills"
+            control={control}
+            rules={{ required: "Skills are required" }}
+            render={({ field, fieldState }) => (
+              <div className="w-full">
+                <SkillSelect
+                  value={(field.value ?? []) as SkillId[]}
+                  onChange={(ids: string[]) => field.onChange(ids)}
+                  onBlur={field.onBlur}
+                  name={field.name}
+                  error={!!fieldState.error}
+                  helperText={fieldState.error?.message}
+                />
+              </div>
+            )}
+          />
+        </div>
         {badges.length > 0 && (
           <div className="flex flex-col gap-4">
             <h3 className="text-lg font-semibold">Badges</h3>
@@ -378,28 +409,35 @@ export default function AdminForm() {
                 </div>
                 <div className="w-full md:w-1/4">
                   <Controller
-                      control={control}
-                      name={`experiences.${index}.year`}
-                      render={({ field, fieldState }) => (
-                          <TextField
-                              type="number"
-                              label="Year"
-                              value={field.value ?? ""}
-                              onChange={(e) => {
-                                const v = e.target.value;
-                                if (v === "") {
-                                  field.onChange(undefined);
-                                  return;
-                                }
-                                const parsed = Number(v);
-                                field.onChange(Number.isNaN(parsed) ? undefined : parsed);
-                              }}
-                              inputProps={{ inputMode: "numeric", min: 1900, max: new Date().getFullYear(), step: 1 }}
-                              fullWidth
-                              error={!!fieldState.error}
-                              helperText={errors.experiences?.[index]?.year?.message}
-                          />
-                      )}
+                    control={control}
+                    name={`experiences.${index}.year`}
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        type="number"
+                        label="Year"
+                        value={field.value ?? ""}
+                        onChange={e => {
+                          const v = e.target.value;
+                          if (v === "") {
+                            field.onChange(undefined);
+                            return;
+                          }
+                          const parsed = Number(v);
+                          field.onChange(
+                            Number.isNaN(parsed) ? undefined : parsed
+                          );
+                        }}
+                        inputProps={{
+                          inputMode: "numeric",
+                          min: 1900,
+                          max: new Date().getFullYear(),
+                          step: 1
+                        }}
+                        fullWidth
+                        error={!!fieldState.error}
+                        helperText={errors.experiences?.[index]?.year?.message}
+                      />
+                    )}
                   />
                 </div>
                 <IconButton
@@ -427,193 +465,199 @@ export default function AdminForm() {
         )}
 
         {education.length > 0 && (
-            <div className="flex flex-col gap-4">
-              <h3 className="text-lg font-semibold">Education</h3>
-              {education.map((edu, index) => (
-                  <div key={edu.id} className="flex items-center gap-4">
-                    <div className="w-full md:w-1/4">
-                      <Controller
-                          control={control}
-                          name={`education.${index}.institute`}
-                          render={({ field, fieldState }) => (
-                              <TextField
-                                  label="Institute"
-                                  value={field.value}
-                                  onChange={e => field.onChange(e.target.value)}
-                                  fullWidth
-                                  error={!!fieldState.error}
-                                  helperText={
-                                    errors.education?.[index]?.institute?.message
-                                  }
-                              />
-                          )}
-                      />
-                    </div>
-                    <div className="w-full md:w-1/4">
-                      <Controller
-                          control={control}
-                          name={`education.${index}.qualification`}
-                          render={({ field, fieldState }) => (
-                              <TextField
-                                  label="Qualificaion"
-                                  value={field.value}
-                                  onChange={e => field.onChange(e.target.value)}
-                                  fullWidth
-                                  error={!!fieldState.error}
-                                  helperText={errors.education?.[index]?.qualification?.message}
-                              />
-                          )}
-                      />
-                    </div>
-                    <div className="w-full md:w-1/4">
-                      <Controller
-                          control={control}
-                          name={`education.${index}.year`}
-                          render={({ field, fieldState }) => (
-                              <TextField
-                                  type="number"
-                                  label="Year"
-                                  value={field.value ?? ""}
-                                  onChange={(e) => {
-                                    const v = e.target.value;
-                                    if (v === "") {
-                                      field.onChange(undefined);
-                                      return;
-                                    }
-                                    const parsed = Number(v);
-                                    field.onChange(Number.isNaN(parsed) ? undefined : parsed);
-                                  }}
-                                  inputProps={{ inputMode: "numeric", min: 1900, max: new Date().getFullYear(), step: 1 }}
-                                  fullWidth
-                                  error={!!fieldState.error}
-                                  helperText={errors.education?.[index]?.year?.message}
-                              />
-                          )}
-                      />
-                    </div>
-                    <IconButton
-                        onClick={() => index > 0 && moveEducation(index, index - 1)}
-                        disabled={index === 0}
-                    >
-                      <ArrowUpwardSharp />
-                    </IconButton>
-
-                    <IconButton
-                        onClick={() =>
-                            index < roles.length - 1 && moveEducation(index, index + 1)
+          <div className="flex flex-col gap-4">
+            <h3 className="text-lg font-semibold">Education</h3>
+            {education.map((edu, index) => (
+              <div key={edu.id} className="flex items-center gap-4">
+                <div className="w-full md:w-1/4">
+                  <Controller
+                    control={control}
+                    name={`education.${index}.institute`}
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        label="Institute"
+                        value={field.value}
+                        onChange={e => field.onChange(e.target.value)}
+                        fullWidth
+                        error={!!fieldState.error}
+                        helperText={
+                          errors.education?.[index]?.institute?.message
                         }
-                        disabled={index === roles.length - 1}
-                    >
-                      <ArrowDownwardSharp />
-                    </IconButton>
+                      />
+                    )}
+                  />
+                </div>
+                <div className="w-full md:w-1/4">
+                  <Controller
+                    control={control}
+                    name={`education.${index}.qualification`}
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        label="Qualificaion"
+                        value={field.value}
+                        onChange={e => field.onChange(e.target.value)}
+                        fullWidth
+                        error={!!fieldState.error}
+                        helperText={
+                          errors.education?.[index]?.qualification?.message
+                        }
+                      />
+                    )}
+                  />
+                </div>
+                <div className="w-full md:w-1/4">
+                  <Controller
+                    control={control}
+                    name={`education.${index}.year`}
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        type="number"
+                        label="Year"
+                        value={field.value ?? ""}
+                        onChange={e => {
+                          const v = e.target.value;
+                          if (v === "") {
+                            field.onChange(undefined);
+                            return;
+                          }
+                          const parsed = Number(v);
+                          field.onChange(
+                            Number.isNaN(parsed) ? undefined : parsed
+                          );
+                        }}
+                        inputProps={{
+                          inputMode: "numeric",
+                          min: 1900,
+                          max: new Date().getFullYear(),
+                          step: 1
+                        }}
+                        fullWidth
+                        error={!!fieldState.error}
+                        helperText={errors.education?.[index]?.year?.message}
+                      />
+                    )}
+                  />
+                </div>
+                <IconButton
+                  onClick={() => index > 0 && moveEducation(index, index - 1)}
+                  disabled={index === 0}
+                >
+                  <ArrowUpwardSharp />
+                </IconButton>
 
-                    <IconButton onClick={() => removeEducation(index)}>
-                      <DeleteSharp color="error" />
-                    </IconButton>
-                  </div>
-              ))}
-            </div>
+                <IconButton
+                  onClick={() =>
+                    index < roles.length - 1 && moveEducation(index, index + 1)
+                  }
+                  disabled={index === roles.length - 1}
+                >
+                  <ArrowDownwardSharp />
+                </IconButton>
+
+                <IconButton onClick={() => removeEducation(index)}>
+                  <DeleteSharp color="error" />
+                </IconButton>
+              </div>
+            ))}
+          </div>
         )}
 
         {projects.length > 0 && (
-            <div className="flex flex-col gap-4">
-              <h3 className="text-lg font-semibold">Projects</h3>
-              {projects.map((project, index) => (
-                  <div key={project.id} className="flex items-center gap-4">
-                    <div className="w-full md:w-1/4">
-                      <Controller
-                          control={control}
-                          name={`projects.${index}.name`}
-                          render={({ field, fieldState }) => (
-                              <TextField
-                                  label="Project name"
-                                  value={field.value}
-                                  onChange={e => field.onChange(e.target.value)}
-                                  fullWidth
-                                  error={!!fieldState.error}
-                                  helperText={
-                                    errors.projects?.[index]?.name?.message
-                                  }
-                              />
-                          )}
+          <div className="flex flex-col gap-4">
+            <h3 className="text-lg font-semibold">Projects</h3>
+            {projects.map((project, index) => (
+              <div key={project.id} className="flex items-center gap-4">
+                <div className="w-full md:w-1/4">
+                  <Controller
+                    control={control}
+                    name={`projects.${index}.name`}
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        label="Project name"
+                        value={field.value}
+                        onChange={e => field.onChange(e.target.value)}
+                        fullWidth
+                        error={!!fieldState.error}
+                        helperText={errors.projects?.[index]?.name?.message}
                       />
-                    </div>
-                    <div className="w-full md:w-1/2">
-                      <Controller
-                          control={control}
-                          name={`projects.${index}.description`}
-                          render={({ field, fieldState }) => (
-                              <TextField
-                                  label="Description"
-                                  value={field.value}
-                                  onChange={e => field.onChange(e.target.value)}
-                                  fullWidth
-                                  error={!!fieldState.error}
-                                  helperText={errors.projects?.[index]?.description?.message}
-                              />
-                          )}
-                      />
-                    </div>
-                    <div className="w-full md:w-1/4">
-                      <Controller
-                          control={control}
-                          name={`projects.${index}.url`}
-                          render={({ field, fieldState }) => (
-                              <LinkTextField
-                                  label="Repository URL"
-                                  value={field.value ?? ""}
-                                  onChange={field.onChange}
-                                  error={!!fieldState.error}
-                                  errorText={errors.projects?.[index]?.url?.message}
-                              />
-                          )}
-                      />
-                    </div>
-                    <IconButton
-                        onClick={() => index > 0 && moveProject(index, index - 1)}
-                        disabled={index === 0}
-                    >
-                      <ArrowUpwardSharp />
-                    </IconButton>
-
-                    <IconButton
-                        onClick={() =>
-                            index < roles.length - 1 && moveProject(index, index + 1)
+                    )}
+                  />
+                </div>
+                <div className="w-full md:w-1/2">
+                  <Controller
+                    control={control}
+                    name={`projects.${index}.description`}
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        label="Description"
+                        value={field.value}
+                        onChange={e => field.onChange(e.target.value)}
+                        fullWidth
+                        error={!!fieldState.error}
+                        helperText={
+                          errors.projects?.[index]?.description?.message
                         }
-                        disabled={index === roles.length - 1}
-                    >
-                      <ArrowDownwardSharp />
-                    </IconButton>
+                      />
+                    )}
+                  />
+                </div>
+                <div className="w-full md:w-1/4">
+                  <Controller
+                    control={control}
+                    name={`projects.${index}.url`}
+                    render={({ field, fieldState }) => (
+                      <LinkTextField
+                        label="Repository URL"
+                        value={field.value ?? ""}
+                        onChange={field.onChange}
+                        error={!!fieldState.error}
+                        errorText={errors.projects?.[index]?.url?.message}
+                      />
+                    )}
+                  />
+                </div>
+                <IconButton
+                  onClick={() => index > 0 && moveProject(index, index - 1)}
+                  disabled={index === 0}
+                >
+                  <ArrowUpwardSharp />
+                </IconButton>
 
-                    <IconButton onClick={() => removeProject(index)}>
-                      <DeleteSharp color="error" />
-                    </IconButton>
-                  </div>
-              ))}
-            </div>
+                <IconButton
+                  onClick={() =>
+                    index < roles.length - 1 && moveProject(index, index + 1)
+                  }
+                  disabled={index === roles.length - 1}
+                >
+                  <ArrowDownwardSharp />
+                </IconButton>
+
+                <IconButton onClick={() => removeProject(index)}>
+                  <DeleteSharp color="error" />
+                </IconButton>
+              </div>
+            ))}
+          </div>
         )}
 
-        <div className="flex justify-end gap-4">
+        <div className="flex md:flex-row flex-col justify-end gap-4 mt-10">
           <Button
-              type="button"
-              variant="contained"
-              onClick={() =>
-                  addProject({ name: "", url: "", description: "" })
-              }
-              startIcon={<GitHub />}
-              color='inherit'
+            type="button"
+            variant="contained"
+            onClick={() => addProject({ name: "", url: "", description: "" })}
+            startIcon={<GitHub />}
+            color="inherit"
           >
             Add Project
           </Button>
           <Button
-              type="button"
-              variant="contained"
-              onClick={() =>
-                  addEducation({ year: 2026, institute: "", qualification: "" })
-              }
-              startIcon={<School />}
-              color='secondary'
-
+            type="button"
+            variant="contained"
+            onClick={() =>
+              addEducation({ year: 2026, institute: "", qualification: "" })
+            }
+            startIcon={<School />}
+            color="secondary"
           >
             Add Education
           </Button>
@@ -624,8 +668,7 @@ export default function AdminForm() {
               addExperience({ year: 2026, organization: "", title: "" })
             }
             startIcon={<EmojiTransportation />}
-            color='info'
-
+            color="info"
           >
             Add Experience
           </Button>
@@ -634,7 +677,7 @@ export default function AdminForm() {
             variant="contained"
             onClick={() => addRole({ value: "" })}
             startIcon={<Engineering />}
-            color='primary'
+            color="primary"
           >
             Add Role
           </Button>
@@ -642,7 +685,7 @@ export default function AdminForm() {
             variant="contained"
             component="label"
             startIcon={<AddModerator />}
-            color='warning'
+            color="warning"
           >
             <input
               type="file"
@@ -655,7 +698,11 @@ export default function AdminForm() {
             />
             Add Badge
           </Button>
-          <Button variant="contained" component="label"  color='error'           startIcon={<AccountCircle />}
+          <Button
+            variant="contained"
+            component="label"
+            color="error"
+            startIcon={<AccountCircle />}
           >
             Choose Avatar
             <input
@@ -671,7 +718,12 @@ export default function AdminForm() {
               }}
             />
           </Button>
-          <Button type="submit" variant="contained" color='success'  startIcon={<Save />}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="success"
+            startIcon={<Save />}
+          >
             Save changes
           </Button>
         </div>

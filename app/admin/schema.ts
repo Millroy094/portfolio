@@ -1,4 +1,4 @@
-import { string, z } from "zod";
+import { z } from "zod";
 
 function isQuillEmpty(html: string) {
   return (
@@ -8,7 +8,6 @@ function isQuillEmpty(html: string) {
       .trim().length === 0
   );
 }
-
 function transformUrl(url: string | undefined) {
   if (!url) return;
   const cleaned = url.trim();
@@ -17,9 +16,10 @@ function transformUrl(url: string | undefined) {
   }
   return cleaned;
 }
-
+const SkillsArrayGeneric = z
+  .array(z.string().min(1, "Skill id cannot be empty"))
+  .default([]);
 const currentYear = new Date().getFullYear();
-
 const isBrowserFile = (v: unknown): v is File =>
   typeof File !== "undefined" && v instanceof File;
 
@@ -35,9 +35,7 @@ export const ProfileSchema = z.object({
     .max(50, { message: "Full name must be maximum of 50 characters" })
     .nonempty("Please enter a full name"),
   roles: z.array(
-    z.object({
-      value: z.string().min(1, "Please enter a role name")
-    })
+    z.object({ value: z.string().min(1, "Please enter a role name") })
   ),
   badges: z.array(
     z.object({
@@ -129,14 +127,15 @@ export const ProfileSchema = z.object({
     .optional(),
   projects: z.array(
     z.object({
-      name: string().nonempty(),
-      description: string().nonempty(),
+      name: z.string().nonempty(),
+      description: z.string().nonempty(),
       url: z
         .string()
         .url()
         .nonempty()
     })
-  )
+  ),
+  skills: SkillsArrayGeneric
 });
 
 export type ProfileSchemaType = z.input<typeof ProfileSchema>;

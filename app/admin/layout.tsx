@@ -4,10 +4,9 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCurrentUser, signOut } from 'aws-amplify/auth';
 import { Authenticator, useAuthenticator } from '@aws-amplify/ui-react';
-import {Button} from '@mui/material'
+import { Button } from '@mui/material';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-
     const router = useRouter();
     const [checking, setChecking] = useState(true);
 
@@ -27,21 +26,43 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     return (
         <Authenticator>
-            {() => (
-                <div>
-                    <header style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, padding: 16 }}>
-                        <SignOutButton />
-                    </header>
-                    {children}
-                </div>
-            )}
+            <LayoutWithUser>{children}</LayoutWithUser>
         </Authenticator>
     );
 }
 
-function SignOutButton() {
-    const { route } = useAuthenticator(context => [context.route]);
+function LayoutWithUser({ children }: { children: React.ReactNode }) {
+    const { user, route } = useAuthenticator((context) => [context.user, context.route]);
 
+    const username =
+        user?.signInDetails?.loginId ??
+        user?.username ??
+        "Unknown user";
+
+    return (
+        <div>
+            <header
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    gap: 12,
+                    padding: 16,
+                }}
+            >
+                <p>
+                    Logged in as <strong>{username}</strong>
+                </p>
+
+                <SignOutButton route={route} />
+            </header>
+
+            {children}
+        </div>
+    );
+}
+
+function SignOutButton({ route }: { route: string }) {
     return (
         <Button
             variant="contained"
