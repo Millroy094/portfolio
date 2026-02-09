@@ -402,7 +402,7 @@ export default function AdminForm() {
                 val &&
                 typeof val === "object" &&
                 "value" in val &&
-                typeof (val as any).value === "string";
+                typeof val.value === "string";
               const isFileBadge = val instanceof File;
 
               return (
@@ -412,12 +412,12 @@ export default function AdminForm() {
                   style={{ minHeight: 150, maxHeight: 150 }}
                 >
                   {/* Optional: helper background for transparency */}
-                  <div className="absolute inset-0 bg-[linear-gradient(45deg,#f4f4f5_25%,transparent_25%,transparent_75%,#f4f4f5_75%,#f4f4f5),linear-gradient(45deg,#f4f4f5_25%,transparent_25%,transparent_75%,#f4f4f5_75%,#f4f4f5)] bg-[size:16px_16px] bg-[position:0_0,8px_8px] opacity-30" />
+                  <div className="absolute inset-0 bg-[linear-gradient(45deg,#f4f4f5_25%,transparent_25%,transparent_75%,#f4f4f5_75%,#f4f4f5),linear-gradient(45deg,#f4f4f5_25%,transparent_25%,transparent_75%,#f4f4f5_75%,#f4f4f5)] bg-size-[16px_16px] bg-position-[0_0,8px_8px] opacity-30" />
 
                   {isUrlBadge && (
                     <Image
                       alt={`badge ${index + 1}`}
-                      src={(val as any).value as string}
+                      src={val.value as string}
                       fill
                       className="object-contain p-3"
                       sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -810,7 +810,7 @@ export default function AdminForm() {
             variant="contained"
             color="success"
             startIcon={<Save />}
-            sx={{ width: "100%", sm: { width: "auto" } }}
+            sx={{ width: { xs: '100%', sm: 'auto' } }}
           >
             Save changes
           </Button>
