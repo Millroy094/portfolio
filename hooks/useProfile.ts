@@ -5,14 +5,14 @@ import { generateClient } from "aws-amplify/data";
 import { getUrl } from "aws-amplify/storage";
 import type { Schema } from "@/amplify/data/resource";
 
-const generateS3UrlFromKey = async (path: string) => {
-    const { url } = await getUrl({ path: path });
-    return url.toString();
-}
-
 export function useProfile() {
     const [profile, setProfile] = useState<unknown>(null);
     const [loading, setLoading] = useState(true);
+
+    const generateS3UrlFromKey = async (path: string) => {
+        const { url } = await getUrl({ path: path });
+        return url.toString();
+    }
 
     useEffect(() => {
         async function load() {
