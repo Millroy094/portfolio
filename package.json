@@ -36,6 +36,7 @@
     "react-lottie": "^1.2.10",
     "react-quill-new": "^3.8.3",
     "react-scroll": "^1.9.3",
+    "react-toastify": "^11.0.5",
     "react-type-animation": "^3.2.0",
     "styled-components": "^6.3.8",
     "tech-stack-icons": "^3.5.8",

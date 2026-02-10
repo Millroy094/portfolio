@@ -2,22 +2,18 @@
 
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { TextField, IconButton } from "@mui/material";
-import {
-  ArrowUpwardSharp,
-  ArrowDownwardSharp,
-  DeleteSharp
-} from "@mui/icons-material";
+import { DeleteSharp } from "@mui/icons-material";
 import SkillSelect from "@/components/controls/SkillSelect";
 import LinkTextField from "@/components/controls/LinkTextField";
 import { FormSection } from "@/components/FormSection";
-import { ProfileSchemaType } from "@/app/admin/schema";
+import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
 import { SkillId } from "@/components/controls/SkillSelect/SkillRegistery";
 
 type ProjectRecord = {
-    name: string
-    description: string
-    url: string
-}
+  name: string;
+  description: string;
+  url: string;
+};
 
 export interface ProjectsSkillsProps {
   control: Control<ProfileSchemaType>;
@@ -26,7 +22,6 @@ export interface ProjectsSkillsProps {
     fields: { id: string }[];
     append: (v: ProjectRecord) => void;
     remove: (index: number) => void;
-    move: (from: number, to: number) => void;
   };
 }
 
@@ -88,6 +83,10 @@ export default function ProjectsSkillsSection({
                       fullWidth
                       error={!!fieldState.error}
                       helperText={errors.projects?.[index]?.name?.message}
+                      variant="outlined"
+                      slotProps={{
+                        inputLabel: { shrink: !!field.value }
+                      }}
                     />
                   )}
                 />
@@ -108,6 +107,10 @@ export default function ProjectsSkillsSection({
                       helperText={
                         errors.projects?.[index]?.description?.message
                       }
+                      variant="outlined"
+                      slotProps={{
+                        inputLabel: { shrink: !!field.value }
+                      }}
                     />
                   )}
                 />
@@ -130,27 +133,8 @@ export default function ProjectsSkillsSection({
                 />
               </div>
 
-              {/* Buttons */}
-              <div className="flex gap-1 lg:gap-2 lg:col-span-1 lg:justify-end justify-center">
-                <IconButton
-                  onClick={() => index > 0 && projects.move(index, index - 1)}
-                  disabled={index === 0}
-                  size="small"
-                >
-                  <ArrowUpwardSharp />
-                </IconButton>
-
-                <IconButton
-                  onClick={() =>
-                    index < projects.fields.length - 1 &&
-                    projects.move(index, index + 1)
-                  }
-                  disabled={index === projects.fields.length - 1}
-                  size="small"
-                >
-                  <ArrowDownwardSharp />
-                </IconButton>
-
+              {/* Remove button only */}
+              <div className="flex gap-2 justify-center">
                 <IconButton onClick={() => projects.remove(index)} size="small">
                   <DeleteSharp color="error" />
                 </IconButton>

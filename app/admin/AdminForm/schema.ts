@@ -27,6 +27,10 @@ export const ProfileSchema = z.object({
   avatar: z
     .union([
       z.custom<File>(v => isBrowserFile(v), { message: "Invalid file" }),
+      z
+        .string()
+        .min(1)
+        .regex(/^avatars\//, "Invalid avatar key"),
       z.string().url()
     ])
     .optional(),
@@ -39,7 +43,14 @@ export const ProfileSchema = z.object({
   ),
   badges: z.array(
     z.object({
-      value: z.union([z.string().url(), z.custom<File>(v => v instanceof File)])
+      value: z.union([
+        z.string().url(),
+        z.custom<File>(v => v instanceof File),
+        z
+          .string()
+          .min(1)
+          .regex(/^badges\//, "Invalid badge key")
+      ])
     })
   ),
   punchLine: z

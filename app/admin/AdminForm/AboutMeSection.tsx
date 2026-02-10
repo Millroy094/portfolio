@@ -2,7 +2,7 @@
 
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { FormHelperText } from "@mui/material";
-import { ProfileSchemaType } from "@/app/admin/schema";
+import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
 import RichTextEditor from "@/components/controls/RichTextEditor";
 
 export interface AboutMeSectionProps {

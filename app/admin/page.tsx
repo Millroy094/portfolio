@@ -1,5 +1,3 @@
-'use client';
-
 import AdminForm from "@/app/admin/AdminForm";
 
 export default function AdminPage() {

@@ -83,7 +83,7 @@ export default function SkillSelect({
                                 <Chip
                                     key={option.id}
                                     label={option.label}
-                                    sx={{ mr: 0.5 }}
+                                    sx={{ m: 1, pt: 3, pb: 3 }}
                                     onDelete={() =>
                                         onChangeAction(value.filter((id) => id !== option.id))
                                     }

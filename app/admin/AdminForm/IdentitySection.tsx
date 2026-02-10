@@ -8,7 +8,7 @@ import {
 } from "react-hook-form";
 import { TextField } from "@mui/material";
 import LinkTextField from "@/components/controls/LinkTextField";
-import { ProfileSchemaType } from "@/app/admin/schema";
+import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
 
 export interface IdentitySectionProps {
   register: UseFormRegister<ProfileSchemaType>;
@@ -26,11 +26,16 @@ export default function IdentitySection({
       {/* Full Name */}
       <div className="w-full lg:max-w-xl">
         <TextField
+          {...register("fullName")}
           label="Full Name"
           fullWidth
-          {...register("fullName")}
           error={!!errors.fullName}
           helperText={errors.fullName?.message ?? ""}
+          slotProps={{
+              inputLabel: {
+                  shrink: true,
+              },
+          }}
         />
       </div>
 
@@ -42,6 +47,11 @@ export default function IdentitySection({
           {...register("punchLine")}
           error={!!errors.punchLine}
           helperText={errors.punchLine?.message ?? ""}
+          slotProps={{
+              inputLabel: {
+                  shrink: true,
+              },
+          }}
         />
       </div>
 
