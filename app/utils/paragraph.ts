@@ -1,3 +1,5 @@
+import he from "he";
+
 export function splitPlainTextIntoParagraphs(text: string): string[] {
 
     return text
@@ -18,7 +20,11 @@ export function splitHtmlIntoParagraphs(html: string): string[] {
     return body ? [body] : [];
 }
 
+
 export function htmlToText(html: string): string {
-    const doc = new DOMParser().parseFromString(html, "text/html");
-    return doc.body.textContent?.trim() || "";
+    let text = he.decode(html);
+    text = he.decode(text);
+
+    return text.replace(/\u00A0/g, " ").replace(/[ \t\f\v]+/g, " ").trim();
 }
+

@@ -20,7 +20,7 @@ function AboutMe() {
   const { data } = useWebsiteData();
 
   const aboutMe = splitHtmlIntoParagraphs(data.aboutMe)?.map(htmlToText);
-
+console.log(aboutMe);
   return (
     aboutMe?.length > 0 && (
       <Grid
@@ -71,11 +71,6 @@ function AboutMe() {
                   <Typography
                     variant="body1"
                     fontSize="20px"
-                    sx={{
-                      overflowWrap: "anywhere",
-                      wordBreak: "break-word",
-                      whiteSpace: "normal",
-                    }}
                   >
                     {text}
                   </Typography>
