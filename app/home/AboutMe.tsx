@@ -65,7 +65,7 @@ function AboutMe() {
                 Me
               </Typography>
             </Grid>
-            <Grid container>
+            <Grid container sx={{ pr: { lg: 2 } }}>
               {aboutMe?.map((text) => (
                 <GrowOnHover key={text}>
                   <Typography
