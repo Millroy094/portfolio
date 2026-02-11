@@ -20,6 +20,7 @@ import { SwipeUp } from "@mui/icons-material";
 export default function Home() {
   const { width, height } = useWindowDimensions();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setScrollOffset] = useState(0);
   const [showBtn, setShowBtn] = useState(false);
 

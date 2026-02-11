@@ -19,7 +19,7 @@ export default function RolesSection({
   errors,
   fields,
   append,
-  remove
+  remove,
 }: RolesSectionProps) {
   return (
     <FormSection
@@ -43,13 +43,13 @@ export default function RolesSection({
                   <TextField
                     label={`Role ${index + 1}`}
                     value={field.value.value ?? ""}
-                    onChange={e => field.onChange({ value: e.target.value })}
+                    onChange={(e) => field.onChange({ value: e.target.value })}
                     fullWidth
                     error={!!fieldState.error}
                     helperText={errors.roles?.[index]?.value?.message}
                     variant="outlined"
                     slotProps={{
-                      inputLabel: { shrink: !!field.value?.value }
+                      inputLabel: { shrink: !!field.value?.value },
                     }}
                   />
                 )}

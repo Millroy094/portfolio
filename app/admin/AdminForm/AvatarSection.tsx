@@ -59,7 +59,7 @@ export default function AvatarSection({
   cropOpen,
   cropFile,
   setCropOpen,
-  avatarInputRef
+  avatarInputRef,
 }: AvatarSectionProps) {
   return (
     <div className="flex flex-col items-center gap-3 sm:gap-4 w-full">

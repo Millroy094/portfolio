@@ -5,33 +5,25 @@ import { getUrl } from "aws-amplify/storage";
 import { useEffect, useState } from "react";
 
 export function BadgeDisplay({ value }: { value: File | string }) {
-    const [url, setUrl] = useState<string | null>(null);
+  const [url, setUrl] = useState<string | null>(null);
 
-    useEffect(() => {
-        async function resolveBadge() {
+  useEffect(() => {
+    async function resolveBadge() {
+      if (value instanceof File) {
+        setUrl(URL.createObjectURL(value));
+        return;
+      }
 
-            if (value instanceof File) {
-                setUrl(URL.createObjectURL(value));
-                return;
-            }
+      if (value && value.length > 0) {
+        const { url } = await getUrl({ path: value });
+        setUrl(url.toString());
+      }
+    }
 
-            if (value  && value.length > 0) {
-                const { url } = await getUrl({ path: value });
-                setUrl(url.toString());
-            }
-        }
+    resolveBadge();
+  }, [value]);
 
-        resolveBadge();
-    }, [value]);
+  if (!url) return null;
 
-    if (!url) return null;
-
-    return (
-        <Image
-            alt="badge"
-            src={url}
-            fill
-            className="object-contain p-3"
-        />
-    );
+  return <Image alt="badge" src={url} fill className="object-contain p-3" />;
 }

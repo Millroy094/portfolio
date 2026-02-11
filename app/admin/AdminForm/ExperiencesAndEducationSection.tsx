@@ -40,7 +40,7 @@ export default function ExperiencesEducationSection({
   control,
   errors,
   experiences,
-  education
+  education,
 }: ExperiencesEducationProps) {
   return (
     <div className="flex flex-col gap-8">
@@ -53,7 +53,7 @@ export default function ExperiencesEducationSection({
           experiences.append({
             year: currentYear,
             organization: "",
-            title: ""
+            title: "",
           })
         }
         count={experiences.fields.length}
@@ -66,7 +66,7 @@ export default function ExperiencesEducationSection({
               const by = control._formValues?.experiences?.[b.index]?.year ?? 0;
               return by - ay;
             })
-            .map(exp => {
+            .map((exp) => {
               const index = exp.index;
               return (
                 <div
@@ -83,7 +83,7 @@ export default function ExperiencesEducationSection({
                           label="Organization"
                           fullWidth
                           value={field.value}
-                          onChange={e => field.onChange(e.target.value)}
+                          onChange={(e) => field.onChange(e.target.value)}
                           error={!!fieldState.error}
                           helperText={
                             errors.experiences?.[index]?.organization?.message
@@ -103,7 +103,7 @@ export default function ExperiencesEducationSection({
                           label="Title"
                           fullWidth
                           value={field.value}
-                          onChange={e => field.onChange(e.target.value)}
+                          onChange={(e) => field.onChange(e.target.value)}
                           error={!!fieldState.error}
                           helperText={
                             errors.experiences?.[index]?.title?.message
@@ -153,7 +153,7 @@ export default function ExperiencesEducationSection({
           education.append({
             year: currentYear,
             institute: "",
-            qualification: ""
+            qualification: "",
           })
         }
         count={education.fields.length}
@@ -166,7 +166,7 @@ export default function ExperiencesEducationSection({
               const by = control?._formValues?.education?.[b.index]?.year ?? 0;
               return by - ay;
             })
-            .map(edu => {
+            .map((edu) => {
               const index = edu.index;
               return (
                 <div
@@ -182,7 +182,7 @@ export default function ExperiencesEducationSection({
                         <TextField
                           label="Institute"
                           value={field.value}
-                          onChange={e => field.onChange(e.target.value)}
+                          onChange={(e) => field.onChange(e.target.value)}
                           fullWidth
                           error={!!fieldState.error}
                           helperText={
@@ -202,7 +202,7 @@ export default function ExperiencesEducationSection({
                         <TextField
                           label="Qualification"
                           value={field.value}
-                          onChange={e => field.onChange(e.target.value)}
+                          onChange={(e) => field.onChange(e.target.value)}
                           fullWidth
                           error={!!fieldState.error}
                           helperText={

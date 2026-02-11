@@ -87,8 +87,8 @@ export const ProfileSchema = z.object({
   experiences: z
     .array(
       z.object({
-        organization: z.string().nonempty('Organization name is required'),
-        title: z.string().nonempty('Title is required'),
+        organization: z.string().nonempty("Organization name is required"),
+        title: z.string().nonempty("Title is required"),
         year: z.coerce
           .number({
             required_error: "Year is required",
@@ -103,8 +103,8 @@ export const ProfileSchema = z.object({
   education: z
     .array(
       z.object({
-        institute: z.string().nonempty('Institute is required'),
-        qualification: z.string().nonempty('Qualification is required'),
+        institute: z.string().nonempty("Institute is required"),
+        qualification: z.string().nonempty("Qualification is required"),
         year: z.coerce
           .number({
             required_error: "Year is required",
@@ -118,17 +118,20 @@ export const ProfileSchema = z.object({
     .optional(),
   projects: z.array(
     z.object({
-      name: z.string().nonempty('Project name is required'),
-      description: z.string().nonempty('Project description is required'),
+      name: z.string().nonempty("Project name is required"),
+      description: z.string().nonempty("Project description is required"),
       url: z.string().optional().transform(transformUrl).pipe(z.string().url()),
     }),
   ),
   skills: SkillsArrayGeneric,
-    seoTitle: z.string().max(150, "Website title can only be a maximum of 150 characters").nonempty('Website title is required'),
+  seoTitle: z
+    .string()
+    .max(150, "Website title can only be a maximum of 150 characters")
+    .nonempty("Website title is required"),
   seoDescription: z
     .string()
     .max(150, "SEO description can only be a maximum of 150 characters")
-    .nonempty('SEO description is required'),
+    .nonempty("SEO description is required"),
 });
 
 export type ProfileSchemaType = z.input<typeof ProfileSchema>;

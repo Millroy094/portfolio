@@ -15,12 +15,10 @@ export default function AboutMeSection({ control }: AboutMeSectionProps) {
   return (
     <div className="w-full">
       <Paper variant="outlined" sx={{ p: 2 }}>
-        <Stack
-          direction="column"
-          alignItems="start"
-          sx={{ mb: 1 }}
-        >
-          <Typography variant="h6" sx={{ mb: 1}}>About me</Typography>
+        <Stack direction="column" alignItems="start" sx={{ mb: 1 }}>
+          <Typography variant="h6" sx={{ mb: 1 }}>
+            About me
+          </Typography>
           <Controller
             name="aboutMe"
             control={control}

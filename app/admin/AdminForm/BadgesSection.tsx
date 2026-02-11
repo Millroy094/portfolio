@@ -19,7 +19,7 @@ export default function BadgesSection({
   fields,
   append,
   remove,
-  badgeFileInputRef
+  badgeFileInputRef,
 }: BadgesSectionProps) {
   return (
     <FormSection
@@ -34,7 +34,7 @@ export default function BadgesSection({
         ref={badgeFileInputRef}
         hidden
         accept="image/*"
-        onChange={e => {
+        onChange={(e) => {
           const file = e.target.files?.[0];
           if (file) append({ value: file });
           if (badgeFileInputRef.current) badgeFileInputRef.current.value = "";

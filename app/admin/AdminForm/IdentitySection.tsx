@@ -16,11 +16,7 @@ export interface IdentitySectionProps {
   errors: FieldErrors<ProfileSchemaType>;
 }
 
-export default function IdentitySection({
-  register,
-  control,
-  errors
-}: IdentitySectionProps) {
+export default function IdentitySection({ register, control, errors }: IdentitySectionProps) {
   return (
     <div className="flex flex-col gap-4 w-full">
       {/* Full Name */}
@@ -32,9 +28,9 @@ export default function IdentitySection({
           error={!!errors.fullName}
           helperText={errors.fullName?.message ?? ""}
           slotProps={{
-              inputLabel: {
-                  shrink: true,
-              },
+            inputLabel: {
+              shrink: true,
+            },
           }}
         />
       </div>
@@ -48,9 +44,9 @@ export default function IdentitySection({
           error={!!errors.punchLine}
           helperText={errors.punchLine?.message ?? ""}
           slotProps={{
-              inputLabel: {
-                  shrink: true,
-              },
+            inputLabel: {
+              shrink: true,
+            },
           }}
         />
       </div>

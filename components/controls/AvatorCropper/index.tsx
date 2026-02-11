@@ -1,13 +1,13 @@
 "use client";
 
 import Cropper, { Area, Point } from "react-easy-crop";
-import {FC, useEffect, useMemo, useState} from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import {
   Slider,
   Dialog,
   DialogContent,
   DialogActions,
-  Button
+  Button,
 } from "@mui/material";
 import createCroppedImage from "./createCropperImage";
 
@@ -22,24 +22,24 @@ const AvatarCropper: FC<AvatorCropperProps> = ({
   file,
   open,
   onClose,
-  onCropped
+  onCropped,
 }) => {
   const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState<number>(1);
   const [croppedArea, setCroppedArea] = useState<Area | null>(null);
 
-    const objectUrl = useMemo(() => {
-        if (!file) return null;
-        return URL.createObjectURL(file);
-    }, [file]);
+  const objectUrl = useMemo(() => {
+    if (!file) return null;
+    return URL.createObjectURL(file);
+  }, [file]);
 
-    useEffect(() => {
-        return () => {
-            if (objectUrl) URL.revokeObjectURL(objectUrl);
-        };
-    }, [objectUrl]);
+  useEffect(() => {
+    return () => {
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [objectUrl]);
 
-    const onCropComplete = (_: Area, croppedPixels: Area) => {
+  const onCropComplete = (_: Area, croppedPixels: Area) => {
     setCroppedArea(croppedPixels);
   };
 
@@ -50,7 +50,7 @@ const AvatarCropper: FC<AvatorCropperProps> = ({
       const imageFile = await createCroppedImage(objectUrl, croppedArea, {
         circular: true,
         output: "png",
-        quality: 0.92
+        quality: 0.92,
       });
       onCropped(imageFile);
       onClose();

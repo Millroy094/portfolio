@@ -4,7 +4,7 @@ import React, { FC } from "react";
 type YearTextFieldProps = {
   label: string;
   value?: number;
-  onChange: (value: number|undefined) => void;
+  onChange: (value: number | undefined) => void;
   error?: boolean;
   errorText?: string;
 };
@@ -16,32 +16,30 @@ const YearTextField: FC<YearTextFieldProps> = ({
   value,
   onChange,
   error,
-  errorText
+  errorText,
 }) => (
-    <TextField
-        type="number"
-        label={label}
-        value={value}
-        onChange={e => {
-          const v = e.target.value;
-          if (v === "") return onChange(undefined);
-          const parsed = Number(v);
-          onChange(
-              Number.isNaN(parsed) ? undefined : parsed
-          );
-        }}
-        slotProps={{
-          htmlInput: {
-            inputMode: "numeric",
-            min: 1900,
-            max: currentYear,
-            step: 1
-          }
-        }}
-        fullWidth
-        error={error}
-        helperText={errorText}
-    />
+  <TextField
+    type="number"
+    label={label}
+    value={value}
+    onChange={(e) => {
+      const v = e.target.value;
+      if (v === "") return onChange(undefined);
+      const parsed = Number(v);
+      onChange(Number.isNaN(parsed) ? undefined : parsed);
+    }}
+    slotProps={{
+      htmlInput: {
+        inputMode: "numeric",
+        min: 1900,
+        max: currentYear,
+        step: 1,
+      },
+    }}
+    fullWidth
+    error={error}
+    helperText={errorText}
+  />
 );
 
 export default YearTextField;

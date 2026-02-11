@@ -1,6 +1,6 @@
 "use client";
 
-import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { Paper, Stack, TextField, Typography } from "@mui/material";
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
 import * as React from "react";

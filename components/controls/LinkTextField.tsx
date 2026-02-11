@@ -14,19 +14,19 @@ const LinkTextField: FC<LinkTextFieldProps> = ({
   value,
   onChange,
   error,
-  errorText
+  errorText,
 }) => (
   <TextField
     label={label}
     fullWidth
     value={value}
-    onChange={e => onChange(e.target.value)}
+    onChange={(e) => onChange(e.target.value)}
     slotProps={{
       input: {
         startAdornment: (
           <InputAdornment position="start">https://</InputAdornment>
-        )
-      }
+        ),
+      },
     }}
     error={error}
     helperText={errorText ?? ""}

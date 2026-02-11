@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: data.seoTitle,
     description: data.seoDescription,
-    keywords: ['Portfolio', ...data.roles].join(", "),
+    keywords: ["Portfolio", ...data.roles].join(", "),
     openGraph: {
       title: data.seoTitle,
       description: data.seoDescription,
@@ -78,4 +78,3 @@ export default async function RootLayout({
 }
 
 export const revalidate = 1800;
-

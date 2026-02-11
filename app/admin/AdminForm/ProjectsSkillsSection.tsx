@@ -28,7 +28,7 @@ export interface ProjectsSkillsProps {
 export default function ProjectsSkillsSection({
   control,
   errors,
-  projects
+  projects,
 }: ProjectsSkillsProps) {
   return (
     <div className="flex flex-col gap-8">
@@ -59,7 +59,7 @@ export default function ProjectsSkillsSection({
           projects.append({
             name: "",
             description: "",
-            url: ""
+            url: "",
           })
         }
         count={projects.fields.length}
@@ -79,13 +79,13 @@ export default function ProjectsSkillsSection({
                     <TextField
                       label="Project name"
                       value={field.value}
-                      onChange={e => field.onChange(e.target.value)}
+                      onChange={(e) => field.onChange(e.target.value)}
                       fullWidth
                       error={!!fieldState.error}
                       helperText={errors.projects?.[index]?.name?.message}
                       variant="outlined"
                       slotProps={{
-                        inputLabel: { shrink: !!field.value }
+                        inputLabel: { shrink: !!field.value },
                       }}
                     />
                   )}
@@ -101,7 +101,7 @@ export default function ProjectsSkillsSection({
                     <TextField
                       label="Description"
                       value={field.value}
-                      onChange={e => field.onChange(e.target.value)}
+                      onChange={(e) => field.onChange(e.target.value)}
                       fullWidth
                       error={!!fieldState.error}
                       helperText={
@@ -109,7 +109,7 @@ export default function ProjectsSkillsSection({
                       }
                       variant="outlined"
                       slotProps={{
-                        inputLabel: { shrink: !!field.value }
+                        inputLabel: { shrink: !!field.value },
                       }}
                     />
                   )}

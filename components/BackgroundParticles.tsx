@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { memo, useEffect, useMemo, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
@@ -84,7 +84,7 @@ function BackgroundParticles() {
       },
       detectRetina: true,
     }),
-    []
+    [],
   );
 
   return (
