@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { TypeAnimation } from "react-type-animation";
 import {
   Grid,
@@ -17,7 +16,6 @@ import PortfolioAppBar from "@/app/home/AppBar";
 import { SiStackoverflow } from "@icons-pack/react-simple-icons";
 import { JSX } from "react";
 import { useWebsiteData } from "@/context/WebsiteData";
-import GrowOnHover from "@/hoc/GrowOnHover";
 import BadgeSlider from "@/app/home/BadgeSlider";
 
 function Introduction(): JSX.Element {
