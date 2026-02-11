@@ -24,6 +24,13 @@ export default function Home() {
   const [_, setScrollOffset] = useState(0);
   const [showBtn, setShowBtn] = useState(false);
 
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const markMounted = () => setMounted(true);
+    markMounted();
+  }, []);
+
   const showBtnRef = useRef(showBtn);
   useEffect(() => {
     showBtnRef.current = showBtn;
@@ -77,7 +84,7 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  if (!width || !height) {
+  if (!width || !height || !mounted) {
     return (
       <Box
         sx={{
