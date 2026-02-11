@@ -65,15 +65,15 @@ function AboutMe() {
                 Me
               </Typography>
             </Grid>
-            <Grid container sx={{ pr: { lg: 2 } }}>
+            <Grid container sx={{ pr: { lg: 2 }, minWidth: 0 }} >
               {aboutMe?.map((text) => (
                 <GrowOnHover key={text}>
                   <Typography
                     variant="body1"
                     fontSize="20px"
                     sx={{
+                      overflowWrap: 'anywhere',
                       wordBreak: "break-word",
-                      hyphens: "auto",
                       whiteSpace: "normal",
                     }}
                   >
