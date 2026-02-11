@@ -14,6 +14,8 @@ type BaseModel = {
 
 type ProfilePayload = {
     fullName: string;
+    seoTitle: string;
+    seoDescription: string;
     punchLine?: string;
     avatarKey?: string;
     linkedIn?: string;
@@ -93,6 +95,8 @@ export async function saveProfileData(
                 resume: formData.resume ?? undefined,
                 aboutMe: formData.aboutMe ?? undefined,
                 skills: [...(formData.skills ?? [])],
+                seoTitle: formData.seoTitle,
+                seoDescription: formData.seoDescription
             };
 
             let profileId: string;

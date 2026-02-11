@@ -17,6 +17,7 @@ import PortfolioAppBar from "@/app/home/AppBar";
 import { SiStackoverflow } from "@icons-pack/react-simple-icons";
 import { JSX } from "react";
 import { useWebsiteData } from "@/context/WebsiteData";
+import GrowOnHover from "@/hoc/GrowOnHover";
 
 function Introduction(): JSX.Element {
   const { data } = useWebsiteData();
@@ -94,15 +95,16 @@ function Introduction(): JSX.Element {
             </Typography>
           )}
           {data.badgeUrls.length > 0 && (
-            <Grid container justifyContent="center" p={4}>
+            <Grid container justifyContent="center" p={4} gap={4}>
               {data.badgeUrls.map((badgeUrl, i) => (
-                <Image
-                  key={badgeUrl}
-                  width={200}
-                  height={200}
-                  src={badgeUrl}
-                  alt={`Certificate ${i}`}
-                />
+                <GrowOnHover key={badgeUrl} scale={1.5}>
+                  <Image
+                    width={150}
+                    height={150}
+                    src={badgeUrl}
+                    alt={`Certificate ${i}`}
+                  />
+                </GrowOnHover>
               ))}
             </Grid>
           )}

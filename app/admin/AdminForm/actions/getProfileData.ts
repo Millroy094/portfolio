@@ -39,6 +39,8 @@ export async function getProfileData(): Promise<{
             stackOverflow: p.stackOverflow ?? undefined,
             resume: p.resume ?? undefined,
             aboutMe: p.aboutMe ?? "",
+            seoTitle: p.seoTitle ?? "",
+            seoDescription: p.seoDescription ?? "",
 
             roles: roles.data.map((r) => ({ value: r.value })),
             badges: badges.data.map((b) => ({ value: b.value })),

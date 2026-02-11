@@ -12,12 +12,13 @@ const schema = a.schema({
             resume: a.string(),
             aboutMe: a.string(),
             skills: a.string().array(),
-
             roles: a.hasMany('Role', 'profileId'),
             badges: a.hasMany('Badge', 'profileId'),
             experiences: a.hasMany('Experience', 'profileId'),
             education: a.hasMany('Education', 'profileId'),
-            projects: a.hasMany('Project', 'profileId')
+            projects: a.hasMany('Project', 'profileId'),
+            seoTitle: a.string().required(),
+            seoDescription: a.string().required()
         })
         .authorization((allow) => [
             allow.publicApiKey().to(['read']),

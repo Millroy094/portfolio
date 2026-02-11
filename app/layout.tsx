@@ -20,12 +20,12 @@ export async function generateMetadata(): Promise<Metadata> {
   const data = await getWebsiteData();
 
   return {
-    title: `${data.fullName}'s portfolio`,
-    description: `Explore ${data.fullName} portfolio, learn about their skills`,
-    keywords: ["Portfolio", ...data.roles],
+    title: data.seoTitle,
+    description: data.seoDescription,
+    keywords: ['Portfolio', ...data.roles].join(", "),
     openGraph: {
-      title: `${data.fullName} | Software Engineer Portfolio`,
-      description: `Explore the portfolio of ${data.fullName}.`,
+      title: data.seoTitle,
+      description: data.seoDescription,
       images: [data.avatarUrl],
       url: process.env.PUBLIC_URL,
       type: "website",

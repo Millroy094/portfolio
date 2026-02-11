@@ -197,6 +197,20 @@
                 ]
               }
             },
+            "seoTitle": {
+              "name": "seoTitle",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "seoDescription": {
+              "name": "seoDescription",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
             "createdAt": {
               "name": "createdAt",
               "isArray": false,

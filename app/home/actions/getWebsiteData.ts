@@ -27,6 +27,8 @@ type ProjectData = {
 };
 
 export type WebsiteData = {
+  seoTitle: string;
+  seoDescription: string;
   fullName: string;
   punchLine: string;
   aboutMe: string;
@@ -44,6 +46,8 @@ export type WebsiteData = {
 };
 
 const emptyWebsiteData: WebsiteData = {
+  seoTitle: "",
+  seoDescription: "",
   fullName: "",
   aboutMe: "",
   github: "",
@@ -104,6 +108,8 @@ export default async function getWebsiteData(): Promise<WebsiteData> {
     );
 
     return {
+      seoTitle: p.seoTitle ?? emptyWebsiteData.seoTitle,
+      seoDescription: p.seoDescription ?? emptyWebsiteData.seoDescription,
       fullName: p.fullName ?? emptyWebsiteData.fullName,
       aboutMe: p.aboutMe ?? emptyWebsiteData.aboutMe,
       github: p.github ?? emptyWebsiteData.github,
@@ -112,8 +118,8 @@ export default async function getWebsiteData(): Promise<WebsiteData> {
       resume: p.resume ?? emptyWebsiteData.resume,
       punchLine: p.punchLine ?? emptyWebsiteData.punchLine,
       skills:
-          p?.skills?.map(skill => skill ?? "").filter(Boolean)
-          ?? emptyWebsiteData.skills,
+        p?.skills?.map((skill) => skill ?? "").filter(Boolean) ??
+        emptyWebsiteData.skills,
       avatarUrl: avatarUrl ?? emptyWebsiteData.avatarUrl,
       badgeUrls: badgeUrls ?? emptyWebsiteData.badgeUrls,
       roles: roles.data.map((r) => r.value) ?? emptyWebsiteData.roles,

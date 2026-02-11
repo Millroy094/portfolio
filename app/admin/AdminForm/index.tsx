@@ -21,6 +21,7 @@ import { getProfileData } from "@/app/admin/AdminForm/actions/getProfileData";
 import { saveProfileData } from "@/app/admin/AdminForm/actions/saveProfileData";
 import Box from "@mui/material/Box";
 import { Atom } from "react-loading-indicators";
+import SeoSection from "@/app/admin/AdminForm/SeoSection";
 
 export default function AdminForm() {
   const [formId, setFormId] = useState<string | null>(null);
@@ -32,7 +33,7 @@ export default function AdminForm() {
     handleSubmit,
     control,
     formState: { errors },
-    reset
+    reset,
   } = useForm<ProfileSchemaType>({
     resolver: zodResolver(ProfileSchema),
     defaultValues: {
@@ -42,8 +43,8 @@ export default function AdminForm() {
       experiences: [],
       education: [],
       projects: [],
-      skills: []
-    }
+      skills: [],
+    },
   });
 
   useEffect(() => {
@@ -80,7 +81,9 @@ export default function AdminForm() {
   const [cropFile, setCropFile] = useState<File | null>(null);
   const [cropOpen, setCropOpen] = useState(false);
 
-  const handleAvatarFileChange: React.ChangeEventHandler<HTMLInputElement> = e => {
+  const handleAvatarFileChange: React.ChangeEventHandler<HTMLInputElement> = (
+    e,
+  ) => {
     const file = e.target.files?.[0];
     if (avatarInputRef.current) avatarInputRef.current.value = "";
     if (!file) return;
@@ -88,7 +91,7 @@ export default function AdminForm() {
     setCropOpen(true);
   };
 
-  const onSubmit: SubmitHandler<ProfileSchemaType> = async data => {
+  const onSubmit: SubmitHandler<ProfileSchemaType> = async (data) => {
     setProcessing(true);
     try {
       const result = await saveProfileData(data, formId);
@@ -100,7 +103,7 @@ export default function AdminForm() {
     } catch (error) {
       console.log(error);
       toast.error("There was an error while saving profile", {
-        theme: "colored"
+        theme: "colored",
       });
     }
     setProcessing(false);
@@ -115,7 +118,7 @@ export default function AdminForm() {
           display: "flex",
           flexDirection: "row",
           justifyContent: "center",
-          alignItems: "center"
+          alignItems: "center",
         }}
       >
         <Atom color="#32cd32" size="large" text="" textColor="loading" />
@@ -143,7 +146,7 @@ export default function AdminForm() {
           accept="image/*"
           hidden
           ref={badgeFileInputRef}
-          onChange={e => {
+          onChange={(e) => {
             const file = e.target.files?.[0];
             if (file) badges.append({ value: file });
             if (badgeFileInputRef.current) badgeFileInputRef.current.value = "";
@@ -207,6 +210,8 @@ export default function AdminForm() {
             remove: projects.remove,
           }}
         />
+
+        <SeoSection register={register} errors={errors} />
 
         {/* Save Button */}
         <div className="flex flex-col sm:flex-row sm:justify-end gap-3 sm:gap-4 mt-6">
