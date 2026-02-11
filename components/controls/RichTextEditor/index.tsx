@@ -1,51 +1,17 @@
-"use client";
-
-import { FC, useCallback, useMemo, useRef } from "react";
 import ReactQuill from "react-quill-new";
+import { FC } from "react";
+
 import "react-quill-new/dist/quill.snow.css";
+import "./style.css"
 
 type RichTextEditorProps = {
   value: string;
   placeholder?: string;
-  onChange: (html: string, plainText: string) => void;
+  onChange: (...event: unknown[]) => void;
 };
 
-const RichTextEditor: FC<RichTextEditorProps> = ({
-  value,
-  placeholder,
-  onChange,
-}) => {
-  const quillRef = useRef<ReactQuill | null>(null);
-
-  const handleChange = useCallback(
-    (html: string) => {
-      const editor = quillRef.current?.getEditor();
-      const text = editor?.getText() ?? "";
-      onChange(html, text.trimEnd());
-    },
-    [onChange],
-  );
-
-  const modules = useMemo(
-    () => ({
-      toolbar: [],
-    }),
-
-    [],
-  );
-  const formats: string[] = [];
-
-  return (
-    <ReactQuill
-      ref={quillRef}
-      theme="snow"
-      value={value}
-      onChange={handleChange}
-      placeholder={placeholder}
-      modules={modules}
-      formats={formats}
-    />
-  );
-};
+const RichTextEditor: FC<RichTextEditorProps> = props => (
+  <ReactQuill theme="snow" value={props.value} onChange={props.onChange} placeholder={props.placeholder} />
+);
 
 export default RichTextEditor;

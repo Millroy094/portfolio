@@ -1,37 +1,67 @@
 "use client";
 
-import {
-  Element,
-  Events,
-  animateScroll as scroll,
-  scrollSpy,
-} from "react-scroll";
+import { Element, Events, scrollSpy } from "react-scroll";
 import { Atom } from "react-loading-indicators";
 import BackgroundParticles from "@/components/BackgroundParticles";
 import Introduction from "@/app/home/Introduction";
-import useWindowDimensions from "@/hooks/useWindowDimensions";
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
-import { Fab, Grid } from "@mui/material";
-import { SwipeUp } from "@mui/icons-material";
 import AboutMe from "@/app/home/AboutMe";
 import Skills from "@/app/home/Skills";
 import EducationAndExperience from "@/app/home/EducationAndExpierence";
 import Projects from "@/app/home/Projects";
-import Box from "@mui/material/Box";
+
+import useWindowDimensions from "@/hooks/useWindowDimensions";
+
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+
+import { Fab, Box } from "@mui/material";
+import { SwipeUp } from "@mui/icons-material";
 
 export default function Home() {
-
   const { width, height } = useWindowDimensions();
 
-  const [scrollOffset, setScrollOffset] = useState(0);
+  const [_, setScrollOffset] = useState(0);
+  const [showBtn, setShowBtn] = useState(false);
+
+  const showBtnRef = useRef(showBtn);
+  useEffect(() => {
+    showBtnRef.current = showBtn;
+  }, [showBtn]);
+
+  const showThreshold = height * 0.9;
+  const hideThreshold = height * 0.7;
 
   useEffect(() => {
-    const onScroll = () => setScrollOffset(window.scrollY);
-    window.removeEventListener("scroll", onScroll);
+    let ticking = false;
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+
+        setScrollOffset((prev) => (prev !== y ? y : prev));
+
+        const shouldShow =
+          y > showThreshold
+            ? true
+            : y < hideThreshold
+              ? false
+              : showBtnRef.current;
+
+        if (shouldShow !== showBtnRef.current) {
+          showBtnRef.current = shouldShow;
+          setShowBtn(shouldShow);
+        }
+
+        ticking = false;
+      });
+    };
+
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [showThreshold, hideThreshold]);
 
   useEffect(() => {
     scrollSpy.update();
@@ -43,7 +73,7 @@ export default function Home() {
   }, []);
 
   const scrollToTop = () => {
-    scroll.scrollToTop();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   if (!width || !height) {
@@ -53,7 +83,6 @@ export default function Home() {
           width: "100%",
           height: "100vh",
           display: "flex",
-          flexDirection: "row",
           justifyContent: "center",
           alignItems: "center",
         }}
@@ -66,59 +95,65 @@ export default function Home() {
   return (
     <>
       <BackgroundParticles />
+
       <Element name="introduction">
-        <Introduction />
+        <section id="introduction">
+          <Introduction />
+        </section>
       </Element>
+
       <Element name="aboutme">
-        <AboutMe />
+        <section id="aboutme">
+          <AboutMe />
+        </section>
       </Element>
+
       <Element name="skills">
-        <Skills />
+        <section id="skills">
+          <Skills />
+        </section>
       </Element>
+
       <Element name="educationandexperience">
-        <EducationAndExperience />
+        <section id="educationandexperience">
+          <EducationAndExperience />
+        </section>
       </Element>
+
       <Element name="projects">
-        <Projects />
+        <section id="projects">
+          <Projects />
+        </section>
       </Element>
-      <AnimatePresence mode="wait">
-        {scrollOffset > height && (
-          <Grid
-            container
-            justifyContent="end"
-            p={1}
+
+      <AnimatePresence>
+        {showBtn && (
+          <Box
             sx={{
-              margin: 0,
-              top: "auto",
+              position: "fixed",
               right: 20,
               bottom: 20,
-              left: "auto",
-              position: "fixed",
               zIndex: 100,
+              willChange: "opacity, transform",
             }}
           >
             <motion.div
-              key={location.pathname}
+              key="scrollToTopButton"
               initial={{ opacity: 0, y: "15%" }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{
-                ease: "linear",
-                duration: 0.5,
-              }}
+              exit={{ opacity: 0, y: "10%" }}
+              transition={{ ease: "easeOut", duration: 0.3 }}
             >
               <Fab
                 color="error"
-                aria-label="add"
+                aria-label="scroll to top"
                 onClick={scrollToTop}
-                sx={{
-                  "&.MuiFab-root:focus": { outline: "none" },
-                }}
+                sx={{ "&.MuiFab-root:focus": { outline: "none" } }}
               >
                 <SwipeUp />
               </Fab>
             </motion.div>
-          </Grid>
+          </Box>
         )}
       </AnimatePresence>
     </>

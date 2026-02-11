@@ -11,56 +11,59 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import { Link } from "react-scroll";
 import { useWebsiteData } from "@/context/WebsiteData";
-import { useMemo } from "react";
+import { useMemo, useCallback, useRef } from "react";
 
-function PortfolioAppBar() {
+function normalizeId(label: string) {
+  return label.toLowerCase().replace(/\s/g, "");
+}
+
+export default function PortfolioAppBar() {
   const { data } = useWebsiteData();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null,
   );
+  const appBarRef = useRef<HTMLDivElement | null>(null);
 
   const pages = useMemo(() => {
-    const pagesWithContent = [];
-
-    if (data.aboutMe) {
-      pagesWithContent.push("About Me");
-    }
-
-    if (data.skills && data.skills.length > 0) {
-      pagesWithContent.push("Skills");
-    }
-
+    const pagesWithContent: string[] = [];
+    if (data.aboutMe) pagesWithContent.push("About Me");
+    if (data.skills?.length) pagesWithContent.push("Skills");
     if (
-      (data.education && data.education.length > 0) ||
-      (data.experiences && data.experiences.length > 0)
+      (data.education?.length ?? 0) > 0 ||
+      (data.experiences?.length ?? 0) > 0
     ) {
       pagesWithContent.push("Education And Experience");
     }
-
-    if (data.projects && data.projects.length > 0) {
-      pagesWithContent.push("Projects");
-    }
-
+    if (data.projects?.length) pagesWithContent.push("Projects");
     return pagesWithContent;
   }, [data]);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
+  const handleCloseNavMenu = () => setAnchorElNav(null);
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+  // Native smooth scroll that accounts for AppBar height
+  const scrollToSection = useCallback((sectionId: string) => {
+    const el = document.getElementById(sectionId);
+    if (!el) return;
+
+    const headerH = appBarRef.current?.offsetHeight ?? 0;
+    const rect = el.getBoundingClientRect();
+    const targetY = rect.top + window.scrollY - headerH - 8; // -8 for a bit of breathing room
+
+    window.scrollTo({ top: targetY, behavior: "smooth" });
+  }, []);
 
   return (
-    <AppBar position="static" sx={{ background: "none" }}>
+    <AppBar position="fixed" sx={{ background: "none" }} ref={appBarRef}>
       <Container maxWidth="xl" sx={{ padding: { xs: 0, sm: 0, md: 2, lg: 2 } }}>
         <Toolbar
           disableGutters
           sx={{ display: { xs: "block", sm: "block", md: "flex" } }}
         >
+          {/* Mobile */}
           <Box
             sx={{
               flexGrow: 1,
@@ -82,40 +85,25 @@ function PortfolioAppBar() {
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
+              anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
               keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              style={{
-                transform: "translateX(-18px) translateY(0px)",
-              }}
-              MenuListProps={{
-                style: {
-                  padding: 0,
-                  margin: 0,
-                },
-              }}
+              transformOrigin={{ vertical: "top", horizontal: "left" }}
+              style={{ transform: "translateX(-18px) translateY(0px)" }}
+              MenuListProps={{ style: { padding: 0, margin: 0 } }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-                opacity: 0.8,
-              }}
+              sx={{ display: { xs: "block", md: "none" }, opacity: 0.8 }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page}>
-                  <Link
-                    smooth
-                    spy
-                    duration={1000}
-                    delay={100}
-                    to={page.toLowerCase().replace(/\s/g, "")}
-                    onClick={handleCloseNavMenu}
+              {pages.map((page) => {
+                const id = normalizeId(page);
+                return (
+                  <MenuItem
+                    key={page}
+                    onClick={() => {
+                      handleCloseNavMenu();
+                      // Delay a tick so Menu can close before we measure and scroll
+                      setTimeout(() => scrollToSection(id), 0);
+                    }}
                   >
                     <Typography
                       variant="caption"
@@ -123,40 +111,36 @@ function PortfolioAppBar() {
                     >
                       {page}
                     </Typography>
-                  </Link>
-                </MenuItem>
-              ))}
+                  </MenuItem>
+                );
+              })}
             </Menu>
           </Box>
+
+          {/* Desktop */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                sx={{
-                  my: 2,
-                  color: "white",
-                  display: "block",
-                  "&.MuiButton-root:focus": { outline: "none" },
-                }}
-              >
-                <Link
-                  smooth
-                  duration={1000}
-                  delay={100}
-                  spy
-                  to={page.toLowerCase().replace(/\s/g, "")}
-                  onClick={handleCloseNavMenu}
+            {pages.map((page) => {
+              const id = normalizeId(page);
+              return (
+                <Button
+                  key={page}
+                  onClick={() => scrollToSection(id)}
+                  sx={{
+                    my: 2,
+                    color: "white",
+                    display: "block",
+                    "&.MuiButton-root:focus": { outline: "none" },
+                  }}
                 >
                   <Typography variant="button" fontWeight="bold" color="white">
                     {page}
                   </Typography>
-                </Link>
-              </Button>
-            ))}
+                </Button>
+              );
+            })}
           </Box>
         </Toolbar>
       </Container>
     </AppBar>
   );
 }
-export default PortfolioAppBar;

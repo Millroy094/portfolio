@@ -46,7 +46,6 @@ export default function AdminForm() {
     }
   });
 
-  console.log(errors);
   useEffect(() => {
     async function load() {
       setLoading(true);
