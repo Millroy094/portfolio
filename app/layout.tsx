@@ -23,6 +23,9 @@ export async function generateMetadata(): Promise<Metadata> {
     title: data.seoTitle,
     description: data.seoDescription,
     keywords: data.roles.join(", "),
+    alternates: {
+      canonical: "/",
+    }
     openGraph: {
       title: data.seoTitle,
       description: data.seoDescription,
