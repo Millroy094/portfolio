@@ -77,6 +77,5 @@ export default async function RootLayout({
   );
 }
 
-export const dynamic = "force-dynamic";
 export const revalidate = 1800;
 
