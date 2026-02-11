@@ -18,6 +18,7 @@ import { SiStackoverflow } from "@icons-pack/react-simple-icons";
 import { JSX } from "react";
 import { useWebsiteData } from "@/context/WebsiteData";
 import GrowOnHover from "@/hoc/GrowOnHover";
+import BadgeSlider from "@/app/home/BadgeSlider";
 
 function Introduction(): JSX.Element {
   const { data } = useWebsiteData();
@@ -95,18 +96,12 @@ function Introduction(): JSX.Element {
             </Typography>
           )}
           {data.badgeUrls.length > 0 && (
-            <Grid container justifyContent="center" p={4} gap={4}>
-              {data.badgeUrls.map((badgeUrl, i) => (
-                <GrowOnHover key={badgeUrl} scale={1.5}>
-                  <Image
-                    width={150}
-                    height={150}
-                    src={badgeUrl}
-                    alt={`Certificate ${i}`}
-                  />
-                </GrowOnHover>
-              ))}
-            </Grid>
+              <BadgeSlider
+                  badgeUrls={data.badgeUrls}
+                  loop
+                  autoplay
+                  autoplayDelayMs={3000}
+              />
           )}
           <Box
             sx={{ padding: "10px", display: "flex", justifyContent: "center" }}
