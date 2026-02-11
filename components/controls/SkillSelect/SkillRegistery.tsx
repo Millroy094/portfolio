@@ -70,7 +70,6 @@ export type Skill = {
   id: SkillId;
   label: string;
   render: () => React.ReactNode;
-  // optional metadata for grouping/filtering
   group?:
     | "FE"
     | "BE"

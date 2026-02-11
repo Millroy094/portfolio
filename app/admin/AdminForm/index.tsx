@@ -67,14 +67,12 @@ export default function AdminForm() {
     load();
   }, [reset]);
 
-  // Field Arrays
   const roles = useFieldArray({ control, name: "roles" });
   const badges = useFieldArray({ control, name: "badges" });
   const experiences = useFieldArray({ control, name: "experiences" });
   const education = useFieldArray({ control, name: "education" });
   const projects = useFieldArray({ control, name: "projects" });
 
-  // Avatar File Picker
   const avatarInputRef = useRef<HTMLInputElement | null>(null);
   const badgeFileInputRef = useRef<HTMLInputElement | null>(null);
 

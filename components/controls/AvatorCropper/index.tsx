@@ -28,7 +28,6 @@ const AvatarCropper: FC<AvatorCropperProps> = ({
   const [zoom, setZoom] = useState<number>(1);
   const [croppedArea, setCroppedArea] = useState<Area | null>(null);
 
-    // Create the object URL once while dialog is open & file exists
     const objectUrl = useMemo(() => {
         if (!file) return null;
         return URL.createObjectURL(file);

@@ -9,7 +9,7 @@ export function BadgeDisplay({ value }: { value: File | string }) {
 
     useEffect(() => {
         async function resolveBadge() {
-            // Case 1 — new File uploaded
+
             if (value instanceof File) {
                 setUrl(URL.createObjectURL(value));
                 return;
