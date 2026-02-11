@@ -1,9 +1,10 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
 import { Providers } from "@/app/providers";
 import { Metadata } from "next";
 import getWebsiteData from "@/app/home/actions/getWebsiteData";
 import { WebsiteDataProvider } from "@/context/WebsiteData";
+import type { ReactNode } from "react";
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,7 +16,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
   const data = await getWebsiteData();
 
   return {
@@ -38,7 +39,7 @@ export async function generateMetadata() {
 export default async function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   const data = await getWebsiteData();
 
@@ -75,3 +76,7 @@ export default async function RootLayout({
     </html>
   );
 }
+
+export const dynamic = "force-dynamic";
+export const revalidate = 1800;
+
