@@ -32,8 +32,8 @@ resource "aws_iam_policy" "amplify_service_role_policy" {
       },
 
       {
-        Effect   = "Allow",
-        Action   = [
+        Effect = "Allow",
+        Action = [
           "cloudformation:*",
           "iam:PassRole",
           "iam:GetRole",

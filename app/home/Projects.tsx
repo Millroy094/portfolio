@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { GitHub } from "@mui/icons-material";
 import {
   Button,
@@ -7,12 +7,12 @@ import {
   CardContent,
   CardHeader,
   createTheme,
-   Grid,
+  Grid,
   Typography,
   CssBaseline,
   ThemeProvider,
 } from "@mui/material";
-import { projects } from "@/configuration";
+import { useWebsiteData } from "@/context/WebsiteData";
 
 function Projects() {
   const darkTheme = createTheme({
@@ -21,37 +21,40 @@ function Projects() {
     },
   });
 
-  return (
-    <Grid
-      container
-      direction="column"
-      sx={{
-        marginBottom: "60px",
-        zIndex: 10,
-        position: "relative",
-        padding: "0 40px",
-      }}
-    >
-      <Grid container justifyContent="start" spacing={1}>
-        <Typography
-          variant="overline"
-          fontWeight="bold"
-          fontSize={{ xs: 20, sm: 20, md: 35, lg: 35 }}
-          sx={{
-            color: "#d32f2f",
-          }}
-        >
-          Projects
-        </Typography>
-      </Grid>
-      <ThemeProvider theme={darkTheme}>
-        <CssBaseline />
+  const { data } = useWebsiteData();
 
-        <Grid container spacing={2}>
-          {projects?.map(
-            (project: { title: string; description: string; url: string }) => (
+  return (
+    data.projects &&
+    data.projects.length > 0 && (
+      <Grid
+        container
+        direction="column"
+        sx={{
+          marginBottom: "60px",
+          zIndex: 10,
+          position: "relative",
+          padding: "0 40px",
+        }}
+      >
+        <Grid container justifyContent="start" spacing={1}>
+          <Typography
+            variant="overline"
+            fontWeight="bold"
+            fontSize={{ xs: 20, sm: 20, md: 35, lg: 35 }}
+            sx={{
+              color: "#d32f2f",
+            }}
+          >
+            Projects
+          </Typography>
+        </Grid>
+        <ThemeProvider theme={darkTheme}>
+          <CssBaseline />
+
+          <Grid container spacing={2}>
+            {data.projects?.map((project) => (
               <Grid
-                key={project.title}
+                key={project.name}
                 container
                 size={{ lg: 3, md: 6, sm: 12, xs: 12 }}
               >
@@ -64,7 +67,7 @@ function Projects() {
                     minHeight: "250px",
                   }}
                 >
-                  <CardHeader title={project.title} />
+                  <CardHeader title={project.name} />
                   <CardContent>
                     <Typography>{project.description}</Typography>
                   </CardContent>
@@ -85,11 +88,11 @@ function Projects() {
                   </CardActions>
                 </Card>
               </Grid>
-            )
-          )}
-        </Grid>
-      </ThemeProvider>
-    </Grid>
+            ))}
+          </Grid>
+        </ThemeProvider>
+      </Grid>
+    )
   );
 }
 

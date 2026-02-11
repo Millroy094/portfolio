@@ -1,10 +1,10 @@
-import { MetadataRoute } from 'next'
+import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: 'https://www.millroyfernandes.com',
+      url: process.env.PUBLIC_URL,
       lastModified: new Date(),
-    }
-  ]
+    },
+  ];
 }
