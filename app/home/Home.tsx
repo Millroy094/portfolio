@@ -4,7 +4,7 @@ import {
   Element,
   Events,
   animateScroll as scroll,
-  scrollSpy
+  scrollSpy,
 } from "react-scroll";
 import { Atom } from "react-loading-indicators";
 import BackgroundParticles from "@/components/BackgroundParticles";
@@ -21,6 +21,7 @@ import Projects from "@/app/home/Projects";
 import Box from "@mui/material/Box";
 
 export default function Home() {
+
   const { width, height } = useWindowDimensions();
 
   const [scrollOffset, setScrollOffset] = useState(0);
@@ -54,7 +55,7 @@ export default function Home() {
           display: "flex",
           flexDirection: "row",
           justifyContent: "center",
-          alignItems: "center"
+          alignItems: "center",
         }}
       >
         <Atom color="#32cd32" size="large" text="" textColor="loading" />
@@ -93,7 +94,7 @@ export default function Home() {
               bottom: 20,
               left: "auto",
               position: "fixed",
-              zIndex: 100
+              zIndex: 100,
             }}
           >
             <motion.div
@@ -103,7 +104,7 @@ export default function Home() {
               exit={{ opacity: 0 }}
               transition={{
                 ease: "linear",
-                duration: 0.5
+                duration: 0.5,
               }}
             >
               <Fab
@@ -111,7 +112,7 @@ export default function Home() {
                 aria-label="add"
                 onClick={scrollToTop}
                 sx={{
-                  "&.MuiFab-root:focus": { outline: "none" }
+                  "&.MuiFab-root:focus": { outline: "none" },
                 }}
               >
                 <SwipeUp />

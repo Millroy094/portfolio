@@ -100,7 +100,7 @@ export const ProfileSchema = z.object({
   aboutMe: z
     .string()
     .trim()
-    .max(500, { message: "About me must be a maximum of 500 characters" })
+    .max(5000, { message: "About me must be a maximum of 500 characters" })
     .refine(val => !isQuillEmpty(val), {
       message: "Please tell us a bit about yourself"
     }),
@@ -142,8 +142,9 @@ export const ProfileSchema = z.object({
       description: z.string().nonempty(),
       url: z
         .string()
-        .url()
-        .nonempty()
+        .optional()
+        .transform(transformUrl)
+        .pipe(z.string().url())
     })
   ),
   skills: SkillsArrayGeneric

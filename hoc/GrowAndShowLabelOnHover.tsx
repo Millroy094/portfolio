@@ -1,13 +1,13 @@
 'use client'
 
 import { motion } from 'motion/react';
-import { ReactElement } from 'react';
+import {ReactElement, ReactNode} from 'react';
 import GrowOnHover from './GrowOnHover';
 import { Typography } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 interface IGrowAndShowLabelOnHoverProps {
-  children: ReactElement;
+  children: ReactNode;
   label: string;
   scale?: number;
 }
@@ -29,6 +29,8 @@ function GrowAndShowLabelOnHover(
 ) {
   const { children, label, scale } = props;
   const isBelowMidSize = useMediaQuery('(max-width:959px)');
+
+  if (children == null) return null;
 
   return (
     <motion.div

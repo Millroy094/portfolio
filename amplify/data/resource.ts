@@ -20,7 +20,7 @@ const schema = a.schema({
             projects: a.hasMany('Project', 'profileId')
         })
         .authorization((allow) => [
-            allow.guest().to(['read']),
+            allow.publicApiKey().to(['read']),
             allow.authenticated().to(['read', 'create', 'update', 'delete'])
         ]),
     Role: a
@@ -30,7 +30,7 @@ const schema = a.schema({
             profile: a.belongsTo('Profile', 'profileId'),
         })
         .authorization((allow) => [
-            allow.guest().to(['read']),
+            allow.publicApiKey().to(['read']),
             allow.authenticated().to(['read', 'create', 'update', 'delete'])
         ]),
 
@@ -41,7 +41,7 @@ const schema = a.schema({
             profile: a.belongsTo('Profile', 'profileId'),
         })
         .authorization((allow) => [
-            allow.guest().to(['read']),
+            allow.publicApiKey().to(['read']),
             allow.authenticated().to(['read', 'create', 'update', 'delete'])
         ]),
 
@@ -49,12 +49,12 @@ const schema = a.schema({
         .model({
             organization: a.string().required(),
             title: a.string().required(),
-            year: a.integer(),
+            year: a.integer().required(),
             profileId: a.id().required(),
             profile: a.belongsTo('Profile', 'profileId'),
         })
         .authorization((allow) => [
-            allow.guest().to(['read']),
+            allow.publicApiKey().to(['read']),
             allow.authenticated().to(['read', 'create', 'update', 'delete'])
         ]),
 
@@ -62,13 +62,13 @@ const schema = a.schema({
         .model({
             institute: a.string().required(),
             qualification: a.string().required(),
-            year: a.integer(),
+            year: a.integer().required(),
             profileId: a.id().required(),
             profile: a.belongsTo('Profile', 'profileId'),
         })
 
         .authorization((allow) => [
-            allow.guest().to(['read']),
+            allow.publicApiKey().to(['read']),
             allow.authenticated().to(['read', 'create', 'update', 'delete'])
         ])
     ,
@@ -82,9 +82,12 @@ const schema = a.schema({
             profile: a.belongsTo('Profile', 'profileId'),
         })
         .authorization((allow) => [
-            allow.guest().to(['read']),
+            allow.publicApiKey().to(['read']),
             allow.authenticated().to(['read', 'create', 'update', 'delete']) ])
 });
 
 export type Schema = ClientSchema<typeof schema>;
-export const data = defineData({ schema });
+export const data = defineData({ schema, authorizationModes: {
+        defaultAuthorizationMode: "userPool",
+        apiKeyAuthorizationMode: { expiresInDays: 365}
+    } });

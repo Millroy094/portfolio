@@ -17,8 +17,8 @@ import BadgesSection from "./BadgesSection";
 import AboutMeSection from "./AboutMeSection";
 import ExperiencesAndEducationSection from "./ExperiencesAndEducationSection";
 import ProjectsSkillsSection from "./ProjectsSkillsSection";
-import { getProfileData } from "@/app/admin/AdminForm/getProfileData";
-import { saveProfileData } from "@/app/admin/AdminForm/saveProfileData";
+import { getProfileData } from "@/app/admin/AdminForm/actions/getProfileData";
+import { saveProfileData } from "@/app/admin/AdminForm/actions/saveProfileData";
 import Box from "@mui/material/Box";
 import { Atom } from "react-loading-indicators";
 

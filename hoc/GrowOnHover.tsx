@@ -1,10 +1,10 @@
 'use client'
 
 import { motion } from "motion/react";
-import { ReactElement } from "react";
+import {ReactNode} from "react";
 
 interface IGrowOnHoverProps {
-  children: ReactElement;
+  children: ReactNode;
   scale?: number;
 }
 

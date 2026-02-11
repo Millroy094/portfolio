@@ -1,5 +1,4 @@
 'use client'
-import { ReactElement } from 'react';
 import {
   Timeline,
   TimelineConnector,
@@ -12,12 +11,12 @@ import {
 import { Grid, Typography } from '@mui/material';
 import { timelineContentClasses } from '@mui/lab/TimelineContent';
 import GrowOnHover from '../../hoc/GrowOnHover';
+import {Code} from "@mui/icons-material";
 
 interface ITimelineItem {
   year: number;
   title: string;
   subTitle: string;
-  Icon: ReactElement;
 }
 
 interface IHistoryTimelineProps {
@@ -48,7 +47,7 @@ function HistoryTimeline(props: Readonly<IHistoryTimelineProps>) {
           },
         }}
       >
-        {timeline?.map((t: ITimelineItem, index: number) => (
+        {timeline?.sort((ta, tb) => ta.year - tb.year).map((t: ITimelineItem, index: number) => (
           <GrowOnHover key={t.title}>
             <TimelineItem>
               <TimelineOppositeContent
@@ -57,7 +56,7 @@ function HistoryTimeline(props: Readonly<IHistoryTimelineProps>) {
                 {t.year}
               </TimelineOppositeContent>
               <TimelineSeparator>
-                <TimelineDot color='error'>{t.Icon}</TimelineDot>
+                <TimelineDot color='error'><Code /></TimelineDot>
                 {index !== timeline.length - 1 && <TimelineConnector />}
               </TimelineSeparator>
               <TimelineContent sx={{ flex: 1 }}>

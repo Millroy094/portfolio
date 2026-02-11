@@ -1,23 +1,50 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-scroll';
+"use client";
 
-
-const pages = ['About Me', 'Skills', 'Education And Experience', 'Projects'];
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
+import { Link } from "react-scroll";
+import { useWebsiteData } from "@/context/WebsiteData";
+import { useMemo } from "react";
 
 function PortfolioAppBar() {
+  const { data } = useWebsiteData();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null,
   );
+
+  const pages = useMemo(() => {
+    const pagesWithContent = [];
+
+    if (data.aboutMe) {
+      pagesWithContent.push("About Me");
+    }
+
+    if (data.skills && data.skills.length > 0) {
+      pagesWithContent.push("Skills");
+    }
+
+    if (
+      (data.education && data.education.length > 0) ||
+      (data.experiences && data.experiences.length > 0)
+    ) {
+      pagesWithContent.push("Education And Experience");
+    }
+
+    if (data.projects && data.projects.length > 0) {
+      pagesWithContent.push("Projects");
+    }
+
+    return pagesWithContent;
+  }, [data]);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -28,44 +55,44 @@ function PortfolioAppBar() {
   };
 
   return (
-    <AppBar position='static' sx={{ background: 'none' }}>
-      <Container maxWidth='xl' sx={{ padding: { xs: 0, sm: 0, md: 2, lg: 2 } }}>
+    <AppBar position="static" sx={{ background: "none" }}>
+      <Container maxWidth="xl" sx={{ padding: { xs: 0, sm: 0, md: 2, lg: 2 } }}>
         <Toolbar
           disableGutters
-          sx={{ display: { xs: 'block', sm: 'block', md: 'flex' } }}
+          sx={{ display: { xs: "block", sm: "block", md: "flex" } }}
         >
           <Box
             sx={{
               flexGrow: 1,
-              display: { xs: 'flex', md: 'none' },
-              background: 'white',
+              display: { xs: "flex", md: "none" },
+              background: "white",
               opacity: 0.8,
             }}
           >
             <IconButton
-              size='large'
-              aria-label='mobile app bar'
-              aria-controls='menu-appbar'
-              aria-haspopup='true'
+              size="large"
+              aria-label="mobile app bar"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              sx={{ '&.MuiIconButton-root:focus': { outline: 'none' } }}
+              sx={{ "&.MuiIconButton-root:focus": { outline: "none" } }}
             >
               <MenuIcon />
             </IconButton>
             <Menu
-              id='menu-appbar'
+              id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: "bottom",
+                horizontal: "left",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
+                vertical: "top",
+                horizontal: "left",
               }}
               style={{
-                transform: 'translateX(-18px) translateY(0px)',
+                transform: "translateX(-18px) translateY(0px)",
               }}
               MenuListProps={{
                 style: {
@@ -76,7 +103,7 @@ function PortfolioAppBar() {
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: 'block', md: 'none' },
+                display: { xs: "block", md: "none" },
                 opacity: 0.8,
               }}
             >
@@ -87,12 +114,12 @@ function PortfolioAppBar() {
                     spy
                     duration={1000}
                     delay={100}
-                    to={page.toLowerCase().replace(/\s/g, '')}
+                    to={page.toLowerCase().replace(/\s/g, "")}
                     onClick={handleCloseNavMenu}
                   >
                     <Typography
-                      variant='caption'
-                      sx={{ textAlign: 'center', color: 'black' }}
+                      variant="caption"
+                      sx={{ textAlign: "center", color: "black" }}
                     >
                       {page}
                     </Typography>
@@ -101,15 +128,15 @@ function PortfolioAppBar() {
               ))}
             </Menu>
           </Box>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
                 key={page}
                 sx={{
                   my: 2,
-                  color: 'white',
-                  display: 'block',
-                  '&.MuiButton-root:focus': { outline: 'none' },
+                  color: "white",
+                  display: "block",
+                  "&.MuiButton-root:focus": { outline: "none" },
                 }}
               >
                 <Link
@@ -117,10 +144,10 @@ function PortfolioAppBar() {
                   duration={1000}
                   delay={100}
                   spy
-                  to={page.toLowerCase().replace(/\s/g, '')}
+                  to={page.toLowerCase().replace(/\s/g, "")}
                   onClick={handleCloseNavMenu}
                 >
-                  <Typography variant='button' fontWeight='bold' color='white'>
+                  <Typography variant="button" fontWeight="bold" color="white">
                     {page}
                   </Typography>
                 </Link>

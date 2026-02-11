@@ -34,8 +34,10 @@
   "data": {
     "url": "https://jzqsv6c5q5d55innf34s7l2q24.appsync-api.eu-west-2.amazonaws.com/graphql",
     "aws_region": "eu-west-2",
+    "api_key": "da2-jm5pbp2rcnd5xgrm3csysheub4",
     "default_authorization_type": "AMAZON_COGNITO_USER_POOLS",
     "authorization_types": [
+      "API_KEY",
       "AWS_IAM"
     ],
     "model_introspection": {
@@ -225,7 +227,7 @@
                 "rules": [
                   {
                     "allow": "public",
-                    "provider": "iam",
+                    "provider": "apiKey",
                     "operations": [
                       "read"
                     ]
@@ -264,13 +266,6 @@
               "isArray": false,
               "type": "String",
               "isRequired": true,
-              "attributes": []
-            },
-            "order": {
-              "name": "order",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false,
               "attributes": []
             },
             "profileId": {
@@ -325,7 +320,7 @@
                 "rules": [
                   {
                     "allow": "public",
-                    "provider": "iam",
+                    "provider": "apiKey",
                     "operations": [
                       "read"
                     ]
@@ -418,7 +413,7 @@
                 "rules": [
                   {
                     "allow": "public",
-                    "provider": "iam",
+                    "provider": "apiKey",
                     "operations": [
                       "read"
                     ]
@@ -470,7 +465,7 @@
               "name": "year",
               "isArray": false,
               "type": "Int",
-              "isRequired": false,
+              "isRequired": true,
               "attributes": []
             },
             "profileId": {
@@ -525,7 +520,7 @@
                 "rules": [
                   {
                     "allow": "public",
-                    "provider": "iam",
+                    "provider": "apiKey",
                     "operations": [
                       "read"
                     ]
@@ -577,7 +572,7 @@
               "name": "year",
               "isArray": false,
               "type": "Int",
-              "isRequired": false,
+              "isRequired": true,
               "attributes": []
             },
             "profileId": {
@@ -632,7 +627,7 @@
                 "rules": [
                   {
                     "allow": "public",
-                    "provider": "iam",
+                    "provider": "apiKey",
                     "operations": [
                       "read"
                     ]
@@ -694,13 +689,6 @@
               "isRequired": true,
               "attributes": []
             },
-            "order": {
-              "name": "order",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false,
-              "attributes": []
-            },
             "profile": {
               "name": "profile",
               "isArray": false,
@@ -746,7 +734,7 @@
                 "rules": [
                   {
                     "allow": "public",
-                    "provider": "iam",
+                    "provider": "apiKey",
                     "operations": [
                       "read"
                     ]

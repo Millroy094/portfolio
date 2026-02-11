@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
             },
         ],
     },
+    env: {
+        PUBLIC_URL: process.env.PUBLIC_URL,
+    }
 };
 
 export default nextConfig;
