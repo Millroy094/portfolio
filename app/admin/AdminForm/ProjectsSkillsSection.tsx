@@ -99,7 +99,7 @@ export default function ProjectsSkillsSection({
                   name={`projects.${index}.description`}
                   render={({ field, fieldState }) => (
                     <TextField
-                      label="Description"
+                      label="Project Description"
                       value={field.value}
                       onChange={(e) => field.onChange(e.target.value)}
                       fullWidth

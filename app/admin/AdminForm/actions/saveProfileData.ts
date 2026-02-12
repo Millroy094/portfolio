@@ -1,16 +1,19 @@
-"use client";
+"use server";
 
-import { uploadData } from "aws-amplify/storage";
 import { type Schema } from "@/amplify/data/resource";
 import type { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
-import { generateClient } from "@aws-amplify/api";
+import { generateServerClientUsingCookies } from "@aws-amplify/adapter-nextjs/api";
+import outputs from "@/amplify_outputs.json";
+import { cookies } from "next/headers";
 
-type Client = ReturnType<typeof generateClient<Schema>>;
+type Client = ReturnType<typeof generateServerClientUsingCookies<Schema>>;
 type BaseModel = {
   list: (args: unknown) => Promise<{ data: { id: string }[] }>;
   delete: (args: { id: string }) => Promise<unknown>;
   create: (args: unknown) => Promise<unknown>;
 };
+
+type Assets = { avatarKey?: string; badgeKeys?: string[] };
 
 type ProfilePayload = {
   fullName: string;
@@ -25,35 +28,6 @@ type ProfilePayload = {
   aboutMe?: string;
   skills: string[];
 };
-
-async function uploadIfFile(
-  prefix: string,
-  value: unknown,
-): Promise<string | undefined> {
-  if (typeof File !== "undefined" && value instanceof File) {
-    const f = value;
-    const path = `${prefix}/${Date.now()}-${f.name}`;
-    await uploadData({ path, data: f, options: { contentType: f.type } })
-      .result;
-    return path;
-  }
-  if (typeof value === "string") return value;
-  return undefined;
-}
-
-async function normalizeAssets(
-  prefix: string,
-  items: { value: File | string }[] | undefined,
-): Promise<{ value: string }[]> {
-  if (!items?.length) return [];
-  const processed = await Promise.all(
-    items.map(async (i) => {
-      const key = await uploadIfFile(prefix, i.value);
-      return key ? { value: key } : null;
-    }),
-  );
-  return processed.filter((x): x is { value: string } => x !== null);
-}
 
 async function replaceChildren<
   K extends Exclude<keyof Client["models"], "Profile">,
@@ -84,17 +58,17 @@ async function replaceChildren<
 export async function saveProfileData(
   formData: ProfileSchemaType,
   existingProfileId?: string | null,
+  assets?: Assets,
 ) {
-  const client = generateClient<Schema>();
-
-  const avatarKey = await uploadIfFile("avatars", formData.avatar);
-
-  const normalizedBadges = await normalizeAssets("badges", formData.badges);
+  const client = generateServerClientUsingCookies<Schema>({
+    config: outputs,
+    cookies,
+  });
 
   const payload: ProfilePayload = {
     fullName: formData.fullName,
     punchLine: formData.punchLine ?? undefined,
-    avatarKey,
+    avatarKey: assets?.avatarKey,
     linkedIn: formData.linkedIn ?? undefined,
     github: formData.github ?? undefined,
     stackOverflow: formData.stackOverflow ?? undefined,
@@ -123,7 +97,12 @@ export async function saveProfileData(
     profileId,
     (formData.roles ?? []).map((r) => ({ value: r.value })),
   );
-  await replaceChildren(client, "Badge", profileId, normalizedBadges);
+  await replaceChildren(
+    client,
+    "Badge",
+    profileId,
+    (assets?.badgeKeys ?? []).map((badgeKey) => ({ value: badgeKey })),
+  );
   await replaceChildren(
     client,
     "Experience",

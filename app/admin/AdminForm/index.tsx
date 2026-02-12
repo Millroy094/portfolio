@@ -5,7 +5,7 @@ import { Card, Button } from "@mui/material";
 import { Save } from "@mui/icons-material";
 import { ToastContainer, toast } from "react-toastify";
 
-import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
+import {useForm, useFieldArray, SubmitHandler, FieldErrors, FieldError} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { ProfileSchema, ProfileSchemaType } from "@/app/admin/AdminForm/schema";
@@ -22,6 +22,7 @@ import { saveProfileData } from "@/app/admin/AdminForm/actions/saveProfileData";
 import Box from "@mui/material/Box";
 import { Atom } from "react-loading-indicators";
 import SeoSection from "@/app/admin/AdminForm/SeoSection";
+import { uploadFileToS3 } from "@/services/amplify/storage/uploadFileToS3";
 
 export default function AdminForm() {
   const [formId, setFormId] = useState<string | null>(null);
@@ -89,10 +90,60 @@ export default function AdminForm() {
     setCropOpen(true);
   };
 
+  const uploadAssets = async (data: ProfileSchemaType) => {
+    const avatarKey = await uploadFileToS3("avatars", data.avatar);
+
+    if (!data.badges?.length) {
+      return { badgeKeys: [], avatarKey };
+    }
+
+    const uploads = await Promise.all(
+      data.badges.map(async (i) => {
+        const key = await uploadFileToS3("badges", i.value);
+        return key ?? null;
+      }),
+    );
+
+    const badgeKeys = uploads.filter((x): x is string => x !== null);
+
+    return { badgeKeys, avatarKey };
+  };
+
+  const isFieldError = (err: unknown): err is FieldError => {
+    return typeof err === "object" && err !== null && "message" in err;
+  };
+
+  const showErrors = (errorObj: FieldErrors<ProfileSchemaType>) => {
+    if (!errorObj) return;
+
+    Object.values(errorObj).forEach((err) => {
+      if (!err) return;
+
+      if (isFieldError(err)) {
+        toast.error(err.message, { theme: "colored" });
+        return;
+      }
+
+      if (typeof err === "object") {
+        showErrors(err as FieldErrors<ProfileSchemaType>);
+      }
+    });
+  };
+
+  const onInvalid = (errors: FieldErrors<ProfileSchemaType>) => {
+    showErrors(errors);
+  };
+
+
   const onSubmit: SubmitHandler<ProfileSchemaType> = async (data) => {
     setProcessing(true);
     try {
-      const result = await saveProfileData(data, formId);
+      const assets = await uploadAssets(data);
+      const result = await saveProfileData(
+        data,
+        formId,
+          assets
+      );
       const { profileId } = result;
       if (profileId && formId !== profileId) {
         setFormId(profileId);
@@ -129,7 +180,7 @@ export default function AdminForm() {
       <ToastContainer />
       <form
         className="flex flex-col p-4 sm:p-6 md:p-8 gap-6"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit, onInvalid)}
       >
         {/* Hidden Inputs */}
         <input

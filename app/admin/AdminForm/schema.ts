@@ -88,7 +88,7 @@ export const ProfileSchema = z.object({
     .array(
       z.object({
         organization: z.string().nonempty("Organization name is required"),
-        title: z.string().nonempty("Title is required"),
+        title: z.string().nonempty("Job Title is required"),
         year: z.coerce
           .number({
             required_error: "Year is required",

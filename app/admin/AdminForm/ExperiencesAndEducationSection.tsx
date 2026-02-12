@@ -100,7 +100,7 @@ export default function ExperiencesEducationSection({
                       name={`experiences.${index}.title`}
                       render={({ field, fieldState }) => (
                         <TextField
-                          label="Title"
+                          label="Job Title"
                           fullWidth
                           value={field.value}
                           onChange={(e) => field.onChange(e.target.value)}
