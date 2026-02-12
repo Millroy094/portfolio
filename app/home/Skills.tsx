@@ -54,7 +54,7 @@ function Skills() {
               fontSize={{ xs: 20, sm: 20, md: 35, lg: 35 }}
               sx={{
                 display: "inline-block",
-                marginBottom: "10px",
+                marginBottom: "20px",
               }}
             >
               Technology &
@@ -67,7 +67,7 @@ function Skills() {
               sx={{
                 color: "#d32f2f",
                 display: "inline-block",
-                marginBottom: "10px",
+                marginBottom: "20px",
               }}
             >
               Skills
