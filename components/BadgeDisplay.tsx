@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { getUrl } from "aws-amplify/storage";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export function BadgeDisplay({ value }: { value: File | string }) {

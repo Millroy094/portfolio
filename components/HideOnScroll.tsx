@@ -1,8 +1,8 @@
 "use client";
 
-import * as React from "react";
 import Slide from "@mui/material/Slide";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
+import * as React from "react";
 
 interface HideOnScrollProps {
   children: React.ReactElement;

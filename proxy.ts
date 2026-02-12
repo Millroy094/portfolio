@@ -1,7 +1,9 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 import { fetchAuthSession } from "aws-amplify/auth/server";
+import { NextResponse } from "next/server";
+
 import { runWithAmplifyServerContext } from "@/services/amplify/amplifyServer";
+
+import type { NextRequest } from "next/server";
 
 export async function proxy(request: NextRequest) {
   const response = NextResponse.next();

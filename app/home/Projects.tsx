@@ -12,6 +12,7 @@ import {
   CssBaseline,
   ThemeProvider,
 } from "@mui/material";
+
 import { useWebsiteData } from "@/context/WebsiteData";
 
 function Projects() {

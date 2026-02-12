@@ -7,6 +7,7 @@ resource "aws_amplify_app" "portfolio" {
   iam_service_role_arn = aws_iam_role.amplify_service_role.arn
   environment_variables = {
     PUBLIC_URL = "https://www.${var.domain}"
+    NEXT_PUBLIC_G_TAG      = var.g_tag
   }
 }
 

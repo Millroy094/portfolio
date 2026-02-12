@@ -1,10 +1,11 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
-import { ReactNode } from "react";
-import GrowOnHover from "./GrowOnHover";
 import { Typography } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { motion, type Variants } from "framer-motion";
+import { ReactNode } from "react";
+
+import GrowOnHover from "./GrowOnHover";
 
 interface IGrowAndShowLabelOnHoverProps {
   children: ReactNode;

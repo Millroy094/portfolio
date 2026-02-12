@@ -1,16 +1,17 @@
 "use client";
 
-import { TypeAnimation } from "react-type-animation";
-import { Grid, Box, Typography, IconButton, Button } from "@mui/material";
-import { LinkedIn, GitHub, Download } from "@mui/icons-material";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import useWindowDimensions from "@/hooks/useWindowDimensions";
-import PortfolioAppBar from "@/app/home/AppBar";
 import { SiStackoverflow } from "@icons-pack/react-simple-icons";
+import { LinkedIn, GitHub, Download } from "@mui/icons-material";
+import { Grid, Box, Typography, IconButton, Button } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { JSX } from "react";
-import { useWebsiteData } from "@/context/WebsiteData";
-import BadgeSlider from "@/app/home/BadgeSlider";
+import { TypeAnimation } from "react-type-animation";
+
+import PortfolioAppBar from "@/app/home/AppBar";
 import AvatarWithSkeleton from "@/app/home/AvatarWithSkeleton";
+import BadgeSlider from "@/app/home/BadgeSlider";
+import { useWebsiteData } from "@/context/WebsiteData";
+import useWindowDimensions from "@/hooks/useWindowDimensions";
 
 function Introduction(): JSX.Element {
   const { data } = useWebsiteData();

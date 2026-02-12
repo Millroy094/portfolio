@@ -1,11 +1,12 @@
 "use client";
 
-import { FieldErrors } from "react-hook-form";
-import { IconButton } from "@mui/material";
 import { DeleteSharp } from "@mui/icons-material";
-import { FormSection } from "@/components/FormSection";
-import { BadgeDisplay } from "@/components/BadgeDisplay"; // ★ NEW
+import { IconButton } from "@mui/material";
+import { FieldErrors } from "react-hook-form";
+
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
+import { BadgeDisplay } from "@/components/BadgeDisplay"; // ★ NEW
+import { FormSection } from "@/components/FormSection";
 
 export interface BadgesSectionProps {
   errors: FieldErrors<ProfileSchemaType>;

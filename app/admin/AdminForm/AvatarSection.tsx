@@ -1,13 +1,14 @@
 "use client";
 
-import Image from "next/image";
-import { Controller, Control } from "react-hook-form";
-import { Avatar, Button } from "@mui/material";
 import { AccountCircle, Person2 } from "@mui/icons-material";
-import AvatarCropper from "@/components/controls/AvatorCropper";
+import { Avatar, Button } from "@mui/material";
 import { getUrl } from "aws-amplify/storage";
+import Image from "next/image";
 import { useEffect, useState } from "react";
+import { Controller, Control } from "react-hook-form";
+
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
+import AvatarCropper from "@/components/controls/AvatorCropper";
 
 export interface AvatarSectionProps {
   control: Control<ProfileSchemaType>;

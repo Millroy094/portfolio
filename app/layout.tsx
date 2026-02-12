@@ -1,9 +1,12 @@
-import { cache } from "react";
-import { Geist, Geist_Mono } from "next/font/google";
-import { Providers } from "@/app/providers";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { cache } from "react";
+
 import getWebsiteData from "@/app/home/actions/getWebsiteData";
+import { Providers } from "@/app/providers";
 import { WebsiteDataProvider } from "@/context/WebsiteData";
+
 import type { ReactNode } from "react";
 import "./globals.css";
 
@@ -76,6 +79,7 @@ export default async function RootLayout({
         <WebsiteDataProvider initialData={data}>
           <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
             {children}
+            <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_G_TAG} />
           </body>
         </WebsiteDataProvider>
       </Providers>

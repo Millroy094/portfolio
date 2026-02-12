@@ -1,8 +1,9 @@
 "use client";
 
-import Cropper, { Area, Point } from "react-easy-crop";
-import { FC, useEffect, useMemo, useState } from "react";
 import { Slider, Dialog, DialogContent, DialogActions, Button } from "@mui/material";
+import { FC, useEffect, useMemo, useState } from "react";
+import Cropper, { Area, Point } from "react-easy-crop";
+
 import createCroppedImage from "./createCropperImage";
 
 type AvatorCropperProps = {

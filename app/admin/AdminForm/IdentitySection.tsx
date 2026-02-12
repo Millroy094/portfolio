@@ -1,9 +1,10 @@
 "use client";
 
-import { Control, Controller, FieldErrors, UseFormRegister } from "react-hook-form";
 import { TextField } from "@mui/material";
-import LinkTextField from "@/components/controls/LinkTextField";
+import { Control, Controller, FieldErrors, UseFormRegister } from "react-hook-form";
+
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
+import LinkTextField from "@/components/controls/LinkTextField";
 
 export interface IdentitySectionProps {
   register: UseFormRegister<ProfileSchemaType>;

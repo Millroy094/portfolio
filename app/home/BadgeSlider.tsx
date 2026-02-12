@@ -1,13 +1,14 @@
 "use client";
 
-import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
-import { useCallback } from "react";
-import { Box, IconButton } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import GrowOnHover from "@/hoc/GrowOnHover";
+import { Box, IconButton } from "@mui/material";
+import Autoplay from "embla-carousel-autoplay";
+import useEmblaCarousel from "embla-carousel-react";
+import { useCallback } from "react";
+
 import ImageWithSkeleton from "@/components/ImageWithSkeleton";
+import GrowOnHover from "@/hoc/GrowOnHover";
 
 type Props = {
   badgeUrls: string[];

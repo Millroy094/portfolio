@@ -1,10 +1,11 @@
 "use client";
 
-import { Control, Controller, FieldErrors } from "react-hook-form";
 import { FormHelperText, Paper, Stack, Typography } from "@mui/material";
+import * as React from "react";
+import { Control, Controller, FieldErrors } from "react-hook-form";
+
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
 import RichTextEditor from "@/components/controls/RichTextEditor";
-import * as React from "react";
 
 export interface AboutMeSectionProps {
   control: Control<ProfileSchemaType>;

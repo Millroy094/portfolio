@@ -1,9 +1,9 @@
 "use client";
 
-import { memo, useEffect, useMemo, useState } from "react";
-import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { type ISourceOptions, MoveDirection, OutMode } from "@tsparticles/engine";
+import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
+import { memo, useEffect, useMemo, useState } from "react";
 
 function BackgroundParticles() {
   const [init, setInit] = useState(false);

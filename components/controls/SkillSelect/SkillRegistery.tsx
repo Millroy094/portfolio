@@ -1,4 +1,3 @@
-import React from "react";
 import {
   SiHtml5,
   SiCss,
@@ -20,6 +19,7 @@ import {
   SiKeycloak,
   SiWebauthn,
 } from "@icons-pack/react-simple-icons";
+import React from "react";
 import StackIcon from "tech-stack-icons";
 
 export type SkillId =

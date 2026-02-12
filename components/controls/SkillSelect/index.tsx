@@ -1,10 +1,9 @@
 "use client";
 
-import * as React from "react";
-import { Autocomplete, Checkbox, Chip, TextField, Box } from "@mui/material";
-
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import { Autocomplete, Checkbox, Chip, TextField, Box } from "@mui/material";
+import * as React from "react";
 
 import { type SkillId, type Skill, allSkills } from "./SkillRegistery";
 

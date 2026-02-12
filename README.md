@@ -44,12 +44,12 @@ Allow these actions:
 Set these variables in your [Terraform Cloud workspace](https://app.terraform.io/):
 
 | Variable Name  | Description            | Type      | Example           |
-| -------------- | ---------------------- | --------- | ----------------- |
+|----------------|------------------------| --------- |-------------------|
 | `github_token` | GitHub PAT             | Sensitive |                   |
 | `domain`       | Custom domain name     | String    | `myportfolio.com` |
 | `gh_owner`     | GitHub org/user        | String    | `Millroy094`      |
-| `gh_repo`      | GitHub repository name | String    | `portfolio`       |
-
+| `gh_repo`      | GitHub repository name | String    | `portfolio`       | 
+| `g_tag`        | Google Tag Manager ID  | String    | `G-XXXX`          |
 ---
 
 ## GitHub Actions Variables / Secrets
@@ -99,6 +99,7 @@ You can run and test the Amplify backend locally as follows:
 
    ```
    PUBLIC_URL=http://localhost:3000
+   NEXT_PUBLIC_G_TAG=G-XXXXX
    ```
 
 3. **Run the local development server:**

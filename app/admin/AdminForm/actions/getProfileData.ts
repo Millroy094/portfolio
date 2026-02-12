@@ -1,10 +1,12 @@
 "use server";
 
-import type { Schema } from "@/amplify/data/resource";
-import type { ProfileSchemaType } from "../schema";
 import { generateServerClientUsingCookies } from "@aws-amplify/adapter-nextjs/api";
-import outputs from "@/amplify_outputs.json";
 import { cookies } from "next/headers";
+
+import type { Schema } from "@/amplify/data/resource";
+import outputs from "@/amplify_outputs.json";
+
+import type { ProfileSchemaType } from "../schema";
 
 export async function getProfileData(): Promise<{
   profileId: string | null;

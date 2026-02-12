@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, ReactNode } from "react";
+
 import type { WebsiteData } from "@/app/home/actions/getWebsiteData";
 
 export type WebsiteDataContextType = {

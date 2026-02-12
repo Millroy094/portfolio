@@ -1,21 +1,19 @@
 "use client";
 
-import { Element, Events, scrollSpy } from "react-scroll";
-import { Atom } from "react-loading-indicators";
-import BackgroundParticles from "@/components/BackgroundParticles";
-import Introduction from "@/app/home/Introduction";
-import AboutMe from "@/app/home/AboutMe";
-import Skills from "@/app/home/Skills";
-import EducationAndExperience from "@/app/home/EducationAndExpierence";
-import Projects from "@/app/home/Projects";
-
-import useWindowDimensions from "@/hooks/useWindowDimensions";
-
-import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
-
-import { Fab, Box } from "@mui/material";
 import { SwipeUp } from "@mui/icons-material";
+import { Fab, Box } from "@mui/material";
+import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import { Atom } from "react-loading-indicators";
+import { Element, Events, scrollSpy } from "react-scroll";
+
+import AboutMe from "@/app/home/AboutMe";
+import EducationAndExperience from "@/app/home/EducationAndExpierence";
+import Introduction from "@/app/home/Introduction";
+import Projects from "@/app/home/Projects";
+import Skills from "@/app/home/Skills";
+import BackgroundParticles from "@/components/BackgroundParticles";
+import useWindowDimensions from "@/hooks/useWindowDimensions";
 
 export default function Home() {
   const { width, height } = useWindowDimensions();

@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { getCurrentUser, signOut } from "aws-amplify/auth";
 import { Authenticator, useAuthenticator } from "@aws-amplify/ui-react";
 import { Button } from "@mui/material";
+import { getCurrentUser, signOut } from "aws-amplify/auth";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();

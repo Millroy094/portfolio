@@ -2,10 +2,11 @@
 
 import { Grid, Typography } from "@mui/material";
 import Lottie from "react-lottie";
-import AboutMeLottie from "@/assets/lotties/about-me.json";
-import GrowOnHover from "@/hoc/GrowOnHover";
-import { useWebsiteData } from "@/context/WebsiteData";
+
 import { htmlToText, splitHtmlIntoParagraphs } from "@/app/utils/paragraph";
+import AboutMeLottie from "@/assets/lotties/about-me.json";
+import { useWebsiteData } from "@/context/WebsiteData";
+import GrowOnHover from "@/hoc/GrowOnHover";
 
 function AboutMe() {
   const defaultOptions = {

@@ -1,13 +1,14 @@
 "use client";
 
-import { Control, Controller, FieldErrors } from "react-hook-form";
-import { TextField, IconButton } from "@mui/material";
 import { DeleteSharp } from "@mui/icons-material";
-import SkillSelect from "@/components/controls/SkillSelect";
-import LinkTextField from "@/components/controls/LinkTextField";
-import { FormSection } from "@/components/FormSection";
+import { TextField, IconButton } from "@mui/material";
+import { Control, Controller, FieldErrors } from "react-hook-form";
+
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
+import LinkTextField from "@/components/controls/LinkTextField";
+import SkillSelect from "@/components/controls/SkillSelect";
 import { SkillId } from "@/components/controls/SkillSelect/SkillRegistery";
+import { FormSection } from "@/components/FormSection";
 
 type ProjectRecord = {
   name: string;

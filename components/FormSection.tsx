@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Paper, Stack, Typography, Divider, Button, Box } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import { Paper, Stack, Typography, Divider, Button, Box } from "@mui/material";
+import * as React from "react";
 
 type FormSectionProps = {
   title: string;

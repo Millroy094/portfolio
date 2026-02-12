@@ -1,28 +1,27 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { Card, Button } from "@mui/material";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Save } from "@mui/icons-material";
+import { Card, Button } from "@mui/material";
+import Box from "@mui/material/Box";
+import React, { useEffect, useRef, useState } from "react";
+import { useForm, useFieldArray, SubmitHandler, FieldErrors, FieldError } from "react-hook-form";
+import { Atom } from "react-loading-indicators";
 import { ToastContainer, toast } from "react-toastify";
 
-import { useForm, useFieldArray, SubmitHandler, FieldErrors, FieldError } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import { ProfileSchema, ProfileSchemaType } from "@/app/admin/AdminForm/schema";
-
-import AvatarSection from "./AvatarSection";
-import IdentitySection from "./IdentitySection";
-import RolesSection from "./RolesSection";
-import BadgesSection from "./BadgesSection";
-import AboutMeSection from "./AboutMeSection";
-import ExperiencesAndEducationSection from "./ExperiencesAndEducationSection";
-import ProjectsSkillsSection from "./ProjectsSkillsSection";
 import { getProfileData } from "@/app/admin/AdminForm/actions/getProfileData";
 import { saveProfileData } from "@/app/admin/AdminForm/actions/saveProfileData";
-import Box from "@mui/material/Box";
-import { Atom } from "react-loading-indicators";
+import { ProfileSchema, ProfileSchemaType } from "@/app/admin/AdminForm/schema";
 import SeoSection from "@/app/admin/AdminForm/SeoSection";
 import { uploadFileToS3 } from "@/services/amplify/storage/uploadFileToS3";
+
+import AboutMeSection from "./AboutMeSection";
+import AvatarSection from "./AvatarSection";
+import BadgesSection from "./BadgesSection";
+import ExperiencesAndEducationSection from "./ExperiencesAndEducationSection";
+import IdentitySection from "./IdentitySection";
+import ProjectsSkillsSection from "./ProjectsSkillsSection";
+import RolesSection from "./RolesSection";
 
 export default function AdminForm() {
   const [formId, setFormId] = useState<string | null>(null);

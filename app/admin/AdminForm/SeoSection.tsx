@@ -1,9 +1,10 @@
 "use client";
 
-import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { Paper, Stack, TextField, Typography } from "@mui/material";
-import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
 import * as React from "react";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
+
+import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
 
 export interface SeoSectionProps {
   register: UseFormRegister<ProfileSchemaType>;

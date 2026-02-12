@@ -1,4 +1,5 @@
 "use client";
+import { Code } from "@mui/icons-material";
 import {
   Timeline,
   TimelineConnector,
@@ -8,10 +9,10 @@ import {
   TimelineOppositeContent,
   TimelineSeparator,
 } from "@mui/lab";
-import { Grid, Typography } from "@mui/material";
 import { timelineContentClasses } from "@mui/lab/TimelineContent";
+import { Grid, Typography } from "@mui/material";
+
 import GrowOnHover from "../../hoc/GrowOnHover";
-import { Code } from "@mui/icons-material";
 
 interface ITimelineItem {
   year: number;

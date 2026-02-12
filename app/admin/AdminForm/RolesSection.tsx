@@ -1,10 +1,11 @@
 "use client";
 
-import { Control, Controller, FieldErrors } from "react-hook-form";
-import { TextField, IconButton } from "@mui/material";
 import { DeleteSharp } from "@mui/icons-material";
-import { FormSection } from "@/components/FormSection";
+import { TextField, IconButton } from "@mui/material";
+import { Control, Controller, FieldErrors } from "react-hook-form";
+
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
+import { FormSection } from "@/components/FormSection";
 
 export interface RolesSectionProps {
   control: Control<ProfileSchemaType>;

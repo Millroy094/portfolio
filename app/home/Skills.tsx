@@ -2,14 +2,15 @@
 
 import { Grid, Typography } from "@mui/material";
 import Lottie from "react-lottie";
+
 import SkillsLottie from "@/assets/lotties/skills.json";
-import GrowAndShowLabelOnHover from "@/hoc/GrowAndShowLabelOnHover";
-import { useWebsiteData } from "@/context/WebsiteData";
 import {
   getSkillById,
   SkillId,
   skillsRegistry,
 } from "@/components/controls/SkillSelect/SkillRegistery";
+import { useWebsiteData } from "@/context/WebsiteData";
+import GrowAndShowLabelOnHover from "@/hoc/GrowAndShowLabelOnHover";
 
 function Skills() {
   const defaultOptions = {
