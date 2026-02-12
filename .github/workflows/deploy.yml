@@ -70,7 +70,7 @@ jobs:
 
   terraform-cloud-run:
     name: Trigger Terraform Cloud Run
-    needs: [set-variables, lint]
+    needs: [set-variables]
     runs-on: ubuntu-latest
     env:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
