@@ -70,7 +70,7 @@ jobs:
 
   terraform-cloud-run:
     name: Trigger Terraform Cloud Run
-    needs: [set-variables]
+    needs: [set-variables, lint]
     runs-on: ubuntu-latest
     env:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
@@ -101,7 +101,7 @@ jobs:
   amplify-deploy:
     if: needs.set-variables.outputs.dry_run != 'true'
     name: AWS Amplify - Frontend Deployment
-    needs: [terraform-cloud-run, set-variables]
+    needs: [terraform-cloud-run, set-variables, lint]
     runs-on: ubuntu-latest
     env:
       AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}
