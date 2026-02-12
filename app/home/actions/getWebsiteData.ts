@@ -70,7 +70,7 @@ const generateS3UrlFromKey = async (path: string) => {
     operation: async (contextSpec) => {
       const { url } = await getUrl(contextSpec, {
         path,
-        options: { useAccelerateEndpoint: true, expiresIn: 3600 },
+        options: { expiresIn: 3600 },
       });
       return url;
     },

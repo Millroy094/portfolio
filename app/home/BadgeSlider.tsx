@@ -6,12 +6,12 @@ import { useCallback } from "react";
 import { Box, IconButton } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import Image from "next/image";
 import GrowOnHover from "@/hoc/GrowOnHover";
+import ImageWithSkeleton from "@/components/ImageWithSkeleton";
 
 type Props = {
   badgeUrls: string[];
-  maxSizePx?: number; // badge image cap (kept at 150 by default)
+  maxSizePx?: number;
   loop?: boolean;
   autoplay?: boolean;
   autoplayDelayMs?: number;
@@ -40,11 +40,11 @@ export default function BadgeSlider({
    * - gutter: space reserved inside the viewport so arrows never overlap the image
    *   (increase these if you want even more distance)
    */
-  const btnSize = 40; // px (icon button diameter)
+  const btnSize = 40;
   const gutter = {
-    xs: 56, // left/right padding on extra-small screens
-    sm: 64, // small
-    md: 80, // medium and up
+    xs: 56,
+    sm: 64,
+    md: 80,
   };
 
   return (
@@ -78,7 +78,7 @@ export default function BadgeSlider({
             <Box
               key={badgeUrl}
               sx={{
-                flex: "0 0 100%", // 1 per view
+                flex: "0 0 100%",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -89,24 +89,24 @@ export default function BadgeSlider({
                 <Box
                   sx={{
                     width: "100%",
-                    maxWidth: maxSizePx, // keep badges capped at 150px
+                    maxWidth: maxSizePx,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                   }}
                 >
-                  <Image
-                    width={maxSizePx}
-                    height={maxSizePx}
+                  <ImageWithSkeleton
                     src={badgeUrl}
                     alt={`Certificate ${i + 1}`}
+                    width={maxSizePx}
+                    height={maxSizePx}
+                    priority={i === 0}
+                    loading={i === 0 ? "eager" : "lazy"}
                     style={{
                       width: "100%",
                       height: "auto",
                       objectFit: "contain",
                     }}
-                    loading={i === 0 ? "eager" : "lazy"}
-                    priority={i === 0}
                   />
                 </Box>
               </GrowOnHover>
@@ -122,9 +122,8 @@ export default function BadgeSlider({
         sx={() => ({
           position: "absolute",
           top: "50%",
-          left: { xs: 8, sm: 8, md: 8 }, // inside the reserved gutter
+          left: { xs: 8, sm: 8, md: 8 },
           transform: "translateY(-50%)",
-          // Transparent look
           bgcolor: "transparent",
           color: "rgba(255,255,255,0.9)",
           "&:hover": {
@@ -134,7 +133,6 @@ export default function BadgeSlider({
           width: btnSize,
           height: btnSize,
           borderRadius: "50%",
-          // Optional: a subtle text-shadow to improve contrast on busy backgrounds
           textShadow: "0 0 6px rgba(0,0,0,0.35)",
           zIndex: 10,
         })}
@@ -148,7 +146,7 @@ export default function BadgeSlider({
         sx={() => ({
           position: "absolute",
           top: "50%",
-          right: { xs: 8, sm: 8, md: 8 }, // inside the reserved gutter
+          right: { xs: 8, sm: 8, md: 8 },
           transform: "translateY(-50%)",
           bgcolor: "transparent",
           color: "rgba(255,255,255,0.9)",

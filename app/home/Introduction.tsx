@@ -1,14 +1,7 @@
 "use client";
 
 import { TypeAnimation } from "react-type-animation";
-import {
-  Grid,
-  Box,
-  Avatar,
-  Typography,
-  IconButton,
-  Button,
-} from "@mui/material";
+import { Grid, Box, Typography, IconButton, Button } from "@mui/material";
 import { LinkedIn, GitHub, Download } from "@mui/icons-material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
@@ -17,6 +10,7 @@ import { SiStackoverflow } from "@icons-pack/react-simple-icons";
 import { JSX } from "react";
 import { useWebsiteData } from "@/context/WebsiteData";
 import BadgeSlider from "@/app/home/BadgeSlider";
+import AvatarWithSkeleton from "@/app/home/AvatarWithSkeleton";
 
 function Introduction(): JSX.Element {
   const { data } = useWebsiteData();
@@ -36,13 +30,9 @@ function Introduction(): JSX.Element {
         alignContent="center"
         justifyItems="center"
       >
-        <Grid container justifyContent="center">
-          <Avatar
-            alt={data.fullName}
-            src={data.avatarUrl}
-            sx={{ width: 150, height: 150, marginBottom: 2 }}
-          />
-        </Grid>
+        <AvatarWithSkeleton
+          data={{ avatarUrl: data.avatarUrl, fullName: data.fullName }}
+        />
         <Grid container justifyContent="center" spacing={1}>
           <Typography
             variant="h2"
@@ -94,12 +84,12 @@ function Introduction(): JSX.Element {
             </Typography>
           )}
           {data.badgeUrls.length > 0 && (
-              <BadgeSlider
-                  badgeUrls={data.badgeUrls}
-                  loop
-                  autoplay
-                  autoplayDelayMs={3000}
-              />
+            <BadgeSlider
+              badgeUrls={data.badgeUrls}
+              loop
+              autoplay
+              autoplayDelayMs={3000}
+            />
           )}
           <Box
             sx={{ padding: "10px", display: "flex", justifyContent: "center" }}
