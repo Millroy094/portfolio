@@ -38,7 +38,7 @@ function Introduction(): JSX.Element {
             Hi, I am
           </Typography>
           <Typography
-            variant="h2"
+            variant="h1"
             color="error"
             component="span"
             fontWeight="bold"
