@@ -29,7 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description: data.seoDescription,
     keywords: data.roles.join(", "),
     alternates: {
-      canonical: "/",
+      canonical: `${process.env.PUBLIC_URL}/`,
     },
     openGraph: {
       title: data.seoTitle,
