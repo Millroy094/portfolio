@@ -21,7 +21,7 @@ function AboutMe() {
   const { data } = useWebsiteData();
 
   const aboutMe = splitHtmlIntoParagraphs(data.aboutMe)?.map(htmlToText);
-  console.log(aboutMe);
+
   return (
     aboutMe?.length > 0 && (
       <Grid

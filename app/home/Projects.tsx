@@ -49,6 +49,7 @@ function Projects() {
             fontSize={{ xs: 20, sm: 20, md: 35, lg: 35 }}
             sx={{
               color: "#d32f2f",
+              marginBottom: 1,
             }}
           >
             Projects
