@@ -30,7 +30,7 @@ function Introduction(): JSX.Element {
         alignContent="center"
         justifyItems="center"
       >
-        <Grid container justifyContent="center">
+        <Grid container justifyContent="center" padding={1}>
           <AvatarWithSkeleton data={{ avatarUrl: data.avatarUrl, fullName: data.fullName }} />
         </Grid>
         <Grid container justifyContent="center" spacing={1}>
