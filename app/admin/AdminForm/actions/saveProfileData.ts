@@ -90,7 +90,7 @@ export async function saveProfileData(
     profileId = created.data.id;
   }
 
-  // @ts-expect-error: issue with amplify typescript
+  // @ts-expect-error: issue with amplify TypeScript
   await replaceChildren(
     client,
     "Role",

@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "@/app/providers";
 import { Metadata } from "next";
@@ -16,8 +17,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const getCachedWebsiteData = cache(async () => {
+  return await getWebsiteData();
+});
+
 export async function generateMetadata(): Promise<Metadata> {
-  const data = await getWebsiteData();
+  const data = await getCachedWebsiteData();
 
   return {
     title: data.seoTitle,
@@ -44,7 +49,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
-  const data = await getWebsiteData();
+  const data = await getCachedWebsiteData();
 
   return (
     <html lang="en">

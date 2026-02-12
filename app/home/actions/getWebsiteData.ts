@@ -68,7 +68,10 @@ const generateS3UrlFromKey = async (path: string) => {
   const assetUrl = await runWithAmplifyServerContext({
     nextServerContext: { cookies },
     operation: async (contextSpec) => {
-      const { url } = await getUrl(contextSpec, { path });
+      const { url } = await getUrl(contextSpec, {
+        path,
+        options: { useAccelerateEndpoint: true, expiresIn: 3600 },
+      });
       return url;
     },
   });

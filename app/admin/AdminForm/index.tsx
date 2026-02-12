@@ -5,7 +5,13 @@ import { Card, Button } from "@mui/material";
 import { Save } from "@mui/icons-material";
 import { ToastContainer, toast } from "react-toastify";
 
-import {useForm, useFieldArray, SubmitHandler, FieldErrors, FieldError} from "react-hook-form";
+import {
+  useForm,
+  useFieldArray,
+  SubmitHandler,
+  FieldErrors,
+  FieldError,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { ProfileSchema, ProfileSchemaType } from "@/app/admin/AdminForm/schema";
@@ -134,16 +140,11 @@ export default function AdminForm() {
     showErrors(errors);
   };
 
-
   const onSubmit: SubmitHandler<ProfileSchemaType> = async (data) => {
     setProcessing(true);
     try {
       const assets = await uploadAssets(data);
-      const result = await saveProfileData(
-        data,
-        formId,
-          assets
-      );
+      const result = await saveProfileData(data, formId, assets);
       const { profileId } = result;
       if (profileId && formId !== profileId) {
         setFormId(profileId);
