@@ -104,7 +104,11 @@ export default function PortfolioAppBar() {
                         setTimeout(() => scrollToSection(id), 0);
                       }}
                     >
-                      <Typography variant="caption" sx={{ textAlign: "center", color: "black" }}>
+                      <Typography
+                        component="h3"
+                        variant="caption"
+                        sx={{ textAlign: "center", color: "black" }}
+                      >
                         {page}
                       </Typography>
                     </MenuItem>
@@ -128,7 +132,7 @@ export default function PortfolioAppBar() {
                       "&.MuiButton-root:focus": { outline: "none" },
                     }}
                   >
-                    <Typography variant="button" fontWeight="bold" color="white">
+                    <Typography component="h3" variant="button" fontWeight="bold" color="white">
                       {page}
                     </Typography>
                   </Button>
