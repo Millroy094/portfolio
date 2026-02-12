@@ -48,7 +48,7 @@ function Skills() {
         >
           <Grid container spacing={1}>
             <Typography
-              component="h1"
+              component="h2"
               variant="overline"
               fontWeight="bold"
               fontSize={{ xs: 20, sm: 20, md: 35, lg: 35 }}
@@ -59,6 +59,7 @@ function Skills() {
               Technology &
             </Typography>
             <Typography
+              component="h2"
               variant="overline"
               fontWeight="bold"
               fontSize={{ xs: 20, sm: 20, md: 35, lg: 35 }}
