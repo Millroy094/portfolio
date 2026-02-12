@@ -38,9 +38,16 @@ function Skills() {
         >
           <Lottie options={defaultOptions} height={400} width={400} />
         </Grid>
-        <Grid container size={{ md: 9, sm: 12, xs: 12 }} sx={{ padding: "0 20px" }} spacing={1}>
+        <Grid
+          container
+          justifyContent={{ md: "center", sm: "center", xs: "center" }}
+          size={{ md: 9, sm: 12, xs: 12 }}
+          sx={{ padding: "0 20px" }}
+          spacing={1}
+        >
           <Grid container spacing={1}>
             <Typography
+              component="h1"
               variant="overline"
               fontWeight="bold"
               fontSize={{ xs: 20, sm: 20, md: 35, lg: 35 }}

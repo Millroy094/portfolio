@@ -36,8 +36,14 @@ function AboutMe() {
           >
             <Lottie options={defaultOptions} width={400} height={400} />
           </Grid>
-          <Grid container size={{ lg: 8, md: 12 }} alignContent="center" sx={{ padding: "0 20px" }}>
-            <Grid container justifyContent="start" spacing={1}>
+          <Grid
+            container
+            size={{ lg: 8, md: 12, sm: 12, xs: 12 }}
+            justifyContent={{ md: "center", sm: "center", xs: "center" }}
+            alignContent="center"
+            sx={{ padding: "0 20px" }}
+          >
+            <Grid container justifyContent="center" spacing={1}>
               <Typography
                 variant="overline"
                 fontWeight="bold"
