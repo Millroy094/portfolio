@@ -30,7 +30,7 @@ function HistoryTimeline(props: Readonly<IHistoryTimelineProps>) {
   return (
     <Grid container direction="column" alignItems="center" size={{ xs: 12, sm: 12, md: 6, lg: 4 }}>
       <Typography
-        component="h1"
+        component="h2"
         variant="overline"
         fontWeight="bold"
         fontSize={{ xs: 20, sm: 20, md: 35, lg: 35 }}

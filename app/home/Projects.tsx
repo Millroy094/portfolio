@@ -43,7 +43,7 @@ function Projects() {
           spacing={1}
         >
           <Typography
-            component="h1"
+            component="h2"
             variant="overline"
             fontWeight="bold"
             fontSize={{ xs: 20, sm: 20, md: 35, lg: 35 }}

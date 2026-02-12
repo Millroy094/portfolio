@@ -39,9 +39,8 @@ function Introduction(): JSX.Element {
             Hi, I am
           </Typography>
           <Typography
-            variant="h1"
             color="error"
-            component="span"
+            component="h1"
             fontWeight="bold"
             fontSize={{ xs: 20, sm: 40, md: 60, lg: 60 }}
           >
