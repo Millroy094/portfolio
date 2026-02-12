@@ -9,10 +9,7 @@ interface HideOnScrollProps {
   threshold?: number;
 }
 
-export default function HideOnScroll({
-  children,
-  threshold = 12,
-}: HideOnScrollProps) {
+export default function HideOnScroll({ children, threshold = 12 }: HideOnScrollProps) {
   const trigger = useScrollTrigger({ threshold, disableHysteresis: true });
 
   return (

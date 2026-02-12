@@ -23,9 +23,7 @@ const labelMotion: Variants = {
   },
 };
 
-function GrowAndShowLabelOnHover(
-  props: Readonly<IGrowAndShowLabelOnHoverProps>,
-) {
+function GrowAndShowLabelOnHover(props: Readonly<IGrowAndShowLabelOnHoverProps>) {
   const { children, label, scale } = props;
   const isBelowMidSize = useMediaQuery("(max-width:959px)");
   if (children == null) return null;

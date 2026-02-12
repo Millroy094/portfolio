@@ -92,19 +92,15 @@ export default async function getWebsiteData(): Promise<WebsiteData> {
       return emptyWebsiteData;
     }
 
-    const [roles, badges, experiences, education, projects] = await Promise.all(
-      [
-        client.models.Role.list({ filter: { profileId: { eq: p.id } } }),
-        client.models.Badge.list({ filter: { profileId: { eq: p.id } } }),
-        client.models.Experience.list({ filter: { profileId: { eq: p.id } } }),
-        client.models.Education.list({ filter: { profileId: { eq: p.id } } }),
-        client.models.Project.list({ filter: { profileId: { eq: p.id } } }),
-      ],
-    );
+    const [roles, badges, experiences, education, projects] = await Promise.all([
+      client.models.Role.list({ filter: { profileId: { eq: p.id } } }),
+      client.models.Badge.list({ filter: { profileId: { eq: p.id } } }),
+      client.models.Experience.list({ filter: { profileId: { eq: p.id } } }),
+      client.models.Education.list({ filter: { profileId: { eq: p.id } } }),
+      client.models.Project.list({ filter: { profileId: { eq: p.id } } }),
+    ]);
 
-    const avatarUrl = p.avatarKey
-      ? await generateS3UrlFromKey(p.avatarKey)
-      : null;
+    const avatarUrl = p.avatarKey ? await generateS3UrlFromKey(p.avatarKey) : null;
 
     const badgeUrls = await Promise.all(
       badges.data.filter(Boolean).map((b) => generateS3UrlFromKey(b.value)),
@@ -120,9 +116,7 @@ export default async function getWebsiteData(): Promise<WebsiteData> {
       stackOverflow: p.stackOverflow ?? emptyWebsiteData.stackOverflow,
       resume: p.resume ?? emptyWebsiteData.resume,
       punchLine: p.punchLine ?? emptyWebsiteData.punchLine,
-      skills:
-        p?.skills?.map((skill) => skill ?? "").filter(Boolean) ??
-        emptyWebsiteData.skills,
+      skills: p?.skills?.map((skill) => skill ?? "").filter(Boolean) ?? emptyWebsiteData.skills,
       avatarUrl: avatarUrl ?? emptyWebsiteData.avatarUrl,
       badgeUrls: badgeUrls ?? emptyWebsiteData.badgeUrls,
       roles: roles.data.map((r) => r.value) ?? emptyWebsiteData.roles,

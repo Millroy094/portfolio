@@ -26,9 +26,7 @@ export default function BadgeSlider({
 }: Props) {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop, align: "center", dragFree: false, slidesToScroll: 1 },
-    autoplay
-      ? [Autoplay({ delay: autoplayDelayMs, stopOnInteraction: false })]
-      : [],
+    autoplay ? [Autoplay({ delay: autoplayDelayMs, stopOnInteraction: false })] : [],
   );
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);

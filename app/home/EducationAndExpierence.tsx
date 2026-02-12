@@ -22,10 +22,7 @@ function EducationAndExperience() {
   const hasOneExperienceOrEducation = hasEducation || hasExperience;
   return (
     hasOneExperienceOrEducation && (
-      <Grid
-        container
-        sx={{ zIndex: 10, position: "relative", marginBottom: "60px" }}
-      >
+      <Grid container sx={{ zIndex: 10, position: "relative", marginBottom: "60px" }}>
         {hasExperience && (
           <HistoryTimeline
             title={"Experience"}

@@ -63,9 +63,7 @@ export async function getProfileData(): Promise<{
         url: p.url ?? "",
       })),
 
-      skills: (p.skills ?? []).filter(
-        (s): s is string => typeof s === "string",
-      ),
+      skills: (p.skills ?? []).filter((s): s is string => typeof s === "string"),
     },
   };
 }

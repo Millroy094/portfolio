@@ -16,12 +16,9 @@ function transformUrl(url: string | undefined) {
   }
   return cleaned;
 }
-const SkillsArrayGeneric = z
-  .array(z.string().min(1, "Skill id cannot be empty"))
-  .default([]);
+const SkillsArrayGeneric = z.array(z.string().min(1, "Skill id cannot be empty")).default([]);
 const currentYear = new Date().getFullYear();
-const isBrowserFile = (v: unknown): v is File =>
-  typeof File !== "undefined" && v instanceof File;
+const isBrowserFile = (v: unknown): v is File => typeof File !== "undefined" && v instanceof File;
 
 export const ProfileSchema = z.object({
   avatar: z
@@ -38,9 +35,7 @@ export const ProfileSchema = z.object({
     .string()
     .max(50, { message: "Full name must be maximum of 50 characters" })
     .nonempty("Please enter a full name"),
-  roles: z.array(
-    z.object({ value: z.string().min(1, "Please enter a role name") }),
-  ),
+  roles: z.array(z.object({ value: z.string().min(1, "Please enter a role name") })),
   badges: z.array(
     z.object({
       value: z.union([
@@ -57,26 +52,10 @@ export const ProfileSchema = z.object({
     .string()
     .max(100, { message: "punch line must be maximum of 100 characters" })
     .nonempty("Please enter a punch line"),
-  linkedIn: z
-    .string()
-    .optional()
-    .transform(transformUrl)
-    .pipe(z.string().url().optional()),
-  github: z
-    .string()
-    .optional()
-    .transform(transformUrl)
-    .pipe(z.string().url().optional()),
-  stackOverflow: z
-    .string()
-    .optional()
-    .transform(transformUrl)
-    .pipe(z.string().url().optional()),
-  resume: z
-    .string()
-    .optional()
-    .transform(transformUrl)
-    .pipe(z.string().url().optional()),
+  linkedIn: z.string().optional().transform(transformUrl).pipe(z.string().url().optional()),
+  github: z.string().optional().transform(transformUrl).pipe(z.string().url().optional()),
+  stackOverflow: z.string().optional().transform(transformUrl).pipe(z.string().url().optional()),
+  resume: z.string().optional().transform(transformUrl).pipe(z.string().url().optional()),
   aboutMe: z
     .string()
     .trim()

@@ -21,19 +21,14 @@ function normalizeId(label: string) {
 
 export default function PortfolioAppBar() {
   const { data } = useWebsiteData();
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null,
-  );
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const appBarRef = useRef<HTMLDivElement | null>(null);
 
   const pages = useMemo(() => {
     const pagesWithContent: string[] = [];
     if (data.aboutMe) pagesWithContent.push("About Me");
     if (data.skills?.length) pagesWithContent.push("Skills");
-    if (
-      (data.education?.length ?? 0) > 0 ||
-      (data.experiences?.length ?? 0) > 0
-    ) {
+    if ((data.education?.length ?? 0) > 0 || (data.experiences?.length ?? 0) > 0) {
       pagesWithContent.push("Education And Experience");
     }
     if (data.projects?.length) pagesWithContent.push("Projects");
@@ -60,14 +55,8 @@ export default function PortfolioAppBar() {
   return (
     <HideOnScroll threshold={16}>
       <AppBar position="sticky" sx={{ background: "none" }} ref={appBarRef}>
-        <Container
-          maxWidth="xl"
-          sx={{ padding: { xs: 0, sm: 0, md: 2, lg: 2 } }}
-        >
-          <Toolbar
-            disableGutters
-            sx={{ display: { xs: "block", sm: "block", md: "flex" } }}
-          >
+        <Container maxWidth="xl" sx={{ padding: { xs: 0, sm: 0, md: 2, lg: 2 } }}>
+          <Toolbar disableGutters sx={{ display: { xs: "block", sm: "block", md: "flex" } }}>
             {/* Mobile */}
             <Box
               sx={{
@@ -94,7 +83,11 @@ export default function PortfolioAppBar() {
                 keepMounted
                 transformOrigin={{ vertical: "top", horizontal: "left" }}
                 style={{ transform: "translateX(-18px) translateY(0px)" }}
-                MenuListProps={{ style: { padding: 0, margin: 0 } }}
+                slotProps={{
+                  list: {
+                    sx: { p: 0, m: 0 },
+                  },
+                }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
                 sx={{ display: { xs: "block", md: "none" }, opacity: 0.8 }}
@@ -110,10 +103,7 @@ export default function PortfolioAppBar() {
                         setTimeout(() => scrollToSection(id), 0);
                       }}
                     >
-                      <Typography
-                        variant="caption"
-                        sx={{ textAlign: "center", color: "black" }}
-                      >
+                      <Typography variant="caption" sx={{ textAlign: "center", color: "black" }}>
                         {page}
                       </Typography>
                     </MenuItem>
@@ -137,11 +127,7 @@ export default function PortfolioAppBar() {
                       "&.MuiButton-root:focus": { outline: "none" },
                     }}
                   >
-                    <Typography
-                      variant="button"
-                      fontWeight="bold"
-                      color="white"
-                    >
+                    <Typography variant="button" fontWeight="bold" color="white">
                       {page}
                     </Typography>
                   </Button>

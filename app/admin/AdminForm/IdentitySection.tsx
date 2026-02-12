@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  Control,
-  Controller,
-  FieldErrors,
-  UseFormRegister
-} from "react-hook-form";
+import { Control, Controller, FieldErrors, UseFormRegister } from "react-hook-form";
 import { TextField } from "@mui/material";
 import LinkTextField from "@/components/controls/LinkTextField";
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";

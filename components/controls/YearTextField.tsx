@@ -11,13 +11,7 @@ type YearTextFieldProps = {
 
 const currentYear = new Date().getFullYear();
 
-const YearTextField: FC<YearTextFieldProps> = ({
-  label,
-  value,
-  onChange,
-  error,
-  errorText,
-}) => (
+const YearTextField: FC<YearTextFieldProps> = ({ label, value, onChange, error, errorText }) => (
   <TextField
     type="number"
     label={label}

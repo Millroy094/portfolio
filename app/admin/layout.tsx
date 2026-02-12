@@ -6,11 +6,7 @@ import { getCurrentUser, signOut } from "aws-amplify/auth";
 import { Authenticator, useAuthenticator } from "@aws-amplify/ui-react";
 import { Button } from "@mui/material";
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [checking, setChecking] = useState(true);
 
@@ -36,13 +32,9 @@ export default function AdminLayout({
 }
 
 function LayoutWithUser({ children }: { children: React.ReactNode }) {
-  const { user, route } = useAuthenticator((context) => [
-    context.user,
-    context.route,
-  ]);
+  const { user, route } = useAuthenticator((context) => [context.user, context.route]);
 
-  const username =
-    user?.signInDetails?.loginId ?? user?.username ?? "Unknown user";
+  const username = user?.signInDetails?.loginId ?? user?.username ?? "Unknown user";
 
   return (
     <div>

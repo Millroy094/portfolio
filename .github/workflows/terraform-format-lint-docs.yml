@@ -1,4 +1,3 @@
-
 name: Terraform Format Lint and Docs
 
 on:
@@ -61,8 +60,8 @@ jobs:
 
       - name: Generate docs for terraform
         run: |
-            echo "Generating docs for terraform"
-            terraform-docs markdown table --output-file README.md --output-mode inject infra
+          echo "Generating docs for terraform"
+          terraform-docs markdown table --output-file README.md --output-mode inject infra
 
       - name: Commit changes
         run: |

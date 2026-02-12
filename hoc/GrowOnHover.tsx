@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
 import { motion } from "motion/react";
-import {ReactNode} from "react";
+import { ReactNode } from "react";
 
 interface IGrowOnHoverProps {
   children: ReactNode;

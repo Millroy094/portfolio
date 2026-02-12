@@ -52,11 +52,7 @@ export default function Home() {
         setScrollOffset((prev) => (prev !== y ? y : prev));
 
         const shouldShow =
-          y > showThreshold
-            ? true
-            : y < hideThreshold
-              ? false
-              : showBtnRef.current;
+          y > showThreshold ? true : y < hideThreshold ? false : showBtnRef.current;
 
         if (shouldShow !== showBtnRef.current) {
           showBtnRef.current = shouldShow;

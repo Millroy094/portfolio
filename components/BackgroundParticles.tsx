@@ -2,11 +2,7 @@
 
 import { memo, useEffect, useMemo, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
-import {
-  type ISourceOptions,
-  MoveDirection,
-  OutMode,
-} from "@tsparticles/engine";
+import { type ISourceOptions, MoveDirection, OutMode } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
 
 function BackgroundParticles() {
@@ -87,11 +83,7 @@ function BackgroundParticles() {
     [],
   );
 
-  return (
-    init && (
-      <Particles id="tsparticles" options={options} style={{ zIndex: 1 }} />
-    )
-  );
+  return init && <Particles id="tsparticles" options={options} style={{ zIndex: 1 }} />;
 }
 
 export default memo(BackgroundParticles);

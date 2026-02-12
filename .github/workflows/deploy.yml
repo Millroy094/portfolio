@@ -6,13 +6,13 @@ permissions:
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
     inputs:
       dry_run:
-        description: 'When true, runs in plan only mode'
+        description: "When true, runs in plan only mode"
         required: true
         type: boolean
 
@@ -32,22 +32,22 @@ jobs:
     outputs:
       dry_run: ${{ steps.set-vars.outputs.dry_run }}
     steps:
-    - name: Calculating dry run
-      id: set-vars
-      run: |
-        # If workflow_dispatch, use input environment
-        if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
-          DRY_RUN="${{ github.event.inputs.dry_run }}"
-        else
-          # Determine dry_run
-          if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
-            DRY_RUN=true
+      - name: Calculating dry run
+        id: set-vars
+        run: |
+          # If workflow_dispatch, use input environment
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            DRY_RUN="${{ github.event.inputs.dry_run }}"
           else
-            DRY_RUN=false
+            # Determine dry_run
+            if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
+              DRY_RUN=true
+            else
+              DRY_RUN=false
+            fi
           fi
-        fi
-        
-        echo "dry_run=$DRY_RUN" >> $GITHUB_OUTPUT
+
+          echo "dry_run=$DRY_RUN" >> $GITHUB_OUTPUT
 
   lint:
     name: Lint
@@ -59,8 +59,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '24'
-          cache: 'npm'
+          node-version: "24"
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci --silent
@@ -145,11 +145,11 @@ jobs:
         run: |
 
           echo "commit_id=${{ github.sha }}" >> "$GITHUB_OUTPUT"
-      
+
           COMMIT_TITLE=$(git log -1 --pretty=%s | tr '\n' ' ')
           COMMIT_TITLE_ESCAPED=$(printf '%s' "$COMMIT_TITLE" | sed -e 's/%/%%/g' -e 's/"/\\"/g')
           echo "commit_title=$COMMIT_TITLE_ESCAPED" >> "$GITHUB_OUTPUT"
-      
+
           COMMIT_TIME=$(git log -1 --pretty=%cI)
           echo "commit_time=$COMMIT_TIME" >> "$GITHUB_OUTPUT"
 
@@ -178,4 +178,3 @@ jobs:
     uses: ./.github/workflows/release-version.yml
     with:
       is_dry_run: ${{ needs.set-variables.outputs.dry_run == 'true' || github.event_name == 'workflow_dispatch'  }}
-

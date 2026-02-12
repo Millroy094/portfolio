@@ -2,13 +2,7 @@
 
 import Cropper, { Area, Point } from "react-easy-crop";
 import { FC, useEffect, useMemo, useState } from "react";
-import {
-  Slider,
-  Dialog,
-  DialogContent,
-  DialogActions,
-  Button,
-} from "@mui/material";
+import { Slider, Dialog, DialogContent, DialogActions, Button } from "@mui/material";
 import createCroppedImage from "./createCropperImage";
 
 type AvatorCropperProps = {
@@ -18,12 +12,7 @@ type AvatorCropperProps = {
   onCropped: (file: File) => void;
 };
 
-const AvatarCropper: FC<AvatorCropperProps> = ({
-  file,
-  open,
-  onClose,
-  onCropped,
-}) => {
+const AvatarCropper: FC<AvatorCropperProps> = ({ file, open, onClose, onCropped }) => {
   const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState<number>(1);
   const [croppedArea, setCroppedArea] = useState<Area | null>(null);
@@ -77,13 +66,7 @@ const AvatarCropper: FC<AvatorCropperProps> = ({
           )}
         </div>
 
-        <Slider
-          value={zoom}
-          min={1}
-          max={3}
-          step={0.1}
-          onChange={(_, val) => setZoom(val)}
-        />
+        <Slider value={zoom} min={1} max={3} step={0.1} onChange={(_, val) => setZoom(val)} />
       </DialogContent>
 
       <DialogActions>

@@ -11,6 +11,7 @@ You need **two separate OIDC roles**:
 ### 1. GitHub Actions Role
 
 Allow these actions:
+
 - `amplify:StartJob`
 - `amplify:GetJob`
 - `amplify:ListJobs`
@@ -23,17 +24,18 @@ Allow these actions:
 ### 2. Terraform Cloud Role
 
 Allow these actions:
+
 - **Amplify:**
-    - `amplify:CreateApp`, `amplify:UpdateApp`, `amplify:DeleteApp`, `amplify:GetApp`, `amplify:ListApps`
-    - `amplify:CreateBranch`, `amplify:UpdateBranch`, `amplify:DeleteBranch`, `amplify:GetBranch`, `amplify:ListBranches`
-    - `amplify:CreateDomainAssociation`, `amplify:UpdateDomainAssociation`, `amplify:DeleteDomainAssociation`, `amplify:GetDomainAssociation`, `amplify:ListDomainAssociations`
-    - `amplify:TagResource`, `amplify:UntagResource`, `amplify:ListTagsForResource`
+  - `amplify:CreateApp`, `amplify:UpdateApp`, `amplify:DeleteApp`, `amplify:GetApp`, `amplify:ListApps`
+  - `amplify:CreateBranch`, `amplify:UpdateBranch`, `amplify:DeleteBranch`, `amplify:GetBranch`, `amplify:ListBranches`
+  - `amplify:CreateDomainAssociation`, `amplify:UpdateDomainAssociation`, `amplify:DeleteDomainAssociation`, `amplify:GetDomainAssociation`, `amplify:ListDomainAssociations`
+  - `amplify:TagResource`, `amplify:UntagResource`, `amplify:ListTagsForResource`
 - **IAM:**
-    - `iam:CreateRole`, `iam:GetRole`, `iam:DeleteRole`, `iam:AttachRolePolicy`, `iam:DetachRolePolicy`
-    - `iam:PutRolePolicy`, `iam:DeleteRolePolicy`, `iam:PassRole`, `iam:ListRolePolicies`, `iam:ListAttachedRolePolicies`, `iam:ListInstanceProfilesForRole`
-    - `iam:CreatePolicy`, `iam:TagRole`, `iam:TagPolicy`, `iam:GetPolicy`, `iam:DeletePolicy`, `iam:GetPolicyVersion`, `iam:ListPolicyVersions`
+  - `iam:CreateRole`, `iam:GetRole`, `iam:DeleteRole`, `iam:AttachRolePolicy`, `iam:DetachRolePolicy`
+  - `iam:PutRolePolicy`, `iam:DeleteRolePolicy`, `iam:PassRole`, `iam:ListRolePolicies`, `iam:ListAttachedRolePolicies`, `iam:ListInstanceProfilesForRole`
+  - `iam:CreatePolicy`, `iam:TagRole`, `iam:TagPolicy`, `iam:GetPolicy`, `iam:DeletePolicy`, `iam:GetPolicyVersion`, `iam:ListPolicyVersions`
 - **Route53:**
-    - `route53:ListHostedZones`, `route53:ListResourceRecordSets`, `route53:ListHostedZonesByName`
+  - `route53:ListHostedZones`, `route53:ListResourceRecordSets`, `route53:ListHostedZonesByName`
 
 ---
 
@@ -41,12 +43,12 @@ Allow these actions:
 
 Set these variables in your [Terraform Cloud workspace](https://app.terraform.io/):
 
-| Variable Name   | Description             | Type      | Example                |
-|-----------------|-------------------------|-----------|------------------------|
-| `github_token`  | GitHub PAT              | Sensitive |                        |
-| `domain`        | Custom domain name      | String    | `myportfolio.com`      |
-| `gh_owner`      | GitHub org/user         | String    | `Millroy094`           |
-| `gh_repo`       | GitHub repository name  | String    | `portfolio`            |
+| Variable Name  | Description            | Type      | Example           |
+| -------------- | ---------------------- | --------- | ----------------- |
+| `github_token` | GitHub PAT             | Sensitive |                   |
+| `domain`       | Custom domain name     | String    | `myportfolio.com` |
+| `gh_owner`     | GitHub org/user        | String    | `Millroy094`      |
+| `gh_repo`      | GitHub repository name | String    | `portfolio`       |
 
 ---
 
@@ -64,14 +66,17 @@ Set these variables in your [Terraform Cloud workspace](https://app.terraform.io
 You can run and test the Amplify backend locally as follows:
 
 1. **Install the Amplify CLI**
+
    ```sh
    npm install -g @aws-amplify/cli
    ```
 
 2. **Configure the CLI**
+
    ```sh
    amplify configure
    ```
+
    _Follow the prompts to set up AWS credentials._
 
 3. **Launch the Amplify Visual Sandbox**
@@ -91,6 +96,7 @@ You can run and test the Amplify backend locally as follows:
 2. **Set the only required local environment variable for development:**
 
    In a `.env.local` file (or in your shell):
+
    ```
    PUBLIC_URL=http://localhost:3000
    ```

@@ -30,15 +30,11 @@ function Introduction(): JSX.Element {
         alignContent="center"
         justifyItems="center"
       >
-        <AvatarWithSkeleton
-          data={{ avatarUrl: data.avatarUrl, fullName: data.fullName }}
-        />
+        <Grid container justifyContent="center">
+          <AvatarWithSkeleton data={{ avatarUrl: data.avatarUrl, fullName: data.fullName }} />
+        </Grid>
         <Grid container justifyContent="center" spacing={1}>
-          <Typography
-            variant="h2"
-            component="span"
-            fontSize={{ xs: 20, sm: 40, md: 60, lg: 60 }}
-          >
+          <Typography variant="h2" component="span" fontSize={{ xs: 20, sm: 40, md: 60, lg: 60 }}>
             Hi, I am
           </Typography>
           <Typography
@@ -84,16 +80,9 @@ function Introduction(): JSX.Element {
             </Typography>
           )}
           {data.badgeUrls.length > 0 && (
-            <BadgeSlider
-              badgeUrls={data.badgeUrls}
-              loop
-              autoplay
-              autoplayDelayMs={3000}
-            />
+            <BadgeSlider badgeUrls={data.badgeUrls} loop autoplay autoplayDelayMs={3000} />
           )}
-          <Box
-            sx={{ padding: "10px", display: "flex", justifyContent: "center" }}
-          >
+          <Box sx={{ padding: "10px", display: "flex", justifyContent: "center" }}>
             {data.linkedin && (
               <IconButton
                 aria-label="linkedin"

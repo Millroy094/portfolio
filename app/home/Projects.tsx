@@ -53,11 +53,7 @@ function Projects() {
 
           <Grid container spacing={2}>
             {data.projects?.map((project) => (
-              <Grid
-                key={project.name}
-                container
-                size={{ lg: 3, md: 6, sm: 12, xs: 12 }}
-              >
+              <Grid key={project.name} container size={{ lg: 3, md: 6, sm: 12, xs: 12 }}>
                 <Card
                   sx={{
                     width: "100%",

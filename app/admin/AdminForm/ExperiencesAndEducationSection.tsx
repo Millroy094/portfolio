@@ -69,10 +69,7 @@ export default function ExperiencesEducationSection({
             .map((exp) => {
               const index = exp.index;
               return (
-                <div
-                  key={exp.id}
-                  className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3"
-                >
+                <div key={exp.id} className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3">
                   {/* Organization */}
                   <div className="w-full lg:col-span-4">
                     <Controller
@@ -85,9 +82,7 @@ export default function ExperiencesEducationSection({
                           value={field.value}
                           onChange={(e) => field.onChange(e.target.value)}
                           error={!!fieldState.error}
-                          helperText={
-                            errors.experiences?.[index]?.organization?.message
-                          }
+                          helperText={errors.experiences?.[index]?.organization?.message}
                         />
                       )}
                     />
@@ -105,9 +100,7 @@ export default function ExperiencesEducationSection({
                           value={field.value}
                           onChange={(e) => field.onChange(e.target.value)}
                           error={!!fieldState.error}
-                          helperText={
-                            errors.experiences?.[index]?.title?.message
-                          }
+                          helperText={errors.experiences?.[index]?.title?.message}
                         />
                       )}
                     />
@@ -132,10 +125,7 @@ export default function ExperiencesEducationSection({
 
                   {/* Remove button only */}
                   <div className="flex gap-2 justify-center">
-                    <IconButton
-                      onClick={() => experiences.remove(index)}
-                      size="small"
-                    >
+                    <IconButton onClick={() => experiences.remove(index)} size="small">
                       <DeleteSharp color="error" />
                     </IconButton>
                   </div>
@@ -169,10 +159,7 @@ export default function ExperiencesEducationSection({
             .map((edu) => {
               const index = edu.index;
               return (
-                <div
-                  key={edu.id}
-                  className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3"
-                >
+                <div key={edu.id} className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3">
                   {/* Institute */}
                   <div className="w-full lg:col-span-4">
                     <Controller
@@ -185,9 +172,7 @@ export default function ExperiencesEducationSection({
                           onChange={(e) => field.onChange(e.target.value)}
                           fullWidth
                           error={!!fieldState.error}
-                          helperText={
-                            errors.education?.[index]?.institute?.message
-                          }
+                          helperText={errors.education?.[index]?.institute?.message}
                         />
                       )}
                     />
@@ -205,9 +190,7 @@ export default function ExperiencesEducationSection({
                           onChange={(e) => field.onChange(e.target.value)}
                           fullWidth
                           error={!!fieldState.error}
-                          helperText={
-                            errors.education?.[index]?.qualification?.message
-                          }
+                          helperText={errors.education?.[index]?.qualification?.message}
                         />
                       )}
                     />
@@ -232,10 +215,7 @@ export default function ExperiencesEducationSection({
 
                   {/* Remove button only (no up/down) */}
                   <div className="flex gap-2 justify-center">
-                    <IconButton
-                      onClick={() => education.remove(index)}
-                      size="small"
-                    >
+                    <IconButton onClick={() => education.remove(index)} size="small">
                       <DeleteSharp color="error" />
                     </IconButton>
                   </div>

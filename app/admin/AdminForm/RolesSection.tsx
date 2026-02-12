@@ -31,10 +31,7 @@ export default function RolesSection({
     >
       <div className="flex flex-col gap-4">
         {fields.map((role, index) => (
-          <div
-            key={role.id}
-            className="flex gap-2 lg:grid lg:grid-cols-12 lg:gap-3"
-          >
+          <div key={role.id} className="flex gap-2 lg:grid lg:grid-cols-12 lg:gap-3">
             <div className="w-full lg:col-span-11">
               <Controller
                 control={control}

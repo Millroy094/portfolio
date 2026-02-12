@@ -29,9 +29,7 @@ type ProfilePayload = {
   skills: string[];
 };
 
-async function replaceChildren<
-  K extends Exclude<keyof Client["models"], "Profile">,
->(
+async function replaceChildren<K extends Exclude<keyof Client["models"], "Profile">>(
   client: Client,
   model: K,
   profileId: string,
@@ -48,9 +46,7 @@ async function replaceChildren<
     return;
   }
 
-  await Promise.all(
-    items.map((item) => m.create({ ...(item as object), profileId })),
-  );
+  await Promise.all(items.map((item) => m.create({ ...(item as object), profileId })));
 
   return;
 }
@@ -103,18 +99,8 @@ export async function saveProfileData(
     profileId,
     (assets?.badgeKeys ?? []).map((badgeKey) => ({ value: badgeKey })),
   );
-  await replaceChildren(
-    client,
-    "Experience",
-    profileId,
-    formData.experiences ?? [],
-  );
-  await replaceChildren(
-    client,
-    "Education",
-    profileId,
-    formData.education ?? [],
-  );
+  await replaceChildren(client, "Experience", profileId, formData.experiences ?? []);
+  await replaceChildren(client, "Education", profileId, formData.education ?? []);
   await replaceChildren(client, "Project", profileId, formData.projects ?? []);
 
   return { ok: true, profileId };

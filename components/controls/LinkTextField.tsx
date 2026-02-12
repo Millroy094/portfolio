@@ -9,13 +9,7 @@ type LinkTextFieldProps = {
   errorText?: string;
 };
 
-const LinkTextField: FC<LinkTextFieldProps> = ({
-  label,
-  value,
-  onChange,
-  error,
-  errorText,
-}) => (
+const LinkTextField: FC<LinkTextFieldProps> = ({ label, value, onChange, error, errorText }) => (
   <TextField
     label={label}
     fullWidth
@@ -23,9 +17,7 @@ const LinkTextField: FC<LinkTextFieldProps> = ({
     onChange={(e) => onChange(e.target.value)}
     slotProps={{
       input: {
-        startAdornment: (
-          <InputAdornment position="start">https://</InputAdornment>
-        ),
+        startAdornment: <InputAdornment position="start">https://</InputAdornment>,
       },
     }}
     error={error}

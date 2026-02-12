@@ -27,12 +27,7 @@ interface IHistoryTimelineProps {
 function HistoryTimeline(props: Readonly<IHistoryTimelineProps>) {
   const { timeline, title } = props;
   return (
-    <Grid
-      container
-      direction="column"
-      alignItems="center"
-      size={{ xs: 12, sm: 12, md: 6, lg: 4 }}
-    >
+    <Grid container direction="column" alignItems="center" size={{ xs: 12, sm: 12, md: 6, lg: 4 }}>
       <Typography
         variant="overline"
         fontWeight="bold"
@@ -52,9 +47,7 @@ function HistoryTimeline(props: Readonly<IHistoryTimelineProps>) {
           .map((t: ITimelineItem, index: number) => (
             <GrowOnHover key={t.title}>
               <TimelineItem>
-                <TimelineOppositeContent
-                  sx={{ display: "flex", flex: 0, alignItems: "center" }}
-                >
+                <TimelineOppositeContent sx={{ display: "flex", flex: 0, alignItems: "center" }}>
                   {t.year}
                 </TimelineOppositeContent>
                 <TimelineSeparator>

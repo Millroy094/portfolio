@@ -33,7 +33,7 @@ jobs:
           name: Release ${{ steps.tag_version.outputs.new_tag }}
           body: |
             ${{ steps.tag_version.outputs.changelog }}
-            
+
             ---
             **Workflow Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
             **Workflow Ran By:** ${{ github.actor }}

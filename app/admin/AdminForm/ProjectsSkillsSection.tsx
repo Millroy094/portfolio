@@ -25,11 +25,7 @@ export interface ProjectsSkillsProps {
   };
 }
 
-export default function ProjectsSkillsSection({
-  control,
-  errors,
-  projects,
-}: ProjectsSkillsProps) {
+export default function ProjectsSkillsSection({ control, errors, projects }: ProjectsSkillsProps) {
   return (
     <div className="flex flex-col gap-8">
       {/* Skills */}
@@ -66,10 +62,7 @@ export default function ProjectsSkillsSection({
       >
         <div className="flex flex-col gap-4">
           {projects.fields.map((project, index) => (
-            <div
-              key={project.id}
-              className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3"
-            >
+            <div key={project.id} className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3">
               {/* Name */}
               <div className="w-full lg:col-span-2">
                 <Controller
@@ -104,9 +97,7 @@ export default function ProjectsSkillsSection({
                       onChange={(e) => field.onChange(e.target.value)}
                       fullWidth
                       error={!!fieldState.error}
-                      helperText={
-                        errors.projects?.[index]?.description?.message
-                      }
+                      helperText={errors.projects?.[index]?.description?.message}
                       variant="outlined"
                       slotProps={{
                         inputLabel: { shrink: !!field.value },

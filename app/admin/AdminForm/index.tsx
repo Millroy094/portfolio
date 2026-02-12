@@ -5,13 +5,7 @@ import { Card, Button } from "@mui/material";
 import { Save } from "@mui/icons-material";
 import { ToastContainer, toast } from "react-toastify";
 
-import {
-  useForm,
-  useFieldArray,
-  SubmitHandler,
-  FieldErrors,
-  FieldError,
-} from "react-hook-form";
+import { useForm, useFieldArray, SubmitHandler, FieldErrors, FieldError } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { ProfileSchema, ProfileSchemaType } from "@/app/admin/AdminForm/schema";
@@ -86,9 +80,7 @@ export default function AdminForm() {
   const [cropFile, setCropFile] = useState<File | null>(null);
   const [cropOpen, setCropOpen] = useState(false);
 
-  const handleAvatarFileChange: React.ChangeEventHandler<HTMLInputElement> = (
-    e,
-  ) => {
+  const handleAvatarFileChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const file = e.target.files?.[0];
     if (avatarInputRef.current) avatarInputRef.current.value = "";
     if (!file) return;
@@ -212,11 +204,7 @@ export default function AdminForm() {
           avatarInputRef={avatarInputRef}
         />
 
-        <IdentitySection
-          register={register}
-          control={control}
-          errors={errors}
-        />
+        <IdentitySection register={register} control={control} errors={errors} />
 
         <RolesSection
           control={control}

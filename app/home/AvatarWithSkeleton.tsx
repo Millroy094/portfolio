@@ -1,4 +1,4 @@
-import { Avatar, Grid, Skeleton } from "@mui/material";
+import { Avatar, Box, Skeleton } from "@mui/material";
 import { useState } from "react";
 
 type AvatarWithSkeletonProps = {
@@ -15,14 +15,9 @@ export default function AvatarWithSkeleton(props: AvatarWithSkeletonProps) {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <Grid container justifyContent="center">
+    <Box sx={{ display: "flex", justifyContent: "center" }}>
       {!loaded && (
-        <Skeleton
-          variant="circular"
-          width={150}
-          height={150}
-          sx={{ position: "absolute" }}
-        />
+        <Skeleton variant="circular" width={150} height={150} sx={{ position: "absolute" }} />
       )}
 
       <Avatar
@@ -41,6 +36,6 @@ export default function AvatarWithSkeleton(props: AvatarWithSkeletonProps) {
           },
         }}
       />
-    </Grid>
+    </Box>
   );
 }

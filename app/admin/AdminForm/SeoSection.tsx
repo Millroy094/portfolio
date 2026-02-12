@@ -10,10 +10,7 @@ export interface SeoSectionProps {
   errors: FieldErrors<ProfileSchemaType>;
 }
 
-export default function SeoSection({
-  register,
-  errors,
-}: SeoSectionProps) {
+export default function SeoSection({ register, errors }: SeoSectionProps) {
   return (
     <div className="w-full">
       <Paper variant="outlined" sx={{ p: 2 }}>

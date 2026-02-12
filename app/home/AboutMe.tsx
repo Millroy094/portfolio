@@ -20,7 +20,7 @@ function AboutMe() {
   const { data } = useWebsiteData();
 
   const aboutMe = splitHtmlIntoParagraphs(data.aboutMe)?.map(htmlToText);
-console.log(aboutMe);
+  console.log(aboutMe);
   return (
     aboutMe?.length > 0 && (
       <Grid
@@ -36,12 +36,7 @@ console.log(aboutMe);
           >
             <Lottie options={defaultOptions} width={400} height={400} />
           </Grid>
-          <Grid
-            container
-            size={{ lg: 8, md: 12 }}
-            alignContent="center"
-            sx={{ padding: "0 20px" }}
-          >
+          <Grid container size={{ lg: 8, md: 12 }} alignContent="center" sx={{ padding: "0 20px" }}>
             <Grid container justifyContent="start" spacing={1}>
               <Typography
                 variant="overline"
@@ -68,10 +63,7 @@ console.log(aboutMe);
             <Grid container sx={{ pr: { lg: 2 }, minWidth: 0 }}>
               {aboutMe?.map((text) => (
                 <GrowOnHover key={text}>
-                  <Typography
-                    variant="body1"
-                    fontSize="20px"
-                  >
+                  <Typography variant="body1" fontSize="20px">
                     {text}
                   </Typography>
                 </GrowOnHover>

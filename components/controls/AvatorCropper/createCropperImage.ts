@@ -48,8 +48,7 @@ export default async function createCroppedImage(
 
   const blob: Blob = await new Promise((resolve, reject) => {
     canvas.toBlob(
-      (b) =>
-        b ? resolve(b) : reject(new Error("Canvas toBlob returned null")),
+      (b) => (b ? resolve(b) : reject(new Error("Canvas toBlob returned null"))),
       mime,
       quality,
     );

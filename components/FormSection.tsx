@@ -17,23 +17,13 @@ export const FormSection: React.FC<FormSectionProps> = ({
   addLabel,
   onAdd,
   count,
-  children
+  children,
 }) => {
   return (
     <Paper variant="outlined" sx={{ p: 2 }}>
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ mb: 1 }}
-      >
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
         <Typography variant="h6">{title}</Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          size="small"
-          onClick={onAdd}
-        >
+        <Button variant="contained" startIcon={<AddIcon />} size="small" onClick={onAdd}>
           {addLabel}
         </Button>
       </Stack>
@@ -66,11 +56,9 @@ const EmptyState: React.FC<{
         p: 2,
         borderRadius: 1,
         border: "1px dashed",
-        borderColor: t => t.palette.divider,
-        backgroundColor: t =>
-          t.palette.mode === "dark"
-            ? "rgba(255,255,255,0.03)"
-            : "rgba(0,0,0,0.02)"
+        borderColor: (t) => t.palette.divider,
+        backgroundColor: (t) =>
+          t.palette.mode === "dark" ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)",
       }}
     >
       <Typography variant="subtitle1">{title}</Typography>

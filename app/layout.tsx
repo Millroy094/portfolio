@@ -74,9 +74,7 @@ export default async function RootLayout({
       </head>
       <Providers>
         <WebsiteDataProvider initialData={data}>
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-          >
+          <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
             {children}
           </body>
         </WebsiteDataProvider>
