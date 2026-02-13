@@ -1,32 +1,31 @@
 "use client";
 
-import { Authenticator } from "@aws-amplify/ui-react";
+import { Authenticator, useAuthenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 export default function LoginPage() {
-  const router = useRouter();
-
-  const [signedIn, setSignedIn] = useState(false);
-
-  useEffect(() => {
-    if (signedIn) {
-      router.replace("/admin");
-    }
-  }, [signedIn, router]);
-
   return (
     <div style={{ display: "flex", justifyContent: "center", paddingTop: 80 }}>
       <Authenticator hideSignUp>
-        {({ user }) => {
-          if (user && !signedIn) {
-            setSignedIn(true);
-          }
-
-          return <></>;
-        }}
+        <RedirectOnAuth />
       </Authenticator>
     </div>
   );
+}
+
+function RedirectOnAuth() {
+  const router = useRouter();
+  const { route } = useAuthenticator((ctx) => [ctx.route]);
+
+  useEffect(() => {
+    router.prefetch("/admin");
+
+    if (route === "authenticated") {
+      router.replace("/admin");
+    }
+  }, [route, router]);
+
+  return null;
 }

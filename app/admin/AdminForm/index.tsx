@@ -216,7 +216,6 @@ export default function AdminForm() {
         <BadgesSection
           errors={errors}
           fields={badges.fields}
-          append={badges.append}
           remove={badges.remove}
           badgeFileInputRef={badgeFileInputRef}
         />

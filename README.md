@@ -2,6 +2,9 @@
 
 A **Next.js** personal portfolio hosted on **AWS Amplify** (Cognito authentication, S3 storage, DynamoDB data via AppSync). Designed to run for pennies a month, with deployments automated through GitHub Actions (OIDC) → Terraform Cloud → AWS Amplify.
 
+The app consists of two pages:
+1. Website: The root page which is publicly available and has all the SEO optimization. 
+2. Admin: `/admin` page where you can make all the edits to your content and is protected by Cognito sign in
 ---
 
 ## Required IAM Permissions
@@ -107,3 +110,7 @@ You can run and test the Amplify backend locally as follows:
    npm run dev
    ```
    Open [http://localhost:3000](http://localhost:3000).
+
+## Getting started
+
+Once the website is up and running you be required to create a user on AWS Cognito which will serve as your entry point to the admin page (`/admin`). On the admin add all the data you need to see on the webpage and head over to the website.

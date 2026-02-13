@@ -78,7 +78,9 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  if (!width || !height || !mounted) {
+  if (!mounted) return null;
+
+  if (!width || !height) {
     return (
       <Box
         sx={{

@@ -5,4 +5,9 @@ export const auth = defineAuth({
     email: true,
   },
   groups: ["admin"],
+  multifactor: {
+    mode: "REQUIRED",
+    totp: true,
+    sms: true,
+  },
 });

@@ -8,7 +8,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "dev:backend:build": "npx ampx sandbox",
+    "dev:backend:destroy": "npx ampx sandbox delete"
   },
   "dependencies": {
     "@aws-amplify/adapter-nextjs": "^1.7.2",

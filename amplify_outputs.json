@@ -1,13 +1,22 @@
 {
   "auth": {
-    "user_pool_id": "eu-west-2_CU3oiIAWC",
+    "user_pool_id": "eu-west-2_qenM3DBJ9",
     "aws_region": "eu-west-2",
-    "user_pool_client_id": "1vnnsjp7koq1mhemjogmhh3lq2",
-    "identity_pool_id": "eu-west-2:ce0e6db3-5d77-45c5-bca1-70d57830be9d",
-    "mfa_methods": [],
-    "standard_required_attributes": ["email"],
-    "username_attributes": ["email"],
-    "user_verification_types": ["email"],
+    "user_pool_client_id": "5kil7nabh7f20aaqqu1c31i9vm",
+    "identity_pool_id": "eu-west-2:d5dbb397-92d4-47e1-a01e-823cb734b0a9",
+    "mfa_methods": [
+      "SMS",
+      "TOTP"
+    ],
+    "standard_required_attributes": [
+      "email"
+    ],
+    "username_attributes": [
+      "email"
+    ],
+    "user_verification_types": [
+      "email"
+    ],
     "groups": [
       {
         "admin": {
@@ -15,7 +24,7 @@
         }
       }
     ],
-    "mfa_configuration": "NONE",
+    "mfa_configuration": "REQUIRED",
     "password_policy": {
       "min_length": 8,
       "require_lowercase": true,
@@ -26,11 +35,14 @@
     "unauthenticated_identities_enabled": true
   },
   "data": {
-    "url": "https://jzqsv6c5q5d55innf34s7l2q24.appsync-api.eu-west-2.amazonaws.com/graphql",
+    "url": "https://qbl7xzn6crfdzk53szgxhe6ogq.appsync-api.eu-west-2.amazonaws.com/graphql",
     "aws_region": "eu-west-2",
-    "api_key": "da2-jm5pbp2rcnd5xgrm3csysheub4",
+    "api_key": "da2-ykvbxjc4fjc4rpch7ybjn7tmcu",
     "default_authorization_type": "AMAZON_COGNITO_USER_POOLS",
-    "authorization_types": ["API_KEY", "AWS_IAM"],
+    "authorization_types": [
+      "API_KEY",
+      "AWS_IAM"
+    ],
     "model_introspection": {
       "version": 1,
       "models": {
@@ -119,7 +131,9 @@
               "isArrayNullable": true,
               "association": {
                 "connectionType": "HAS_MANY",
-                "associatedWith": ["profileId"]
+                "associatedWith": [
+                  "profileId"
+                ]
               }
             },
             "badges": {
@@ -133,7 +147,9 @@
               "isArrayNullable": true,
               "association": {
                 "connectionType": "HAS_MANY",
-                "associatedWith": ["profileId"]
+                "associatedWith": [
+                  "profileId"
+                ]
               }
             },
             "experiences": {
@@ -147,7 +163,9 @@
               "isArrayNullable": true,
               "association": {
                 "connectionType": "HAS_MANY",
-                "associatedWith": ["profileId"]
+                "associatedWith": [
+                  "profileId"
+                ]
               }
             },
             "education": {
@@ -161,7 +179,9 @@
               "isArrayNullable": true,
               "association": {
                 "connectionType": "HAS_MANY",
-                "associatedWith": ["profileId"]
+                "associatedWith": [
+                  "profileId"
+                ]
               }
             },
             "projects": {
@@ -175,7 +195,9 @@
               "isArrayNullable": true,
               "association": {
                 "connectionType": "HAS_MANY",
-                "associatedWith": ["profileId"]
+                "associatedWith": [
+                  "profileId"
+                ]
               }
             },
             "seoTitle": {
@@ -223,11 +245,18 @@
                   {
                     "allow": "public",
                     "provider": "apiKey",
-                    "operations": ["read"]
+                    "operations": [
+                      "read"
+                    ]
                   },
                   {
                     "allow": "private",
-                    "operations": ["read", "create", "update", "delete"]
+                    "operations": [
+                      "read",
+                      "create",
+                      "update",
+                      "delete"
+                    ]
                   }
                 ]
               }
@@ -273,7 +302,9 @@
               "attributes": [],
               "association": {
                 "connectionType": "BELONGS_TO",
-                "targetNames": ["profileId"]
+                "targetNames": [
+                  "profileId"
+                ]
               }
             },
             "createdAt": {
@@ -307,11 +338,18 @@
                   {
                     "allow": "public",
                     "provider": "apiKey",
-                    "operations": ["read"]
+                    "operations": [
+                      "read"
+                    ]
                   },
                   {
                     "allow": "private",
-                    "operations": ["read", "create", "update", "delete"]
+                    "operations": [
+                      "read",
+                      "create",
+                      "update",
+                      "delete"
+                    ]
                   }
                 ]
               }
@@ -357,7 +395,9 @@
               "attributes": [],
               "association": {
                 "connectionType": "BELONGS_TO",
-                "targetNames": ["profileId"]
+                "targetNames": [
+                  "profileId"
+                ]
               }
             },
             "createdAt": {
@@ -391,11 +431,18 @@
                   {
                     "allow": "public",
                     "provider": "apiKey",
-                    "operations": ["read"]
+                    "operations": [
+                      "read"
+                    ]
                   },
                   {
                     "allow": "private",
-                    "operations": ["read", "create", "update", "delete"]
+                    "operations": [
+                      "read",
+                      "create",
+                      "update",
+                      "delete"
+                    ]
                   }
                 ]
               }
@@ -455,7 +502,9 @@
               "attributes": [],
               "association": {
                 "connectionType": "BELONGS_TO",
-                "targetNames": ["profileId"]
+                "targetNames": [
+                  "profileId"
+                ]
               }
             },
             "createdAt": {
@@ -489,11 +538,18 @@
                   {
                     "allow": "public",
                     "provider": "apiKey",
-                    "operations": ["read"]
+                    "operations": [
+                      "read"
+                    ]
                   },
                   {
                     "allow": "private",
-                    "operations": ["read", "create", "update", "delete"]
+                    "operations": [
+                      "read",
+                      "create",
+                      "update",
+                      "delete"
+                    ]
                   }
                 ]
               }
@@ -553,7 +609,9 @@
               "attributes": [],
               "association": {
                 "connectionType": "BELONGS_TO",
-                "targetNames": ["profileId"]
+                "targetNames": [
+                  "profileId"
+                ]
               }
             },
             "createdAt": {
@@ -587,11 +645,18 @@
                   {
                     "allow": "public",
                     "provider": "apiKey",
-                    "operations": ["read"]
+                    "operations": [
+                      "read"
+                    ]
                   },
                   {
                     "allow": "private",
-                    "operations": ["read", "create", "update", "delete"]
+                    "operations": [
+                      "read",
+                      "create",
+                      "update",
+                      "delete"
+                    ]
                   }
                 ]
               }
@@ -651,7 +716,9 @@
               "attributes": [],
               "association": {
                 "connectionType": "BELONGS_TO",
-                "targetNames": ["profileId"]
+                "targetNames": [
+                  "profileId"
+                ]
               }
             },
             "createdAt": {
@@ -685,11 +752,18 @@
                   {
                     "allow": "public",
                     "provider": "apiKey",
-                    "operations": ["read"]
+                    "operations": [
+                      "read"
+                    ]
                   },
                   {
                     "allow": "private",
-                    "operations": ["read", "create", "update", "delete"]
+                    "operations": [
+                      "read",
+                      "create",
+                      "update",
+                      "delete"
+                    ]
                   }
                 ]
               }
@@ -708,20 +782,36 @@
   },
   "storage": {
     "aws_region": "eu-west-2",
-    "bucket_name": "amplify-myportfolio-millr-profileassetsbucket136b4-pfrhv34sed7i",
+    "bucket_name": "amplify-myportfolio-millr-profileassetsbucket136b4-fg8sjct50e6x",
     "buckets": [
       {
         "name": "profileAssets",
-        "bucket_name": "amplify-myportfolio-millr-profileassetsbucket136b4-pfrhv34sed7i",
+        "bucket_name": "amplify-myportfolio-millr-profileassetsbucket136b4-fg8sjct50e6x",
         "aws_region": "eu-west-2",
         "paths": {
           "badges/*": {
-            "guest": ["get", "list"],
-            "authenticated": ["get", "list", "write", "delete"]
+            "guest": [
+              "get",
+              "list"
+            ],
+            "authenticated": [
+              "get",
+              "list",
+              "write",
+              "delete"
+            ]
           },
           "avatars/*": {
-            "guest": ["get", "list"],
-            "authenticated": ["get", "list", "write", "delete"]
+            "guest": [
+              "get",
+              "list"
+            ],
+            "authenticated": [
+              "get",
+              "list",
+              "write",
+              "delete"
+            ]
           }
         }
       }

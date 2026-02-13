@@ -3,10 +3,10 @@
 import { Grid, Typography } from "@mui/material";
 import Lottie from "react-lottie";
 
-import { htmlToText, splitHtmlIntoParagraphs } from "@/app/utils/paragraph";
 import AboutMeLottie from "@/assets/lotties/about-me.json";
 import { useWebsiteData } from "@/context/WebsiteData";
 import GrowOnHover from "@/hoc/GrowOnHover";
+import { htmlToText, splitHtmlIntoParagraphs } from "@/utils/paragraph";
 
 function AboutMe() {
   const defaultOptions = {
