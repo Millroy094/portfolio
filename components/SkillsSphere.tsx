@@ -80,28 +80,12 @@ export function SkillsSphere({ skillIds, radius = 3 }: Props) {
       </mesh>
 
       {skills.map((skill, index) => (
-        <Html
-          key={skill.id}
-          position={positions[index]}
-          center
-          transform
-          distanceFactor={8}
-        >
-          <div
-            style={{
-              width: 60,
-              height: 60,
-              borderRadius: "50%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              background: "rgba(0,0,0,0.65)",
-              backdropFilter: "blur(10px)",
-            }}
-          >
-            {skill.render()}
-          </div>
-        </Html>
+        <OrbitingIcon
+    key={skill.id}
+    position={positions[index]}
+    render={skill.render}
+    orbitSpeed={0.5 + Math.random() * 0.5}
+        />
       ))}
     </group>
   );
