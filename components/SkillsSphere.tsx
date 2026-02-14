@@ -1,9 +1,11 @@
-import { Html, useThree } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef, useState } from "react";
 import * as THREE from "three";
+
+import { getSkillById, SkillId } from "@/components/controls/SkillSelect/SkillRegistery";
+
 import { fibonacciSphere } from "./fibonacciSphere";
-import { getSkillById, SkillId } from "@/skills";
+import { OrbitingIcon } from "@/components/OrbitingIcon";
 
 type Props = {
   skillIds: SkillId[];
@@ -17,15 +19,9 @@ export function SkillsSphere({ skillIds, radius = 3 }: Props) {
   const [isDragging, setIsDragging] = useState(false);
   const lastPointer = useRef({ x: 0, y: 0 });
 
-  const skills = useMemo(
-    () => skillIds.map((id) => getSkillById(id)),
-    [skillIds]
-  );
+  const skills = useMemo(() => skillIds.map((id) => getSkillById(id)), [skillIds]);
 
-  const positions = useMemo(
-    () => fibonacciSphere(skills.length, radius),
-    [skills.length, radius]
-  );
+  const positions = useMemo(() => fibonacciSphere(skills.length, radius), [skills.length, radius]);
 
   useFrame((state) => {
     if (!groupRef.current) return;
@@ -38,8 +34,7 @@ export function SkillsSphere({ skillIds, radius = 3 }: Props) {
       velocity.current.y *= 0.98;
     }
 
-    groupRef.current.position.y =
-      Math.sin(state.clock.elapsedTime * 0.6) * 0.2;
+    groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.6) * 0.2;
   });
 
   const handlePointerDown = (e: any) => {
@@ -81,10 +76,10 @@ export function SkillsSphere({ skillIds, radius = 3 }: Props) {
 
       {skills.map((skill, index) => (
         <OrbitingIcon
-    key={skill.id}
-    position={positions[index]}
-    render={skill.render}
-    orbitSpeed={0.5 + Math.random() * 0.5}
+          key={skill.id}
+          position={positions[index]}
+          render={skill.render}
+          orbitSpeed={0.5 + Math.random() * 0.5}
         />
       ))}
     </group>

@@ -2,8 +2,10 @@
 
 import { Canvas } from "@react-three/fiber";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
+
+import type { SkillId } from "@/components/controls/SkillSelect/SkillRegistery";
+
 import { SkillsSphere } from "./SkillsSphere";
-import { SkillId } from "@/skills";
 
 type Props = {
   skillIds: SkillId[];
@@ -11,29 +13,18 @@ type Props = {
   height?: number | string;
 };
 
-export function SkillsGlobe({
-  skillIds,
-  radius = 3,
-  height = 600,
-}: Props) {
+export function SkillsGlobe({ skillIds, radius = 3, height = 600 }: Props) {
   if (!skillIds.length) return null;
 
   return (
-    <Canvas
-      camera={{ position: [0, 0, 8], fov: 50 }}
-      style={{ height, width: "100%" }}
-    >
+    <Canvas camera={{ position: [0, 0, 8], fov: 50 }} style={{ height, width: "100%" }}>
       <ambientLight intensity={0.6} />
       <directionalLight position={[5, 5, 5]} intensity={1} />
 
       <SkillsSphere skillIds={skillIds} radius={radius} />
 
       <EffectComposer>
-        <Bloom
-          intensity={0.4}
-          luminanceThreshold={0.2}
-          luminanceSmoothing={0.9}
-        />
+        <Bloom intensity={0.4} luminanceThreshold={0.2} luminanceSmoothing={0.9} />
       </EffectComposer>
     </Canvas>
   );

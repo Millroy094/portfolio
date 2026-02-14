@@ -11,6 +11,7 @@ import {
 } from "@/components/controls/SkillSelect/SkillRegistery";
 import { useWebsiteData } from "@/context/WebsiteData";
 import GrowAndShowLabelOnHover from "@/hoc/GrowAndShowLabelOnHover";
+import { SkillsGlobe } from "@/components/SkillsGlobe";
 
 function Skills() {
   const defaultOptions = {
@@ -75,26 +76,29 @@ function Skills() {
             </Typography>
           </Grid>
           <Grid container spacing={1}>
-            {data.skills
-              .filter((skill): skill is SkillId => skill in skillsRegistry)
-              .map((skill) => {
-                const skillObj = getSkillById(skill);
+            {/*{data.skills*/}
+            {/*  .filter((skill): skill is SkillId => skill in skillsRegistry)*/}
+            {/*  .map((skill) => {*/}
+            {/*    const skillObj = getSkillById(skill);*/}
 
-                return (
-                  <Grid
-                    container
-                    key={skillObj.id}
-                    aria-label={skillObj.label}
-                    size={{ lg: 1, md: 2, sm: 3, xs: 4 }}
-                  >
-                    <GrowAndShowLabelOnHover label={skillObj.label} scale={1.5}>
-                      {skillObj.render()}
-                    </GrowAndShowLabelOnHover>
-                  </Grid>
-                );
-              })}
+            {/*    return (*/}
+            {/*      <Grid*/}
+            {/*        container*/}
+            {/*        key={skillObj.id}*/}
+            {/*        aria-label={skillObj.label}*/}
+            {/*        size={{ lg: 1, md: 2, sm: 3, xs: 4 }}*/}
+            {/*      >*/}
+            {/*        <GrowAndShowLabelOnHover label={skillObj.label} scale={1.5}>*/}
+            {/*          {skillObj.render()}*/}
+            {/*        </GrowAndShowLabelOnHover>*/}
+            {/*      </Grid>*/}
+            {/*    );*/}
+            {/*  })}*/}
           </Grid>
         </Grid>
+        <SkillsGlobe
+          skillIds={data.skills.filter((skill): skill is SkillId => skill in skillsRegistry)}
+        />
       </Grid>
     )
   );

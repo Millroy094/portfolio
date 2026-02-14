@@ -24,6 +24,9 @@
     "@mui/material": "^7.3.7",
     "@mui/styled-engine-sc": "^7.3.7",
     "@next/third-parties": "^16.1.6",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.5.0",
+    "@react-three/postprocessing": "^3.0.4",
     "@tsparticles/engine": "^3.5.0",
     "@tsparticles/preset-fire": "^3.2.0",
     "@tsparticles/react": "^3.0.0",
@@ -48,6 +51,7 @@
     "react-type-animation": "^3.2.0",
     "styled-components": "^6.3.8",
     "tech-stack-icons": "^3.5.8",
+    "three": "^0.182.0",
     "zod": "^3.25.17"
   },
   "devDependencies": {
