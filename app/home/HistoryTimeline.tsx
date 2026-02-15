@@ -50,7 +50,9 @@ function HistoryTimeline(props: Readonly<IHistoryTimelineProps>) {
             <GrowOnHover key={t.title}>
               <TimelineItem>
                 <TimelineOppositeContent sx={{ display: "flex", flex: 0, alignItems: "center" }}>
-                  {t.year}
+                  <Typography fontWeight="bold" variant="body2">
+                    {t.year}
+                  </Typography>
                 </TimelineOppositeContent>
                 <TimelineSeparator>
                   <TimelineDot color="error">
@@ -59,10 +61,12 @@ function HistoryTimeline(props: Readonly<IHistoryTimelineProps>) {
                   {index !== timeline.length - 1 && <TimelineConnector />}
                 </TimelineSeparator>
                 <TimelineContent sx={{ flex: 1 }}>
-                  <Typography variant="h6" component="span">
+                  <Typography variant="h6" component="h5">
                     {t.title}
                   </Typography>
-                  <Typography>{t.subTitle}</Typography>
+                  <Typography variant="caption" component="h6">
+                    {t.subTitle}
+                  </Typography>
                 </TimelineContent>
               </TimelineItem>
             </GrowOnHover>

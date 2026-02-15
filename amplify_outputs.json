@@ -5,7 +5,6 @@
     "user_pool_client_id": "5kil7nabh7f20aaqqu1c31i9vm",
     "identity_pool_id": "eu-west-2:d5dbb397-92d4-47e1-a01e-823cb734b0a9",
     "mfa_methods": [
-      "SMS",
       "TOTP"
     ],
     "standard_required_attributes": [

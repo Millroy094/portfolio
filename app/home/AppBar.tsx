@@ -22,8 +22,10 @@ function normalizeId(label: string) {
 
 export default function PortfolioAppBar() {
   const { data } = useWebsiteData();
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const appBarRef = useRef<HTMLDivElement | null>(null);
+  const mobileBarRef = useRef<HTMLDivElement | null>(null);
 
   const pages = useMemo(() => {
     const pagesWithContent: string[] = [];
@@ -36,12 +38,11 @@ export default function PortfolioAppBar() {
     return pagesWithContent;
   }, [data]);
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
+  const handleOpenNavMenu = () => {
+    setAnchorElNav(mobileBarRef.current);
   };
   const handleCloseNavMenu = () => setAnchorElNav(null);
 
-  // Native smooth scroll that accounts for AppBar height
   const scrollToSection = useCallback((sectionId: string) => {
     const el = document.getElementById(sectionId);
     if (!el) return;
@@ -56,15 +57,29 @@ export default function PortfolioAppBar() {
   return (
     <HideOnScroll threshold={16}>
       <AppBar position="sticky" sx={{ background: "none" }} ref={appBarRef}>
-        <Container maxWidth="xl" sx={{ padding: { xs: 0, sm: 0, md: 2, lg: 2 } }}>
+        <Container
+          maxWidth="xl"
+          sx={{
+            px: { xs: 0, sm: 0, md: 2, lg: 2 },
+            overflowX: "hidden",
+          }}
+        >
           <Toolbar disableGutters sx={{ display: { xs: "block", sm: "block", md: "flex" } }}>
-            {/* Mobile */}
             <Box
+              ref={mobileBarRef}
               sx={{
                 flexGrow: 1,
                 display: { xs: "flex", md: "none" },
-                background: "white",
-                opacity: 0.8,
+                alignItems: "center",
+                backgroundColor: "rgba(12,12,16,0.82)",
+                backdropFilter: "blur(8px)",
+                WebkitBackdropFilter: "blur(8px)",
+                color: "rgba(255,255,255,0.92)",
+                px: 1,
+                width: "100%",
+                mx: 0,
+                overflowX: "hidden",
+                borderBottom: "1px solid rgba(255,255,255,0.12)",
               }}
             >
               <IconButton
@@ -73,25 +88,41 @@ export default function PortfolioAppBar() {
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
                 onClick={handleOpenNavMenu}
-                sx={{ "&.MuiIconButton-root:focus": { outline: "none" } }}
+                sx={{
+                  color: "rgba(255,255,255,0.92)",
+                  "& .MuiSvgIcon-root": { fontSize: 28 },
+                  "&.MuiIconButton-root:focus": { outline: "none" },
+                }}
               >
                 <MenuIcon />
               </IconButton>
+
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorElNav}
-                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-                keepMounted
-                transformOrigin={{ vertical: "top", horizontal: "left" }}
-                style={{ transform: "translateX(-18px) translateY(0px)" }}
-                slotProps={{
-                  list: {
-                    sx: { p: 0, m: 0 },
-                  },
-                }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
-                sx={{ display: { xs: "block", md: "none" }, opacity: 0.8 }}
+                keepMounted
+                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                transformOrigin={{ vertical: "top", horizontal: "left" }}
+                marginThreshold={0}
+                sx={{ display: { xs: "block", md: "none" } }}
+                slotProps={{
+                  list: { sx: { p: 0, m: 0 } },
+                  paper: {
+                    sx: {
+                      left: "0 !important",
+                      width: "100vw",
+                      maxWidth: "100vw",
+                      backgroundColor: "rgba(18,18,24,0.92)",
+                      backdropFilter: "blur(8px)",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                      borderTop: "none",
+                      boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+                      color: "rgba(255,255,255,0.92)",
+                    },
+                  },
+                }}
               >
                 {pages.map((page) => {
                   const id = normalizeId(page);
@@ -100,14 +131,22 @@ export default function PortfolioAppBar() {
                       key={page}
                       onClick={() => {
                         handleCloseNavMenu();
-                        // Delay a tick so Menu can close before we measure and scroll
                         setTimeout(() => scrollToSection(id), 0);
+                      }}
+                      sx={{
+                        py: 1,
+                        px: 2,
+                        "&:hover": { backgroundColor: "rgba(255,255,255,0.06)" },
                       }}
                     >
                       <Typography
                         component="h3"
                         variant="caption"
-                        sx={{ textAlign: "center", color: "black" }}
+                        sx={{
+                          textAlign: "center",
+                          color: "rgba(255,255,255,0.92)",
+                          letterSpacing: 0.2,
+                        }}
                       >
                         {page}
                       </Typography>
@@ -117,7 +156,6 @@ export default function PortfolioAppBar() {
               </Menu>
             </Box>
 
-            {/* Desktop */}
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => {
                 const id = normalizeId(page);
