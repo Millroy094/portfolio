@@ -25,6 +25,7 @@
     "@mui/styled-engine-sc": "^7.3.7",
     "@next/third-parties": "^16.1.6",
     "@tsparticles/engine": "^3.5.0",
+    "@tsparticles/preset-fire": "^3.2.0",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.5.0",
     "aws-amplify": "^6.16.2",
