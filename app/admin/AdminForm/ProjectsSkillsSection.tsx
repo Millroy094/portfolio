@@ -88,8 +88,8 @@ export default function ProjectsSkillsSection({
                       variant="outlined"
                       slotProps={{
                         inputLabel: { shrink: !!field.value },
+                        htmlInput: { readOnly: disabled },
                       }}
-                      disabled={disabled}
                     />
                   )}
                 />
@@ -111,8 +111,8 @@ export default function ProjectsSkillsSection({
                       variant="outlined"
                       slotProps={{
                         inputLabel: { shrink: !!field.value },
+                        htmlInput: { readOnly: disabled },
                       }}
-                      disabled={disabled}
                     />
                   )}
                 />

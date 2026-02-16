@@ -87,7 +87,7 @@ export default function ExperiencesEducationSection({
                           onChange={(e) => field.onChange(e.target.value)}
                           error={!!fieldState.error}
                           helperText={errors.experiences?.[index]?.organization?.message}
-                          disabled={disabled}
+                          slotProps={{ htmlInput: { readOnly: disabled } }}
                         />
                       )}
                     />
@@ -106,7 +106,7 @@ export default function ExperiencesEducationSection({
                           onChange={(e) => field.onChange(e.target.value)}
                           error={!!fieldState.error}
                           helperText={errors.experiences?.[index]?.title?.message}
-                          disabled={disabled}
+                          slotProps={{ htmlInput: { readOnly: disabled } }}
                         />
                       )}
                     />
@@ -185,7 +185,7 @@ export default function ExperiencesEducationSection({
                           fullWidth
                           error={!!fieldState.error}
                           helperText={errors.education?.[index]?.institute?.message}
-                          disabled={disabled}
+                          slotProps={{ htmlInput: { readOnly: disabled } }}
                         />
                       )}
                     />
@@ -204,7 +204,7 @@ export default function ExperiencesEducationSection({
                           fullWidth
                           error={!!fieldState.error}
                           helperText={errors.education?.[index]?.qualification?.message}
-                          disabled={disabled}
+                          slotProps={{ htmlInput: { readOnly: disabled } }}
                         />
                       )}
                     />

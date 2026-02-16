@@ -4,10 +4,8 @@ import { getUrl } from "aws-amplify/storage";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-export function BadgeDisplay({ value, disabled }: { value: File | string; disabled?: boolean }) {
+export function BadgeDisplay({ value }: { value: File | string }) {
   const [url, setUrl] = useState<string | null>(null);
-
-  const filterClass = disabled ? "grayscale opacity-60" : "";
 
   useEffect(() => {
     async function resolveBadge() {
@@ -27,5 +25,5 @@ export function BadgeDisplay({ value, disabled }: { value: File | string; disabl
 
   if (!url) return null;
 
-  return <Image alt="badge" src={url} fill className={`object-contain p-3 ${filterClass}`} />;
+  return <Image alt="badge" src={url} fill className="object-contain p-3" />;
 }

@@ -33,8 +33,8 @@ export default function IdentitySection({
             inputLabel: {
               shrink: true,
             },
+            htmlInput: { readOnly: disabled },
           }}
-          disabled={disabled}
         />
       </div>
 
@@ -50,8 +50,8 @@ export default function IdentitySection({
             inputLabel: {
               shrink: true,
             },
+            htmlInput: { readOnly: disabled },
           }}
-          disabled={disabled}
         />
       </div>
 

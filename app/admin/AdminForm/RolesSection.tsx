@@ -51,8 +51,8 @@ export default function RolesSection({
                     variant="outlined"
                     slotProps={{
                       inputLabel: { shrink: !!field.value?.value },
+                      htmlInput: { readOnly: disabled },
                     }}
-                    disabled={disabled}
                   />
                 )}
               />

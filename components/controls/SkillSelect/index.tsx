@@ -38,7 +38,7 @@ export default function SkillSelect({
 
   return (
     <Autocomplete
-      disabled={disabled}
+      readOnly={disabled}
       multiple
       options={allSkills}
       disableCloseOnSelect
@@ -74,8 +74,11 @@ export default function SkillSelect({
                   key={option.id}
                   label={option.label}
                   sx={{ m: 1, pt: 3, pb: 3 }}
-                  onDelete={() => onChangeAction(value.filter((id) => id !== option.id))}
-                  disabled={disabled}
+                  onDelete={
+                    disabled
+                      ? undefined
+                      : () => onChangeAction(value.filter((id) => id !== option.id))
+                  }
                   icon={<span style={{ display: "inline-flex" }}>{option.render()}</span>}
                 />
               )),

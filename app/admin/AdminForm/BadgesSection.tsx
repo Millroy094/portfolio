@@ -45,7 +45,7 @@ export default function BadgesSection({
                 <div className="absolute inset-0 opacity-30 bg-[linear-gradient(45deg,#f4f4f5_25%,transparent_25%,transparent_75%,#f4f4f5_75%,#f4f4f5),linear-gradient(45deg,#f4f4f5_25%,transparent_25%,transparent_75%,#f4f4f5_75%,#f4f4f5)] bg-size-[16px_16px] bg-position-[0_0,8px_8px]" />
 
                 {/* Hook-safe Badge display */}
-                <BadgeDisplay value={badge.value} disabled={disabled} />
+                <BadgeDisplay value={badge.value} />
 
                 <div className="absolute top-1 right-1">
                   <IconButton
@@ -72,8 +72,8 @@ export default function BadgesSection({
                     variant="outlined"
                     slotProps={{
                       inputLabel: { shrink: !!field.value },
+                      htmlInput: { readOnly: disabled },
                     }}
-                    disabled={disabled}
                   />
                 )}
               />
