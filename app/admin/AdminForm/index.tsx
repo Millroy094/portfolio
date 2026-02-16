@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Edit, Save, LockSharp } from "@mui/icons-material";
-import { Card, Button } from "@mui/material";
+import { Card, Button, Alert } from "@mui/material";
 import Box from "@mui/material/Box";
 import React, { useEffect, useRef, useState } from "react";
 import { useForm, useFieldArray, SubmitHandler, FieldErrors, FieldError } from "react-hook-form";
@@ -173,6 +173,21 @@ export default function AdminForm() {
   return (
     <Card>
       <ToastContainer />
+
+      {!isEditable && (
+        <Alert
+          severity="info"
+          sx={{
+            mb: 2,
+            borderRadius: 2,
+            fontSize: "1rem",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          This form is currently in read‑only mode. Click Edit to make changes.
+        </Alert>
+      )}
 
       <div className="flex justify-end p-4">
         <Button
