@@ -31,8 +31,8 @@ export default function SeoSection({ register, errors, disabled }: SeoSectionPro
             helperText={errors.seoTitle?.message ?? ""}
             slotProps={{
               inputLabel: { shrink: true },
+              htmlInput: { readOnly: disabled },
             }}
-            disabled={disabled}
           />
         </div>
 
@@ -45,8 +45,8 @@ export default function SeoSection({ register, errors, disabled }: SeoSectionPro
             helperText={errors.seoDescription?.message ?? ""}
             slotProps={{
               inputLabel: { shrink: true },
+              htmlInput: { readOnly: disabled },
             }}
-            disabled={disabled}
           />
         </div>
       </Stack>
