@@ -20,9 +20,13 @@ function AboutMe() {
 
   const { data } = useWebsiteData();
 
-  const aboutMe = splitHtmlIntoParagraphs(data.aboutMe)?.map(htmlToText);
+  const aboutMe =
+    data.visibility.aboutMe && data.aboutMe
+      ? splitHtmlIntoParagraphs(data.aboutMe)?.map(htmlToText)
+      : [];
 
   return (
+    data.visibility.aboutMe &&
     aboutMe?.length > 0 && (
       <Grid
         container

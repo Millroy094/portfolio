@@ -213,6 +213,55 @@
               "isRequired": true,
               "attributes": []
             },
+            "showRoles": {
+              "name": "showRoles",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false,
+              "attributes": []
+            },
+            "showBadges": {
+              "name": "showBadges",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false,
+              "attributes": []
+            },
+            "showAboutMe": {
+              "name": "showAboutMe",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false,
+              "attributes": []
+            },
+            "showExperiences": {
+              "name": "showExperiences",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false,
+              "attributes": []
+            },
+            "showEducation": {
+              "name": "showEducation",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false,
+              "attributes": []
+            },
+            "showProjects": {
+              "name": "showProjects",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false,
+              "attributes": []
+            },
+            "showSkills": {
+              "name": "showSkills",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false,
+              "attributes": []
+            },
             "createdAt": {
               "name": "createdAt",
               "isArray": false,

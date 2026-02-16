@@ -32,6 +32,9 @@ export default function RolesSection({
       onAdd={() => append({ value: "" })}
       count={fields.length}
       disabled={disabled}
+      showVisibilityToggle
+      visKey={"roles"}
+      showAddButton
     >
       <div className="flex flex-col gap-4">
         {fields.map((role, index) => (

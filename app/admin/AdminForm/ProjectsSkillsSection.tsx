@@ -36,7 +36,15 @@ export default function ProjectsSkillsSection({
   return (
     <div className="flex flex-col gap-8">
       {/* Skills */}
-      <div className="w-full">
+      <FormSection
+        title="Skills"
+        description="Select the skills you want to highlight."
+        visKey="skills"
+        showVisibilityToggle
+        showAddButton={false}
+        count={1}
+        disabled={disabled}
+      >
         <Controller
           name="skills"
           control={control}
@@ -52,7 +60,7 @@ export default function ProjectsSkillsSection({
             />
           )}
         />
-      </div>
+      </FormSection>
 
       {/* Projects */}
       <FormSection
@@ -66,8 +74,11 @@ export default function ProjectsSkillsSection({
             url: "",
           })
         }
+        showVisibilityToggle
+        visKey={"projects"}
         count={projects.fields.length}
         disabled={disabled}
+        showAddButton
       >
         <div className="flex flex-col gap-4">
           {projects.fields.map((project, index) => (

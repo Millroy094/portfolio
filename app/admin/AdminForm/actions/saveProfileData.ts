@@ -28,6 +28,13 @@ type ProfilePayload = {
   resume?: string;
   aboutMe?: string;
   skills: string[];
+  showRoles: boolean;
+  showBadges: boolean;
+  showAboutMe: boolean;
+  showExperiences: boolean;
+  showEducation: boolean;
+  showProjects: boolean;
+  showSkills: boolean;
 };
 
 async function replaceChildren<K extends Exclude<keyof Client["models"], "Profile">>(
@@ -43,13 +50,9 @@ async function replaceChildren<K extends Exclude<keyof Client["models"], "Profil
     await Promise.all(existing.data.map((e) => m.delete({ id: e.id })));
   }
 
-  if (!items?.length) {
-    return;
-  }
+  if (!items?.length) return;
 
   await Promise.all(items.map((item) => m.create({ ...(item as object), profileId })));
-
-  return;
 }
 
 export async function saveProfileData(
@@ -74,12 +77,20 @@ export async function saveProfileData(
     skills: [...(formData.skills ?? [])],
     seoTitle: formData.seoTitle,
     seoDescription: formData.seoDescription,
+    showRoles: formData.visibility?.roles ?? true,
+    showBadges: formData.visibility?.badges ?? true,
+    showAboutMe: formData.visibility?.aboutMe ?? true,
+    showExperiences: formData.visibility?.experiences ?? true,
+    showEducation: formData.visibility?.education ?? true,
+    showProjects: formData.visibility?.projects ?? true,
+    showSkills: formData.visibility?.skills ?? true,
   };
 
   let profileId: string;
 
   if (existingProfileId) {
     profileId = existingProfileId;
+
     await client.models.Profile.update({ id: profileId, ...payload });
   } else {
     const created = await client.models.Profile.create(payload);
@@ -87,13 +98,14 @@ export async function saveProfileData(
     profileId = created.data.id;
   }
 
-  // @ts-expect-error: issue with amplify TypeScript
+  // @ts-expect-error Amplify TS quirky
   await replaceChildren(
     client,
     "Role",
     profileId,
     (formData.roles ?? []).map((r) => ({ value: r.value })),
   );
+
   await replaceChildren(
     client,
     "Badge",
@@ -103,6 +115,7 @@ export async function saveProfileData(
       label: badgeKeyLabels.label,
     })),
   );
+
   await replaceChildren(client, "Experience", profileId, formData.experiences ?? []);
   await replaceChildren(client, "Education", profileId, formData.education ?? []);
   await replaceChildren(client, "Project", profileId, formData.projects ?? []);
