@@ -26,7 +26,7 @@ export const ProfileSchema = z.object({
       z.custom<File>((v) => isBrowserFile(v), { message: "Invalid file" }),
       z
         .string()
-        .min(1)
+        .min(1, "Please upload an avatar")
         .regex(/^avatars\//, "Invalid avatar key"),
       z.string().url(),
     ])
@@ -38,6 +38,7 @@ export const ProfileSchema = z.object({
   roles: z.array(z.object({ value: z.string().min(1, "Please enter a role name") })),
   badges: z.array(
     z.object({
+      label: z.string().nonempty("Please enter a badge name"),
       value: z.union([
         z.string().url(),
         z.custom<File>((v) => v instanceof File),

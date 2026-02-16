@@ -7,11 +7,12 @@ import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback } from "react";
 
+import type { BadgesData } from "@/app/home/actions/getWebsiteData";
 import ImageWithSkeleton from "@/components/ImageWithSkeleton";
 import GrowOnHover from "@/hoc/GrowOnHover";
 
 type Props = {
-  badgeUrls: string[];
+  badges: BadgesData[];
   maxSizePx?: number;
   loop?: boolean;
   autoplay?: boolean;
@@ -19,7 +20,7 @@ type Props = {
 };
 
 export default function BadgeSlider({
-  badgeUrls,
+  badges,
   maxSizePx = 200,
   loop = true,
   autoplay = false,
@@ -73,9 +74,9 @@ export default function BadgeSlider({
         }}
       >
         <Box sx={{ display: "flex", gap: 2 }}>
-          {badgeUrls.map((badgeUrl, i) => (
+          {badges.map((badge, i) => (
             <Box
-              key={badgeUrl}
+              key={badge.label}
               sx={{
                 flex: "0 0 100%",
                 display: "flex",
@@ -95,8 +96,8 @@ export default function BadgeSlider({
                   }}
                 >
                   <ImageWithSkeleton
-                    src={badgeUrl}
-                    alt={`Certificate ${i + 1}`}
+                    src={badge.url}
+                    alt={badge.label}
                     width={maxSizePx}
                     height={maxSizePx}
                     priority={i === 0}

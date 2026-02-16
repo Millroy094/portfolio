@@ -8,6 +8,7 @@ import { cookies } from "next/headers";
 import type { Schema } from "@/amplify/data/resource";
 import outputs from "@/amplify_outputs.json";
 import { runWithAmplifyServerContext } from "@/services/amplify/amplifyServer";
+import { label } from "framer-motion/m";
 
 export type ExperienceData = {
   year: Nullable<number>;
@@ -27,6 +28,11 @@ type ProjectData = {
   name: string;
 };
 
+export type BadgesData = {
+  url: string;
+  label: string;
+};
+
 export type WebsiteData = {
   seoTitle: string;
   seoDescription: string;
@@ -40,7 +46,7 @@ export type WebsiteData = {
   roles: string[];
   skills: string[] | null;
   avatarUrl: string;
-  badgeUrls: string[];
+  badges: BadgesData[];
   experiences: ExperienceData[] | null;
   education: EducationData[] | null;
   projects: ProjectData[] | null;
@@ -58,7 +64,7 @@ const emptyWebsiteData: WebsiteData = {
   punchLine: "",
   skills: [],
   avatarUrl: "",
-  badgeUrls: [],
+  badges: [],
   roles: [],
   experiences: [],
   education: [],
@@ -103,8 +109,11 @@ export default async function getWebsiteData(): Promise<WebsiteData> {
 
     const avatarUrl = p.avatarKey ? await generateS3UrlFromKey(p.avatarKey) : null;
 
-    const badgeUrls = await Promise.all(
-      badges.data.filter(Boolean).map((b) => generateS3UrlFromKey(b.value)),
+    const badgeUrlLabelPair = await Promise.all(
+      badges.data.filter(Boolean).map(async (badge) => {
+        const url = await generateS3UrlFromKey(badge.value);
+        return { url, label: badge.label };
+      }),
     );
 
     return {
@@ -119,7 +128,7 @@ export default async function getWebsiteData(): Promise<WebsiteData> {
       punchLine: p.punchLine ?? emptyWebsiteData.punchLine,
       skills: p?.skills?.map((skill) => skill ?? "").filter(Boolean) ?? emptyWebsiteData.skills,
       avatarUrl: avatarUrl ?? emptyWebsiteData.avatarUrl,
-      badgeUrls: badgeUrls ?? emptyWebsiteData.badgeUrls,
+      badges: badgeUrlLabelPair ?? emptyWebsiteData.badges,
       roles: roles.data.map((r) => r.value) ?? emptyWebsiteData.roles,
       experiences:
         experiences.data.map((e) => ({

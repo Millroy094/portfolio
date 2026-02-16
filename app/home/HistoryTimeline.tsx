@@ -50,7 +50,7 @@ function HistoryTimeline(props: Readonly<IHistoryTimelineProps>) {
             <GrowOnHover key={t.title}>
               <TimelineItem>
                 <TimelineOppositeContent sx={{ display: "flex", flex: 0, alignItems: "center" }}>
-                  <Typography fontWeight="bold" variant="body2">
+                  <Typography fontWeight="bold" component="h4" variant="body2">
                     {t.year}
                   </Typography>
                 </TimelineOppositeContent>

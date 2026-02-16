@@ -1,17 +1,19 @@
 "use client";
 
 import { AccountCircle, Person2 } from "@mui/icons-material";
-import { Avatar, Button } from "@mui/material";
+import { Avatar, Button, FormHelperText } from "@mui/material";
 import { getUrl } from "aws-amplify/storage";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Controller, Control } from "react-hook-form";
+import * as React from "react";
+import { Controller, Control, FieldErrors } from "react-hook-form";
 
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
 import AvatarCropper from "@/components/controls/AvatorCropper";
 
 export interface AvatarSectionProps {
   control: Control<ProfileSchemaType>;
+  errors: FieldErrors<ProfileSchemaType>;
   cropOpen: boolean;
   cropFile: File | null;
   setCropOpen: (open: boolean) => void;
@@ -61,6 +63,7 @@ export default function AvatarSection({
   cropFile,
   setCropOpen,
   avatarInputRef,
+  errors,
 }: AvatarSectionProps) {
   return (
     <div className="flex flex-col items-center gap-3 sm:gap-4 w-full">
@@ -69,8 +72,13 @@ export default function AvatarSection({
         control={control}
         render={({ field }) => (
           <>
-            {/* SAFE: AvatarDisplay uses hooks internally */}
             <AvatarDisplay value={field.value} />
+
+            {errors.avatar?.message && (
+              <FormHelperText sx={{ pl: 1 }} error>
+                {errors.avatar.message}
+              </FormHelperText>
+            )}
 
             <Button
               type="button"

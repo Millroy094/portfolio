@@ -79,8 +79,8 @@ function Introduction(): JSX.Element {
               {data.punchLine}
             </Typography>
           )}
-          {data.badgeUrls.length > 0 && (
-            <BadgeSlider badgeUrls={data.badgeUrls} loop autoplay autoplayDelayMs={3000} />
+          {data.badges.length > 0 && (
+            <BadgeSlider badges={data.badges} loop autoplay autoplayDelayMs={3000} />
           )}
           <Box sx={{ padding: "10px", display: "flex", justifyContent: "center" }}>
             {data.linkedin && (
