@@ -18,8 +18,9 @@ function EducationAndExperience() {
   };
 
   const { data } = useWebsiteData();
-  const hasEducation = data.education && data.education.length > 0;
-  const hasExperience = data.experiences && data.experiences.length > 0;
+  const hasEducation = data.visibility.education && data.education && data.education.length > 0;
+  const hasExperience =
+    data.visibility.experiences && data.experiences && data.experiences.length > 0;
   const hasOneExperienceOrEducation = hasEducation || hasExperience;
   return (
     hasOneExperienceOrEducation && (

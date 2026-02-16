@@ -1,10 +1,11 @@
 "use client";
 
-import { Paper, Stack, TextField, Typography } from "@mui/material";
+import { Stack, TextField } from "@mui/material";
 import * as React from "react";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
+import { FormSection } from "@/components/FormSection";
 
 export interface SeoSectionProps {
   register: UseFormRegister<ProfileSchemaType>;
@@ -14,44 +15,41 @@ export interface SeoSectionProps {
 
 export default function SeoSection({ register, errors, disabled }: SeoSectionProps) {
   return (
-    <div className="w-full">
-      <Paper variant="outlined" sx={{ p: 2 }}>
-        <Stack direction="column" alignItems="start" sx={{ mb: 1 }} gap={2}>
-          <Typography variant="h6" sx={{ mb: 1 }}>
-            SEO
-          </Typography>
-          <div className="w-full ">
-            <TextField
-              {...register("seoTitle")}
-              label="Website Title"
-              fullWidth
-              error={!!errors.seoTitle}
-              helperText={errors.seoTitle?.message ?? ""}
-              slotProps={{
-                inputLabel: {
-                  shrink: true,
-                },
-              }}
-              disabled={disabled}
-            />
-          </div>
-          <div className="w-full ">
-            <TextField
-              label="SEO Description"
-              fullWidth
-              {...register("seoDescription")}
-              error={!!errors.seoDescription}
-              helperText={errors.seoDescription?.message ?? ""}
-              slotProps={{
-                inputLabel: {
-                  shrink: true,
-                },
-              }}
-              disabled={disabled}
-            />
-          </div>
-        </Stack>
-      </Paper>
-    </div>
+    <FormSection
+      title="SEO"
+      description="Control the title and description used for search engines."
+      count={1}
+      disabled={disabled}
+    >
+      <Stack direction="column" alignItems="start" gap={2} sx={{ mb: 1, width: "100%" }}>
+        <div className="w-full">
+          <TextField
+            {...register("seoTitle")}
+            label="Website Title"
+            fullWidth
+            error={!!errors.seoTitle}
+            helperText={errors.seoTitle?.message ?? ""}
+            slotProps={{
+              inputLabel: { shrink: true },
+            }}
+            disabled={disabled}
+          />
+        </div>
+
+        <div className="w-full">
+          <TextField
+            label="SEO Description"
+            fullWidth
+            {...register("seoDescription")}
+            error={!!errors.seoDescription}
+            helperText={errors.seoDescription?.message ?? ""}
+            slotProps={{
+              inputLabel: { shrink: true },
+            }}
+            disabled={disabled}
+          />
+        </div>
+      </Stack>
+    </FormSection>
   );
 }

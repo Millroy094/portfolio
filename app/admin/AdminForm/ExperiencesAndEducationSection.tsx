@@ -61,6 +61,9 @@ export default function ExperiencesEducationSection({
         }
         count={experiences.fields.length}
         disabled={disabled}
+        showVisibilityToggle
+        visKey={"experiences"}
+        showAddButton
       >
         <div className="flex flex-col gap-4">
           {[...experiences.fields]
@@ -159,6 +162,9 @@ export default function ExperiencesEducationSection({
         }
         count={education.fields.length}
         disabled={disabled}
+        showVisibilityToggle
+        visKey={"education"}
+        showAddButton
       >
         <div className="flex flex-col gap-4">
           {[...education.fields]

@@ -25,6 +25,7 @@ function Skills() {
   const { data } = useWebsiteData();
 
   return (
+    data.visibility.skills &&
     data.skills &&
     data.skills.length > 0 && (
       <Grid

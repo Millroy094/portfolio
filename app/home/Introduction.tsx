@@ -54,7 +54,7 @@ function Introduction(): JSX.Element {
             </Typography>
           </Grid>
         )}
-        {data.roles.length > 0 && (
+        {data.visibility.roles && data.roles.length > 0 && (
           <Grid container justifyContent="center">
             <TypeAnimation
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -79,7 +79,7 @@ function Introduction(): JSX.Element {
               {data.punchLine}
             </Typography>
           )}
-          {data.badges.length > 0 && (
+          {data.visibility.badges && data.badges.length > 0 && (
             <BadgeSlider badges={data.badges} loop autoplay autoplayDelayMs={3000} />
           )}
           <Box sx={{ padding: "10px", display: "flex", justifyContent: "center" }}>

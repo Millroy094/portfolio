@@ -34,6 +34,9 @@ export default function BadgesSection({
         onAdd={() => badgeFileInputRef.current?.click()}
         count={fields.length}
         disabled={disabled}
+        visKey="badges"
+        showVisibilityToggle
+        showAddButton
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
           {fields.map((badge, index) => (

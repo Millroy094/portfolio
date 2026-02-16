@@ -20,6 +20,16 @@ const SkillsArrayGeneric = z.array(z.string().min(1, "Skill id cannot be empty")
 const currentYear = new Date().getFullYear();
 const isBrowserFile = (v: unknown): v is File => typeof File !== "undefined" && v instanceof File;
 
+const SectionVisibilitySchema = z.object({
+  roles: z.boolean().default(true),
+  badges: z.boolean().default(true),
+  aboutMe: z.boolean().default(true),
+  experiences: z.boolean().default(true),
+  education: z.boolean().default(true),
+  projects: z.boolean().default(true),
+  skills: z.boolean().default(true),
+});
+
 export const ProfileSchema = z.object({
   avatar: z
     .union([
@@ -112,6 +122,16 @@ export const ProfileSchema = z.object({
     .string()
     .max(150, "SEO description can only be a maximum of 150 characters")
     .nonempty("SEO description is required"),
+
+  visibility: SectionVisibilitySchema.default({
+    roles: true,
+    badges: true,
+    aboutMe: true,
+    experiences: true,
+    education: true,
+    projects: true,
+    skills: true,
+  }),
 });
 
 export type ProfileSchemaType = z.input<typeof ProfileSchema>;

@@ -25,6 +25,7 @@ function Projects() {
   const { data } = useWebsiteData();
 
   return (
+    data.visibility.projects &&
     data.projects &&
     data.projects.length > 0 && (
       <Grid

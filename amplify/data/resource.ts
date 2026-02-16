@@ -11,19 +11,30 @@ const schema = a.schema({
       stackOverflow: a.string(),
       resume: a.string(),
       aboutMe: a.string(),
+
       skills: a.string().array(),
       roles: a.hasMany("Role", "profileId"),
       badges: a.hasMany("Badge", "profileId"),
       experiences: a.hasMany("Experience", "profileId"),
       education: a.hasMany("Education", "profileId"),
       projects: a.hasMany("Project", "profileId"),
+
       seoTitle: a.string().required(),
       seoDescription: a.string().required(),
+
+      showRoles: a.boolean().default(true),
+      showBadges: a.boolean().default(true),
+      showAboutMe: a.boolean().default(true),
+      showExperiences: a.boolean().default(true),
+      showEducation: a.boolean().default(true),
+      showProjects: a.boolean().default(true),
+      showSkills: a.boolean().default(true),
     })
     .authorization((allow) => [
       allow.publicApiKey().to(["read"]),
       allow.authenticated().to(["read", "create", "update", "delete"]),
     ]),
+
   Role: a
     .model({
       value: a.string().required(),
@@ -68,11 +79,11 @@ const schema = a.schema({
       profileId: a.id().required(),
       profile: a.belongsTo("Profile", "profileId"),
     })
-
     .authorization((allow) => [
       allow.publicApiKey().to(["read"]),
       allow.authenticated().to(["read", "create", "update", "delete"]),
     ]),
+
   Project: a
     .model({
       name: a.string().required(),
@@ -88,6 +99,7 @@ const schema = a.schema({
 });
 
 export type Schema = ClientSchema<typeof schema>;
+
 export const data = defineData({
   schema,
   authorizationModes: {

@@ -66,6 +66,16 @@ export async function getProfileData(): Promise<{
       })),
 
       skills: (p.skills ?? []).filter((s): s is string => typeof s === "string"),
+
+      visibility: {
+        roles: p.showRoles ?? true,
+        badges: p.showBadges ?? true,
+        aboutMe: p.showAboutMe ?? true,
+        experiences: p.showExperiences ?? true,
+        education: p.showEducation ?? true,
+        projects: p.showProjects ?? true,
+        skills: p.showSkills ?? true,
+      },
     },
   };
 }

@@ -5,7 +5,14 @@ import { Edit, Save, LockSharp } from "@mui/icons-material";
 import { Card, Button, Alert } from "@mui/material";
 import Box from "@mui/material/Box";
 import React, { useEffect, useRef, useState } from "react";
-import { useForm, useFieldArray, SubmitHandler, FieldErrors, FieldError } from "react-hook-form";
+import {
+  useForm,
+  useFieldArray,
+  SubmitHandler,
+  FieldErrors,
+  FieldError,
+  FormProvider,
+} from "react-hook-form";
 import { Atom } from "react-loading-indicators";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -29,24 +36,35 @@ export default function AdminForm() {
   const [processing, setProcessing] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-    reset,
-  } = useForm<ProfileSchemaType>({
+  const methods = useForm<ProfileSchemaType>({
     resolver: zodResolver(ProfileSchema),
     defaultValues: {
-      roles: [{ value: "" }],
+      roles: [],
       badges: [],
       avatar: "",
       experiences: [],
       education: [],
       projects: [],
       skills: [],
+      visibility: {
+        roles: true,
+        badges: true,
+        aboutMe: true,
+        experiences: true,
+        education: true,
+        projects: true,
+        skills: true,
+      },
     },
   });
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+    reset,
+  } = methods;
 
   useEffect(() => {
     async function load() {
@@ -135,6 +153,7 @@ export default function AdminForm() {
   };
 
   const onSubmit: SubmitHandler<ProfileSchemaType> = async (data) => {
+    setIsEditable(false);
     setProcessing(true);
     try {
       const assets = await uploadAssets(data);
@@ -151,6 +170,7 @@ export default function AdminForm() {
       });
     }
     setProcessing(false);
+    setIsEditable(true);
   };
 
   if (loading) {
@@ -189,7 +209,7 @@ export default function AdminForm() {
         </Alert>
       )}
 
-      <div className="flex justify-end p-4">
+      <div className="flex justify-end p-4 gap-2">
         <Button
           variant="outlined"
           color={isEditable ? "warning" : "primary"}
@@ -199,112 +219,113 @@ export default function AdminForm() {
           {isEditable ? "Lock" : "Edit"}
         </Button>
       </div>
+      <FormProvider {...methods}>
+        <form
+          className="flex flex-col p-4 sm:p-6 md:p-8 gap-6"
+          onSubmit={handleSubmit(onSubmit, onInvalid)}
+        >
+          {/* Hidden Inputs */}
+          <input
+            type="file"
+            accept="image/*"
+            hidden
+            ref={avatarInputRef}
+            onChange={handleAvatarFileChange}
+          />
+          <input
+            type="file"
+            accept="image/*"
+            hidden
+            ref={badgeFileInputRef}
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) badges.append({ value: file, label: "" });
+              if (badgeFileInputRef.current) badgeFileInputRef.current.value = "";
+            }}
+          />
 
-      <form
-        className="flex flex-col p-4 sm:p-6 md:p-8 gap-6"
-        onSubmit={handleSubmit(onSubmit, onInvalid)}
-      >
-        {/* Hidden Inputs */}
-        <input
-          type="file"
-          accept="image/*"
-          hidden
-          ref={avatarInputRef}
-          onChange={handleAvatarFileChange}
-        />
-        <input
-          type="file"
-          accept="image/*"
-          hidden
-          ref={badgeFileInputRef}
-          onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (file) badges.append({ value: file, label: "" });
-            if (badgeFileInputRef.current) badgeFileInputRef.current.value = "";
-          }}
-        />
+          {/* Sections */}
+          <AvatarSection
+            errors={errors}
+            control={control}
+            cropOpen={cropOpen}
+            cropFile={cropFile}
+            setCropOpen={setCropOpen}
+            avatarInputRef={avatarInputRef}
+            disabled={!isEditable}
+          />
 
-        {/* Sections */}
-        <AvatarSection
-          errors={errors}
-          control={control}
-          cropOpen={cropOpen}
-          cropFile={cropFile}
-          setCropOpen={setCropOpen}
-          avatarInputRef={avatarInputRef}
-          disabled={!isEditable}
-        />
+          <IdentitySection
+            register={register}
+            control={control}
+            errors={errors}
+            disabled={!isEditable}
+          />
 
-        <IdentitySection
-          register={register}
-          control={control}
-          errors={errors}
-          disabled={!isEditable}
-        />
+          <RolesSection
+            control={control}
+            errors={errors}
+            fields={roles.fields}
+            append={roles.append}
+            remove={roles.remove}
+            disabled={!isEditable}
+          />
 
-        <RolesSection
-          control={control}
-          errors={errors}
-          fields={roles.fields}
-          append={roles.append}
-          remove={roles.remove}
-          disabled={!isEditable}
-        />
+          <BadgesSection
+            control={control}
+            errors={errors}
+            fields={badges.fields}
+            remove={badges.remove}
+            badgeFileInputRef={badgeFileInputRef}
+            disabled={!isEditable}
+          />
 
-        <BadgesSection
-          control={control}
-          errors={errors}
-          fields={badges.fields}
-          remove={badges.remove}
-          badgeFileInputRef={badgeFileInputRef}
-          disabled={!isEditable}
-        />
+          <AboutMeSection control={control} errors={errors} disabled={!isEditable} />
 
-        <AboutMeSection control={control} errors={errors} disabled={!isEditable} />
+          <ExperiencesAndEducationSection
+            control={control}
+            errors={errors}
+            experiences={{
+              fields: experiences.fields,
+              append: experiences.append,
+              remove: experiences.remove,
+            }}
+            education={{
+              fields: education.fields,
+              append: education.append,
+              remove: education.remove,
+            }}
+            disabled={!isEditable}
+          />
 
-        <ExperiencesAndEducationSection
-          control={control}
-          errors={errors}
-          experiences={{
-            fields: experiences.fields,
-            append: experiences.append,
-            remove: experiences.remove,
-          }}
-          education={{
-            fields: education.fields,
-            append: education.append,
-            remove: education.remove,
-          }}
-          disabled={!isEditable}
-        />
+          <ProjectsSkillsSection
+            control={control}
+            errors={errors}
+            projects={{
+              fields: projects.fields,
+              append: projects.append,
+              remove: projects.remove,
+            }}
+            disabled={!isEditable}
+          />
 
-        <ProjectsSkillsSection
-          control={control}
-          errors={errors}
-          projects={{
-            fields: projects.fields,
-            append: projects.append,
-            remove: projects.remove,
-          }}
-          disabled={!isEditable}
-        />
+          <SeoSection register={register} errors={errors} disabled={!isEditable} />
 
-        <SeoSection register={register} errors={errors} disabled={!isEditable} />
-
-        {/* Save Button */}
-        <div className="flex flex-col sm:flex-row sm:justify-end gap-3 sm:gap-4 mt-6">
-          <Button
-            disabled={!isEditable || processing}
-            type="submit"
-            variant="contained"
-            color="success"
-            startIcon={<Save />}
-            sx={{ width: { xs: "100%", sm: "auto" } }}
-          >
-            Save changes
-          </Button>
-        </div>
-      </form>
+          {/* Save Button */}
+          <div className="flex flex-col sm:flex-row sm:justify-end gap-3 sm:gap-4 mt-6">
+            <Button
+              disabled={!isEditable || processing}
+              type="submit"
+              variant="contained"
+              color="success"
+              startIcon={<Save />}
+              sx={{ width: { xs: "100%", sm: "auto" } }}
+            >
+              Save changes
+            </Button>
+          </div>
+        </form>
+      </FormProvider>
     </Card>
   );
 }

@@ -8,7 +8,6 @@ import { cookies } from "next/headers";
 import type { Schema } from "@/amplify/data/resource";
 import outputs from "@/amplify_outputs.json";
 import { runWithAmplifyServerContext } from "@/services/amplify/amplifyServer";
-import { label } from "framer-motion/m";
 
 export type ExperienceData = {
   year: Nullable<number>;
@@ -44,12 +43,22 @@ export type WebsiteData = {
   stackOverflow: string;
   resume: string;
   roles: string[];
-  skills: string[] | null;
+  skills: string[];
   avatarUrl: string;
   badges: BadgesData[];
-  experiences: ExperienceData[] | null;
-  education: EducationData[] | null;
-  projects: ProjectData[] | null;
+  experiences: ExperienceData[];
+  education: EducationData[];
+  projects: ProjectData[];
+
+  visibility: {
+    roles: boolean;
+    badges: boolean;
+    aboutMe: boolean;
+    experiences: boolean;
+    education: boolean;
+    projects: boolean;
+    skills: boolean;
+  };
 };
 
 const emptyWebsiteData: WebsiteData = {
@@ -69,6 +78,16 @@ const emptyWebsiteData: WebsiteData = {
   experiences: [],
   education: [],
   projects: [],
+
+  visibility: {
+    roles: true,
+    badges: true,
+    aboutMe: true,
+    experiences: true,
+    education: true,
+    projects: true,
+    skills: true,
+  },
 };
 
 const generateS3UrlFromKey = async (path: string) => {
@@ -95,11 +114,10 @@ export default async function getWebsiteData(): Promise<WebsiteData> {
 
     const list = await client.models.Profile.list({});
     const p = list.data[0];
-    if (!p) {
-      return emptyWebsiteData;
-    }
 
-    const [roles, badges, experiences, education, projects] = await Promise.all([
+    if (!p) return emptyWebsiteData;
+
+    const [rolesRes, badgesRes, expRes, eduRes, projRes] = await Promise.all([
       client.models.Role.list({ filter: { profileId: { eq: p.id } } }),
       client.models.Badge.list({ filter: { profileId: { eq: p.id } } }),
       client.models.Experience.list({ filter: { profileId: { eq: p.id } } }),
@@ -107,47 +125,73 @@ export default async function getWebsiteData(): Promise<WebsiteData> {
       client.models.Project.list({ filter: { profileId: { eq: p.id } } }),
     ]);
 
-    const avatarUrl = p.avatarKey ? await generateS3UrlFromKey(p.avatarKey) : null;
+    const visibility = {
+      roles: p.showRoles ?? true,
+      badges: p.showBadges ?? true,
+      aboutMe: p.showAboutMe ?? true,
+      experiences: p.showExperiences ?? true,
+      education: p.showEducation ?? true,
+      projects: p.showProjects ?? true,
+      skills: p.showSkills ?? true,
+    };
 
-    const badgeUrlLabelPair = await Promise.all(
-      badges.data.filter(Boolean).map(async (badge) => {
-        const url = await generateS3UrlFromKey(badge.value);
-        return { url, label: badge.label };
-      }),
-    );
+    const avatarUrl = p.avatarKey ? await generateS3UrlFromKey(p.avatarKey) : "";
+
+    const badgeUrlLabelPair = visibility.badges
+      ? await Promise.all(
+          badgesRes.data.map(async (badge) => {
+            const url = await generateS3UrlFromKey(badge.value);
+            return { url, label: badge.label };
+          }),
+        )
+      : [];
 
     return {
-      seoTitle: p.seoTitle ?? emptyWebsiteData.seoTitle,
-      seoDescription: p.seoDescription ?? emptyWebsiteData.seoDescription,
-      fullName: p.fullName ?? emptyWebsiteData.fullName,
-      aboutMe: p.aboutMe ?? emptyWebsiteData.aboutMe,
-      github: p.github ?? emptyWebsiteData.github,
-      linkedin: p.linkedIn ?? emptyWebsiteData.linkedin,
-      stackOverflow: p.stackOverflow ?? emptyWebsiteData.stackOverflow,
-      resume: p.resume ?? emptyWebsiteData.resume,
-      punchLine: p.punchLine ?? emptyWebsiteData.punchLine,
-      skills: p?.skills?.map((skill) => skill ?? "").filter(Boolean) ?? emptyWebsiteData.skills,
-      avatarUrl: avatarUrl ?? emptyWebsiteData.avatarUrl,
-      badges: badgeUrlLabelPair ?? emptyWebsiteData.badges,
-      roles: roles.data.map((r) => r.value) ?? emptyWebsiteData.roles,
-      experiences:
-        experiences.data.map((e) => ({
-          title: e.title,
-          organization: e.organization,
-          year: e.year,
-        })) ?? emptyWebsiteData.experiences,
-      education:
-        education.data.map((e) => ({
-          qualification: e.qualification,
-          institute: e.institute,
-          year: e.year,
-        })) ?? emptyWebsiteData.education,
-      projects:
-        projects.data.map((e) => ({
-          description: e.description ?? "",
-          name: e.name,
-          url: e.url ?? "",
-        })) ?? emptyWebsiteData.projects,
+      seoTitle: p.seoTitle ?? "",
+      seoDescription: p.seoDescription ?? "",
+      fullName: p.fullName ?? "",
+      punchLine: p.punchLine ?? "",
+      aboutMe: visibility.aboutMe ? (p.aboutMe ?? "") : "",
+      github: p.github ?? "",
+      linkedin: p.linkedIn ?? "",
+      stackOverflow: p.stackOverflow ?? "",
+      resume: p.resume ?? "",
+
+      roles: visibility.roles ? rolesRes.data.map((r) => r.value) : [],
+
+      skills: visibility.skills
+        ? (p?.skills?.filter((s): s is string => typeof s === "string") ?? [])
+        : [],
+
+      avatarUrl,
+
+      badges: badgeUrlLabelPair,
+
+      experiences: visibility.experiences
+        ? expRes.data.map((e) => ({
+            title: e.title,
+            organization: e.organization,
+            year: e.year,
+          }))
+        : [],
+
+      education: visibility.education
+        ? eduRes.data.map((e) => ({
+            qualification: e.qualification,
+            institute: e.institute,
+            year: e.year,
+          }))
+        : [],
+
+      projects: visibility.projects
+        ? projRes.data.map((e) => ({
+            description: e.description ?? "",
+            name: e.name,
+            url: e.url ?? "",
+          }))
+        : [],
+
+      visibility,
     };
   } catch (error) {
     console.error(error);
