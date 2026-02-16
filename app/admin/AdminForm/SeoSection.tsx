@@ -9,9 +9,10 @@ import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
 export interface SeoSectionProps {
   register: UseFormRegister<ProfileSchemaType>;
   errors: FieldErrors<ProfileSchemaType>;
+  disabled: boolean;
 }
 
-export default function SeoSection({ register, errors }: SeoSectionProps) {
+export default function SeoSection({ register, errors, disabled }: SeoSectionProps) {
   return (
     <div className="w-full">
       <Paper variant="outlined" sx={{ p: 2 }}>
@@ -31,6 +32,7 @@ export default function SeoSection({ register, errors }: SeoSectionProps) {
                   shrink: true,
                 },
               }}
+              disabled={disabled}
             />
           </div>
           <div className="w-full ">
@@ -45,6 +47,7 @@ export default function SeoSection({ register, errors }: SeoSectionProps) {
                   shrink: true,
                 },
               }}
+              disabled={disabled}
             />
           </div>
         </Stack>

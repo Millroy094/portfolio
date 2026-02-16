@@ -9,6 +9,7 @@ type FormSectionProps = {
   onAdd: () => void;
   count: number;
   children: React.ReactNode;
+  disabled?: boolean;
 };
 
 export const FormSection: React.FC<FormSectionProps> = ({
@@ -18,12 +19,19 @@ export const FormSection: React.FC<FormSectionProps> = ({
   onAdd,
   count,
   children,
+  disabled,
 }) => {
   return (
     <Paper variant="outlined" sx={{ p: 2 }}>
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
         <Typography variant="h6">{title}</Typography>
-        <Button variant="contained" startIcon={<AddIcon />} size="small" onClick={onAdd}>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          size="small"
+          onClick={onAdd}
+          disabled={disabled}
+        >
           {addLabel}
         </Button>
       </Stack>
@@ -36,6 +44,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
           description={description}
           actionLabel={addLabel}
           onAction={onAdd}
+          disabled={disabled}
         />
       )}
     </Paper>
@@ -47,7 +56,8 @@ const EmptyState: React.FC<{
   description: string;
   actionLabel: string;
   onAction: () => void;
-}> = ({ title, description, actionLabel, onAction }) => {
+  disabled?: boolean;
+}> = ({ title, description, actionLabel, onAction, disabled }) => {
   return (
     <Stack
       spacing={1.5}
@@ -65,7 +75,7 @@ const EmptyState: React.FC<{
       <Typography variant="body2" color="text.secondary">
         {description}
       </Typography>
-      <Button variant="outlined" startIcon={<AddIcon />} onClick={onAction}>
+      <Button variant="outlined" startIcon={<AddIcon />} onClick={onAction} disabled={disabled}>
         {actionLabel}
       </Button>
     </Stack>

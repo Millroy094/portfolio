@@ -24,9 +24,15 @@ export interface ProjectsSkillsProps {
     append: (v: ProjectRecord) => void;
     remove: (index: number) => void;
   };
+  disabled: boolean;
 }
 
-export default function ProjectsSkillsSection({ control, errors, projects }: ProjectsSkillsProps) {
+export default function ProjectsSkillsSection({
+  control,
+  errors,
+  projects,
+  disabled,
+}: ProjectsSkillsProps) {
   return (
     <div className="flex flex-col gap-8">
       {/* Skills */}
@@ -42,6 +48,7 @@ export default function ProjectsSkillsSection({ control, errors, projects }: Pro
               name={field.name}
               error={!!fieldState.error}
               helperText={fieldState.error?.message}
+              disabled={disabled}
             />
           )}
         />
@@ -60,6 +67,7 @@ export default function ProjectsSkillsSection({ control, errors, projects }: Pro
           })
         }
         count={projects.fields.length}
+        disabled={disabled}
       >
         <div className="flex flex-col gap-4">
           {projects.fields.map((project, index) => (
@@ -81,6 +89,7 @@ export default function ProjectsSkillsSection({ control, errors, projects }: Pro
                       slotProps={{
                         inputLabel: { shrink: !!field.value },
                       }}
+                      disabled={disabled}
                     />
                   )}
                 />
@@ -103,6 +112,7 @@ export default function ProjectsSkillsSection({ control, errors, projects }: Pro
                       slotProps={{
                         inputLabel: { shrink: !!field.value },
                       }}
+                      disabled={disabled}
                     />
                   )}
                 />
@@ -120,6 +130,7 @@ export default function ProjectsSkillsSection({ control, errors, projects }: Pro
                       onChange={field.onChange}
                       error={!!fieldState.error}
                       errorText={errors.projects?.[index]?.url?.message}
+                      disabled={disabled}
                     />
                   )}
                 />
@@ -127,8 +138,8 @@ export default function ProjectsSkillsSection({ control, errors, projects }: Pro
 
               {/* Remove button only */}
               <div className="flex gap-2 justify-center">
-                <IconButton onClick={() => projects.remove(index)} size="small">
-                  <DeleteSharp color="error" />
+                <IconButton onClick={() => projects.remove(index)} size="small" disabled={disabled}>
+                  <DeleteSharp color={disabled ? "disabled" : "error"} />
                 </IconButton>
               </div>
             </div>

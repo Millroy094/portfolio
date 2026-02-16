@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Save } from "@mui/icons-material";
+import { Edit, Save, LockSharp } from "@mui/icons-material";
 import { Card, Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import React, { useEffect, useRef, useState } from "react";
@@ -27,6 +27,7 @@ export default function AdminForm() {
   const [formId, setFormId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [isEditable, setIsEditable] = useState(false);
 
   const {
     register,
@@ -172,6 +173,18 @@ export default function AdminForm() {
   return (
     <Card>
       <ToastContainer />
+
+      <div className="flex justify-end p-4">
+        <Button
+          variant="outlined"
+          color={isEditable ? "warning" : "primary"}
+          onClick={() => setIsEditable((prev) => !prev)}
+          startIcon={isEditable ? <LockSharp /> : <Edit />}
+        >
+          {isEditable ? "Lock" : "Edit"}
+        </Button>
+      </div>
+
       <form
         className="flex flex-col p-4 sm:p-6 md:p-8 gap-6"
         onSubmit={handleSubmit(onSubmit, onInvalid)}
@@ -204,9 +217,15 @@ export default function AdminForm() {
           cropFile={cropFile}
           setCropOpen={setCropOpen}
           avatarInputRef={avatarInputRef}
+          disabled={!isEditable}
         />
 
-        <IdentitySection register={register} control={control} errors={errors} />
+        <IdentitySection
+          register={register}
+          control={control}
+          errors={errors}
+          disabled={!isEditable}
+        />
 
         <RolesSection
           control={control}
@@ -214,6 +233,7 @@ export default function AdminForm() {
           fields={roles.fields}
           append={roles.append}
           remove={roles.remove}
+          disabled={!isEditable}
         />
 
         <BadgesSection
@@ -222,9 +242,10 @@ export default function AdminForm() {
           fields={badges.fields}
           remove={badges.remove}
           badgeFileInputRef={badgeFileInputRef}
+          disabled={!isEditable}
         />
 
-        <AboutMeSection control={control} errors={errors} />
+        <AboutMeSection control={control} errors={errors} disabled={!isEditable} />
 
         <ExperiencesAndEducationSection
           control={control}
@@ -239,6 +260,7 @@ export default function AdminForm() {
             append: education.append,
             remove: education.remove,
           }}
+          disabled={!isEditable}
         />
 
         <ProjectsSkillsSection
@@ -249,14 +271,15 @@ export default function AdminForm() {
             append: projects.append,
             remove: projects.remove,
           }}
+          disabled={!isEditable}
         />
 
-        <SeoSection register={register} errors={errors} />
+        <SeoSection register={register} errors={errors} disabled={!isEditable} />
 
         {/* Save Button */}
         <div className="flex flex-col sm:flex-row sm:justify-end gap-3 sm:gap-4 mt-6">
           <Button
-            disabled={processing}
+            disabled={!isEditable || processing}
             type="submit"
             variant="contained"
             color="success"

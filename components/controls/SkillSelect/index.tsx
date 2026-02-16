@@ -18,6 +18,7 @@ type SkillSelectProps = {
   helperText?: string;
   onBlurAction?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   name?: string;
+  disabled?: boolean;
 };
 
 export default function SkillSelect({
@@ -28,6 +29,7 @@ export default function SkillSelect({
   helperText,
   onBlurAction,
   name,
+  disabled,
 }: SkillSelectProps) {
   const selectedOptions = React.useMemo<Skill[]>(
     () => allSkills.filter((s) => value.includes(s.id)),
@@ -36,6 +38,7 @@ export default function SkillSelect({
 
   return (
     <Autocomplete
+      disabled={disabled}
       multiple
       options={allSkills}
       disableCloseOnSelect
@@ -72,6 +75,7 @@ export default function SkillSelect({
                   label={option.label}
                   sx={{ m: 1, pt: 3, pb: 3 }}
                   onDelete={() => onChangeAction(value.filter((id) => id !== option.id))}
+                  disabled={disabled}
                   icon={<span style={{ display: "inline-flex" }}>{option.render()}</span>}
                 />
               )),

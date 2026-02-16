@@ -4,7 +4,7 @@ import { AccountCircle, Person2 } from "@mui/icons-material";
 import { Avatar, Button, FormHelperText } from "@mui/material";
 import { getUrl } from "aws-amplify/storage";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import * as React from "react";
 import { Controller, Control, FieldErrors } from "react-hook-form";
 
@@ -18,11 +18,20 @@ export interface AvatarSectionProps {
   cropFile: File | null;
   setCropOpen: (open: boolean) => void;
   avatarInputRef: React.RefObject<HTMLInputElement | null>;
+  disabled: boolean;
 }
 
 /** NEW: Safe component that can use React hooks */
-function AvatarDisplay({ value }: { value?: File | string | null }) {
+function AvatarDisplay({
+  disabled,
+  value,
+}: {
+  value?: File | string | null;
+  disabled?: boolean;
+}): JSX.Element {
   const [url, setUrl] = useState<string | null>(null);
+
+  const filterClass = disabled ? "grayscale opacity-60" : "";
 
   useEffect(() => {
     async function load() {
@@ -45,7 +54,7 @@ function AvatarDisplay({ value }: { value?: File | string | null }) {
         width={100}
         height={100}
         src={url}
-        className="h-24 w-24 rounded-full border object-cover"
+        className={`h-24 w-24 rounded-full border object-cover ${filterClass}`}
       />
     );
   }
@@ -64,6 +73,7 @@ export default function AvatarSection({
   setCropOpen,
   avatarInputRef,
   errors,
+  disabled,
 }: AvatarSectionProps) {
   return (
     <div className="flex flex-col items-center gap-3 sm:gap-4 w-full">
@@ -72,7 +82,7 @@ export default function AvatarSection({
         control={control}
         render={({ field }) => (
           <>
-            <AvatarDisplay value={field.value} />
+            <AvatarDisplay value={field.value} disabled={disabled} />
 
             {errors.avatar?.message && (
               <FormHelperText sx={{ pl: 1 }} error>
@@ -87,6 +97,7 @@ export default function AvatarSection({
               startIcon={<AccountCircle />}
               onClick={() => avatarInputRef.current?.click()}
               sx={{ width: "100%", maxWidth: 320 }}
+              disabled={disabled}
             >
               Choose Avatar
             </Button>

@@ -10,9 +10,10 @@ import RichTextEditor from "@/components/controls/RichTextEditor";
 export interface AboutMeSectionProps {
   control: Control<ProfileSchemaType>;
   errors: FieldErrors<ProfileSchemaType>;
+  disabled: boolean;
 }
 
-export default function AboutMeSection({ control }: AboutMeSectionProps) {
+export default function AboutMeSection({ control, disabled }: AboutMeSectionProps) {
   return (
     <div className="w-full">
       <Paper variant="outlined" sx={{ p: 2 }}>
@@ -29,6 +30,7 @@ export default function AboutMeSection({ control }: AboutMeSectionProps) {
                   placeholder="Please write a bit about yourself"
                   value={field.value}
                   onChange={field.onChange}
+                  disabled={disabled}
                 />
                 {fieldState.error && (
                   <FormHelperText sx={{ pl: 1 }} error>

@@ -7,9 +7,17 @@ type LinkTextFieldProps = {
   onChange: (value: string) => void;
   error?: boolean;
   errorText?: string;
+  disabled?: boolean;
 };
 
-const LinkTextField: FC<LinkTextFieldProps> = ({ label, value, onChange, error, errorText }) => (
+const LinkTextField: FC<LinkTextFieldProps> = ({
+  label,
+  value,
+  onChange,
+  error,
+  errorText,
+  disabled,
+}) => (
   <TextField
     label={label}
     fullWidth
@@ -22,6 +30,7 @@ const LinkTextField: FC<LinkTextFieldProps> = ({ label, value, onChange, error, 
     }}
     error={error}
     helperText={errorText ?? ""}
+    disabled={disabled}
   />
 );
 

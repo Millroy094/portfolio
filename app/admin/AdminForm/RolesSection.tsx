@@ -13,6 +13,7 @@ export interface RolesSectionProps {
   fields: { id: string; value: string }[];
   append: (v: { value: string }) => void;
   remove: (index: number) => void;
+  disabled: boolean;
 }
 
 export default function RolesSection({
@@ -21,6 +22,7 @@ export default function RolesSection({
   fields,
   append,
   remove,
+  disabled,
 }: RolesSectionProps) {
   return (
     <FormSection
@@ -29,6 +31,7 @@ export default function RolesSection({
       addLabel="Add role"
       onAdd={() => append({ value: "" })}
       count={fields.length}
+      disabled={disabled}
     >
       <div className="flex flex-col gap-4">
         {fields.map((role, index) => (
@@ -49,6 +52,7 @@ export default function RolesSection({
                     slotProps={{
                       inputLabel: { shrink: !!field.value?.value },
                     }}
+                    disabled={disabled}
                   />
                 )}
               />
@@ -56,8 +60,8 @@ export default function RolesSection({
 
             {/* Remove button only */}
             <div className="flex gap-2 justify-center">
-              <IconButton onClick={() => remove(index)} size="small">
-                <DeleteSharp color="error" />
+              <IconButton onClick={() => remove(index)} size="small" disabled={disabled}>
+                <DeleteSharp color={disabled ? "disabled" : "error"} />
               </IconButton>
             </div>
           </div>
