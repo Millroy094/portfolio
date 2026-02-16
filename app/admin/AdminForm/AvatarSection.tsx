@@ -22,16 +22,8 @@ export interface AvatarSectionProps {
 }
 
 /** NEW: Safe component that can use React hooks */
-function AvatarDisplay({
-  disabled,
-  value,
-}: {
-  value?: File | string | null;
-  disabled?: boolean;
-}): JSX.Element {
+function AvatarDisplay({ value }: { value?: File | string | null }): JSX.Element {
   const [url, setUrl] = useState<string | null>(null);
-
-  const filterClass = disabled ? "grayscale opacity-60" : "";
 
   useEffect(() => {
     async function load() {
@@ -54,7 +46,7 @@ function AvatarDisplay({
         width={100}
         height={100}
         src={url}
-        className={`h-24 w-24 rounded-full border object-cover ${filterClass}`}
+        className="h-24 w-24 rounded-full border object-cover"
       />
     );
   }
@@ -82,7 +74,7 @@ export default function AvatarSection({
         control={control}
         render={({ field }) => (
           <>
-            <AvatarDisplay value={field.value} disabled={disabled} />
+            <AvatarDisplay value={field.value} />
 
             {errors.avatar?.message && (
               <FormHelperText sx={{ pl: 1 }} error>

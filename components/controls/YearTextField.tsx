@@ -36,12 +36,12 @@ const YearTextField: FC<YearTextFieldProps> = ({
         min: 1900,
         max: currentYear,
         step: 1,
+        readOnly: disabled,
       },
     }}
     fullWidth
     error={error}
     helperText={errorText}
-    disabled={disabled}
   />
 );
 

@@ -27,10 +27,10 @@ const LinkTextField: FC<LinkTextFieldProps> = ({
       input: {
         startAdornment: <InputAdornment position="start">https://</InputAdornment>,
       },
+      htmlInput: { readOnly: disabled },
     }}
     error={error}
     helperText={errorText ?? ""}
-    disabled={disabled}
   />
 );
 
