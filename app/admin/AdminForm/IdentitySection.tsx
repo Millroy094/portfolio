@@ -10,9 +10,15 @@ export interface IdentitySectionProps {
   register: UseFormRegister<ProfileSchemaType>;
   control: Control<ProfileSchemaType>;
   errors: FieldErrors<ProfileSchemaType>;
+  disabled: boolean;
 }
 
-export default function IdentitySection({ register, control, errors }: IdentitySectionProps) {
+export default function IdentitySection({
+  register,
+  control,
+  errors,
+  disabled,
+}: IdentitySectionProps) {
   return (
     <div className="flex flex-col gap-4 w-full">
       {/* Full Name */}
@@ -28,6 +34,7 @@ export default function IdentitySection({ register, control, errors }: IdentityS
               shrink: true,
             },
           }}
+          disabled={disabled}
         />
       </div>
 
@@ -44,6 +51,7 @@ export default function IdentitySection({ register, control, errors }: IdentityS
               shrink: true,
             },
           }}
+          disabled={disabled}
         />
       </div>
 
@@ -65,6 +73,7 @@ export default function IdentitySection({ register, control, errors }: IdentityS
               onChange={field.onChange}
               error={!!fieldState.error}
               errorText={fieldState.error?.message}
+              disabled={disabled}
             />
           )}
         />
@@ -79,6 +88,7 @@ export default function IdentitySection({ register, control, errors }: IdentityS
               onChange={field.onChange}
               error={!!fieldState.error}
               errorText={fieldState.error?.message}
+              disabled={disabled}
             />
           )}
         />
@@ -93,6 +103,7 @@ export default function IdentitySection({ register, control, errors }: IdentityS
               onChange={field.onChange}
               error={!!fieldState.error}
               errorText={fieldState.error?.message}
+              disabled={disabled}
             />
           )}
         />
@@ -110,6 +121,7 @@ export default function IdentitySection({ register, control, errors }: IdentityS
               onChange={field.onChange}
               error={!!fieldState.error}
               errorText={fieldState.error?.message}
+              disabled={disabled}
             />
           )}
         />

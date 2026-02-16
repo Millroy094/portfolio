@@ -33,6 +33,7 @@ export interface ExperiencesEducationProps {
     append: (v: EducationRecord) => void;
     remove: (index: number) => void;
   };
+  disabled: boolean;
 }
 
 const currentYear = new Date().getFullYear();
@@ -42,6 +43,7 @@ export default function ExperiencesEducationSection({
   errors,
   experiences,
   education,
+  disabled,
 }: ExperiencesEducationProps) {
   return (
     <div className="flex flex-col gap-8">
@@ -58,6 +60,7 @@ export default function ExperiencesEducationSection({
           })
         }
         count={experiences.fields.length}
+        disabled={disabled}
       >
         <div className="flex flex-col gap-4">
           {[...experiences.fields]
@@ -84,6 +87,7 @@ export default function ExperiencesEducationSection({
                           onChange={(e) => field.onChange(e.target.value)}
                           error={!!fieldState.error}
                           helperText={errors.experiences?.[index]?.organization?.message}
+                          disabled={disabled}
                         />
                       )}
                     />
@@ -102,6 +106,7 @@ export default function ExperiencesEducationSection({
                           onChange={(e) => field.onChange(e.target.value)}
                           error={!!fieldState.error}
                           helperText={errors.experiences?.[index]?.title?.message}
+                          disabled={disabled}
                         />
                       )}
                     />
@@ -119,6 +124,7 @@ export default function ExperiencesEducationSection({
                           onChange={field.onChange}
                           error={!!fieldState.error}
                           errorText={errors.experiences?.[index]?.year?.message}
+                          disabled={disabled}
                         />
                       )}
                     />
@@ -126,8 +132,12 @@ export default function ExperiencesEducationSection({
 
                   {/* Remove button only */}
                   <div className="flex gap-2 justify-center">
-                    <IconButton onClick={() => experiences.remove(index)} size="small">
-                      <DeleteSharp color="error" />
+                    <IconButton
+                      onClick={() => experiences.remove(index)}
+                      size="small"
+                      disabled={disabled}
+                    >
+                      <DeleteSharp color={disabled ? "disabled" : "error"} />
                     </IconButton>
                   </div>
                 </div>
@@ -148,6 +158,7 @@ export default function ExperiencesEducationSection({
           })
         }
         count={education.fields.length}
+        disabled={disabled}
       >
         <div className="flex flex-col gap-4">
           {[...education.fields]
@@ -174,6 +185,7 @@ export default function ExperiencesEducationSection({
                           fullWidth
                           error={!!fieldState.error}
                           helperText={errors.education?.[index]?.institute?.message}
+                          disabled={disabled}
                         />
                       )}
                     />
@@ -192,6 +204,7 @@ export default function ExperiencesEducationSection({
                           fullWidth
                           error={!!fieldState.error}
                           helperText={errors.education?.[index]?.qualification?.message}
+                          disabled={disabled}
                         />
                       )}
                     />
@@ -209,6 +222,7 @@ export default function ExperiencesEducationSection({
                           onChange={field.onChange}
                           error={!!fieldState.error}
                           errorText={errors.education?.[index]?.year?.message}
+                          disabled={disabled}
                         />
                       )}
                     />
@@ -216,8 +230,12 @@ export default function ExperiencesEducationSection({
 
                   {/* Remove button only (no up/down) */}
                   <div className="flex gap-2 justify-center">
-                    <IconButton onClick={() => education.remove(index)} size="small">
-                      <DeleteSharp color="error" />
+                    <IconButton
+                      onClick={() => education.remove(index)}
+                      size="small"
+                      disabled={disabled}
+                    >
+                      <DeleteSharp color={disabled ? "disabled" : "error"} />
                     </IconButton>
                   </div>
                 </div>

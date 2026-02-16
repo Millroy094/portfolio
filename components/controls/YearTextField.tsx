@@ -7,11 +7,19 @@ type YearTextFieldProps = {
   onChange: (value: number | undefined) => void;
   error?: boolean;
   errorText?: string;
+  disabled?: boolean;
 };
 
 const currentYear = new Date().getFullYear();
 
-const YearTextField: FC<YearTextFieldProps> = ({ label, value, onChange, error, errorText }) => (
+const YearTextField: FC<YearTextFieldProps> = ({
+  label,
+  value,
+  onChange,
+  error,
+  errorText,
+  disabled,
+}) => (
   <TextField
     type="number"
     label={label}
@@ -33,6 +41,7 @@ const YearTextField: FC<YearTextFieldProps> = ({ label, value, onChange, error, 
     fullWidth
     error={error}
     helperText={errorText}
+    disabled={disabled}
   />
 );
 

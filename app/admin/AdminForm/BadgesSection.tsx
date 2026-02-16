@@ -14,6 +14,7 @@ export interface BadgesSectionProps {
   fields: { id: string; value: string | File }[];
   remove: (index: number) => void;
   badgeFileInputRef: React.RefObject<HTMLInputElement | null>;
+  disabled: boolean;
 }
 
 export default function BadgesSection({
@@ -22,6 +23,7 @@ export default function BadgesSection({
   fields,
   remove,
   badgeFileInputRef,
+  disabled,
 }: BadgesSectionProps) {
   return (
     <>
@@ -31,6 +33,7 @@ export default function BadgesSection({
         addLabel="Add badge"
         onAdd={() => badgeFileInputRef.current?.click()}
         count={fields.length}
+        disabled={disabled}
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
           {fields.map((badge, index) => (
@@ -42,15 +45,16 @@ export default function BadgesSection({
                 <div className="absolute inset-0 opacity-30 bg-[linear-gradient(45deg,#f4f4f5_25%,transparent_25%,transparent_75%,#f4f4f5_75%,#f4f4f5),linear-gradient(45deg,#f4f4f5_25%,transparent_25%,transparent_75%,#f4f4f5_75%,#f4f4f5)] bg-size-[16px_16px] bg-position-[0_0,8px_8px]" />
 
                 {/* Hook-safe Badge display */}
-                <BadgeDisplay value={badge.value} />
+                <BadgeDisplay value={badge.value} disabled={disabled} />
 
                 <div className="absolute top-1 right-1">
                   <IconButton
                     onClick={() => remove(index)}
                     size="small"
                     className="bg-white/80 hover:bg-white"
+                    disabled={disabled}
                   >
-                    <DeleteSharp color="error" fontSize="small" />
+                    <DeleteSharp color={disabled ? "disabled" : "error"} fontSize="small" />
                   </IconButton>
                 </div>
               </div>
@@ -69,6 +73,7 @@ export default function BadgesSection({
                     slotProps={{
                       inputLabel: { shrink: !!field.value },
                     }}
+                    disabled={disabled}
                   />
                 )}
               />
