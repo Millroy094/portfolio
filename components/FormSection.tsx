@@ -102,15 +102,17 @@ export const FormSection: React.FC<FormSectionProps> = ({
 
           {/* Optional Add button */}
           {showAddButton && onAdd && (
-            <Button
-              variant="contained"
-              startIcon={<AddIcon />}
-              size="small"
-              onClick={onAdd}
-              disabled={disabled}
-            >
-              {addLabel}
-            </Button>
+            <Tooltip title={addLabel ?? "Add"}>
+              <IconButton
+                onClick={onAdd}
+                color="primary"
+                size="small"
+                disabled={disabled}
+                aria-label={addLabel ?? "Add"}
+              >
+                <AddIcon />
+              </IconButton>
+            </Tooltip>
           )}
         </Stack>
       </Stack>
