@@ -14,7 +14,7 @@ type BaseModel = {
   create: (args: unknown) => Promise<unknown>;
 };
 
-type Assets = { avatarKey?: string; badgeKeys?: string[] };
+type Assets = { avatarKey?: string; badgeKeyLabels?: { key: string; label: string }[] };
 
 type ProfilePayload = {
   fullName: string;
@@ -98,7 +98,10 @@ export async function saveProfileData(
     client,
     "Badge",
     profileId,
-    (assets?.badgeKeys ?? []).map((badgeKey) => ({ value: badgeKey })),
+    (assets?.badgeKeyLabels ?? []).map((badgeKeyLabels) => ({
+      value: badgeKeyLabels.key,
+      label: badgeKeyLabels.label,
+    })),
   );
   await replaceChildren(client, "Experience", profileId, formData.experiences ?? []);
   await replaceChildren(client, "Education", profileId, formData.education ?? []);

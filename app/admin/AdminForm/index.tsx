@@ -97,13 +97,15 @@ export default function AdminForm() {
     const uploads = await Promise.all(
       data.badges.map(async (i) => {
         const key = await uploadFileToS3("badges", i.value);
-        return key ?? null;
+        return { key, label: i.label };
       }),
     );
 
-    const badgeKeys = uploads.filter((x): x is string => x !== null);
+    const badgeKeyLabels = uploads.filter(
+      (x): x is { key: string; label: string } => x.key !== null && x.label !== null,
+    );
 
-    return { badgeKeys, avatarKey };
+    return { badgeKeyLabels, avatarKey };
   };
 
   const isFieldError = (err: unknown): err is FieldError => {
@@ -189,13 +191,14 @@ export default function AdminForm() {
           ref={badgeFileInputRef}
           onChange={(e) => {
             const file = e.target.files?.[0];
-            if (file) badges.append({ value: file });
+            if (file) badges.append({ value: file, label: "" });
             if (badgeFileInputRef.current) badgeFileInputRef.current.value = "";
           }}
         />
 
         {/* Sections */}
         <AvatarSection
+          errors={errors}
           control={control}
           cropOpen={cropOpen}
           cropFile={cropFile}
@@ -214,6 +217,7 @@ export default function AdminForm() {
         />
 
         <BadgesSection
+          control={control}
           errors={errors}
           fields={badges.fields}
           remove={badges.remove}

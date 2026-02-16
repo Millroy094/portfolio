@@ -377,6 +377,13 @@
               "isRequired": true,
               "attributes": []
             },
+            "label": {
+              "name": "label",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
             "profileId": {
               "name": "profileId",
               "isArray": false,

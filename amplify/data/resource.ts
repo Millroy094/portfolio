@@ -38,6 +38,7 @@ const schema = a.schema({
   Badge: a
     .model({
       value: a.string().required(),
+      label: a.string().required(),
       profileId: a.id().required(),
       profile: a.belongsTo("Profile", "profileId"),
     })
