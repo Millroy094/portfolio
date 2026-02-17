@@ -228,13 +228,9 @@ If you fork or reuse this project, you must:
 Replace all favicon files in the `/public` folder with your own branding
 assets.
 
-## 2️⃣ Add Your Own `llm.json`
+## 2️⃣ Add Your Own `llm.txt`
 
-Create `/public/llm.json`:
-
-{ "name": "Your Name", "title": "Software Engineer", "summary": "Short
-AI-readable professional summary", "skills": \["Next.js", "AWS",
-"Terraform"\], "contact": "https://yourdomain.com/contact" }
+Create `/public/llm.txt`:
 
 ------------------------------------------------------------------------
 
