@@ -1,6 +1,5 @@
 "use client";
 
-import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback } from "react";
 
@@ -12,9 +11,7 @@ type Badge = {
 };
 
 export default function BadgeSlider({ badges }: { badges: Badge[] }) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
-    Autoplay({ delay: 3000, stopOnInteraction: false }),
-  ]);
+  const [emblaRef, emblaApi] = useEmblaCarousel({}, []);
 
   const prev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const next = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);

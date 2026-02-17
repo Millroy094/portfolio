@@ -17,7 +17,7 @@ function EducationAndExperience() {
   if (!hasOneExperienceOrEducation) return null;
 
   return (
-    <section className="relative z-10 mb-15 flex flex-col">
+    <section className="relative z-10 mb-15 flex flex-col px-6 sm:px-0">
       <div className="flex flex-col lg:flex-row items-center lg:items-start gap-10">
         {hasExperience && (
           <div className="w-full lg:w-1/2">

@@ -25,12 +25,19 @@ export default function ImageWithSkeleton({
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <div className="relative inline-block w-full">
+    <div className={`relative block w-full ${className}`}>
       {!loaded && (
-        <div
-          className="absolute inset-0 bg-gray-300 dark:bg-gray-700 animate-pulse rounded"
-          style={{ width, height }}
-        />
+        <>
+          <svg
+            width={width}
+            height={height}
+            className="block w-full h-auto"
+            style={{ visibility: "hidden" }}
+            aria-hidden="true"
+            focusable="false"
+          />
+          <div className="absolute inset-0 animate-pulse bg-gray-700" />
+        </>
       )}
 
       <Image
@@ -40,12 +47,10 @@ export default function ImageWithSkeleton({
         height={height}
         priority={priority}
         loading={loading}
-        className={`
-          transition-opacity duration-300
-          ${loaded ? "opacity-100" : "opacity-0"}
-          ${className}
-        `}
-        onLoad={() => setLoaded(true)}
+        className={`block w-full h-auto rounded-full object-cover transition-opacity duration-300 ${
+          loaded ? "opacity-100" : "opacity-0"
+        }`}
+        onLoadingComplete={() => setLoaded(true)}
         onError={() => setLoaded(true)}
       />
     </div>
