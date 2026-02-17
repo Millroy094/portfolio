@@ -326,6 +326,7 @@ export function SkillsSphere({ skillIds, radius = 3 }: Props) {
 
   const [isDragging, setIsDragging] = useState(false);
   const lastPointer = useRef({ x: 0, y: 0 });
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
 
   const skills = useMemo(() => skillIds.map((id) => getSkillById(id)), [skillIds]);
 
@@ -334,14 +335,12 @@ export function SkillsSphere({ skillIds, radius = 3 }: Props) {
   const amplitude = 0.1;
   const globeMargin = 0.03;
 
-  // Keep anchors just inside the globe so float never pokes outside.
   const spriteHalfDiag = (Math.SQRT2 * worldSize) / 2;
   const safeRad = Math.max(0.0001, radius - spriteHalfDiag - globeMargin - amplitude * 1.2);
 
-  // Even spread on the surface, slightly inside
   const positions = useMemo(
     () => fibonacciSphereSurface(skills.length, safeRad),
-    [skills.length, safeRad],
+    [skills.length, safeRad]
   );
 
   useFrame((state) => {
@@ -349,19 +348,51 @@ export function SkillsSphere({ skillIds, radius = 3 }: Props) {
     groupRef.current.position.y = Math.sin(state.clock.getElapsedTime() * 0.28) * 0.09;
   });
 
-  const handlePointerDown = (e: { clientX: number; clientY: number }) => {
+  /* ===========================
+   * Pointer / Touch Handlers
+   * =========================== */
+  const handlePointerDown = (e: React.PointerEvent) => {
     setIsDragging(true);
     lastPointer.current = { x: e.clientX, y: e.clientY };
+    touchStart.current = { x: e.clientX, y: e.clientY };
+    if (e.pointerType === "touch") e.preventDefault();
   };
-  const handlePointerUp = () => setIsDragging(false);
-  const handlePointerMove = (e: { clientX: number; clientY: number }) => {
-    if (!isDragging || !groupRef.current) return;
-    const dx = e.clientX - lastPointer.current.x;
-    const dy = e.clientY - lastPointer.current.y;
-    groupRef.current.rotation.y += dx * 0.004;
-    groupRef.current.rotation.x += dy * 0.004;
-    lastPointer.current = { x: e.clientX, y: e.clientY };
+
+  const handlePointerUp = () => {
+    setIsDragging(false);
+    touchStart.current = null;
   };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!isDragging || !groupRef.current || !touchStart.current) return;
+
+    const dx = e.clientX - touchStart.current.x;
+    const dy = e.clientY - touchStart.current.y;
+
+    // Only rotate if movement > threshold (prevent accidental scroll)
+    if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+      if (e.pointerType === "touch") e.preventDefault();
+      groupRef.current.rotation.y += dx * 0.004;
+      groupRef.current.rotation.x += dy * 0.004;
+      lastPointer.current = { x: e.clientX, y: e.clientY };
+      touchStart.current = { x: e.clientX, y: e.clientY };
+    }
+  };
+
+  /* ===========================
+   * Touchmove prevent scroll
+   * =========================== */
+  useEffect(() => {
+    const canvas = document.querySelector("canvas");
+    if (!canvas) return;
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (isDragging) e.preventDefault();
+    };
+
+    canvas.addEventListener("touchmove", onTouchMove, { passive: false });
+    return () => canvas.removeEventListener("touchmove", onTouchMove);
+  }, [isDragging]);
 
   return (
     <group
@@ -397,7 +428,7 @@ export function SkillsSphere({ skillIds, radius = 3 }: Props) {
           globeRadius={radius}
           globeMargin={globeMargin}
           renderOrder={2}
-          seedSalt={i} // deterministic variation
+          seedSalt={i}
         />
       ))}
     </group>
