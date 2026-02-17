@@ -19,7 +19,7 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
   const sorted = [...timeline].sort((a, b) => a.year - b.year);
 
   return (
-    <div className="flex flex-col items-center w-full lg:w-1/2 max-w-160 mx-auto">
+    <div className="flex flex-col items-center w-full lg:w-1/2 max-w-160 mx-auto xs:p-6 ">
       <h2 className="font-bold uppercase tracking-wide text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] mb-6 text-white/90">
         {title}
       </h2>
