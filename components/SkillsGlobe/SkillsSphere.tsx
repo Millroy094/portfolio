@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
 import { getSkillById, SkillId } from "@/components/controls/SkillSelect/SkillRegistery";
+
 import { createIconTexture } from "./createIconTexture";
 
 /* =======================================================================================
