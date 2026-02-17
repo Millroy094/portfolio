@@ -92,19 +92,18 @@ export default function Introduction(): JSX.Element {
               wrapper="div"
               speed={50}
               className="
-  font-semibold
-  text-[18px] sm:text-[28px] md:text-[40px]
-  leading-none
-  tracking-wide
-  text-white/90
-  m-0 p-0
-"
+                text-[18px] sm:text-[28px] md:text-[40px]
+                leading-none
+                tracking-wide
+                text-white/90
+                m-0 p-0
+              "
               repeat={Infinity}
             />
           </div>
         )}
 
-        <div className="flex flex-col items-center mt-2">
+        <div className="flex flex-col items-center">
           {data.punchLine && (
             <span className="text-sm text-white/90 opacity-80 mb-2">{data.punchLine}</span>
           )}
