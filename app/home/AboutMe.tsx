@@ -1,26 +1,13 @@
 "use client";
 
 import { Grid, Typography } from "@mui/material";
-import { useInView } from "react-intersection-observer";
-import Lottie from "react-lottie";
 
-import AboutMeLottie from "@/assets/lotties/about-me.json";
+import LottiePlayer from "@/components/LottiePlayer";
 import { useWebsiteData } from "@/context/WebsiteData";
 import GrowOnHover from "@/hoc/GrowOnHover";
 import { htmlToText, splitHtmlIntoParagraphs } from "@/utils/paragraph";
 
 function AboutMe() {
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: AboutMeLottie,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
-
-  const { ref, inView } = useInView({ triggerOnce: true });
-
   const { data } = useWebsiteData();
 
   const aboutMe =
@@ -36,13 +23,15 @@ function AboutMe() {
         direction="column"
         sx={{ marginBottom: "60px", zIndex: 10, position: "relative" }}
       >
-        <Grid container spacing={2} justifyItems="center" ref={ref}>
+        <Grid container spacing={2} justifyItems="center">
           <Grid
             container
             size={{ lg: 4, md: 0, sm: 0, xs: 0 }}
             sx={{ display: { md: "none", sm: "none", xs: "none", lg: "flex" } }}
+            justifyContent="center"
+            alignItems="end"
           >
-            {inView && <Lottie options={defaultOptions} width={400} height={400} />}
+            {<LottiePlayer src="/lotties/about-me.json" width="75%" height="75%" />}
           </Grid>
           <Grid
             container

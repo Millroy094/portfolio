@@ -1,25 +1,12 @@
 "use client";
 
 import { Grid } from "@mui/material";
-import { useInView } from "react-intersection-observer";
-import Lottie from "react-lottie";
 
 import HistoryTimeline from "@/app/home/HistoryTimeline";
-import WorkAndEducationLottie from "@/assets/lotties/work-and-education.json";
+import LottiePlayer from "@/components/LottiePlayer";
 import { useWebsiteData } from "@/context/WebsiteData";
 
 function EducationAndExperience() {
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: WorkAndEducationLottie,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
-
-  const { ref, inView } = useInView({ triggerOnce: true });
-
   const { data } = useWebsiteData();
   const hasEducation = data.visibility.education && data.education && data.education.length > 0;
   const hasExperience =
@@ -46,9 +33,13 @@ function EducationAndExperience() {
           sx={{ display: { lg: "flex", sm: "none", xs: "none" } }}
           justifyContent="center"
           alignItems="center"
-          ref={ref}
         >
-          {inView && <Lottie options={defaultOptions} height={300} width={300} />}
+          {
+            <LottiePlayer
+              src="/lotties/work-and-education.json"
+              className="w-45 h-45 md:w-55 md:h-55"
+            />
+          }
         </Grid>
         {hasEducation && (
           <HistoryTimeline
