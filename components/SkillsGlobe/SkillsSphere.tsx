@@ -1,11 +1,10 @@
 "use client";
 
-import { useFrame } from "@react-three/fiber";
+import { useFrame, ThreeEvent } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
 import { getSkillById, SkillId } from "@/components/controls/SkillSelect/SkillRegistery";
-
 import { createIconTexture } from "./createIconTexture";
 
 /* =======================================================================================
@@ -220,7 +219,6 @@ function StableAura({
   );
 
   useFrame((_, dt) => {
-    // If your linter flags immutability, keep uniforms in a ref and mutate ref.current
     // eslint-disable-next-line react-hooks/immutability
     uniforms.uTime.value += dt;
   });
@@ -314,19 +312,29 @@ const auraCoreFS = /* glsl */ `
 `;
 
 /* =======================================================================================
- * SkillsSphere — composition
+ * SkillsSphere — composition (robust mobile drag + inertia, no `any`)
  * ======================================================================================= */
 type Props = {
   skillIds: SkillId[];
   radius?: number;
 };
 
+type PointerCaptureElement = Element & {
+  setPointerCapture(pointerId: number): void;
+  releasePointerCapture(pointerId: number): void;
+};
+
 export function SkillsSphere({ skillIds, radius = 3 }: Props) {
   const groupRef = useRef<THREE.Group>(null);
 
   const [isDragging, setIsDragging] = useState(false);
-  const lastPointer = useRef({ x: 0, y: 0 });
-  const touchStart = useRef<{ x: number; y: number } | null>(null);
+  const pointerStart = useRef<{ x: number; y: number } | null>(null);
+
+  // Inertia state
+  const velocity = useRef({ x: 0, y: 0 }); // angular velocity per frame
+  const DAMPING = 0.94; // 0.88 fast stop ←→ 0.98 long spin
+  const ROTATION_MULT = 0.004; // pixels to radians multiplier
+  const STOP_EPS = 0.00001;
 
   const skills = useMemo(() => skillIds.map((id) => getSkillById(id)), [skillIds]);
 
@@ -345,63 +353,132 @@ export function SkillsSphere({ skillIds, radius = 3 }: Props) {
 
   useFrame((state) => {
     if (!groupRef.current) return;
+
+    // Gentle vertical bob
     groupRef.current.position.y = Math.sin(state.clock.getElapsedTime() * 0.28) * 0.09;
+
+    // Apply inertia only while not dragging
+    if (!isDragging) {
+      groupRef.current.rotation.y += velocity.current.x;
+      groupRef.current.rotation.x += velocity.current.y;
+
+      velocity.current.x *= DAMPING;
+      velocity.current.y *= DAMPING;
+
+      if (Math.abs(velocity.current.x) < STOP_EPS) velocity.current.x = 0;
+      if (Math.abs(velocity.current.y) < STOP_EPS) velocity.current.y = 0;
+    }
   });
 
   /* ===========================
    * Pointer / Touch Handlers
    * =========================== */
-  const handlePointerDown = (e: React.PointerEvent) => {
+  const captureOnTarget = (evtTarget: EventTarget | null, pointerId: number) => {
+    if (evtTarget instanceof Element) {
+      const el = evtTarget as PointerCaptureElement;
+      el.setPointerCapture?.(pointerId);
+    }
+  };
+
+  const releaseOnTarget = (evtTarget: EventTarget | null, pointerId: number) => {
+    if (evtTarget instanceof Element) {
+      const el = evtTarget as PointerCaptureElement;
+      el.releasePointerCapture?.(pointerId);
+    }
+  };
+
+  const onPointerDown = (e: ThreeEvent<PointerEvent>) => {
+    // Capture pointer on the DOM canvas element
+    captureOnTarget(e.target, e.pointerId);
+
     setIsDragging(true);
-    lastPointer.current = { x: e.clientX, y: e.clientY };
-    touchStart.current = { x: e.clientX, y: e.clientY };
-    if (e.pointerType === "touch") e.preventDefault();
+    pointerStart.current = { x: e.clientX, y: e.clientY };
+
+    // Reset inertia when a new drag starts (feels more precise)
+    velocity.current.x = 0;
+    velocity.current.y = 0;
+
+    // Safe preventDefault for touch if cancelable (often unnecessary with touch-action: none)
+    const ne = e.nativeEvent;
+    if (e.pointerType === "touch" && ne && "cancelable" in ne && ne.cancelable) {
+      ne.preventDefault?.();
+    }
+
+    // Avoid icons or other children hijacking the event
+    e.stopPropagation();
   };
 
-  const handlePointerUp = () => {
+  const endDrag = () => {
     setIsDragging(false);
-    touchStart.current = null;
+    pointerStart.current = null;
+    // inertia continues via velocity
   };
 
-  const handlePointerMove = (e: React.PointerEvent) => {
-    if (!isDragging || !groupRef.current || !touchStart.current) return;
+  const onPointerUp = (e: ThreeEvent<PointerEvent>) => {
+    releaseOnTarget(e.target, e.pointerId);
+    endDrag();
+    e.stopPropagation();
+  };
 
-    const dx = e.clientX - touchStart.current.x;
-    const dy = e.clientY - touchStart.current.y;
+  const onPointerCancel = () => {
+    endDrag();
+  };
 
-    // Only rotate if movement > threshold (prevent accidental scroll)
+  const onPointerMove = (e: ThreeEvent<PointerEvent>) => {
+    if (!isDragging || !groupRef.current || !pointerStart.current) return;
+
+    const dx = e.clientX - pointerStart.current.x;
+    const dy = e.clientY - pointerStart.current.y;
+
+    // Only rotate if movement > threshold (prevents accidental tiny drags)
     if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
-      if (e.pointerType === "touch") e.preventDefault();
-      groupRef.current.rotation.y += dx * 0.004;
-      groupRef.current.rotation.x += dy * 0.004;
-      lastPointer.current = { x: e.clientX, y: e.clientY };
-      touchStart.current = { x: e.clientX, y: e.clientY };
+      const ne = e.nativeEvent;
+      if (e.pointerType === "touch" && ne && "cancelable" in ne && ne.cancelable) {
+        ne.preventDefault?.();
+      }
+
+      // Apply rotation
+      groupRef.current.rotation.y += dx * ROTATION_MULT;
+      groupRef.current.rotation.x += dy * ROTATION_MULT;
+
+      // Store velocity for inertia (last movement becomes angular velocity)
+      velocity.current.x = dx * ROTATION_MULT;
+      velocity.current.y = dy * ROTATION_MULT;
+
+      pointerStart.current = { x: e.clientX, y: e.clientY };
+      e.stopPropagation();
     }
   };
 
   /* ===========================
-   * Touchmove prevent scroll
+   * Global pointerup (finger lifted off outside canvas)
    * =========================== */
   useEffect(() => {
-    const canvas = document.querySelector("canvas");
-    if (!canvas) return;
-
-    const onTouchMove = (e: TouchEvent) => {
-      if (isDragging) e.preventDefault();
+    const onWinPointerUp = () => endDrag();
+    window.addEventListener("pointerup", onWinPointerUp);
+    window.addEventListener("pointercancel", onWinPointerUp);
+    return () => {
+      window.removeEventListener("pointerup", onWinPointerUp);
+      window.removeEventListener("pointercancel", onWinPointerUp);
     };
-
-    canvas.addEventListener("touchmove", onTouchMove, { passive: false });
-    return () => canvas.removeEventListener("touchmove", onTouchMove);
-  }, [isDragging]);
+  }, []);
 
   return (
-    <group
-      ref={groupRef}
-      onPointerDown={handlePointerDown}
-      onPointerUp={handlePointerUp}
-      onPointerMove={handlePointerMove}
-      onPointerLeave={handlePointerUp}
-    >
+    <group ref={groupRef}>
+      {/* Hit Sphere — invisible but raycastable. Captures drags anywhere over the globe */}
+      <mesh
+        onPointerDown={onPointerDown}
+        onPointerUp={onPointerUp}
+        onPointerMove={onPointerMove}
+        onPointerLeave={onPointerUp}
+        onPointerCancel={onPointerCancel}
+      >
+        {/* Slightly larger than radius to ensure easy hit test */}
+        <sphereGeometry args={[radius * 1.08, 32, 32]} />
+        {/* Must be visible=true and transparent with opacity 0 to be raycastable */}
+        <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+      </mesh>
+
       <StableAura
         radius={radius}
         color="#ff3b3b"

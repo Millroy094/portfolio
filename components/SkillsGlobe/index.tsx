@@ -36,7 +36,7 @@ export function SkillsGlobe({ skillIds, radius = 3, height = 600 }: Props) {
         gl.sortObjects = true;
         gl.setClearColor(0x000000, 0); // ✅ transparent clear
       }}
-      style={{ height, width: "100%", background: "transparent" }}
+      style={{ height, width: "100%", background: "transparent", touchAction: "none" }}
     >
       <ambientLight intensity={0.25} />
       <directionalLight position={[5, 5, 5]} intensity={0.7} />
