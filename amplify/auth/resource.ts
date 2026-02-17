@@ -4,7 +4,6 @@ export const auth = defineAuth({
   loginWith: {
     email: true,
   },
-  groups: ["admin"],
   multifactor: {
     mode: "REQUIRED",
     totp: true,

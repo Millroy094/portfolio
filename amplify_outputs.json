@@ -16,13 +16,7 @@
     "user_verification_types": [
       "email"
     ],
-    "groups": [
-      {
-        "admin": {
-          "precedence": 0
-        }
-      }
-    ],
+    "groups": [],
     "mfa_configuration": "REQUIRED",
     "password_policy": {
       "min_length": 8,
