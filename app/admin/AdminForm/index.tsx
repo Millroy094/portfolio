@@ -84,9 +84,17 @@ export default function AdminForm(props: AdminFormProps) {
   }
 
   useEffect(() => {
-    setLoading(true);
-    loadData();
-    setLoading(false);
+    const fetchData = async () => {
+      setLoading(true);
+
+      try {
+        await loadData();
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const roles = useFieldArray({ control, name: "roles" });
