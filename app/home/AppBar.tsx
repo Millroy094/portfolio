@@ -98,7 +98,7 @@ export default function PortfolioAppBar() {
                         after:h-0.5 after:w-0 after:bg-red-500
                         after:transition-all after:duration-300
                         hover:after:w-full
-          "
+                      "
                     >
                       {page}
                     </span>
