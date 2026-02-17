@@ -74,19 +74,17 @@ export default function Introduction(): JSX.Element {
         </div>
 
         {/* Name */}
-        <div className="flex justify-center flex-wrap gap-2 text-center mb-2">
+        <div className="flex justify-center flex-wrap gap-2 text-center mb-1">
           <span className="text-[20px] sm:text-[40px] md:text-[60px] font-normal">Hi, I am</span>
           <h1 className="text-[20px] sm:text-[40px] md:text-[60px] font-bold text-red-600">
             {data.fullName || "Unknown"}
           </h1>
         </div>
 
-        {/* Setup message */}
         {!data.fullName && <div className="text-sm opacity-70 mb-2">Please finish my setup</div>}
 
-        {/* Roles */}
         {data.visibility.roles && data.roles.length > 0 && (
-          <div className="flex justify-center my-3 text-center">
+          <div className="flex justify-center mb-2 text-center">
             <TypeAnimation
               sequence={data.roles.flatMap((r) => [r, 1000])}
               wrapper="div"
@@ -104,7 +102,6 @@ export default function Introduction(): JSX.Element {
           </div>
         )}
 
-        {/* Punchline + badges */}
         <div className="flex flex-col items-center mt-2">
           {data.punchLine && <span className="text-sm opacity-80 mb-2">{data.punchLine}</span>}
 
@@ -112,7 +109,6 @@ export default function Introduction(): JSX.Element {
             <BadgeSlider badges={data.badges} loop autoplay autoplayDelayMs={3000} />
           )}
 
-          {/* Social icons */}
           <div className="flex gap-4 py-4 items-center justify-center">
             {data.linkedin && (
               <button
@@ -145,7 +141,6 @@ export default function Introduction(): JSX.Element {
             )}
           </div>
 
-          {/* Resume */}
           {data.resume && (
             <button
               onClick={() => window.open(data.resume, "_blank")}

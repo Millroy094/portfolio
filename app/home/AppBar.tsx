@@ -1,17 +1,6 @@
 "use client";
 
-import MenuIcon from "@mui/icons-material/Menu";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import * as React from "react";
-import { useMemo, useCallback, useRef } from "react";
+import React, { useMemo, useRef, useState, useCallback } from "react";
 
 import HideOnScroll from "@/components/HideOnScroll";
 import { useWebsiteData } from "@/context/WebsiteData";
@@ -23,163 +12,135 @@ function normalizeId(label: string) {
 export default function PortfolioAppBar() {
   const { data } = useWebsiteData();
 
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const appBarRef = useRef<HTMLDivElement | null>(null);
-  const mobileBarRef = useRef<HTMLDivElement | null>(null);
+  const headerRef = useRef<HTMLDivElement | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const pages = useMemo(() => {
-    const pagesWithContent: string[] = [];
-    if (data.aboutMe) pagesWithContent.push("About Me");
-    if (data.skills?.length) pagesWithContent.push("Skills");
-    if ((data.education?.length ?? 0) > 0 || (data.experiences?.length ?? 0) > 0) {
-      pagesWithContent.push("Education And Experience");
-    }
-    if (data.projects?.length) pagesWithContent.push("Projects");
-    return pagesWithContent;
+    const list: string[] = [];
+    if (data.visibility.aboutMe && data.aboutMe) list.push("About Me");
+    if (data.visibility.skills && data.skills?.length) list.push("Skills");
+    if (
+      (data.visibility.education && data.education?.length > 0) ||
+      (data.visibility.experiences && data.experiences?.length > 0)
+    )
+      list.push("Education And Experience");
+    if (data.visibility.projects && data.projects?.length) list.push("Projects");
+    return list;
   }, [data]);
-
-  const handleOpenNavMenu = () => {
-    setAnchorElNav(mobileBarRef.current);
-  };
-  const handleCloseNavMenu = () => setAnchorElNav(null);
 
   const scrollToSection = useCallback((sectionId: string) => {
     const el = document.getElementById(sectionId);
     if (!el) return;
 
-    const headerH = appBarRef.current?.offsetHeight ?? 0;
+    const headerH = headerRef.current?.offsetHeight ?? 0;
     const rect = el.getBoundingClientRect();
     const targetY = rect.top + window.scrollY - headerH - 8;
-
     window.scrollTo({ top: targetY, behavior: "smooth" });
   }, []);
 
   return (
     <HideOnScroll threshold={16}>
-      <AppBar position="sticky" sx={{ background: "none" }} ref={appBarRef}>
-        <Container
-          maxWidth="xl"
-          sx={{
-            px: { xs: 0, sm: 0, md: 2, lg: 2 },
-            overflowX: "hidden",
-          }}
-        >
-          <Toolbar disableGutters sx={{ display: { xs: "block", sm: "block", md: "flex" } }}>
-            <Box
-              ref={mobileBarRef}
-              sx={{
-                flexGrow: 1,
-                display: { xs: "flex", md: "none" },
-                alignItems: "center",
-                backgroundColor: "rgba(12,12,16,0.82)",
-                backdropFilter: "blur(8px)",
-                WebkitBackdropFilter: "blur(8px)",
-                color: "rgba(255,255,255,0.92)",
-                px: 1,
-                width: "100%",
-                mx: 0,
-                overflowX: "hidden",
-                borderBottom: "1px solid rgba(255,255,255,0.12)",
-              }}
+      <header
+        ref={headerRef}
+        className="
+          sticky top-0 w-full z-1100
+          bg-transparent
+        "
+      >
+        <div className="mx-auto max-w-384 px-3 md:px-4">
+          <div className="h-14 md:h-16 flex items-center gap-4">
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="
+                md:hidden
+                text-white/90 hover:text-white
+                focus:outline-none
+              "
+              aria-label="Open navigation"
             >
-              <IconButton
-                size="large"
-                aria-label="mobile app bar"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                sx={{
-                  color: "rgba(255,255,255,0.92)",
-                  "& .MuiSvgIcon-root": { fontSize: 28 },
-                  "&.MuiIconButton-root:focus": { outline: "none" },
-                }}
+              <svg
+                className="w-7 h-7"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
               >
-                <MenuIcon />
-              </IconButton>
+                <path strokeLinecap="round" d="M4 6h16" />
+                <path strokeLinecap="round" d="M4 12h16" />
+                <path strokeLinecap="round" d="M4 18h16" />
+              </svg>
+            </button>
 
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                keepMounted
-                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-                transformOrigin={{ vertical: "top", horizontal: "left" }}
-                marginThreshold={0}
-                sx={{ display: { xs: "block", md: "none" } }}
-                slotProps={{
-                  list: { sx: { p: 0, m: 0 } },
-                  paper: {
-                    sx: {
-                      left: "0 !important",
-                      width: "100vw",
-                      maxWidth: "100vw",
-                      backgroundColor: "rgba(18,18,24,0.92)",
-                      backdropFilter: "blur(8px)",
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      borderTop: "none",
-                      boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
-                      color: "rgba(255,255,255,0.92)",
-                    },
-                  },
-                }}
-              >
-                {pages.map((page) => {
-                  const id = normalizeId(page);
-                  return (
-                    <MenuItem
-                      key={page}
-                      onClick={() => {
-                        handleCloseNavMenu();
-                        setTimeout(() => scrollToSection(id), 0);
-                      }}
-                      sx={{
-                        py: 1,
-                        px: 2,
-                        "&:hover": { backgroundColor: "rgba(255,255,255,0.06)" },
-                      }}
-                    >
-                      <Typography
-                        component="h3"
-                        variant="caption"
-                        sx={{
-                          textAlign: "center",
-                          color: "rgba(255,255,255,0.92)",
-                          letterSpacing: 0.2,
-                        }}
-                      >
-                        {page}
-                      </Typography>
-                    </MenuItem>
-                  );
-                })}
-              </Menu>
-            </Box>
-
-            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+            <nav className="hidden md:flex gap-6 items-center">
               {pages.map((page) => {
                 const id = normalizeId(page);
                 return (
-                  <Button
+                  <button
                     key={page}
                     onClick={() => scrollToSection(id)}
-                    sx={{
-                      my: 2,
-                      color: "white",
-                      display: "block",
-                      "&.MuiButton-root:focus": { outline: "none" },
-                    }}
+                    className="
+                    text-white
+                    focus:outline-none
+                    focus-visible:ring-2 focus-visible:ring-red-500/60 focus-visible:ring-offset-2
+                  "
                   >
-                    <Typography component="h3" variant="button" fontWeight="bold" color="white">
+                    <span
+                      className="
+                        relative inline-block
+                        font-bold uppercase tracking-wide text-sm
+                        pb-1
+
+                        /* Desktop-only text shadow */
+                        md:text-shadow-[0_1px_3px_rgba(0,0,0,0.75)]
+
+                        /* Underline animation */
+                        after:absolute after:left-0 after:bottom-0
+                        after:h-0.5 after:w-0 after:bg-red-500
+                        after:transition-all after:duration-300
+                        hover:after:w-full
+          "
+                    >
                       {page}
-                    </Typography>
-                  </Button>
+                    </span>
+                  </button>
                 );
               })}
-            </Box>
-          </Toolbar>
-        </Container>
-      </AppBar>
+            </nav>
+
+            <div className="grow" />
+          </div>
+        </div>
+
+        <div
+          className={`
+            md:hidden w-full
+            ${mobileOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}
+            overflow-hidden transition-all duration-200 ease-out
+            bg-[rgba(18,18,24,0.92)] backdrop-blur-md border-t border-white/10
+          `}
+        >
+          {pages.map((page) => {
+            const id = normalizeId(page);
+            return (
+              <button
+                key={page}
+                onClick={() => {
+                  setMobileOpen(false);
+                  setTimeout(() => scrollToSection(id), 0);
+                }}
+                className="
+          w-full py-3 text-center
+          text-white
+          hover:bg-white/10 transition-colors duration-200
+          focus:outline-none
+        "
+              >
+                <span className="text-xs font-bold uppercase tracking-wide">{page}</span>
+              </button>
+            );
+          })}
+        </div>
+      </header>
     </HideOnScroll>
   );
 }

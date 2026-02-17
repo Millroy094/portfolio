@@ -1,15 +1,13 @@
 "use client";
 
-import { Skeleton, Box } from "@mui/material";
 import Image from "next/image";
-import { CSSProperties, useState } from "react";
+import { useState } from "react";
 
-type ImageWithSkeletonProps = {
+type Props = {
   src: string;
   alt: string;
   width: number;
   height: number;
-  style?: CSSProperties;
   className?: string;
   priority?: boolean;
   loading?: "eager" | "lazy";
@@ -20,26 +18,18 @@ export default function ImageWithSkeleton({
   alt,
   width,
   height,
-  style,
-  className,
+  className = "",
   priority,
   loading,
-}: ImageWithSkeletonProps) {
+}: Props) {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <Box sx={{ position: "relative", display: "inline-block" }}>
+    <div className="relative inline-block w-full">
       {!loaded && (
-        <Skeleton
-          variant="rectangular"
-          width={width}
-          height={height}
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            borderRadius: 1,
-          }}
+        <div
+          className="absolute inset-0 bg-gray-300 dark:bg-gray-700 animate-pulse rounded"
+          style={{ width, height }}
         />
       )}
 
@@ -50,15 +40,14 @@ export default function ImageWithSkeleton({
         height={height}
         priority={priority}
         loading={loading}
-        className={className}
-        style={{
-          ...style,
-          opacity: loaded ? 1 : 0,
-          transition: "opacity 0.35s ease-out",
-        }}
+        className={`
+          transition-opacity duration-300
+          ${loaded ? "opacity-100" : "opacity-0"}
+          ${className}
+        `}
         onLoad={() => setLoaded(true)}
         onError={() => setLoaded(true)}
       />
-    </Box>
+    </div>
   );
 }

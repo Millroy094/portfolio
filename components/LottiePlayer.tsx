@@ -42,7 +42,6 @@ export default function LottiePlayer({
   placeholderClassName,
 
   loop = true,
-  autoplay = true,
   width,
   height,
   className,
@@ -83,7 +82,6 @@ export default function LottiePlayer({
     return window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
   }, [respectReducedMotion]);
 
-  /** Load the animation */
   useEffect(() => {
     const node = containerRef.current;
     if (!node) return;
@@ -105,7 +103,7 @@ export default function LottiePlayer({
     if (segments) anim.playSegments(segments, false);
 
     anim.addEventListener("DOMLoaded", () => {
-      setReady(true); // Fade-in Lottie, fade-out placeholder
+      setReady(true);
     });
 
     anim.addEventListener("complete", () => onComplete?.());
@@ -152,6 +150,7 @@ export default function LottiePlayer({
     onComplete,
     onLoopComplete,
     onEnterFrame,
+    inView,
   ]);
 
   /** Smooth playback when entering/exiting viewport */

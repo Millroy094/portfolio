@@ -4,134 +4,68 @@ import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback } from "react";
 
-import type { BadgesData } from "@/app/home/actions/getWebsiteData";
 import ImageWithSkeleton from "@/components/ImageWithSkeleton";
-import GrowOnHover from "@/hoc/GrowOnHover";
 
-function ChevronLeftIcon({ className = "" }) {
-  return (
-    <svg
-      className={`w-6 h-6 ${className}`}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      viewBox="0 0 24 24"
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-    </svg>
-  );
-}
+type Badge = {
+  label: string;
+  url: string;
+};
 
-function ChevronRightIcon({ className = "" }) {
-  return (
-    <svg
-      className={`w-6 h-6 ${className}`}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      viewBox="0 0 24 24"
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-    </svg>
-  );
-}
+export default function BadgeSlider({ badges }: { badges: Badge[] }) {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
+    Autoplay({ delay: 3000, stopOnInteraction: false }),
+  ]);
 
-export default function BadgeSlider({
-  badges,
-  maxSizePx = 200,
-  loop = true,
-  autoplay = false,
-  autoplayDelayMs = 3000,
-}: {
-  badges: BadgesData[];
-  maxSizePx?: number;
-  loop?: boolean;
-  autoplay?: boolean;
-  autoplayDelayMs?: number;
-}) {
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    {
-      loop,
-      align: "center",
-      dragFree: false,
-      slidesToScroll: 1,
-    },
-    autoplay ? [Autoplay({ delay: autoplayDelayMs, stopOnInteraction: false })] : [],
-  );
-
-  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
-  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+  const prev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const next = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
   return (
-    <div className="relative py-4 overflow-visible">
+    <div className="relative py-6">
       <div
         ref={emblaRef}
-        className="
-          overflow-hidden rounded-md
-          pl-14 sm:pl-16 md:pl-20
-          pr-14 sm:pr-16 md:pr-20
-        "
+        className="overflow-hidden pl-14 pr-14 sm:pl-16 sm:pr-16 md:pl-20 md:pr-20 rounded-lg"
       >
         <div className="flex gap-4">
           {badges.map((badge, i) => (
             <div
               key={badge.label}
               className="
-                shrink-0 w-full flex items-center justify-center
-                min-h-55 sm:min-h-65 md:min-h-75
+                flex-[0_0_100%]
+                flex items-center justify-center
+                h-55 sm:h-65
               "
             >
-              <GrowOnHover scale={1.1}>
-                <div
-                  className="flex items-center justify-center w-full"
-                  style={{ maxWidth: maxSizePx }}
-                >
-                  <ImageWithSkeleton
-                    src={badge.url}
-                    alt={badge.label}
-                    width={maxSizePx}
-                    height={maxSizePx}
-                    priority={i === 0}
-                    loading={i === 0 ? "eager" : "lazy"}
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                      objectFit: "contain",
-                    }}
-                  />
-                </div>
-              </GrowOnHover>
+              <div className="w-full max-w-40 sm:max-w-50">
+                <ImageWithSkeleton
+                  src={badge.url}
+                  alt={badge.label}
+                  width={300}
+                  height={300}
+                  className="w-full h-auto object-contain"
+                  priority={i === 0}
+                />
+              </div>
             </div>
           ))}
         </div>
       </div>
 
       <button
-        aria-label="Previous badge"
-        onClick={scrollPrev}
-        className="
-          absolute left-2 top-1/2 -translate-y-1/2
-          text-white/90 hover:text-white
-          w-10 h-10 rounded-full flex items-center justify-center
-          transition-colors
-          z-20
-        "
+        onClick={prev}
+        className="absolute top-1/2 left-3 -translate-y-1/2
+                   w-10 h-10 rounded-full bg-black/30 text-white
+                   flex items-center justify-center"
       >
-        <ChevronLeftIcon />
+        ‹
       </button>
 
       <button
-        aria-label="Next badge"
-        onClick={scrollNext}
-        className="
-          absolute right-2 top-1/2 -translate-y-1/2
-          text-white/90 hover:text-white
-          w-10 h-10 rounded-full flex items-center justify-center
-          transition-colors
-          z-20
-        "
+        onClick={next}
+        className="absolute top-1/2 right-3 -translate-y-1/2
+                   w-10 h-10 rounded-full bg-black/30 text-white
+                   flex items-center justify-center"
       >
-        <ChevronRightIcon />
+        ›
       </button>
     </div>
   );
