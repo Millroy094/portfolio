@@ -126,6 +126,62 @@ export default function AdminForm() {
 
     return { badgeKeyLabels, avatarKey };
   };
+  const handleBadgeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.type !== "image/png") {
+      toast.error("Only PNG files are allowed.", {
+        theme: "colored",
+      });
+      return;
+    }
+
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+
+    img.onload = () => {
+      const { width, height } = img;
+
+      if (width !== height) {
+        toast.error("Image must be 1:1 aspect ratio (square).", {
+          theme: "colored",
+        });
+        return;
+      }
+
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+
+      ctx.drawImage(img, 0, 0);
+      const pixelData = ctx.getImageData(0, 0, width, height).data;
+
+      let hasTransparency = false;
+      for (let i = 3; i < pixelData.length; i += 4) {
+        if (pixelData[i] < 255) {
+          hasTransparency = true;
+          break;
+        }
+      }
+
+      if (!hasTransparency) {
+        toast.error("PNG must have a transparent background.", {
+          theme: "colored",
+        });
+        return;
+      }
+
+      badges.append({ value: file, label: "" });
+    };
+
+    if (badgeFileInputRef.current) {
+      badgeFileInputRef.current.value = "";
+    }
+  };
 
   const isFieldError = (err: unknown): err is FieldError => {
     return typeof err === "object" && err !== null && "message" in err;
@@ -234,14 +290,10 @@ export default function AdminForm() {
           />
           <input
             type="file"
-            accept="image/*"
+            accept="image/png"
             hidden
             ref={badgeFileInputRef}
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) badges.append({ value: file, label: "" });
-              if (badgeFileInputRef.current) badgeFileInputRef.current.value = "";
-            }}
+            onChange={handleBadgeFile}
           />
 
           {/* Sections */}
