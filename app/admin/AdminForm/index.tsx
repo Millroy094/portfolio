@@ -30,15 +30,18 @@ import IdentitySection from "./IdentitySection";
 import ProjectsSkillsSection from "./ProjectsSkillsSection";
 import RolesSection from "./RolesSection";
 
-export default function AdminForm() {
-  const [formId, setFormId] = useState<string | null>(null);
+type AdminFormProps = { data: ProfileSchemaType | null; profileId: string | null };
+
+export default function AdminForm(props: AdminFormProps) {
+  const { data, profileId } = props;
+  const [formId, setFormId] = useState<string | null>(profileId);
   const [loading, setLoading] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
 
   const methods = useForm<ProfileSchemaType>({
     resolver: zodResolver(ProfileSchema),
-    defaultValues: {
+    defaultValues: data ?? {
       roles: [],
       badges: [],
       avatar: "",
@@ -62,29 +65,29 @@ export default function AdminForm() {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isDirty },
     reset,
   } = methods;
 
-  useEffect(() => {
-    async function load() {
-      setLoading(true);
-      try {
-        const { profileId, data } = await getProfileData();
+  async function loadData() {
+    try {
+      const { profileId, data } = await getProfileData();
 
-        if (data && profileId) {
-          setFormId(profileId);
-          reset(data);
-        }
-      } catch (error) {
-        console.log(error);
-        toast.error("Failed to retrieve profile");
+      if (data && profileId) {
+        setFormId(profileId);
+        reset(data);
       }
-
-      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to retrieve profile");
     }
-    load();
-  }, [reset]);
+  }
+
+  useEffect(() => {
+    setLoading(true);
+    loadData();
+    setLoading(false);
+  }, []);
 
   const roles = useFieldArray({ control, name: "roles" });
   const badges = useFieldArray({ control, name: "badges" });
@@ -218,6 +221,7 @@ export default function AdminForm() {
       if (profileId && formId !== profileId) {
         setFormId(profileId);
       }
+      await loadData();
       toast.success("Successfully saved profile", { theme: "colored" });
     } catch (error) {
       console.log(error);
@@ -265,12 +269,28 @@ export default function AdminForm() {
         </Alert>
       )}
 
+      {isDirty && (
+        <Alert
+          severity="warning"
+          sx={{
+            mb: 2,
+            borderRadius: 2,
+            fontSize: "1rem",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          You have unsaved changes.
+        </Alert>
+      )}
+
       <div className="flex justify-end p-4 gap-2">
         <Button
           variant="outlined"
           color={isEditable ? "warning" : "primary"}
           onClick={() => setIsEditable((prev) => !prev)}
           startIcon={isEditable ? <LockSharp /> : <Edit />}
+          disabled={isDirty}
         >
           {isEditable ? "Lock" : "Edit"}
         </Button>

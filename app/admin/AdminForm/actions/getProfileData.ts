@@ -36,36 +36,39 @@ export async function getProfileData(): Promise<{
       avatar: p.avatarKey ?? "",
       fullName: p.fullName ?? "",
       punchLine: p.punchLine ?? "",
-      linkedIn: p.linkedIn ?? undefined,
-      github: p.github ?? undefined,
-      stackOverflow: p.stackOverflow ?? undefined,
-      resume: p.resume ?? undefined,
+      linkedIn: p.linkedIn ?? "",
+      github: p.github ?? "",
+      stackOverflow: p.stackOverflow ?? "",
+      resume: p.resume ?? "",
       aboutMe: p.aboutMe ?? "",
       seoTitle: p.seoTitle ?? "",
       seoDescription: p.seoDescription ?? "",
 
-      roles: roles.data.map((r) => ({ value: r.value })),
-      badges: badges.data.map((b) => ({ value: b.value, label: b.label })),
+      roles: roles.data.map((r) => ({ value: r.value })) ?? [],
+      badges: badges.data.map((b) => ({ value: b.value, label: b.label })) ?? [],
 
-      experiences: exps.data.map((e) => ({
-        organization: e.organization,
-        title: e.title,
-        year: Number(e.year),
-      })),
+      experiences:
+        exps.data.map((e) => ({
+          organization: e.organization,
+          title: e.title,
+          year: Number(e.year),
+        })) ?? [],
 
-      education: edus.data.map((e) => ({
-        institute: e.institute,
-        qualification: e.qualification,
-        year: Number(e.year),
-      })),
+      education:
+        edus.data.map((e) => ({
+          institute: e.institute,
+          qualification: e.qualification,
+          year: Number(e.year),
+        })) ?? [],
 
-      projects: projects.data.map((p) => ({
-        name: p.name,
-        description: p.description ?? "",
-        url: p.url ?? "",
-      })),
+      projects:
+        projects.data.map((p) => ({
+          name: p.name,
+          description: p.description ?? "",
+          url: p.url ?? "",
+        })) ?? [],
 
-      skills: (p.skills ?? []).filter((s): s is string => typeof s === "string"),
+      skills: (p.skills ?? []).filter((s): s is string => typeof s === "string") ?? [],
 
       visibility: {
         roles: p.showRoles ?? true,
