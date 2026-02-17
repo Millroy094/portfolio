@@ -228,9 +228,9 @@ If you fork or reuse this project, you must:
 Replace all favicon files in the `/public` folder with your own branding
 assets.
 
-## 2️⃣ Add Your Own `llm.txt`
+## 2️⃣ Add Your Own `llms.txt`
 
-Create `/public/llm.txt`:
+Create `/public/llms.txt`:
 
 ------------------------------------------------------------------------
 
