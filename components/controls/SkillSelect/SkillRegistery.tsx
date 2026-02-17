@@ -18,9 +18,31 @@ import {
   SiAuth0,
   SiKeycloak,
   SiWebauthn,
+  SiReact,
+  SiRedux,
+  SiGraphql,
+  SiGo,
+  SiNodedotjs,
+  SiTypescript,
+  SiPhp,
+  SiLaravel,
+  SiJest,
+  SiGnubash,
+  SiCypress,
+  SiMongodb,
+  SiRedis,
+  SiMysql,
+  SiPostgresql,
+  SiDocker,
+  SiKubernetes,
 } from "@icons-pack/react-simple-icons";
+
 import React from "react";
-import StackIcon from "tech-stack-icons";
+import { FaAws, FaJava } from "react-icons/fa";
+import { TbBrandCSharp } from "react-icons/tb";
+import { VscAzure } from "react-icons/vsc";
+import { RiNextjsFill } from "react-icons/ri";
+import PlaywrightIcon from "@/components/PlaywrightIcon";
 
 export type SkillId =
   | "html5"
@@ -98,7 +120,7 @@ export const skillsRegistry: Record<SkillId, Skill> = {
     id: "react",
     label: "React.js",
     group: "FE",
-    render: () => <StackIcon name="react" style={{ width: size }} />,
+    render: () => <SiReact size={size} color="#61DAFB" />,
   },
   mui: {
     id: "mui",
@@ -116,19 +138,19 @@ export const skillsRegistry: Record<SkillId, Skill> = {
     id: "redux",
     label: "Redux",
     group: "FE",
-    render: () => <StackIcon name="redux" style={{ width: size }} />,
+    render: () => <SiRedux size={size} color="#764ABC" />,
   },
   nodejs: {
     id: "nodejs",
     label: "Node.js",
     group: "BE",
-    render: () => <StackIcon name="nodejs" style={{ width: size }} />,
+    render: () => <SiNodedotjs size={size} color="#5FA04E" />,
   },
   typescript: {
     id: "typescript",
     label: "TypeScript",
     group: "FE",
-    render: () => <StackIcon name="typescript" style={{ width: size }} />,
+    render: () => <SiTypescript size={size} color="#3178C6" />,
   },
   express: {
     id: "express",
@@ -140,7 +162,7 @@ export const skillsRegistry: Record<SkillId, Skill> = {
     id: "nextjs",
     label: "Next.js",
     group: "FE",
-    render: () => <StackIcon name="nextjs2" style={{ width: size }} />,
+    render: () => <RiNextjsFill size={size} color="#ffffff" />,
   },
   tailwindcss: {
     id: "tailwindcss",
@@ -152,31 +174,31 @@ export const skillsRegistry: Record<SkillId, Skill> = {
     id: "graphql",
     label: "GraphQL",
     group: "BE",
-    render: () => <StackIcon name="graphql" style={{ width: size }} />,
+    render: () => <SiGraphql size={size} color="#E10098" />,
   },
   golang: {
     id: "golang",
     label: "Golang",
     group: "BE",
-    render: () => <StackIcon name="go" style={{ width: size }} />,
+    render: () => <SiGo size={size} color="#00ADD8" />,
   },
   java: {
     id: "java",
     label: "Java",
     group: "BE",
-    render: () => <StackIcon name="java" style={{ width: size }} />,
+    render: () => <FaJava size={size} color="#F89820" />,
   },
   php: {
     id: "php",
     label: "PHP",
     group: "BE",
-    render: () => <StackIcon name="php" style={{ width: size }} />,
+    render: () => <SiPhp size={size} color="#777BB4" />,
   },
   laravel: {
     id: "laravel",
     label: "Laravel",
     group: "BE",
-    render: () => <StackIcon name="laravel" style={{ width: size }} />,
+    render: () => <SiLaravel size={size} color="#FF2D20" />,
   },
   wordpress: {
     id: "wordpress",
@@ -188,7 +210,7 @@ export const skillsRegistry: Record<SkillId, Skill> = {
     id: "csharp",
     label: "C#",
     group: "BE",
-    render: () => <StackIcon name="csharp" style={{ width: size }} />,
+    render: () => <TbBrandCSharp size={size} color="#239120" />,
   },
   dotnet: {
     id: "dotnet",
@@ -200,49 +222,49 @@ export const skillsRegistry: Record<SkillId, Skill> = {
     id: "bash",
     label: "Bash",
     group: "Other",
-    render: () => <StackIcon name="bash" style={{ width: size }} />,
+    render: () => <SiGnubash size={size} color="#4EAA25" />,
   },
   jest: {
     id: "jest",
     label: "Jest",
     group: "FE",
-    render: () => <StackIcon name="jest" style={{ width: size }} />,
+    render: () => <SiJest size={size} color="#C21325" />,
   },
   cypress: {
     id: "cypress",
     label: "Cypress",
     group: "FE",
-    render: () => <StackIcon name="cypress" style={{ width: size }} />,
+    render: () => <SiCypress size={size} color="#69D3A7" />,
   },
   playwright: {
     id: "playwright",
     label: "Playwright",
     group: "FE",
-    render: () => <StackIcon name="playwright" style={{ width: size }} />,
+    render: () => <PlaywrightIcon size={size} />,
   },
   mongodb: {
     id: "mongodb",
     label: "MongoDB",
     group: "DB",
-    render: () => <StackIcon name="mongodb" style={{ width: size }} />,
+    render: () => <SiMongodb size={size} color="#47A248" />,
   },
   redis: {
     id: "redis",
     label: "Redis",
     group: "DB",
-    render: () => <StackIcon name="redis" style={{ width: size }} />,
+    render: () => <SiRedis size={size} color="#FF4438" />,
   },
   mysql: {
     id: "mysql",
     label: "MySQL",
     group: "DB",
-    render: () => <StackIcon name="mysql" style={{ width: size }} />,
+    render: () => <SiMysql size={size} color="#4479A1" />,
   },
   postgresql: {
     id: "postgresql",
     label: "PostgreSQL",
     group: "DB",
-    render: () => <StackIcon name="postgresql" style={{ width: size }} />,
+    render: () => <SiPostgresql size={size} color="#4169E1" />,
   },
   snowflake: {
     id: "snowflake",
@@ -266,13 +288,13 @@ export const skillsRegistry: Record<SkillId, Skill> = {
     id: "docker",
     label: "Docker",
     group: "DevOps",
-    render: () => <StackIcon name="docker" style={{ width: size }} />,
+    render: () => <SiDocker size={size} color="#2496ED" />,
   },
   kubernetes: {
     id: "kubernetes",
     label: "Kubernetes",
     group: "DevOps",
-    render: () => <StackIcon name="kubernetes" style={{ width: size }} />,
+    render: () => <SiKubernetes size={size} color="#326CE5" />,
   },
   helm: {
     id: "helm",
@@ -296,13 +318,13 @@ export const skillsRegistry: Record<SkillId, Skill> = {
     id: "aws",
     label: "AWS",
     group: "DevOps",
-    render: () => <StackIcon name="aws" style={{ width: size }} />,
+    render: () => <FaAws size={size} color="#FF9900" />,
   },
   azure: {
     id: "azure",
     label: "Azure",
     group: "DevOps",
-    render: () => <StackIcon name="azure" style={{ width: size }} />,
+    render: () => <VscAzure size={size} color="#0078D4" />,
   },
   stripe: {
     id: "stripe",
