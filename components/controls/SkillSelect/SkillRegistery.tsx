@@ -36,12 +36,12 @@ import {
   SiDocker,
   SiKubernetes,
 } from "@icons-pack/react-simple-icons";
-
 import React from "react";
 import { FaAws, FaJava } from "react-icons/fa";
+import { RiNextjsFill } from "react-icons/ri";
 import { TbBrandCSharp } from "react-icons/tb";
 import { VscAzure } from "react-icons/vsc";
-import { RiNextjsFill } from "react-icons/ri";
+
 import PlaywrightIcon from "@/components/PlaywrightIcon";
 
 export type SkillId =
