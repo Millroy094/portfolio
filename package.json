@@ -51,7 +51,6 @@
     "react-toastify": "^11.0.5",
     "react-type-animation": "^3.2.0",
     "styled-components": "^6.3.8",
-    "tech-stack-icons": "^3.5.8",
     "three": "^0.182.0",
     "zod": "^3.25.17"
   },
