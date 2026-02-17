@@ -105,9 +105,7 @@ export default function Introduction(): JSX.Element {
         <div className="flex flex-col items-center mt-2">
           {data.punchLine && <span className="text-sm opacity-80 mb-2">{data.punchLine}</span>}
 
-          {data.visibility.badges && data.badges.length > 0 && (
-            <BadgeSlider badges={data.badges} loop autoplay autoplayDelayMs={3000} />
-          )}
+          {data.visibility.badges && data.badges.length > 0 && <BadgeSlider badges={data.badges} />}
 
           <div className="flex gap-4 py-4 items-center justify-center">
             {data.linkedin && (
