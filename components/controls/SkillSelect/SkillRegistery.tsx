@@ -92,7 +92,16 @@ export type Skill = {
   id: SkillId;
   label: string;
   render: () => React.ReactNode;
-  group?: "FE" | "BE" | "DB" | "Testing" | "DevOps" | "Identity" | "Payments" | "Messaging" | "Other";
+  group?:
+    | "FE"
+    | "BE"
+    | "DB"
+    | "Testing"
+    | "DevOps"
+    | "Identity"
+    | "Payments"
+    | "Messaging"
+    | "Other";
 };
 
 const size = 40;
