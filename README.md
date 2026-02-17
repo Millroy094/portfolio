@@ -1,116 +1,254 @@
-# Portfolio
+# 🚀 Portfolio -- Next.js + AWS Amplify + Terraform
 
-A **Next.js** personal portfolio hosted on **AWS Amplify** (Cognito authentication, S3 storage, DynamoDB data via AppSync). Designed to run for pennies a month, with deployments automated through GitHub Actions (OIDC) → Terraform Cloud → AWS Amplify.
+A production-ready **Next.js** personal portfolio deployed on **AWS
+Amplify**, backed by:
 
-The app consists of two pages:
-1. Website: The root page which is publicly available and has all the SEO optimization. 
-2. Admin: `/admin` page where you can make all the edits to your content and is protected by Cognito sign in
----
+-   🔐 AWS Cognito (authentication)
+-   🗄 DynamoDB via AppSync (data layer)
+-   📦 S3 (storage)
+-   🏗 Terraform Cloud (Infrastructure as Code)
+-   🔄 GitHub Actions with OIDC (secure CI/CD)
 
-## Required IAM Permissions
+Designed to be secure, scalable, and extremely cost-efficient (runs for
+pennies per month).
 
-You need **two separate OIDC roles**:
+------------------------------------------------------------------------
 
-### 1. GitHub Actions Role
+# 🏛 Architecture Overview
 
-Allow these actions:
+**Frontend** - Next.js - SEO optimized public page - Protected admin
+panel
 
-- `amplify:StartJob`
-- `amplify:GetJob`
-- `amplify:ListJobs`
-- `amplify:GetBranch`
-- `amplify:ListBackendEnvironments`
-- `amplifybackend:GetBackend`
+**Backend** - AWS Cognito - AppSync GraphQL API - DynamoDB - S3
 
----
+**Infrastructure** - Terraform (Terraform Cloud) - AWS Amplify Hosting -
+Route53 (custom domain)
 
-### 2. Terraform Cloud Role
+**CI/CD Flow** GitHub Actions (OIDC) → Terraform Cloud → AWS Amplify
 
-Allow these actions:
+No long-lived AWS credentials are stored.
 
-- **Amplify:**
-  - `amplify:CreateApp`, `amplify:UpdateApp`, `amplify:DeleteApp`, `amplify:GetApp`, `amplify:ListApps`
-  - `amplify:CreateBranch`, `amplify:UpdateBranch`, `amplify:DeleteBranch`, `amplify:GetBranch`, `amplify:ListBranches`
-  - `amplify:CreateDomainAssociation`, `amplify:UpdateDomainAssociation`, `amplify:DeleteDomainAssociation`, `amplify:GetDomainAssociation`, `amplify:ListDomainAssociations`
-  - `amplify:TagResource`, `amplify:UntagResource`, `amplify:ListTagsForResource`
-- **IAM:**
-  - `iam:CreateRole`, `iam:GetRole`, `iam:DeleteRole`, `iam:AttachRolePolicy`, `iam:DetachRolePolicy`
-  - `iam:PutRolePolicy`, `iam:DeleteRolePolicy`, `iam:PassRole`, `iam:ListRolePolicies`, `iam:ListAttachedRolePolicies`, `iam:ListInstanceProfilesForRole`
-  - `iam:CreatePolicy`, `iam:TagRole`, `iam:TagPolicy`, `iam:GetPolicy`, `iam:DeletePolicy`, `iam:GetPolicyVersion`, `iam:ListPolicyVersions`
-- **Route53:**
-  - `route53:ListHostedZones`, `route53:ListResourceRecordSets`, `route53:ListHostedZonesByName`
+------------------------------------------------------------------------
 
----
+# 🌐 Application Structure
 
-## Required Terraform Cloud Variables
+The application consists of two main routes:
 
-Set these variables in your [Terraform Cloud workspace](https://app.terraform.io/):
+## 1️⃣ Public Website (`/`)
 
-| Variable Name  | Description            | Type      | Example           |
-|----------------|------------------------| --------- |-------------------|
-| `github_token` | GitHub PAT             | Sensitive |                   |
-| `domain`       | Custom domain name     | String    | `myportfolio.com` |
-| `gh_owner`     | GitHub org/user        | String    | `Millroy094`      |
-| `gh_repo`      | GitHub repository name | String    | `portfolio`       | 
-| `g_tag`        | Google Tag Manager ID  | String    | `G-XXXX`          |
----
+Fully SEO-optimized and publicly accessible portfolio.
 
-## GitHub Actions Variables / Secrets
+## 2️⃣ Admin (`/admin`)
 
-- `AWS_REGION` (e.g., `eu-west-2`)
-- `AWS_ROLE_ARN` (OIDC role ARN for GitHub Actions)
-- `TF_ORG` (Terraform Cloud organization)
-- `TF_API_TOKEN` (Terraform Cloud API token, secret)
+Protected by AWS Cognito authentication.
 
----
+From the admin panel you can: - Edit all portfolio content - Show/hide
+sections - Update projects and skills - Modify profile information
 
-## Running Amplify Backend Locally
+No redeploy required for content updates.
 
-You can run and test the Amplify backend locally as follows:
+------------------------------------------------------------------------
 
-1. **Install the Amplify CLI**
+# 🧩 Website Sections
 
-   ```sh
-   npm install -g @aws-amplify/cli
-   ```
+Each section is configurable via the admin dashboard.
 
-2. **Configure the CLI**
+### Introduction
 
-   ```sh
-   amplify configure
-   ```
+-   Avatar
+-   Roles held
+-   Punchline
+-   Social links
+-   Certifications (e.g. AWS badges)
 
-   _Follow the prompts to set up AWS credentials._
+### About Me
 
-3. **Launch the Amplify Visual Sandbox**
-   ```sh
-   npx ampx sandbox
-   ```
-   _Use this to experiment and prototype with the Amplify backend locally._
+Professional summary and background.
 
----
+### Skills
 
-## Local Next.js Development
+Interactive globe of technical skills.
 
-1. **Install dependencies:**
-   ```sh
-   npm install
-   ```
-2. **Set the only required local environment variable for development:**
+### Experience & Education
 
-   In a `.env.local` file (or in your shell):
+Highlights professional journey and progression.
 
-   ```
-   PUBLIC_URL=http://localhost:3000
-   NEXT_PUBLIC_G_TAG=G-XXXXX
-   ```
+### Projects
 
-3. **Run the local development server:**
-   ```sh
-   npm run dev
-   ```
-   Open [http://localhost:3000](http://localhost:3000).
+Personal GitHub projects.
 
-## Getting started
+All sections can be toggled on or off.
 
-Once the website is up and running you be required to create a user on AWS Cognito which will serve as your entry point to the admin page (`/admin`). On the admin add all the data you need to see on the webpage and head over to the website.
+------------------------------------------------------------------------
+
+# 🔐 Required IAM Setup
+
+You must create **two separate OIDC roles**.
+
+## 1️⃣ GitHub Actions Role
+
+Used only to trigger Amplify builds.
+
+Required permissions:
+
+-   amplify:StartJob
+-   amplify:GetJob
+-   amplify:ListJobs
+-   amplify:GetBranch
+-   amplify:ListBackendEnvironments
+-   amplifybackend:GetBackend
+
+## 2️⃣ Terraform Cloud Role
+
+Used for provisioning infrastructure.
+
+### Amplify Permissions
+
+-   amplify:CreateApp
+-   amplify:UpdateApp
+-   amplify:DeleteApp
+-   amplify:GetApp
+-   amplify:ListApps
+-   amplify:CreateBranch
+-   amplify:UpdateBranch
+-   amplify:DeleteBranch
+-   amplify:GetBranch
+-   amplify:ListBranches
+-   amplify:CreateDomainAssociation
+-   amplify:UpdateDomainAssociation
+-   amplify:DeleteDomainAssociation
+-   amplify:GetDomainAssociation
+-   amplify:ListDomainAssociations
+-   amplify:TagResource
+-   amplify:UntagResource
+-   amplify:ListTagsForResource
+
+### IAM Permissions
+
+-   iam:CreateRole
+-   iam:GetRole
+-   iam:DeleteRole
+-   iam:AttachRolePolicy
+-   iam:DetachRolePolicy
+-   iam:PutRolePolicy
+-   iam:DeleteRolePolicy
+-   iam:PassRole
+-   iam:ListRolePolicies
+-   iam:ListAttachedRolePolicies
+-   iam:ListInstanceProfilesForRole
+-   iam:CreatePolicy
+-   iam:TagRole
+-   iam:TagPolicy
+-   iam:GetPolicy
+-   iam:DeletePolicy
+-   iam:GetPolicyVersion
+-   iam:ListPolicyVersions
+
+### Route53 Permissions
+
+-   route53:ListHostedZones
+-   route53:ListResourceRecordSets
+-   route53:ListHostedZonesByName
+
+------------------------------------------------------------------------
+
+# ⚙ Required Terraform Cloud Variables
+
+  Variable Name   Description              Type        Example
+  --------------- ------------------------ ----------- -----------------
+  github_token    GitHub PAT               Sensitive   
+  domain          Custom domain name       String      myportfolio.com
+  gh_owner        GitHub org/user          String      yourusername
+  gh_repo         GitHub repository name   String      portfolio
+  g_tag           Google Analytics ID      String      G-XXXX
+
+------------------------------------------------------------------------
+
+# 🔑 GitHub Actions Secrets
+
+Configure in your repository settings:
+
+-   AWS_REGION
+-   AWS_ROLE_ARN
+-   TF_ORG
+-   TF_API_TOKEN
+
+------------------------------------------------------------------------
+
+# 🧪 Running Amplify Backend Locally
+
+### Install Amplify CLI
+
+npm install -g @aws-amplify/cli
+
+### Configure CLI
+
+amplify configure
+
+### Launch Sandbox
+
+npx ampx sandbox
+
+------------------------------------------------------------------------
+
+# 💻 Local Next.js Development
+
+### Install dependencies
+
+npm install
+
+### Create `.env.local`
+
+PUBLIC_URL=http://localhost:3000 NEXT_PUBLIC_G\_TAG=G-XXXXX
+
+### Start development server
+
+npm run dev
+
+Visit http://localhost:3000
+
+------------------------------------------------------------------------
+
+# 🚀 First-Time Setup After Deployment
+
+1.  Create a user in AWS Cognito
+2.  Sign in at /admin
+3.  Add your portfolio content
+4.  Configure visibility of sections
+5.  Visit / to view your site
+
+------------------------------------------------------------------------
+
+# 🧑‍💻 If You Plan to Use This Repository
+
+If you fork or reuse this project, you must:
+
+## 1️⃣ Replace the Favicon
+
+Replace all favicon files in the `/public` folder with your own branding
+assets.
+
+## 2️⃣ Add Your Own `llm.json`
+
+Create `/public/llm.json`:
+
+{ "name": "Your Name", "title": "Software Engineer", "summary": "Short
+AI-readable professional summary", "skills": \["Next.js", "AWS",
+"Terraform"\], "contact": "https://yourdomain.com/contact" }
+
+------------------------------------------------------------------------
+
+# 🎯 Design Principles
+
+-   Infrastructure as Code
+-   Secure OIDC-based authentication
+-   No long-lived AWS credentials
+-   Cost-efficient architecture
+-   Admin-driven content management
+-   Clear separation of public and protected routes
+
+------------------------------------------------------------------------
+
+# 📜 License
+
+MIT License (or update as needed).
