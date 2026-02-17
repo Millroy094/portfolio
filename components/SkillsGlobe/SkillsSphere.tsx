@@ -340,7 +340,7 @@ export function SkillsSphere({ skillIds, radius = 3 }: Props) {
 
   const positions = useMemo(
     () => fibonacciSphereSurface(skills.length, safeRad),
-    [skills.length, safeRad]
+    [skills.length, safeRad],
   );
 
   useFrame((state) => {
