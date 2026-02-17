@@ -92,7 +92,7 @@ export type Skill = {
   id: SkillId;
   label: string;
   render: () => React.ReactNode;
-  group?: "FE" | "BE" | "DB" | "DevOps" | "Identity" | "Payments" | "Messaging" | "Other";
+  group?: "FE" | "BE" | "DB" | "Testing" | "DevOps" | "Identity" | "Payments" | "Messaging" | "Other";
 };
 
 const size = 40;
@@ -221,25 +221,25 @@ export const skillsRegistry: Record<SkillId, Skill> = {
   bash: {
     id: "bash",
     label: "Bash",
-    group: "Other",
+    group: "DevOps",
     render: () => <SiGnubash size={size} color="#4EAA25" />,
   },
   jest: {
     id: "jest",
     label: "Jest",
-    group: "FE",
+    group: "Testing",
     render: () => <SiJest size={size} color="#C21325" />,
   },
   cypress: {
     id: "cypress",
     label: "Cypress",
-    group: "FE",
+    group: "Testing",
     render: () => <SiCypress size={size} color="#69D3A7" />,
   },
   playwright: {
     id: "playwright",
     label: "Playwright",
-    group: "FE",
+    group: "Testing",
     render: () => <PlaywrightIcon size={size} />,
   },
   mongodb: {
