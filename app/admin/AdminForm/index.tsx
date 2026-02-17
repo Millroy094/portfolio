@@ -95,6 +95,7 @@ export default function AdminForm(props: AdminFormProps) {
     };
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const roles = useFieldArray({ control, name: "roles" });
