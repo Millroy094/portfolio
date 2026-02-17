@@ -12,6 +12,7 @@ const GROUP_ORDER: GroupKey[] = [
   "FE",
   "BE",
   "DB",
+  "Testing",
   "DevOps",
   "Identity",
   "Payments",
@@ -26,6 +27,8 @@ function labelForGroup(g: GroupKey) {
       return "Frontend";
     case "BE":
       return "Backend";
+    case "Testing":
+      return "Testing";
     case "DB":
       return "Databases";
     case "DevOps":
