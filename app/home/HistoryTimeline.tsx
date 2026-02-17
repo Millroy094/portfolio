@@ -1,18 +1,8 @@
 "use client";
-import { Code } from "@mui/icons-material";
-import {
-  Timeline,
-  TimelineConnector,
-  TimelineContent,
-  TimelineDot,
-  TimelineItem,
-  TimelineOppositeContent,
-  TimelineSeparator,
-} from "@mui/lab";
-import { timelineContentClasses } from "@mui/lab/TimelineContent";
-import { Grid, Typography } from "@mui/material";
 
-import GrowOnHover from "../../hoc/GrowOnHover";
+import { Code } from "@mui/icons-material";
+
+import GrowOnHover from "@/hoc/GrowOnHover";
 
 interface ITimelineItem {
   year: number;
@@ -25,55 +15,50 @@ interface IHistoryTimelineProps {
   timeline: ITimelineItem[];
 }
 
-function HistoryTimeline(props: Readonly<IHistoryTimelineProps>) {
-  const { timeline, title } = props;
+export default function HistoryTimeline({ title, timeline }: IHistoryTimelineProps) {
+  const sorted = [...timeline].sort((a, b) => a.year - b.year);
+
   return (
-    <Grid container direction="column" alignItems="center" size={{ xs: 12, sm: 12, md: 6, lg: 4 }}>
-      <Typography
-        component="h2"
-        variant="overline"
-        fontWeight="bold"
-        fontSize={{ xs: 20, sm: 20, md: 35, lg: 35 }}
+    <div className="flex flex-col items-center w-full lg:w-1/2 max-w-160 mx-auto">
+      <h2
+        className="font-bold uppercase tracking-wide
+                     text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] mb-6"
       >
         {title}
-      </Typography>
-      <Timeline
-        sx={{
-          [`& .${timelineContentClasses.root}`]: {
-            justifyContent: "center",
-          },
-        }}
-      >
-        {timeline
-          ?.sort((ta, tb) => ta.year - tb.year)
-          .map((t: ITimelineItem, index: number) => (
-            <GrowOnHover key={t.title}>
-              <TimelineItem>
-                <TimelineOppositeContent sx={{ display: "flex", flex: 0, alignItems: "center" }}>
-                  <Typography fontWeight="bold" component="h4" variant="body2">
-                    {t.year}
-                  </Typography>
-                </TimelineOppositeContent>
-                <TimelineSeparator>
-                  <TimelineDot color="error">
-                    <Code />
-                  </TimelineDot>
-                  {index !== timeline.length - 1 && <TimelineConnector />}
-                </TimelineSeparator>
-                <TimelineContent sx={{ flex: 1 }}>
-                  <Typography variant="h6" component="h5">
-                    {t.title}
-                  </Typography>
-                  <Typography variant="caption" component="h6">
-                    {t.subTitle}
-                  </Typography>
-                </TimelineContent>
-              </TimelineItem>
+      </h2>
+
+      <div className="relative pl-16">
+        {sorted.map((item, index) => (
+          <div key={`${item.title}-${item.year}`} className="relative pb-10">
+            {index !== sorted.length - 1 && (
+              <div
+                className="absolute left-1 top-8 w-0.5 h-[calc(100%-8px)]
+                              bg-gray-300 dark:bg-gray-600 z-0"
+              ></div>
+            )}
+
+            <GrowOnHover>
+              <div className="relative z-20">
+                <div className="absolute -left-36 top-1 w-32 text-right">
+                  <p className="font-bold text-gray-800 dark:text-gray-300">{item.year}</p>
+                </div>
+
+                <div
+                  className="absolute -left-2.5 top-1 z-30 w-7 h-7 rounded-full
+                             bg-red-600 flex items-center justify-center text-white shadow-md"
+                >
+                  <Code fontSize="small" />
+                </div>
+
+                <div className="ml-10">
+                  <h3 className="text-lg font-semibold">{item.title}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{item.subTitle}</p>
+                </div>
+              </div>
             </GrowOnHover>
-          ))}
-      </Timeline>
-    </Grid>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
-
-export default HistoryTimeline;

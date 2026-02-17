@@ -1,8 +1,5 @@
 "use client";
 
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { Box, IconButton } from "@mui/material";
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback } from "react";
@@ -11,13 +8,33 @@ import type { BadgesData } from "@/app/home/actions/getWebsiteData";
 import ImageWithSkeleton from "@/components/ImageWithSkeleton";
 import GrowOnHover from "@/hoc/GrowOnHover";
 
-type Props = {
-  badges: BadgesData[];
-  maxSizePx?: number;
-  loop?: boolean;
-  autoplay?: boolean;
-  autoplayDelayMs?: number;
-};
+function ChevronLeftIcon({ className = "" }) {
+  return (
+    <svg
+      className={`w-6 h-6 ${className}`}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+    </svg>
+  );
+}
+
+function ChevronRightIcon({ className = "" }) {
+  return (
+    <svg
+      className={`w-6 h-6 ${className}`}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+  );
+}
 
 export default function BadgeSlider({
   badges,
@@ -25,75 +42,49 @@ export default function BadgeSlider({
   loop = true,
   autoplay = false,
   autoplayDelayMs = 3000,
-}: Props) {
+}: {
+  badges: BadgesData[];
+  maxSizePx?: number;
+  loop?: boolean;
+  autoplay?: boolean;
+  autoplayDelayMs?: number;
+}) {
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop, align: "center", dragFree: false, slidesToScroll: 1 },
+    {
+      loop,
+      align: "center",
+      dragFree: false,
+      slidesToScroll: 1,
+    },
     autoplay ? [Autoplay({ delay: autoplayDelayMs, stopOnInteraction: false })] : [],
   );
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
-  /**
-   * Tuning knobs:
-   * - btnSize: visual size of icon button
-   * - gutter: space reserved inside the viewport so arrows never overlap the image
-   *   (increase these if you want even more distance)
-   */
-  const btnSize = 40;
-  const gutter = {
-    xs: 56,
-    sm: 64,
-    md: 80,
-  };
-
   return (
-    <Box
-      sx={{
-        position: "relative",
-        py: 2,
-        overflow: "visible",
-      }}
-    >
-      {/* Viewport with generous side padding (gutter) so arrows don't overlap the image */}
-      <Box
+    <div className="relative py-4 overflow-visible">
+      <div
         ref={emblaRef}
-        sx={{
-          overflow: "hidden",
-          borderRadius: 2,
-          pl: {
-            xs: `${gutter.xs}px`,
-            sm: `${gutter.sm}px`,
-            md: `${gutter.md}px`,
-          },
-          pr: {
-            xs: `${gutter.xs}px`,
-            sm: `${gutter.sm}px`,
-            md: `${gutter.md}px`,
-          },
-        }}
+        className="
+          overflow-hidden rounded-md
+          pl-14 sm:pl-16 md:pl-20
+          pr-14 sm:pr-16 md:pr-20
+        "
       >
-        <Box sx={{ display: "flex", gap: 2 }}>
+        <div className="flex gap-4">
           {badges.map((badge, i) => (
-            <Box
+            <div
               key={badge.label}
-              sx={{
-                flex: "0 0 100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                minHeight: { xs: 220, sm: 260, md: 300 },
-              }}
+              className="
+                shrink-0 w-full flex items-center justify-center
+                min-h-55 sm:min-h-65 md:min-h-75
+              "
             >
               <GrowOnHover scale={1.1}>
-                <Box
-                  sx={{
-                    width: "100%",
-                    maxWidth: maxSizePx,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
+                <div
+                  className="flex items-center justify-center w-full"
+                  style={{ maxWidth: maxSizePx }}
                 >
                   <ImageWithSkeleton
                     src={badge.url}
@@ -108,61 +99,40 @@ export default function BadgeSlider({
                       objectFit: "contain",
                     }}
                   />
-                </Box>
+                </div>
               </GrowOnHover>
-            </Box>
+            </div>
           ))}
-        </Box>
-      </Box>
+        </div>
+      </div>
 
-      {/* Controls — transparent, aligned inside the gutter, no overlap */}
-      <IconButton
+      <button
         aria-label="Previous badge"
         onClick={scrollPrev}
-        sx={() => ({
-          position: "absolute",
-          top: "50%",
-          left: { xs: 8, sm: 8, md: 8 },
-          transform: "translateY(-50%)",
-          bgcolor: "transparent",
-          color: "rgba(255,255,255,0.9)",
-          "&:hover": {
-            bgcolor: "transparent",
-            color: "white",
-          },
-          width: btnSize,
-          height: btnSize,
-          borderRadius: "50%",
-          textShadow: "0 0 6px rgba(0,0,0,0.35)",
-          zIndex: 10,
-        })}
+        className="
+          absolute left-2 top-1/2 -translate-y-1/2
+          text-white/90 hover:text-white
+          w-10 h-10 rounded-full flex items-center justify-center
+          transition-colors
+          z-20
+        "
       >
-        <ChevronLeftIcon fontSize="medium" />
-      </IconButton>
+        <ChevronLeftIcon />
+      </button>
 
-      <IconButton
+      <button
         aria-label="Next badge"
         onClick={scrollNext}
-        sx={() => ({
-          position: "absolute",
-          top: "50%",
-          right: { xs: 8, sm: 8, md: 8 },
-          transform: "translateY(-50%)",
-          bgcolor: "transparent",
-          color: "rgba(255,255,255,0.9)",
-          "&:hover": {
-            bgcolor: "transparent",
-            color: "white",
-          },
-          width: btnSize,
-          height: btnSize,
-          borderRadius: "50%",
-          textShadow: "0 0 6px rgba(0,0,0,0.35)",
-          zIndex: 10,
-        })}
+        className="
+          absolute right-2 top-1/2 -translate-y-1/2
+          text-white/90 hover:text-white
+          w-10 h-10 rounded-full flex items-center justify-center
+          transition-colors
+          z-20
+        "
       >
-        <ChevronRightIcon fontSize="medium" />
-      </IconButton>
-    </Box>
+        <ChevronRightIcon />
+      </button>
+    </div>
   );
 }

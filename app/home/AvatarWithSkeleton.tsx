@@ -1,4 +1,6 @@
-import { Avatar, Box, Skeleton } from "@mui/material";
+"use client";
+
+import Image from "next/image";
 import { useState } from "react";
 
 type AvatarWithSkeletonProps = {
@@ -8,34 +10,33 @@ type AvatarWithSkeletonProps = {
   };
 };
 
-export default function AvatarWithSkeleton(props: AvatarWithSkeletonProps) {
-  const { data } = props;
+export default function AvatarWithSkeleton({ data }: AvatarWithSkeletonProps) {
   const { avatarUrl, fullName } = data;
-
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center" }}>
+    <div className="relative flex justify-center w-37.5 h-37.5">
       {!loaded && (
-        <Skeleton variant="circular" width={150} height={150} sx={{ position: "absolute" }} />
+        <div
+          className="
+          absolute inset-0 rounded-full
+          bg-gray-700 animate-pulse
+        "
+        />
       )}
 
-      <Avatar
-        alt={fullName}
+      <Image
         src={avatarUrl}
-        sx={{
-          width: 150,
-          height: 150,
-          opacity: loaded ? 1 : 0,
-          transition: "opacity 0.3s ease",
-        }}
-        slotProps={{
-          img: {
-            onLoad: () => setLoaded(true),
-            onError: () => setLoaded(true),
-          },
-        }}
+        alt={fullName}
+        width={150}
+        height={150}
+        className={`
+          rounded-full object-cover
+          transition-opacity duration-300
+          ${loaded ? "opacity-100" : "opacity-0"}
+        `}
+        onLoadingComplete={() => setLoaded(true)}
       />
-    </Box>
+    </div>
   );
 }

@@ -1,7 +1,5 @@
 "use client";
 
-import { Grid, Typography } from "@mui/material";
-
 import LottiePlayer from "@/components/LottiePlayer";
 import { useWebsiteData } from "@/context/WebsiteData";
 import GrowOnHover from "@/hoc/GrowOnHover";
@@ -15,67 +13,41 @@ function AboutMe() {
       ? splitHtmlIntoParagraphs(data.aboutMe)?.map(htmlToText)
       : [];
 
+  if (!data.visibility.aboutMe || aboutMe.length === 0) return null;
+
   return (
-    data.visibility.aboutMe &&
-    aboutMe?.length > 0 && (
-      <Grid
-        container
-        direction="column"
-        sx={{ marginBottom: "60px", zIndex: 10, position: "relative" }}
-      >
-        <Grid container spacing={2} justifyItems="center">
-          <Grid
-            container
-            size={{ lg: 4, md: 0, sm: 0, xs: 0 }}
-            sx={{ display: { md: "none", sm: "none", xs: "none", lg: "flex" } }}
-            justifyContent="center"
-            alignItems="end"
-          >
-            {<LottiePlayer src="/lotties/about-me.json" width="75%" height="75%" />}
-          </Grid>
-          <Grid
-            container
-            size={{ lg: 8, md: 12, sm: 12, xs: 12 }}
-            justifyContent={{ md: "center", sm: "center", xs: "center" }}
-            alignContent="center"
-            sx={{ padding: "0 20px" }}
-          >
-            <Grid container justifyContent="center" spacing={1}>
-              <Typography
-                variant="overline"
-                fontWeight="bold"
-                fontSize={{ xs: 20, sm: 20, md: 35, lg: 35 }}
-                sx={{
-                  display: "inline-block",
-                }}
-              >
-                About
-              </Typography>
-              <Typography
-                variant="overline"
-                fontWeight="bold"
-                fontSize={{ xs: 20, sm: 20, md: 35, lg: 35 }}
-                sx={{
-                  color: "#d32f2f",
-                  display: "inline-block",
-                }}
-              >
-                Me
-              </Typography>
-            </Grid>
-            <Grid container sx={{ pr: { lg: 2 }, minWidth: 0 }}>
-              {aboutMe?.map((text) => (
-                <GrowOnHover key={text}>
-                  <Typography variant="body1" fontSize="20px">
-                    {text}
-                  </Typography>
-                </GrowOnHover>
-              ))}
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
-    )
+    <section className="relative z-10 mb-15 flex flex-col">
+      <div className="flex w-full flex-col lg:flex-row items-start lg:items-center gap-6 lg:gap-10">
+        <div className="hidden lg:flex justify-center items-end w-1/3">
+          <LottiePlayer src="/lotties/about-me.json" className="w-full h-auto max-w-90" />
+        </div>
+
+        <div className="w-full lg:w-2/3 px-5 flex flex-col items-center lg:items-start">
+          <div className="flex justify-center gap-2 mb-4">
+            <h2
+              className="inline-block font-bold uppercase tracking-wide
+                         text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px]"
+            >
+              About
+            </h2>
+            <h2
+              className="inline-block font-bold uppercase tracking-wide
+                         text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] text-red-700"
+            >
+              Me
+            </h2>
+          </div>
+
+          <div className="w-full lg:pr-2 space-y-4">
+            {aboutMe.map((text) => (
+              <GrowOnHover key={text}>
+                <p className="text-[20px] leading-relaxed">{text}</p>
+              </GrowOnHover>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 

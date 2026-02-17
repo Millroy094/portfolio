@@ -1,42 +1,35 @@
 "use client";
 
 import lottie, { AnimationItem } from "lottie-web";
-import { useEffect, useMemo, useRef } from "react";
+import Image from "next/image";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 type Props = {
-  /** Public path to the Lottie JSON (e.g., `/lotties/work-and-education.json`) */
   src: string;
-  /** Loop animation */
+
+  /** Next.js Image placeholder */
+  placeholderSrc?: string;
+  blurDataURL?: string;
+  placeholderClassName?: string;
+
   loop?: boolean;
-  /** Autoplay when mounted */
   autoplay?: boolean;
-  /** Pixel width/height (if omitted, use CSS for responsive sizing) */
   width?: number | string;
   height?: number | string;
-  /** Tailwind/CSS classes */
   className?: string;
-  /** Inline styles */
   style?: React.CSSProperties;
 
-  /** Only play when in viewport (default: true) */
   playInView?: boolean;
-  /** IntersectionObserver threshold (default: 0.3) */
   inViewThreshold?: number;
 
-  /** Playback speed (1.0 default) */
   speed?: number;
-  /** Optional segment play: [fromFrame, toFrame] */
   segments?: [number, number];
-  /** Renderer: "svg" (default) | "canvas" */
   renderer?: "svg" | "canvas";
 
-  /** Pause on hover (default: false) */
   pauseOnHover?: boolean;
-  /** Respect `prefers-reduced-motion` (default: true) */
   respectReducedMotion?: boolean;
 
-  /** Lottie events */
   onComplete?: () => void;
   onLoopComplete?: () => void;
   onEnterFrame?: (e: { currentTime: number; totalTime: number; direction: number }) => void;
@@ -44,6 +37,10 @@ type Props = {
 
 export default function LottiePlayer({
   src,
+  placeholderSrc,
+  blurDataURL,
+  placeholderClassName,
+
   loop = true,
   autoplay = true,
   width,
@@ -56,8 +53,8 @@ export default function LottiePlayer({
 
   speed = 1,
   segments,
-
   renderer = "svg",
+
   pauseOnHover = false,
   respectReducedMotion = true,
 
@@ -69,13 +66,13 @@ export default function LottiePlayer({
   const animRef = useRef<AnimationItem | null>(null);
   const hoveringRef = useRef(false);
 
-  // Observe visibility (to pause when not visible)
   const { ref: inViewRef, inView } = useInView({
     threshold: inViewThreshold,
     triggerOnce: false,
   });
 
-  // Combine refs so both IntersectionObserver and our containerRef get the div
+  const [ready, setReady] = useState(false);
+
   const setRefs = (node: HTMLDivElement | null) => {
     containerRef.current = node;
     inViewRef(node);
@@ -86,12 +83,11 @@ export default function LottiePlayer({
     return window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
   }, [respectReducedMotion]);
 
-  // Init/destroy animation
+  /** Load the animation */
   useEffect(() => {
     const node = containerRef.current;
     if (!node) return;
 
-    // Destroy any prior instance first (defensive)
     animRef.current?.destroy();
     animRef.current = null;
 
@@ -99,57 +95,48 @@ export default function LottiePlayer({
       container: node,
       renderer,
       loop,
-      autoplay: autoplay && !(playInView && !inView) && !prefersReducedMotion,
+      autoplay: false,
       path: src,
     });
 
     animRef.current = anim;
 
-    // Playback controls
     anim.setSpeed(speed);
-    if (segments) {
-      // Play the specified segment (force to start)
-      anim.playSegments(segments, true);
-    }
+    if (segments) anim.playSegments(segments, false);
 
-    // Events
-    const onCompleteHandler = () => onComplete?.();
-    const onLoopCompleteHandler = () => onLoopComplete?.();
-    const onEnterFrameHandler = () => {
-      if (!onEnterFrame) return;
-      const total = anim.getDuration(true);
-      onEnterFrame({
+    anim.addEventListener("DOMLoaded", () => {
+      setReady(true); // Fade-in Lottie, fade-out placeholder
+    });
+
+    anim.addEventListener("complete", () => onComplete?.());
+    anim.addEventListener("loopComplete", () => onLoopComplete?.());
+    anim.addEventListener("enterFrame", () => {
+      onEnterFrame?.({
         currentTime: anim.currentFrame,
-        totalTime: total,
+        totalTime: anim.getDuration(true),
         direction: anim.playDirection,
       });
-    };
+    });
 
-    anim.addEventListener("complete", onCompleteHandler);
-    anim.addEventListener("loopComplete", onLoopCompleteHandler);
-    anim.addEventListener("enterFrame", onEnterFrameHandler);
-
-    const handleMouseEnter = () => {
+    const handleEnter = () => {
       hoveringRef.current = true;
       if (pauseOnHover) anim.pause();
     };
-    const handleMouseLeave = () => {
+    const handleLeave = () => {
       hoveringRef.current = false;
       if (pauseOnHover && (!playInView || inView) && !prefersReducedMotion) anim.play();
     };
+
     if (pauseOnHover) {
-      node.addEventListener("mouseenter", handleMouseEnter);
-      node.addEventListener("mouseleave", handleMouseLeave);
+      node.addEventListener("mouseenter", handleEnter);
+      node.addEventListener("mouseleave", handleLeave);
     }
 
     return () => {
       if (pauseOnHover) {
-        node.removeEventListener("mouseenter", handleMouseEnter);
-        node.removeEventListener("mouseleave", handleMouseLeave);
+        node.removeEventListener("mouseenter", handleEnter);
+        node.removeEventListener("mouseleave", handleLeave);
       }
-      anim.removeEventListener("complete", onCompleteHandler);
-      anim.removeEventListener("loopComplete", onLoopCompleteHandler);
-      anim.removeEventListener("enterFrame", onEnterFrameHandler);
       anim.destroy();
       animRef.current = null;
     };
@@ -157,41 +144,70 @@ export default function LottiePlayer({
     src,
     renderer,
     loop,
-    autoplay,
-    inView,
-    playInView,
-    prefersReducedMotion,
     speed,
     segments,
     pauseOnHover,
+    playInView,
+    prefersReducedMotion,
     onComplete,
     onLoopComplete,
     onEnterFrame,
   ]);
 
+  /** Smooth playback when entering/exiting viewport */
   useEffect(() => {
     const anim = animRef.current;
     if (!anim) return;
 
-    if (prefersReducedMotion) {
-      anim.pause();
-      return;
-    }
+    if (prefersReducedMotion) return anim.pause();
 
-    if (!playInView) {
+    if (playInView) {
+      if (inView && !hoveringRef.current) anim.play();
+      else anim.pause();
+    } else {
       if (!hoveringRef.current) anim.play();
-      return;
     }
-
-    if (inView && !hoveringRef.current) anim.play();
-    else anim.pause();
   }, [inView, playInView, prefersReducedMotion]);
 
-  const resolvedStyle: React.CSSProperties = {
-    width: width ?? undefined,
-    height: height ?? undefined,
+  /** Wrapper always controls the size */
+  const wrapperStyle: React.CSSProperties = {
+    position: "relative",
+    width: width ?? "100%",
+    height: height ?? "100%",
+  };
+
+  /** Fade-in Lottie layer */
+  const lottieStyle: React.CSSProperties = {
+    opacity: ready ? 1 : 0,
+    transition: "opacity 0.4s ease",
+    width: "100%",
+    height: "100%",
     ...style,
   };
 
-  return <div ref={setRefs} className={className} style={resolvedStyle} />;
+  /** Fade-out placeholder layer */
+  const placeholderStyle: React.CSSProperties = {
+    opacity: ready ? 0 : 1,
+    transition: "opacity 0.4s ease",
+  };
+
+  return (
+    <div style={wrapperStyle} className={className}>
+      {placeholderSrc && (
+        <Image
+          src={placeholderSrc}
+          alt=""
+          fill
+          className={placeholderClassName}
+          style={placeholderStyle}
+          placeholder={blurDataURL ? "blur" : undefined}
+          blurDataURL={blurDataURL}
+          sizes="100%"
+          aria-hidden="true"
+        />
+      )}
+
+      <div ref={setRefs} style={lottieStyle} />
+    </div>
+  );
 }

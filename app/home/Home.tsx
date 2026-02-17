@@ -1,7 +1,5 @@
 "use client";
 
-import { SwipeUp } from "@mui/icons-material";
-import { Fab, Box } from "@mui/material";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { Atom } from "react-loading-indicators";
@@ -15,21 +13,33 @@ import Skills from "@/app/home/Skills";
 import BackgroundParticles from "@/components/BackgroundParticles";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 
+function SwipeUpIcon({ className = "" }) {
+  return (
+    <svg
+      className={`w-6 h-6 ${className}`}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+    </svg>
+  );
+}
+
 export default function Home() {
   const { width, height } = useWindowDimensions();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, setScrollOffset] = useState(0);
   const [showBtn, setShowBtn] = useState(false);
-
   const [mounted, setMounted] = useState(false);
 
+  const showBtnRef = useRef(showBtn);
+
   useEffect(() => {
-    const markMounted = () => setMounted(true);
-    markMounted();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
   }, []);
 
-  const showBtnRef = useRef(showBtn);
   useEffect(() => {
     showBtnRef.current = showBtn;
   }, [showBtn]);
@@ -46,8 +56,6 @@ export default function Home() {
 
       requestAnimationFrame(() => {
         const y = window.scrollY;
-
-        setScrollOffset((prev) => (prev !== y ? y : prev));
 
         const shouldShow =
           y > showThreshold ? true : y < hideThreshold ? false : showBtnRef.current;
@@ -67,32 +75,21 @@ export default function Home() {
 
   useEffect(() => {
     scrollSpy.update();
-
     return () => {
       Events.scrollEvent.remove("begin");
       Events.scrollEvent.remove("end");
     };
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   if (!mounted) return null;
 
   if (!width || !height) {
     return (
-      <Box
-        sx={{
-          width: "100%",
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <div className="w-full h-screen flex justify-center items-center">
         <Atom color="#32cd32" size="large" text="" textColor="loading" />
-      </Box>
+      </div>
     );
   }
 
@@ -100,6 +97,7 @@ export default function Home() {
     <>
       <BackgroundParticles />
 
+      {/* Sections */}
       <Element name="introduction">
         <section id="introduction">
           <Introduction />
@@ -132,15 +130,7 @@ export default function Home() {
 
       <AnimatePresence>
         {showBtn && (
-          <Box
-            sx={{
-              position: "fixed",
-              right: 20,
-              bottom: 20,
-              zIndex: 100,
-              willChange: "opacity, transform",
-            }}
-          >
+          <div className="fixed right-5 bottom-5 z-100">
             <motion.div
               key="scrollToTopButton"
               initial={{ opacity: 0, y: "15%" }}
@@ -148,16 +138,20 @@ export default function Home() {
               exit={{ opacity: 0, y: "10%" }}
               transition={{ ease: "easeOut", duration: 0.3 }}
             >
-              <Fab
-                color="error"
-                aria-label="scroll to top"
+              <button
                 onClick={scrollToTop}
-                sx={{ "&.MuiFab-root:focus": { outline: "none" } }}
+                aria-label="Scroll to top"
+                className="
+                  bg-red-600 hover:bg-red-700 active:bg-red-800
+                  text-white w-14 h-14 rounded-full
+                  shadow-lg flex items-center justify-center
+                  focus:outline-none transition-colors
+                "
               >
-                <SwipeUp />
-              </Fab>
+                <SwipeUpIcon />
+              </button>
             </motion.div>
-          </Box>
+          </div>
         )}
       </AnimatePresence>
     </>
