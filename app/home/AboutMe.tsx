@@ -1,6 +1,7 @@
 "use client";
 
 import { Grid, Typography } from "@mui/material";
+import { useInView } from "react-intersection-observer";
 import Lottie from "react-lottie";
 
 import AboutMeLottie from "@/assets/lotties/about-me.json";
@@ -18,6 +19,8 @@ function AboutMe() {
     },
   };
 
+  const { ref, inView } = useInView({ triggerOnce: true });
+
   const { data } = useWebsiteData();
 
   const aboutMe =
@@ -33,13 +36,13 @@ function AboutMe() {
         direction="column"
         sx={{ marginBottom: "60px", zIndex: 10, position: "relative" }}
       >
-        <Grid container spacing={2} justifyItems="center">
+        <Grid container spacing={2} justifyItems="center" ref={ref}>
           <Grid
             container
             size={{ lg: 4, md: 0, sm: 0, xs: 0 }}
             sx={{ display: { md: "none", sm: "none", xs: "none", lg: "flex" } }}
           >
-            <Lottie options={defaultOptions} width={400} height={400} />
+            {inView && <Lottie options={defaultOptions} width={400} height={400} />}
           </Grid>
           <Grid
             container
