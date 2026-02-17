@@ -26,7 +26,7 @@ function AboutMe() {
           <div className="flex justify-center gap-2 mb-4">
             <h2
               className="inline-block font-bold uppercase tracking-wide
-                         text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px]"
+                         text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] text-white/90"
             >
               About
             </h2>
@@ -41,7 +41,7 @@ function AboutMe() {
           <div className="w-full lg:pr-2 space-y-4">
             {aboutMe.map((text) => (
               <GrowOnHover key={text}>
-                <p className="text-[20px] leading-relaxed">{text}</p>
+                <p className="text-[20px] leading-relaxed text-white/90">{text}</p>
               </GrowOnHover>
             ))}
           </div>

@@ -71,12 +71,12 @@ export default function Skills() {
       <div className="w-full text-center">
         <h2
           className="inline-block font-bold uppercase tracking-wide
-                       text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] mr-1 mb-3"
+                       text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] mr-1 mb-3 text-white/90"
         >
           Technology &amp;
         </h2>
         <h2
-          className="inline-block font-bold uppercase tracking-wide
+          className="ml-1 inline-block font-bold uppercase tracking-wide
                        text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px]
                        text-red-700 mb-3"
         >

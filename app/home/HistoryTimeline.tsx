@@ -20,7 +20,7 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
 
   return (
     <div className="flex flex-col items-center w-full lg:w-1/2 max-w-160 mx-auto">
-      <h2 className="font-bold uppercase tracking-wide text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] mb-6">
+      <h2 className="font-bold uppercase tracking-wide text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] mb-6 text-white/90">
         {title}
       </h2>
 
@@ -33,7 +33,7 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
 
             <div className="relative z-20">
               <div className="absolute -left-40 top-2 w-32 text-right">
-                <p className="font-bold text-gray-800 dark:text-gray-300">{item.year}</p>
+                <p className="font-bold text-white/90">{item.year}</p>
               </div>
 
               <div className="absolute -left-2.5 top-1 z-30 w-7 h-7 rounded-full bg-red-600 flex items-center justify-center text-white shadow-md">
@@ -42,8 +42,8 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
 
               <GrowOnHover>
                 <div className="ml-10">
-                  <h3 className="text-lg font-semibold">{item.title}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{item.subTitle}</p>
+                  <h3 className="text-white/90 text-lg font-semibold">{item.title}</h3>
+                  <p className="text-sm text-gray-400">{item.subTitle}</p>
                 </div>
               </GrowOnHover>
             </div>
