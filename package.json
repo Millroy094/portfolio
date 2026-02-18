@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "eslint .",
     "format": "prettier --write .",
+    "tsCheck": "tsc --noEmit",
     "dev:backend:build": "npx ampx sandbox",
     "dev:backend:destroy": "npx ampx sandbox delete"
   },
