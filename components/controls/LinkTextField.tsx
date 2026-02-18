@@ -1,6 +1,8 @@
 import { InputAdornment, TextField } from "@mui/material";
 import { FC } from "react";
 
+import { addHttps, stripProtocol } from "@/utils/url";
+
 type LinkTextFieldProps = {
   label: string;
   value: string;
@@ -9,15 +11,6 @@ type LinkTextFieldProps = {
   errorText?: string;
   disabled?: boolean;
 };
-
-function stripProtocol(url: string) {
-  return url.replace(/^https?:\/\//, "");
-}
-
-function addHttps(url: string) {
-  if (!url) return "";
-  return url.startsWith("http") ? url : `https://${url}`;
-}
 
 const LinkTextField: FC<LinkTextFieldProps> = ({
   label,
