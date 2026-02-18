@@ -10,6 +10,15 @@ type LinkTextFieldProps = {
   disabled?: boolean;
 };
 
+function stripProtocol(url: string) {
+  return url.replace(/^https?:\/\//, "");
+}
+
+function addHttps(url: string) {
+  if (!url) return "";
+  return url.startsWith("http") ? url : `https://${url}`;
+}
+
 const LinkTextField: FC<LinkTextFieldProps> = ({
   label,
   value,
@@ -21,8 +30,8 @@ const LinkTextField: FC<LinkTextFieldProps> = ({
   <TextField
     label={label}
     fullWidth
-    value={value}
-    onChange={(e) => onChange(e.target.value)}
+    value={stripProtocol(value)}
+    onChange={(e) => onChange(addHttps(e.target.value))}
     slotProps={{
       input: {
         startAdornment: <InputAdornment position="start">https://</InputAdornment>,
