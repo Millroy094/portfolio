@@ -21,7 +21,7 @@ export function SkillsGlobe({ skillIds, radius = 3, height = 600 }: Props) {
       camera={{ position: [0, 0, 8], fov: 50, near: 0.1, far: 100 }}
       dpr={[1, 1.5]}
       gl={{
-        alpha: true, // ✅ transparent canvas
+        alpha: true,
         antialias: true,
         powerPreference: "high-performance",
         depth: true,
@@ -34,7 +34,7 @@ export function SkillsGlobe({ skillIds, radius = 3, height = 600 }: Props) {
         gl.toneMapping = THREE.ACESFilmicToneMapping;
         gl.toneMappingExposure = 1.0;
         gl.sortObjects = true;
-        gl.setClearColor(0x000000, 0); // ✅ transparent clear
+        gl.setClearColor(0x000000, 0);
       }}
       style={{ height, width: "100%", background: "transparent", touchAction: "pan-y" }}
     >

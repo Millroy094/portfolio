@@ -112,8 +112,6 @@ export function createIconTexture(
   return texture;
 }
 
-/* ----------------------- Helpers ----------------------- */
-
 function prepareSvgMarkup(svgMarkup: string, bleedPct: number): string {
   if (!/<svg[\s>]/i.test(svgMarkup)) {
     throw new Error("Rendered markup does not contain an <svg> root element.");

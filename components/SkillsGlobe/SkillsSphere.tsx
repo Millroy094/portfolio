@@ -73,7 +73,7 @@ type FloatingIconProps = {
   globeMargin?: number;
   renderOrder?: number;
 
-  seedSalt?: number; // pass the index
+  seedSalt?: number;
 };
 
 function FloatingIcon({
@@ -399,20 +399,17 @@ export function SkillsSphere({ skillIds, radius = 3 }: Props) {
     velocity.current.x = 0;
     velocity.current.y = 0;
 
-    // Safe preventDefault for touch if cancelable (often unnecessary with touch-action: none)
     const ne = e.nativeEvent;
     if (e.pointerType === "touch" && ne && "cancelable" in ne && ne.cancelable) {
       ne.preventDefault?.();
     }
 
-    // Avoid icons or other children hijacking the event
     e.stopPropagation();
   };
 
   const endDrag = () => {
     setIsDragging(false);
     pointerStart.current = null;
-    // inertia continues via velocity
   };
 
   const onPointerUp = (e: ThreeEvent<PointerEvent>) => {
@@ -466,7 +463,6 @@ export function SkillsSphere({ skillIds, radius = 3 }: Props) {
 
   return (
     <group ref={groupRef}>
-      {/* Hit Sphere — invisible but raycastable. Captures drags anywhere over the globe */}
       <mesh
         onPointerDown={onPointerDown}
         onPointerUp={onPointerUp}
@@ -474,9 +470,7 @@ export function SkillsSphere({ skillIds, radius = 3 }: Props) {
         onPointerLeave={onPointerUp}
         onPointerCancel={onPointerCancel}
       >
-        {/* Slightly larger than radius to ensure easy hit test */}
         <sphereGeometry args={[radius * 1.08, 32, 32]} />
-        {/* Must be visible=true and transparent with opacity 0 to be raycastable */}
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
 
