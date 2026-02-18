@@ -187,7 +187,9 @@ amplify configure
 
 ### Launch Sandbox
 
-npx ampx sandbox
+npx ampx sandbox or npm run dev:backend:build
+
+> **Note:** Once you are done with the backend you can destroy the infrastructure by using npx ampx sandbox delete or npm run dev:backend:destroy command to avoid incurring any charges.
 
 ------------------------------------------------------------------------
 
@@ -195,7 +197,7 @@ npx ampx sandbox
 
 ### Install dependencies
 
-npm install
+npm ci
 
 ### Create `.env.local`
 
