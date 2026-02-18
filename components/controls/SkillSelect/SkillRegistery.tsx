@@ -30,15 +30,16 @@ import {
   SiGnubash,
   SiCypress,
   SiMongodb,
-  SiRedis,
   SiMysql,
   SiPostgresql,
   SiDocker,
   SiKubernetes,
 } from "@icons-pack/react-simple-icons";
 import React from "react";
+import { DiRedis, DiMsqlServer } from "react-icons/di";
 import { FaAws, FaJava } from "react-icons/fa";
 import { RiNextjsFill } from "react-icons/ri";
+import { SiApachesolr } from "react-icons/si";
 import { TbBrandCSharp } from "react-icons/tb";
 import { VscAzure } from "react-icons/vsc";
 
@@ -71,6 +72,8 @@ export type SkillId =
   | "playwright"
   | "mongodb"
   | "redis"
+  | "solr"
+  | "msql"
   | "mysql"
   | "postgresql"
   | "snowflake"
@@ -261,7 +264,19 @@ export const skillsRegistry: Record<SkillId, Skill> = {
     id: "redis",
     label: "Redis",
     group: "DB",
-    render: () => <SiRedis size={size} color="#FF4438" />,
+    render: () => <DiRedis size={size} color="#FF4438" />,
+  },
+  solr: {
+    id: "solr",
+    label: "ApacheSolr",
+    group: "DB",
+    render: () => <SiApachesolr size={size} color="#F37021" />,
+  },
+  msql: {
+    id: "msql",
+    label: "MsSQL",
+    group: "DB",
+    render: () => <DiMsqlServer size={size} color="#CC2927" />,
   },
   mysql: {
     id: "mysql",
