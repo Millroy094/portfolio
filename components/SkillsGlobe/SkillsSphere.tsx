@@ -399,11 +399,6 @@ export function SkillsSphere({ skillIds, radius = 3 }: Props) {
     velocity.current.x = 0;
     velocity.current.y = 0;
 
-    const ne = e.nativeEvent;
-    if (e.pointerType === "touch" && ne && "cancelable" in ne && ne.cancelable) {
-      ne.preventDefault?.();
-    }
-
     e.stopPropagation();
   };
 
@@ -430,11 +425,6 @@ export function SkillsSphere({ skillIds, radius = 3 }: Props) {
 
     // Only rotate if movement > threshold (prevents accidental tiny drags)
     if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
-      const ne = e.nativeEvent;
-      if (e.pointerType === "touch" && ne && "cancelable" in ne && ne.cancelable) {
-        ne.preventDefault?.();
-      }
-
       // Apply rotation
       groupRef.current.rotation.y += dx * ROTATION_MULT;
       groupRef.current.rotation.x += dy * ROTATION_MULT;
