@@ -28,7 +28,7 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
         {sorted.map((item, index) => (
           <div key={`${item.title}-${item.year}`} className="relative pb-10">
             {index !== sorted.length - 1 && (
-              <div className="absolute left-1 top-8 w-0.5 h-[calc(100%-8px)] bg-gray-300 dark:bg-gray-600 z-0" />
+              <div className="absolute left-0.75 top-8 w-0.5 h-[calc(100%-8px)] bg-gray-300 dark:bg-gray-600 z-0" />
             )}
 
             <div className="relative z-20">
