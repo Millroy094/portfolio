@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Edit, Save, LockSharp } from "@mui/icons-material";
 import { Card, Button, Alert } from "@mui/material";
 import Box from "@mui/material/Box";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   useForm,
   useFieldArray,
@@ -45,6 +45,7 @@ export default function AdminForm(props: AdminFormProps) {
       roles: [],
       badges: [],
       avatar: "",
+      aboutMe: "<p></p>",
       experiences: [],
       education: [],
       projects: [],
@@ -65,7 +66,7 @@ export default function AdminForm(props: AdminFormProps) {
     register,
     handleSubmit,
     control,
-    formState: { errors, isDirty },
+    formState: { errors, isDirty, dirtyFields },
     reset,
   } = methods;
 
@@ -109,6 +110,11 @@ export default function AdminForm(props: AdminFormProps) {
 
   const [cropFile, setCropFile] = useState<File | null>(null);
   const [cropOpen, setCropOpen] = useState(false);
+
+  const hasChanges = useMemo(
+    () => isDirty && Object.keys(dirtyFields).length > 0,
+    [isDirty, dirtyFields],
+  );
 
   const handleAvatarFileChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const file = e.target.files?.[0];
@@ -278,7 +284,7 @@ export default function AdminForm(props: AdminFormProps) {
         </Alert>
       )}
 
-      {isDirty && (
+      {hasChanges && (
         <Alert
           severity="warning"
           sx={{
@@ -299,7 +305,7 @@ export default function AdminForm(props: AdminFormProps) {
           color={isEditable ? "warning" : "primary"}
           onClick={() => setIsEditable((prev) => !prev)}
           startIcon={isEditable ? <LockSharp /> : <Edit />}
-          disabled={isDirty}
+          disabled={hasChanges}
         >
           {isEditable ? "Lock" : "Edit"}
         </Button>

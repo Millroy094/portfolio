@@ -69,10 +69,11 @@ export default function Introduction(): JSX.Element {
         style={{ height }}
       >
         {/* Avatar */}
-        <div className="flex justify-center mb-4">
-          <AvatarWithSkeleton data={{ avatarUrl: data.avatarUrl, fullName: data.fullName }} />
-        </div>
-
+        {data.avatarUrl && (
+          <div className="flex justify-center mb-4">
+            <AvatarWithSkeleton data={{ avatarUrl: data.avatarUrl, fullName: data.fullName }} />
+          </div>
+        )}
         {/* Name */}
         <div className="flex justify-center flex-wrap gap-2 text-center mb-1">
           <span className="text-[20px] sm:text-[40px] md:text-[60px] font-normal text-white/90">
@@ -82,9 +83,7 @@ export default function Introduction(): JSX.Element {
             {data.fullName || "Unknown"}
           </h1>
         </div>
-
         {!data.fullName && <div className="text-sm opacity-70 mb-2">Please finish my setup</div>}
-
         {data.visibility.roles && data.roles.length > 0 && (
           <div className="flex justify-center mb-2 text-center">
             <TypeAnimation
@@ -102,7 +101,6 @@ export default function Introduction(): JSX.Element {
             />
           </div>
         )}
-
         <div className="flex flex-col items-center">
           {data.punchLine && (
             <span className="text-sm text-white/90 opacity-80 mb-2">{data.punchLine}</span>

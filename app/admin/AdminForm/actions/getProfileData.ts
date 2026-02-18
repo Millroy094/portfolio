@@ -40,7 +40,7 @@ export async function getProfileData(): Promise<{
       github: p.github ?? "",
       stackOverflow: p.stackOverflow ?? "",
       resume: p.resume ?? "",
-      aboutMe: p.aboutMe ?? "",
+      aboutMe: p.aboutMe || "<p></p>",
       seoTitle: p.seoTitle ?? "",
       seoDescription: p.seoDescription ?? "",
 
