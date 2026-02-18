@@ -34,6 +34,8 @@ import {
   SiPostgresql,
   SiDocker,
   SiKubernetes,
+  SiAnsible,
+  SiPacker,
 } from "@icons-pack/react-simple-icons";
 import React from "react";
 import { DiRedis, DiMsqlServer } from "react-icons/di";
@@ -84,6 +86,8 @@ export type SkillId =
   | "helm"
   | "terraform"
   | "github-actions"
+  | "ansible"
+  | "packer"
   | "aws"
   | "azure"
   | "stripe"
@@ -268,13 +272,13 @@ export const skillsRegistry: Record<SkillId, Skill> = {
   },
   solr: {
     id: "solr",
-    label: "ApacheSolr",
+    label: "Apache Solr",
     group: "DB",
     render: () => <SiApachesolr size={size} color="#F37021" />,
   },
   msql: {
     id: "msql",
-    label: "MsSQL",
+    label: "MS SQL",
     group: "DB",
     render: () => <DiMsqlServer size={size} color="#CC2927" />,
   },
@@ -337,6 +341,18 @@ export const skillsRegistry: Record<SkillId, Skill> = {
     label: "GitHub Actions",
     group: "DevOps",
     render: () => <SiGithubactions size={size} color="#2088FF" />,
+  },
+  ansible: {
+    id: "ansible",
+    label: "Ansible",
+    group: "DevOps",
+    render: () => <SiAnsible size={size} color="#FFFFFF" />,
+  },
+  packer: {
+    id: "packer",
+    label: "Packer",
+    group: "DevOps",
+    render: () => <SiPacker size={size} color="#02A8EF" />,
   },
   aws: {
     id: "aws",

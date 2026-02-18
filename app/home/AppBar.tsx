@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuthenticator } from "@aws-amplify/ui-react";
 import React, { useMemo, useRef, useState, useCallback } from "react";
 
 import HideOnScroll from "@/components/HideOnScroll";
@@ -9,7 +10,26 @@ function normalizeId(label: string) {
   return label.toLowerCase().replace(/\s/g, "");
 }
 
+function EditIcon({ className = "" }) {
+  return (
+    <svg
+      className={`w-4 h-4 ${className}`}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M15.232 5.232l3.536 3.536M4 20h4l10.733-10.732a2.5 2.5 0 00-3.536-3.536L4 16.464V20z"
+      />
+    </svg>
+  );
+}
+
 export default function PortfolioAppBar() {
+  const { user } = useAuthenticator();
   const { data } = useWebsiteData();
 
   const headerRef = useRef<HTMLDivElement | null>(null);
@@ -49,6 +69,7 @@ export default function PortfolioAppBar() {
       >
         <div className="mx-auto max-w-384 px-3 md:px-4">
           <div className="h-14 md:h-16 flex items-center gap-4">
+            {/* Mobile menu toggle */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="
@@ -79,21 +100,17 @@ export default function PortfolioAppBar() {
                     key={page}
                     onClick={() => scrollToSection(id)}
                     className="
-                    text-white
-                    focus:outline-none
-                    focus-visible:ring-2 focus-visible:ring-red-500/60 focus-visible:ring-offset-2
-                  "
+                      text-white
+                      focus:outline-none
+                      focus-visible:ring-2 focus-visible:ring-red-500/60 focus-visible:ring-offset-2
+                    "
                   >
                     <span
                       className="
                         relative inline-block
                         font-bold uppercase tracking-wide text-sm
                         pb-1
-
-                        /* Desktop-only text shadow */
                         md:text-shadow-[0_1px_3px_rgba(0,0,0,0.75)]
-
-                        /* Underline animation */
                         after:absolute after:left-0 after:bottom-0
                         after:h-0.5 after:w-0 after:bg-red-500
                         after:transition-all after:duration-300
@@ -108,6 +125,22 @@ export default function PortfolioAppBar() {
             </nav>
 
             <div className="grow" />
+
+            {user && (
+              <button
+                onClick={() => (window.location.href = "/admin")}
+                className="
+                  hidden md:flex items-center gap-2
+                  bg-red-600 hover:bg-red-700 active:bg-red-800
+                  text-white uppercase text-xs
+                  px-4 py-2 rounded
+                  transition-colors
+                "
+              >
+                <EditIcon />
+                <span className="text-sm font-bold">Edit Website</span>
+              </button>
+            )}
           </div>
         </div>
 
@@ -129,16 +162,33 @@ export default function PortfolioAppBar() {
                   setTimeout(() => scrollToSection(id), 0);
                 }}
                 className="
-          w-full py-3 text-center
-          text-white
-          hover:bg-white/10 transition-colors duration-200
-          focus:outline-none
-        "
+                  w-full py-3 text-center
+                  text-white
+                  hover:bg-white/10 transition-colors duration-200
+                  focus:outline-none
+                "
               >
                 <span className="text-xs font-bold uppercase tracking-wide">{page}</span>
               </button>
             );
           })}
+
+          {user && (
+            <button
+              onClick={() => {
+                setMobileOpen(false);
+                window.location.href = "/admin";
+              }}
+              className="
+                w-full py-3 text-center
+                text-red-400 font-bold uppercase tracking-wide
+                hover:bg-white/10 transition-colors duration-200
+                flex items-center justify-center gap-2 text-xs
+              "
+            >
+              <span className="text-xs font-bold">Edit Website</span>
+            </button>
+          )}
         </div>
       </header>
     </HideOnScroll>

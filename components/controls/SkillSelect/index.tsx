@@ -49,11 +49,47 @@ export default function SkillSelect({
       renderOption={(props, option, { selected }) => {
         const { key, ...rest } = props;
         return (
-          <li key={key} {...rest}>
-            <Checkbox icon={icon} checkedIcon={checkedIcon} sx={{ mr: 1 }} checked={selected} />
-            <Box sx={{ display: "inline-flex", alignItems: "center", gap: 1 }}>
-              <span aria-hidden>{option.render()}</span>
-              <span>{option.label}</span>
+          <li
+            key={key}
+            {...rest}
+            className="
+            bg-gray-100
+            border-b border-gray-200
+            p-2
+            flex items-center gap-2
+          "
+          >
+            <Checkbox
+              icon={icon}
+              checkedIcon={checkedIcon}
+              checked={selected}
+              sx={{
+                p: 0,
+                mr: 1,
+                alignSelf: "center",
+              }}
+              slotProps={{
+                input: {
+                  "aria-label": option.label,
+                },
+              }}
+            />
+
+            <Box
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 0.5,
+                lineHeight: 1,
+              }}
+            >
+              <span aria-hidden className="inline-flex items-center">
+                <span className="inline-flex items-center shrink-0 [svg]:w-5 [svg]:h-5">
+                  {option.render()}
+                </span>
+              </span>
+
+              <span className="text-gray-900">{option.label}</span>
             </Box>
           </li>
         );

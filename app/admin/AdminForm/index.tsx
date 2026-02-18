@@ -260,7 +260,7 @@ export default function AdminForm(props: AdminFormProps) {
   }
 
   return (
-    <Card>
+    <Card className="p-2">
       <ToastContainer />
 
       {!isEditable && (
@@ -309,7 +309,6 @@ export default function AdminForm(props: AdminFormProps) {
           className="flex flex-col p-4 sm:p-6 md:p-8 gap-6"
           onSubmit={handleSubmit(onSubmit, onInvalid)}
         >
-          {/* Hidden Inputs */}
           <input
             type="file"
             accept="image/*"
@@ -325,7 +324,6 @@ export default function AdminForm(props: AdminFormProps) {
             onChange={handleBadgeFile}
           />
 
-          {/* Sections */}
           <AvatarSection
             errors={errors}
             control={control}
@@ -392,7 +390,6 @@ export default function AdminForm(props: AdminFormProps) {
 
           <SeoSection register={register} errors={errors} disabled={!isEditable} />
 
-          {/* Save Button */}
           <div className="flex flex-col sm:flex-row sm:justify-end gap-3 sm:gap-4 mt-6">
             <Button
               disabled={!isEditable || processing}
