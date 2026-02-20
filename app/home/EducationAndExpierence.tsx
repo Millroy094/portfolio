@@ -28,6 +28,7 @@ function EducationAndExperience() {
                   title: e.organization,
                   subTitle: e.title,
                   year: e.year ?? 0,
+                  type: "experience",
                 })) ?? []
               }
             />
@@ -47,6 +48,7 @@ function EducationAndExperience() {
                   title: e.institute,
                   subTitle: e.qualification,
                   year: e.year ?? 0,
+                  type: "education",
                 })) ?? []
               }
             />

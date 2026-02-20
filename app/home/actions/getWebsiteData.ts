@@ -194,7 +194,7 @@ export default async function getWebsiteData(): Promise<WebsiteData> {
       visibility,
     };
   } catch (error) {
-    console.error(error);
+    console.error("There has been issue retrieving data", error);
     return emptyWebsiteData;
   }
 }
