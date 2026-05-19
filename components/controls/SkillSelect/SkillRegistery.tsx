@@ -46,6 +46,7 @@ import { TbBrandCSharp } from "react-icons/tb";
 import { VscAzure } from "react-icons/vsc";
 
 import PlaywrightIcon from "@/components/PlaywrightIcon";
+import LocalStackIcon from "@/components/LocalStackIcon";
 
 export type SkillId =
   | "html5"
@@ -93,7 +94,8 @@ export type SkillId =
   | "stripe"
   | "auth0"
   | "keycloak"
-  | "webauthn";
+  | "webauthn"
+  | "localstack";
 
 export type Skill = {
   id: SkillId;
@@ -323,6 +325,12 @@ export const skillsRegistry: Record<SkillId, Skill> = {
     label: "Kubernetes",
     group: "DevOps",
     render: () => <SiKubernetes size={size} color="#326CE5" />,
+  },
+  localstack: {
+    id: "localstack",
+    label: "Local Stack",
+    group: "DevOps",
+    render: () => <LocalStackIcon size={size} />,
   },
   helm: {
     id: "helm",
