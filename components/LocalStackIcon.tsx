@@ -4,27 +4,34 @@ import React from "react";
 
 type Props = {
   size?: number;
-  style?: React.CSSProperties;
   className?: string;
+  style?: React.CSSProperties;
 };
 
-const LocalstackIcon: React.FC<Props> = ({ size = 40, style, className }) => {
+const LocalstackIcon: React.FC<Props> = ({ size = 40, className, style }) => {
   return (
     <svg
       viewBox="0 0 120 120"
       width={size}
       height={size}
-      xmlns="http://www.w3.org/2000/svg"
       className={className}
       style={style}
+      xmlns="http://www.w3.org/2000/svg"
     >
-      <rect width="120" height="120" rx="20" fill="#0f172a" />
-      <g transform="translate(20,30)">
-        <rect x="0" y="0" width="80" height="12" rx="3" fill="#ef4444" />
-        <rect x="8" y="18" width="80" height="12" rx="3" fill="#f97316" />
-        <rect x="16" y="36" width="80" height="12" rx="3" fill="#22c55e" />
-        <rect x="24" y="54" width="80" height="12" rx="3" fill="#3b82f6" />
-      </g>
+      {/* Background */}
+      <rect width="120" height="120" fill="#3B2176" rx="12" />
+
+      <defs>
+        <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#5B8CFF" />
+          <stop offset="100%" stopColor="#5EF2B6" />
+        </linearGradient>
+      </defs>
+
+      <polygon points="20,65 40,45 40,65" fill="url(#grad)" />
+      <path d="M45 45 L60 45 L60 70 L85 70 L85 85 L45 85 Z" fill="url(#grad)" />
+      <rect x="60" y="25" width="25" height="25" rx="4" fill="url(#grad)" />
+      <polygon points="60,85 80,85 65,100" fill="url(#grad)" />
     </svg>
   );
 };
