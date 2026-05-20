@@ -45,8 +45,8 @@ import { SiApachesolr } from "react-icons/si";
 import { TbBrandCSharp } from "react-icons/tb";
 import { VscAzure } from "react-icons/vsc";
 
-import PlaywrightIcon from "@/components/PlaywrightIcon";
 import LocalStackIcon from "@/components/LocalStackIcon";
+import PlaywrightIcon from "@/components/PlaywrightIcon";
 
 export type SkillId =
   | "html5"
