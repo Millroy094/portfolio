@@ -328,7 +328,7 @@ export const skillsRegistry: Record<SkillId, Skill> = {
   },
   localstack: {
     id: "localstack",
-    label: "Local Stack",
+    label: "LocalStack",
     group: "DevOps",
     render: () => <LocalStackIcon size={size} />,
   },
