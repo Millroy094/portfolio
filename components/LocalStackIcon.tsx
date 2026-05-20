@@ -18,9 +18,7 @@ const LocalstackIcon: React.FC<Props> = ({ size = 40, className, style }) => {
       style={style}
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* Background */}
-      <rect width="120" height="120" fill="#3B2176" rx="12" />
-
+      <rect width="120" height="120" rx="12" fill="#3B2176" />
       <defs>
         <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="#5B8CFF" />
@@ -28,10 +26,12 @@ const LocalstackIcon: React.FC<Props> = ({ size = 40, className, style }) => {
         </linearGradient>
       </defs>
 
-      <polygon points="20,65 40,45 40,65" fill="url(#grad)" />
-      <path d="M45 45 L60 45 L60 70 L85 70 L85 85 L45 85 Z" fill="url(#grad)" />
-      <rect x="60" y="25" width="25" height="25" rx="4" fill="url(#grad)" />
-      <polygon points="60,85 80,85 65,100" fill="url(#grad)" />
+      <g transform="translate(-4,-12)">
+        <rect x="65" y="42" width="30" height="30" rx="1" fill="url(#grad)" />
+        <path d="M45 45 L60 45 L60 77 L90 77 L90 90 L45 90 Z" fill="url(#grad)" />
+        <polygon points="26,65 41,50 41,65" fill="url(#grad)" />
+        <polygon points="90,94 75,109 75,94" fill="url(#grad)" />
+      </g>
     </svg>
   );
 };
