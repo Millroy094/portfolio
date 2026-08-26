@@ -42,7 +42,7 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
     },
     icons: {
-      icon: "/logo.svg",
+      icon: "/favicon.svg",
     },
   };
 }

@@ -3,7 +3,7 @@ import React, { FC } from "react";
 
 type YearTextFieldProps = {
   label: string;
-  value?: number;
+  value?: unknown;
   onChange: (value: number | undefined) => void;
   error?: boolean;
   errorText?: string;
@@ -23,7 +23,7 @@ const YearTextField: FC<YearTextFieldProps> = ({
   <TextField
     type="number"
     label={label}
-    value={value}
+    value={value as number | undefined}
     onChange={(e) => {
       const v = e.target.value;
       if (v === "") return onChange(undefined);
