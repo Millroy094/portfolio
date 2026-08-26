@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuthenticator } from "@aws-amplify/ui-react";
+import { useRouter } from "next/navigation";
 import React, { useMemo, useRef, useState, useCallback } from "react";
 
 import HideOnScroll from "@/components/HideOnScroll";
@@ -31,6 +32,7 @@ function EditIcon({ className = "" }) {
 export default function PortfolioAppBar() {
   const { user } = useAuthenticator();
   const { data } = useWebsiteData();
+  const router = useRouter();
 
   const headerRef = useRef<HTMLDivElement | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -128,7 +130,7 @@ export default function PortfolioAppBar() {
 
             {user && (
               <button
-                onClick={() => (window.location.href = "/admin")}
+                onClick={() => router.push("/admin")}
                 className="
                   hidden md:flex items-center gap-2
                   bg-red-600 hover:bg-red-700 active:bg-red-800
@@ -177,7 +179,7 @@ export default function PortfolioAppBar() {
             <button
               onClick={() => {
                 setMobileOpen(false);
-                window.location.href = "/admin";
+                router.push("/admin");
               }}
               className="
                 w-full py-3 text-center

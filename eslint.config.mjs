@@ -13,6 +13,13 @@ export default defineConfig([
       prettier: prettierPlugin,
       import: importPlugin,
     },
+    settings: {
+      "import/resolver": {
+        typescript: {
+          project: "./tsconfig.json",
+        },
+      },
+    },
 
     rules: {
       "prettier/prettier": "warn",

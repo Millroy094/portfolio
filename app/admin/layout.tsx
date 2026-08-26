@@ -61,7 +61,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 try {
                   await signOut();
                 } finally {
-                  if (route !== "signIn") window.location.href = "/login";
+                  if (route !== "signIn") router.replace("/login");
                 }
               }}
               disabled={signingOut}
