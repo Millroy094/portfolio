@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -80,7 +80,7 @@ jobs:
       TF_ORG: ${{ vars.TF_ORG }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Upload Terraform Cloud workspace configuration
         uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.3.2
@@ -113,7 +113,7 @@ jobs:
       TF_ORG: ${{ vars.TF_ORG }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Install AWS Amplify CLI
         run: |
