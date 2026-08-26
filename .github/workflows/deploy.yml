@@ -137,12 +137,6 @@ jobs:
           workspace-id: ${{ steps.get_workspace_id.outputs.workspace_id }}
           outputs: amplify_app_id
 
-      - name: Debug - Check Terraform outputs
-        run: |
-          echo "Workspace ID: ${{ steps.get_workspace_id.outputs.workspace_id }}"
-          echo "Amplify App ID: ${{ steps.tf_outputs.outputs.amplify_app_id }}"
-          echo "All outputs: ${{ toJson(steps.tf_outputs.outputs) }}"
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v6.1.0
         with:
