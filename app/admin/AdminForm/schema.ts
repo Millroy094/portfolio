@@ -80,10 +80,7 @@ export const ProfileSchema = z.object({
         organization: z.string().nonempty("Organization name is required"),
         title: z.string().nonempty("Job Title is required"),
         year: z.coerce
-          .number({
-            required_error: "Year is required",
-            invalid_type_error: "Year must be a number",
-          })
+          .number()
           .int()
           .gte(1900, { message: "Year must be 1900 or later" })
           .lte(currentYear, { message: `Year cannot be after ${currentYear}` }),
@@ -96,10 +93,7 @@ export const ProfileSchema = z.object({
         institute: z.string().nonempty("Institute is required"),
         qualification: z.string().nonempty("Qualification is required"),
         year: z.coerce
-          .number({
-            required_error: "Year is required",
-            invalid_type_error: "Year must be a number",
-          })
+          .number()
           .int()
           .gte(1900, { message: "Year must be 1900 or later" })
           .lte(currentYear, { message: `Year cannot be after ${currentYear}` }),
