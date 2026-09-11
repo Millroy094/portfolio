@@ -1,7 +1,7 @@
 "use client";
 
 import useEmblaCarousel from "embla-carousel-react";
-import { useCallback } from "react";
+import { useEffect, useState } from "react";
 
 import ImageWithSkeleton from "@/components/ImageWithSkeleton";
 
@@ -11,17 +11,31 @@ type Badge = {
 };
 
 export default function BadgeSlider({ badges }: { badges: Badge[] }) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({}, []);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, []);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const prev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
-  const next = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const onSelect = () => {
+      setCurrentIndex(emblaApi.selectedScrollSnap());
+    };
+
+    emblaApi.on("select", onSelect);
+    onSelect();
+
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi]);
+
+  const handleDotClick = (index: number) => {
+    emblaApi?.scrollTo(index);
+  };
 
   return (
     <div className="relative py-6">
-      <div
-        ref={emblaRef}
-        className="overflow-hidden pl-12 pr-12 sm:pl-16 sm:pr-16 md:pl-20 md:pr-20 rounded-lg"
-      >
+      <div ref={emblaRef} className="overflow-hidden rounded-lg">
         <div className="flex gap-4">
           {badges.map((badge, i) => (
             <div
@@ -47,23 +61,19 @@ export default function BadgeSlider({ badges }: { badges: Badge[] }) {
         </div>
       </div>
 
-      <button
-        onClick={prev}
-        className="absolute top-1/2 left-1 sm:left-2 -translate-y-1/2
-                   w-10 h-10 rounded-full bg-black/30 hover:bg-black/50 text-white
-                   flex items-center justify-center transition-colors"
-      >
-        ‹
-      </button>
-
-      <button
-        onClick={next}
-        className="absolute top-1/2 right-1 sm:right-2 -translate-y-1/2
-                   w-10 h-10 rounded-full bg-black/30 hover:bg-black/50 text-white
-                   flex items-center justify-center transition-colors"
-      >
-        ›
-      </button>
+      <div className="flex justify-center gap-2 mt-6">
+        {badges.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => handleDotClick(i)}
+            className={`h-2 rounded-full transition-all cursor-pointer ${
+              i === currentIndex ? "bg-white w-8" : "bg-white/40 w-2 hover:bg-white/60"
+            }`}
+            aria-label={`Go to badge ${i + 1}`}
+            aria-current={i === currentIndex ? "true" : "false"}
+          />
+        ))}
+      </div>
     </div>
   );
 }

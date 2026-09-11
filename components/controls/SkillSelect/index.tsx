@@ -68,12 +68,12 @@ export default function SkillSelect({
           <button
             type="button"
             className={cn(
-              "flex min-h-11 w-full items-center justify-between rounded-lg border bg-(--admin-input-bg) px-4 py-3 text-left text-sm text-(--admin-text) transition-colors",
+              "flex min-h-11 w-full items-center justify-between rounded-lg border bg-(--admin-input-bg) px-3 py-3 text-left text-sm text-(--admin-text) transition-colors",
               disabled && "opacity-50 cursor-not-allowed bg-(--admin-input-disabled-bg)",
               error
-                ? "border-red-600/60 focus-visible:ring-red-500/40"
-                : "border-(--admin-border-strong) focus-visible:ring-neutral-400/40",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-(--admin-focus-offset)",
+                ? "border-red-600/60 focus-visible:border-red-600 focus-visible:ring-red-500/40 focus-visible:bg-red-950/20"
+                : "border-(--admin-border-strong) focus-visible:border-red-500 focus-visible:ring-red-500/40 focus-visible:bg-red-950/20",
+              "focus-visible:outline-none focus-visible:ring-1",
             )}
             onClick={() => setOpen((prev) => !prev)}
             disabled={disabled}
