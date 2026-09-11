@@ -2,7 +2,6 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { Atom } from "react-loading-indicators";
 import { Element, Events, scrollSpy } from "react-scroll";
 
 import AboutMe from "@/app/home/AboutMe";
@@ -12,7 +11,6 @@ import MediumPosts from "@/app/home/MediumPosts";
 import Projects from "@/app/home/Projects";
 import Skills from "@/app/home/Skills";
 import BackgroundParticles from "@/components/BackgroundParticles";
-import useWindowDimensions from "@/hooks/useWindowDimensions";
 
 function SwipeUpIcon({ className = "" }) {
   return (
@@ -29,8 +27,6 @@ function SwipeUpIcon({ className = "" }) {
 }
 
 export default function Home() {
-  const { width, height } = useWindowDimensions();
-
   const [showBtn, setShowBtn] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -45,9 +41,6 @@ export default function Home() {
     showBtnRef.current = showBtn;
   }, [showBtn]);
 
-  const showThreshold = height * 0.9;
-  const hideThreshold = height * 0.7;
-
   useEffect(() => {
     let ticking = false;
 
@@ -57,6 +50,9 @@ export default function Home() {
 
       requestAnimationFrame(() => {
         const y = window.scrollY;
+        const viewportHeight = window.innerHeight || 0;
+        const showThreshold = viewportHeight * 0.9;
+        const hideThreshold = viewportHeight * 0.7;
 
         const shouldShow =
           y > showThreshold ? true : y < hideThreshold ? false : showBtnRef.current;
@@ -72,7 +68,7 @@ export default function Home() {
 
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [showThreshold, hideThreshold]);
+  }, []);
 
   useEffect(() => {
     scrollSpy.update();
@@ -85,14 +81,6 @@ export default function Home() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   if (!mounted) return null;
-
-  if (!width || !height) {
-    return (
-      <div className="w-full h-screen flex justify-center items-center">
-        <Atom color="#32cd32" size="large" text="" textColor="loading" />
-      </div>
-    );
-  }
 
   return (
     <>

@@ -9,6 +9,7 @@ import { Control, Controller, FieldErrors } from "react-hook-form";
 
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
 import AvatarCropper from "@/components/controls/AvatorCropper";
+import { FormSection } from "@/components/FormSection";
 import { Button } from "@/components/ui/button";
 
 export interface AvatarSectionProps {
@@ -67,38 +68,47 @@ export default function AvatarSection({
   disabled,
 }: AvatarSectionProps) {
   return (
-    <div className="flex w-full flex-col items-center gap-3 sm:gap-4">
-      <Controller
-        name="avatar"
-        control={control}
-        render={({ field }) => (
-          <>
-            <AvatarDisplay value={field.value} />
+    <FormSection
+      title="Avatar"
+      description="Upload and crop your profile image shown on the home page."
+      showVisibilityToggle={false}
+      showAddButton={false}
+      count={1}
+      disabled={disabled}
+    >
+      <div className="flex w-full flex-col items-center gap-3 sm:gap-4">
+        <Controller
+          name="avatar"
+          control={control}
+          render={({ field }) => (
+            <>
+              <AvatarDisplay value={field.value} />
 
-            {errors.avatar?.message && (
-              <p className="pl-1 text-sm text-red-400">{errors.avatar.message}</p>
-            )}
+              {errors.avatar?.message && (
+                <p className="pl-1 text-sm text-red-400">{errors.avatar.message}</p>
+              )}
 
-            <Button
-              type="button"
-              variant="destructive"
-              onClick={() => avatarInputRef.current?.click()}
-              className="w-full max-w-80"
-              disabled={disabled}
-            >
-              <Upload className="h-4 w-4" />
-              Choose Avatar
-            </Button>
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={() => avatarInputRef.current?.click()}
+                className="w-full max-w-80"
+                disabled={disabled}
+              >
+                <Upload className="h-4 w-4" />
+                Choose Avatar
+              </Button>
 
-            <AvatarCropper
-              open={cropOpen}
-              file={cropFile}
-              onClose={() => setCropOpen(false)}
-              onCropped={(croppedFile: File) => field.onChange(croppedFile)}
-            />
-          </>
-        )}
-      />
-    </div>
+              <AvatarCropper
+                open={cropOpen}
+                file={cropFile}
+                onClose={() => setCropOpen(false)}
+                onCropped={(croppedFile: File) => field.onChange(croppedFile)}
+              />
+            </>
+          )}
+        />
+      </div>
+    </FormSection>
   );
 }

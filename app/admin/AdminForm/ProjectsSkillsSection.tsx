@@ -84,7 +84,7 @@ export default function ProjectsSkillsSection({
           {projects.fields.map((project, index) => (
             <div
               key={project.id}
-              className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-end"
+              className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-center"
             >
               <div className="w-full lg:col-span-2">
                 <Controller
@@ -138,7 +138,7 @@ export default function ProjectsSkillsSection({
                 />
               </div>
 
-              <div className="w-full lg:col-span-1 flex justify-center lg:items-end lg:pb-1">
+              <div className="flex w-full justify-center lg:col-span-1 lg:items-center">
                 <Button
                   type="button"
                   variant="outline"

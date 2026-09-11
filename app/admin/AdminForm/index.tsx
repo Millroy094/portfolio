@@ -141,26 +141,28 @@ export default function AdminForm(props: AdminFormProps) {
     }
 
     if (!data.badges?.length) {
-      return { badgeKeys: [], avatarKey };
+      return { badgeKeyLabels: [], avatarKey };
     }
 
-    const uploads = await Promise.all(
-      data.badges.map(async (i) => {
-        try {
+    let uploads: { key: string; label: string }[];
+    try {
+      uploads = await Promise.all(
+        data.badges.map(async (i) => {
           const key = await uploadFileToS3("badges", i.value);
+          if (!key) {
+            throw new Error(`Failed to upload badge: ${i.label || "Unnamed badge"}`);
+          }
           return { key, label: i.label };
-        } catch (error) {
-          console.error("Failed to upload badge:", error);
-          return null;
-        }
-      }),
-    );
-
-    const badgeKeyLabels = uploads.filter(
-      (x): x is { key: string; label: string } => x !== null && x.key !== null && x.label !== null,
-    );
-
-    return { badgeKeyLabels, avatarKey };
+        }),
+      );
+    } catch (error) {
+      console.error("Failed to upload badges:", error);
+      toast.error("Failed to upload one or more badges. Please try again.", {
+        theme: "colored",
+      });
+      throw error;
+    }
+    return { badgeKeyLabels: uploads, avatarKey };
   };
   const handleBadgeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -286,7 +288,37 @@ export default function AdminForm(props: AdminFormProps) {
     setProcessing(true);
     try {
       const assets = await uploadAssets(data);
-      const result = await saveProfileData(data, formId, assets);
+      const serializableData: ProfileSchemaType = {
+        avatar: assets.avatarKey ?? (typeof data.avatar === "string" ? data.avatar : undefined),
+        fullName: data.fullName,
+        punchLine: data.punchLine,
+        linkedIn: data.linkedIn,
+        github: data.github,
+        stackOverflow: data.stackOverflow,
+        medium: data.medium,
+        resume: data.resume,
+        aboutMe: data.aboutMe,
+        roles: (data.roles ?? []).map((r) => ({ value: r.value })),
+        badges: (assets.badgeKeyLabels ?? []).map(({ key, label }) => ({ value: key, label })),
+        experiences: data.experiences ?? [],
+        education: data.education ?? [],
+        projects: data.projects ?? [],
+        skills: [...(data.skills ?? [])],
+        seoTitle: data.seoTitle,
+        seoDescription: data.seoDescription,
+        visibility: {
+          roles: data.visibility?.roles ?? true,
+          badges: data.visibility?.badges ?? true,
+          aboutMe: data.visibility?.aboutMe ?? true,
+          experiences: data.visibility?.experiences ?? true,
+          education: data.visibility?.education ?? true,
+          projects: data.visibility?.projects ?? true,
+          skills: data.visibility?.skills ?? true,
+          posts: data.visibility?.posts ?? true,
+        },
+        mediumPostCount: data.mediumPostCount ?? 3,
+      };
+      const result = await saveProfileData(serializableData, formId, assets);
       const { profileId } = result;
       if (profileId && formId !== profileId) {
         setFormId(profileId);
@@ -294,7 +326,7 @@ export default function AdminForm(props: AdminFormProps) {
       await loadData();
       toast.success("Successfully saved profile", { theme: "colored" });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("There was an error while saving profile", {
         theme: "colored",
       });
@@ -315,21 +347,21 @@ export default function AdminForm(props: AdminFormProps) {
     <div className="min-h-screen flex flex-col">
       <ToastContainer />
       <Card className="p-0 flex-1">
-        <div className="border-b border-neutral-800/40 bg-linear-to-b from-neutral-900/50 to-transparent px-6 py-6">
+        <div className="border-b border-(--admin-border) bg-(--admin-surface-muted) px-6 py-6">
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold text-neutral-100">Profile</h1>
+              <h1 className="text-2xl font-bold text-(--admin-text)">Profile</h1>
               <div
                 className={`px-3 py-1 rounded-full text-xs font-semibold ${
                   isEditable
                     ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
-                    : "bg-neutral-800/60 text-neutral-300 border border-neutral-700/60"
+                    : "border border-(--admin-border-strong) bg-(--admin-surface-muted) text-(--admin-text-muted)"
                 }`}
               >
                 {isEditable ? "EDIT MODE" : "VIEW ONLY"}
               </div>
             </div>
-            <p className={`text-sm ${isEditable ? "text-amber-200/80" : "text-neutral-400"}`}>
+            <p className={`text-sm ${isEditable ? "text-amber-500" : "text-(--admin-text-muted)"}`}>
               {isEditable ? "Make changes and save when ready." : "Click Edit to make changes."}
             </p>
           </div>
@@ -430,7 +462,7 @@ export default function AdminForm(props: AdminFormProps) {
         </FormProvider>
       </Card>
 
-      <div className="fixed bottom-0 left-0 right-0 border-t border-neutral-800 bg-neutral-950 shadow-2xl z-50">
+      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-(--admin-drawer-border) bg-(--admin-drawer-bg) shadow-2xl">
         <div className="w-full px-4 sm:px-6 md:px-8 py-3 sm:py-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 w-full">
             {hasChanges && (

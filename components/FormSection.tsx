@@ -54,10 +54,13 @@ export const FormSection: React.FC<FormSectionProps> = ({
 
   return (
     <Card className={`p-5 transition ${visKey && !isVisible ? "grayscale opacity-75" : ""}`}>
-      <div className="mb-4 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <h3 className="text-base font-semibold text-neutral-100">{title}</h3>
-          {!isVisible && visKey && <Badge>Hidden</Badge>}
+      <div className="mb-4 flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="flex items-center gap-2">
+            <h3 className="text-base font-semibold text-[var(--admin-text)]">{title}</h3>
+            {!isVisible && visKey && <Badge>Hidden</Badge>}
+          </div>
+          <p className="mt-1 text-sm text-[var(--admin-text-muted)]">{description}</p>
         </div>
 
         <div className="flex items-center gap-2">
@@ -89,7 +92,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
         </div>
       </div>
 
-      <Separator className="mb-5" />
+      <Separator className="mb-8" />
 
       {showAddButton && count === 0 && onAdd ? (
         <EmptyState
@@ -121,9 +124,9 @@ const EmptyState = ({
   onAction: () => void;
   disabled?: boolean;
 }) => (
-  <div className="rounded-lg border border-dashed border-neutral-700 bg-neutral-900/50 p-5">
-    <p className="text-base font-medium text-neutral-200">{title}</p>
-    <p className="mt-1 text-sm text-neutral-400">{description}</p>
+  <div className="rounded-lg border border-dashed border-[var(--admin-border-strong)] bg-[var(--admin-surface-muted)] p-5">
+    <p className="text-base font-medium text-[var(--admin-text)]">{title}</p>
+    <p className="mt-1 text-sm text-[var(--admin-text-muted)]">{description}</p>
     <Button type="button" variant="outline" className="mt-4" onClick={onAction} disabled={disabled}>
       <FiPlus size={16} />
       {actionLabel}

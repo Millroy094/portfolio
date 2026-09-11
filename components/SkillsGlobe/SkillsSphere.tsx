@@ -330,8 +330,6 @@ export function SkillsSphere({ skillIds, radius = 3 }: Props) {
 
   const [isDragging, setIsDragging] = useState(false);
   const pointerStart = useRef<{ x: number; y: number } | null>(null);
-  const pointerIdRef = useRef<number | null>(null);
-  const gestureRef = useRef<"pending" | "dragging" | "scrolling">("pending");
 
   // Inertia state
   const velocity = useRef({ yaw: 0, pitch: 0 }); // angular velocity per frame
@@ -391,9 +389,10 @@ export function SkillsSphere({ skillIds, radius = 3 }: Props) {
   };
 
   const onPointerDown = (e: ThreeEvent<PointerEvent>) => {
-    pointerIdRef.current = e.pointerId;
-    gestureRef.current = "pending";
-    setIsDragging(false);
+    // Capture pointer on the DOM canvas element
+    captureOnTarget(e.target, e.pointerId);
+
+    setIsDragging(true);
     pointerStart.current = { x: e.clientX, y: e.clientY };
 
     // Reset inertia when a new drag starts (feels more precise)
@@ -406,8 +405,6 @@ export function SkillsSphere({ skillIds, radius = 3 }: Props) {
   const endDrag = () => {
     setIsDragging(false);
     pointerStart.current = null;
-    gestureRef.current = "pending";
-    pointerIdRef.current = null;
   };
 
   const onPointerUp = (e: ThreeEvent<PointerEvent>) => {
@@ -421,43 +418,24 @@ export function SkillsSphere({ skillIds, radius = 3 }: Props) {
   };
 
   const onPointerMove = (e: ThreeEvent<PointerEvent>) => {
-    if (!groupRef.current || !pointerStart.current) return;
-    if (pointerIdRef.current !== null && e.pointerId !== pointerIdRef.current) return;
+    if (!isDragging || !groupRef.current || !pointerStart.current) return;
 
     const dx = e.clientX - pointerStart.current.x;
     const dy = e.clientY - pointerStart.current.y;
-    const ax = Math.abs(dx);
-    const ay = Math.abs(dy);
 
-    // Wait for intent to be clear before deciding between page scroll vs sphere drag
-    if (gestureRef.current === "pending") {
-      if (ax <= 6 && ay <= 6) return;
+    // Only rotate if movement > threshold (prevents accidental tiny drags)
+    if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+      // Apply rotation
+      groupRef.current.rotation.y += dx * ROTATION_MULT;
+      groupRef.current.rotation.x += dy * ROTATION_MULT;
 
-      // Vertical gesture should scroll the page, not drag the sphere
-      if (ay > ax * 1.15) {
-        gestureRef.current = "scrolling";
-        setIsDragging(false);
-        return;
-      }
+      // Store velocity for inertia (last movement becomes angular velocity)
+      velocity.current.yaw = dx * ROTATION_MULT;
+      velocity.current.pitch = dy * ROTATION_MULT;
 
-      gestureRef.current = "dragging";
-      setIsDragging(true);
-      // Capture pointer only when drag intent is confirmed
-      captureOnTarget(e.target, e.pointerId);
+      pointerStart.current = { x: e.clientX, y: e.clientY };
+      e.stopPropagation();
     }
-
-    if (gestureRef.current !== "dragging") return;
-
-    // Apply rotation
-    groupRef.current.rotation.y += dx * ROTATION_MULT;
-    groupRef.current.rotation.x += dy * ROTATION_MULT;
-
-    // Store velocity for inertia (last movement becomes angular velocity)
-    velocity.current.yaw = dx * ROTATION_MULT;
-    velocity.current.pitch = dy * ROTATION_MULT;
-
-    pointerStart.current = { x: e.clientX, y: e.clientY };
-    e.stopPropagation();
   };
 
   /* ===========================

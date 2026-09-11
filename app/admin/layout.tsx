@@ -50,10 +50,10 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
 
   return (
     <div
-      className={`min-h-screen ${isDark ? "bg-black text-white" : "bg-neutral-50 text-neutral-950"}`}
+      className={`min-h-screen ${isDark ? "admin-theme-dark bg-black text-white" : "admin-theme-light bg-neutral-50 text-neutral-950"}`}
     >
       <header
-        className={`w-full ${isDark ? "bg-gradient-to-b from-neutral-900/60 to-black border-neutral-800/40" : "bg-white border-neutral-200"} border-b shadow-lg`}
+        className={`w-full ${isDark ? "bg-linear-to-b from-neutral-900/60 to-black border-neutral-800/40" : "bg-white border-neutral-200"} border-b shadow-lg`}
       >
         <div className="mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4 py-4 px-4">
           <div className="text-center sm:text-left">

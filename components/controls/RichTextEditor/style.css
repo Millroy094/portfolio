@@ -5,3 +5,37 @@
 .quill {
   width: 100%;
 }
+
+.admin-richtext .ql-toolbar.ql-snow,
+.admin-richtext .ql-container.ql-snow {
+  border-color: var(--admin-border-strong);
+}
+
+.admin-richtext .ql-toolbar.ql-snow {
+  background: var(--admin-surface-muted);
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.admin-richtext .ql-container.ql-snow {
+  background: var(--admin-input-bg);
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+.admin-richtext .ql-editor {
+  color: var(--admin-text);
+}
+
+.admin-richtext .ql-editor.ql-blank::before {
+  color: var(--admin-text-muted);
+  font-style: normal;
+}
+
+.admin-richtext.is-disabled .ql-container.ql-snow {
+  background: var(--admin-input-disabled-bg);
+}
+
+.admin-richtext.is-disabled .ql-editor {
+  opacity: 0.7;
+}

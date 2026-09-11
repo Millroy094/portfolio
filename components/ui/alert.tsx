@@ -7,7 +7,8 @@ import { cn } from "@/lib/utils";
 type AlertVariant = "default" | "info" | "warning" | "error";
 
 const variantStyles: Record<AlertVariant, string> = {
-  default: "border-neutral-700 bg-neutral-900/60 text-neutral-200",
+  default:
+    "border-[var(--admin-border-strong)] bg-[var(--admin-surface-muted)] text-[var(--admin-text)]",
   info: "border-blue-700/50 bg-blue-950/30 text-blue-200",
   warning: "border-amber-700/50 bg-amber-950/30 text-amber-100",
   error: "border-red-700/50 bg-red-950/30 text-red-100",

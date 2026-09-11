@@ -71,7 +71,7 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
                 )}
 
                 <div className="absolute -left-40 top-2 w-32 text-right">
-                  <p className={`font-bold ${isPromotion ? "text-yellow-300" : "text-white/90"}`}>
+                  <p className={`font-bold ${isPromotion ? "text-red-300" : "text-white/90"}`}>
                     {item.year}
                   </p>
                 </div>
@@ -80,7 +80,7 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
                   className={`absolute -left-2.5 top-1 w-7 h-7 rounded-full flex items-center justify-center shadow-lg border z-10
                     ${
                       isPromotion
-                        ? "bg-yellow-500 text-black border-yellow-300 shadow-yellow-500/50 animate-pulse"
+                        ? "bg-red-700 text-white border-red-400 shadow-red-500/40"
                         : "bg-red-600 text-white border-red-400"
                     }`}
                 >
@@ -95,12 +95,12 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
                   <div className="ml-10">
                     <h3
                       className={`text-lg font-semibold flex items-center gap-2 ${
-                        isPromotion ? "text-yellow-300" : "text-white/90"
+                        isPromotion ? "text-red-300" : "text-white/90"
                       }`}
                     >
                       {item.title}
                       {isPromotion && (
-                        <span className="px-2 py-0.5 rounded bg-yellow-400 text-black text-xs font-bold">
+                        <span className="px-2 py-0.5 rounded bg-neutral-100 text-neutral-950 text-xs font-bold">
                           PROMOTION
                         </span>
                       )}
@@ -121,22 +121,22 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
                 <div className="absolute left-0.75 top-8 w-0.5 bottom-0 bg-gray-300 dark:bg-gray-600" />
               )}
 
-              <div className="absolute -left-2.5 top-1 w-7 h-7 rounded-full flex items-center justify-center bg-blue-600 border border-blue-400 text-white shadow-lg z-10">
+              <div className="absolute -left-2.5 top-1 w-7 h-7 rounded-full flex items-center justify-center bg-neutral-800 border border-neutral-500 text-neutral-100 shadow-lg z-10">
                 <GraduationCap className="h-4 w-4" />
               </div>
 
               <div className="absolute -left-40 top-2 w-32 text-right">
-                <p className="font-bold text-blue-300">{items[0].year}</p>
+                <p className="font-bold text-neutral-300">{items[0].year}</p>
               </div>
 
               <GrowOnHover>
                 <div className="ml-10">
-                  <h3 className="text-lg font-semibold text-blue-200">{institution}</h3>
+                  <h3 className="text-lg font-semibold text-white/90">{institution}</h3>
 
                   <ul className="mt-1 space-y-1 text-sm text-gray-400">
                     {items.map((i) => (
                       <li key={`${i.subTitle}-${i.year}`} className="flex gap-2">
-                        <span className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-300"></span>
+                        <span className="mt-1 h-1.5 w-1.5 rounded-full bg-red-400"></span>
                         <span>
                           <span className="font-medium text-white/90">{i.year}</span> — {i.subTitle}
                         </span>

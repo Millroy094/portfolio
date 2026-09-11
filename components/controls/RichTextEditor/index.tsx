@@ -16,6 +16,7 @@ const RichTextEditor: FC<RichTextEditorProps> = (props) => {
 
   return (
     <ReactQuill
+      className={`admin-richtext ${props.disabled ? "is-disabled" : ""}`}
       theme="snow"
       value={props.value}
       onChange={props.onChange}

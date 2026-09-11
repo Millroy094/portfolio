@@ -8,7 +8,6 @@ import PortfolioAppBar from "@/app/home/AppBar";
 import AvatarWithSkeleton from "@/app/home/AvatarWithSkeleton";
 import BadgeSlider from "@/app/home/BadgeSlider";
 import { useWebsiteData } from "@/context/WebsiteData";
-import useWindowDimensions from "@/hooks/useWindowDimensions";
 
 function LinkedInIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -53,7 +52,6 @@ function DownloadIcon(props: React.SVGProps<SVGSVGElement>) {
 
 export default function Introduction(): JSX.Element {
   const { data } = useWebsiteData();
-  const { height } = useWindowDimensions();
 
   return (
     <>
@@ -62,10 +60,10 @@ export default function Introduction(): JSX.Element {
       <div
         className="
     relative z-10
+    min-h-[100svh]
     flex flex-col items-center justify-center
     px-4 sm:px-6
   "
-        style={{ height }}
       >
         {/* Avatar */}
         {data.avatarUrl && (
