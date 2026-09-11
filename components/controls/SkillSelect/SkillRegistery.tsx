@@ -45,6 +45,7 @@ import { SiApachesolr } from "react-icons/si";
 import { TbBrandCSharp } from "react-icons/tb";
 import { VscAzure } from "react-icons/vsc";
 
+import LaunchDarklyIcon from "@/components/LaunchDarklyIcon";
 import LocalStackIcon from "@/components/LocalStackIcon";
 import PlaywrightIcon from "@/components/PlaywrightIcon";
 
@@ -95,7 +96,8 @@ export type SkillId =
   | "auth0"
   | "keycloak"
   | "webauthn"
-  | "localstack";
+  | "localstack"
+  | "launchdarkly";
 
 export type Skill = {
   id: SkillId;
@@ -331,6 +333,12 @@ export const skillsRegistry: Record<SkillId, Skill> = {
     label: "LocalStack",
     group: "DevOps",
     render: () => <LocalStackIcon size={size} />,
+  },
+  launchdarkly: {
+    id: "launchdarkly",
+    label: "LaunchDarkly",
+    group: "DevOps",
+    render: () => <LaunchDarklyIcon size={size} />,
   },
   helm: {
     id: "helm",
