@@ -64,20 +64,6 @@ export default function ProjectsSkillsSection({
       </FormSection>
 
       <FormSection
-        title="Writing"
-        description="Show your latest Medium posts on the public profile."
-        visKey="posts"
-        showVisibilityToggle
-        showAddButton={false}
-        count={1}
-        disabled={disabled}
-      >
-        <p className="text-sm text-neutral-400">
-          Uses the Medium profile URL from Identity and displays your latest 3 posts.
-        </p>
-      </FormSection>
-
-      <FormSection
         title="Projects"
         description="Showcase your projects with a short description and repository/demo URL."
         addLabel="Add project"
@@ -152,7 +138,7 @@ export default function ProjectsSkillsSection({
                 />
               </div>
 
-              <div className="flex justify-center gap-2 lg:pb-1">
+              <div className="w-full lg:col-span-1 flex justify-center lg:items-end lg:pb-1">
                 <Button
                   type="button"
                   variant="outline"

@@ -62,7 +62,6 @@ export default function Introduction(): JSX.Element {
       <div
         className="
     relative z-10
-    overflow-auto
     flex flex-col items-center justify-center
     px-4 sm:px-6
   "

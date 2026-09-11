@@ -315,13 +315,15 @@ export default function AdminForm(props: AdminFormProps) {
     <div className="min-h-screen flex flex-col">
       <ToastContainer />
       <Card className="p-0 flex-1">
-        <div className="border-b border-neutral-800/40 bg-gradient-to-b from-neutral-900/50 to-transparent px-6 py-6">
+        <div className="border-b border-neutral-800/40 bg-linear-to-b from-neutral-900/50 to-transparent px-6 py-6">
           <div className="flex flex-col gap-2">
             <h1 className="text-2xl font-bold text-neutral-100">Profile</h1>
-            <p className="text-sm text-neutral-400">
+            <p
+              className={`text-sm font-medium ${isEditable ? "text-amber-400" : "text-neutral-200"}`}
+            >
               {isEditable
-                ? "You are in edit mode. Make changes and save when ready."
-                : "View-only mode. Click Edit to make changes."}
+                ? "✓ Edit mode active - Make changes and save when ready."
+                : "🔒 View-only mode - Click Edit to make changes."}
             </p>
           </div>
         </div>
@@ -356,13 +358,6 @@ export default function AdminForm(props: AdminFormProps) {
             />
 
             <IdentitySection
-              register={register}
-              control={control}
-              errors={errors}
-              disabled={!isEditable}
-            />
-
-            <WritingSection
               register={register}
               control={control}
               errors={errors}
@@ -416,6 +411,13 @@ export default function AdminForm(props: AdminFormProps) {
               disabled={!isEditable}
             />
 
+            <WritingSection
+              register={register}
+              control={control}
+              errors={errors}
+              disabled={!isEditable}
+            />
+
             <SeoSection register={register} errors={errors} disabled={!isEditable} />
           </form>
         </FormProvider>
@@ -429,35 +431,38 @@ export default function AdminForm(props: AdminFormProps) {
             </Alert>
           )}
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3">
-            <Button
-              variant="outline"
-              onClick={() => setIsEditable((prev) => !prev)}
-              disabled={hasChanges}
-              className="gap-2 text-sm sm:text-base"
-            >
-              {isEditable ? <Lock className="h-4 w-4" /> : <Edit3 className="h-4 w-4" />}
-              {isEditable ? "Lock" : "Edit"}
-            </Button>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3 w-full">
+            <div />
+            <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+              <Button
+                variant="outline"
+                onClick={() => setIsEditable((prev) => !prev)}
+                disabled={hasChanges}
+                className="gap-2 flex-1 sm:flex-initial h-10"
+              >
+                {isEditable ? <Lock className="h-4 w-4" /> : <Edit3 className="h-4 w-4" />}
+                {isEditable ? "Lock" : "Edit"}
+              </Button>
 
-            <Button
-              disabled={!isEditable || processing}
-              type="submit"
-              onClick={handleSubmit(onSubmit, onInvalid)}
-              className="gap-2 text-sm sm:text-base"
-            >
-              {processing ? (
-                <>
-                  <span className="inline-block animate-spin">◌</span>
-                  Saving...
-                </>
-              ) : (
-                <>
-                  <Save className="h-4 w-4" />
-                  Save
-                </>
-              )}
-            </Button>
+              <Button
+                disabled={!isEditable || processing}
+                type="submit"
+                onClick={handleSubmit(onSubmit, onInvalid)}
+                className="gap-2 flex-1 sm:flex-initial h-10"
+              >
+                {processing ? (
+                  <>
+                    <span className="inline-block animate-spin">◌</span>
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save className="h-4 w-4" />
+                    Save
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </div>
       </div>

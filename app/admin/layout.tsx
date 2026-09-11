@@ -45,8 +45,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <Link
               className="
           bg-neutral-700 hover:bg-neutral-600 active:bg-neutral-500
-          text-white px-4 py-3 rounded-lg uppercase text-xs tracking-wide font-semibold
-          text-center w-full sm:w-auto transition-colors
+          text-white px-4 py-2 rounded-lg text-sm font-semibold
+          text-center w-full sm:w-auto transition-colors h-10 flex items-center justify-center
           focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black
         "
               href="/"
@@ -68,13 +68,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               className="
           inline-flex items-center justify-center
           w-full sm:w-auto
-          rounded-lg px-4 py-3
-          uppercase tracking-wide
+          rounded-lg px-4 py-2
+          text-sm font-semibold
           bg-neutral-100 text-black hover:bg-neutral-200
-          transition-colors
+          transition-colors h-10
           disabled:opacity-70 disabled:cursor-not-allowed
           focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black
-          text-xs font-semibold
         "
             >
               {signingOut ? "Logging out..." : "Logout"}

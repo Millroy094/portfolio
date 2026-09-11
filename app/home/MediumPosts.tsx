@@ -42,14 +42,18 @@ export default function MediumPosts() {
             className="rounded-lg border border-neutral-800 bg-neutral-900 p-6 hover:bg-neutral-850 hover:shadow-md transition-all group"
           >
             {post.imageUrl && (
-              <Image
-                src={post.imageUrl}
-                alt={post.title}
-                width={640}
-                height={360}
-                className="mb-4 h-40 w-full rounded-md object-cover group-hover:opacity-90 transition-opacity"
-                unoptimized
-              />
+              <div
+                className="mb-4 relative w-full overflow-hidden rounded-md bg-neutral-800"
+                style={{ aspectRatio: "16/9" }}
+              >
+                <Image
+                  src={post.imageUrl}
+                  alt={post.title}
+                  fill
+                  className="object-cover group-hover:opacity-90 transition-opacity"
+                  unoptimized
+                />
+              </div>
             )}
 
             <h3 className="text-lg font-semibold text-neutral-100 line-clamp-2">{post.title}</h3>

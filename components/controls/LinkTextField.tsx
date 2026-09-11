@@ -30,7 +30,7 @@ const LinkTextField: FC<LinkTextFieldProps> = ({
         value={stripProtocol(value)}
         onChange={(e) => onChange(addHttps(e.target.value))}
         readOnly={disabled}
-        className="pl-20 font-mono text-sm"
+        className="pl-16 font-mono text-sm"
       />
     </div>
   </Field>
