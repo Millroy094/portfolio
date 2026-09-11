@@ -1,6 +1,5 @@
 "use client";
 
-import { FormHelperText } from "@mui/material";
 import * as React from "react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 
@@ -36,11 +35,8 @@ export default function AboutMeSection({ control, disabled }: AboutMeSectionProp
               onChange={field.onChange}
               disabled={disabled}
             />
-
-            {fieldState.error && (
-              <FormHelperText sx={{ pl: 1 }} error>
-                {fieldState.error.message}
-              </FormHelperText>
+            {fieldState.error?.message && (
+              <p className="mt-1 pl-1 text-sm text-red-400">{fieldState.error.message}</p>
             )}
           </>
         )}

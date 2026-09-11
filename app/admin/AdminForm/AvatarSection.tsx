@@ -1,15 +1,15 @@
 "use client";
 
-import { AccountCircle, Person2 } from "@mui/icons-material";
-import { Avatar, Button, FormHelperText } from "@mui/material";
 import { getUrl } from "aws-amplify/storage";
+import { Upload, UserRound } from "lucide-react";
 import Image from "next/image";
 import { JSX, useEffect, useState } from "react";
 import * as React from "react";
-import { Controller, Control, FieldErrors } from "react-hook-form";
+import { Control, Controller, FieldErrors } from "react-hook-form";
 
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
 import AvatarCropper from "@/components/controls/AvatorCropper";
+import { Button } from "@/components/ui/button";
 
 export interface AvatarSectionProps {
   control: Control<ProfileSchemaType>;
@@ -21,7 +21,6 @@ export interface AvatarSectionProps {
   disabled: boolean;
 }
 
-/** NEW: Safe component that can use React hooks */
 function AvatarDisplay({ value }: { value?: File | string | null }): JSX.Element {
   const [url, setUrl] = useState<string | null>(null);
 
@@ -52,9 +51,9 @@ function AvatarDisplay({ value }: { value?: File | string | null }): JSX.Element
   }
 
   return (
-    <Avatar sx={{ width: "100px", height: "100px" }}>
-      <Person2 fontSize="large" />
-    </Avatar>
+    <div className="flex h-24 w-24 items-center justify-center rounded-full border border-neutral-700 bg-neutral-900">
+      <UserRound className="h-10 w-10 text-neutral-400" />
+    </div>
   );
 }
 
@@ -68,7 +67,7 @@ export default function AvatarSection({
   disabled,
 }: AvatarSectionProps) {
   return (
-    <div className="flex flex-col items-center gap-3 sm:gap-4 w-full">
+    <div className="flex w-full flex-col items-center gap-3 sm:gap-4">
       <Controller
         name="avatar"
         control={control}
@@ -77,20 +76,17 @@ export default function AvatarSection({
             <AvatarDisplay value={field.value} />
 
             {errors.avatar?.message && (
-              <FormHelperText sx={{ pl: 1 }} error>
-                {errors.avatar.message}
-              </FormHelperText>
+              <p className="pl-1 text-sm text-red-400">{errors.avatar.message}</p>
             )}
 
             <Button
               type="button"
-              variant="contained"
-              color="error"
-              startIcon={<AccountCircle />}
+              variant="destructive"
               onClick={() => avatarInputRef.current?.click()}
-              sx={{ width: "100%", maxWidth: 320 }}
+              className="w-full max-w-80"
               disabled={disabled}
             >
+              <Upload className="h-4 w-4" />
               Choose Avatar
             </Button>
 

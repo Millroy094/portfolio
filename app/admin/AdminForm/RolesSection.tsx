@@ -1,11 +1,13 @@
 "use client";
 
-import { DeleteSharp } from "@mui/icons-material";
-import { TextField, IconButton } from "@mui/material";
+import { Trash2 } from "lucide-react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
 import { FormSection } from "@/components/FormSection";
+import { Button } from "@/components/ui/button";
+import { Field } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 
 export interface RolesSectionProps {
   control: Control<ProfileSchemaType>;
@@ -33,7 +35,7 @@ export default function RolesSection({
       count={fields.length}
       disabled={disabled}
       showVisibilityToggle
-      visKey={"roles"}
+      visKey="roles"
       showAddButton
     >
       <div className="flex flex-col gap-4">
@@ -43,29 +45,30 @@ export default function RolesSection({
               <Controller
                 control={control}
                 name={`roles.${index}`}
-                render={({ field, fieldState }) => (
-                  <TextField
-                    label={`Role ${index + 1}`}
-                    value={field.value.value ?? ""}
-                    onChange={(e) => field.onChange({ value: e.target.value })}
-                    fullWidth
-                    error={!!fieldState.error}
-                    helperText={errors.roles?.[index]?.value?.message}
-                    variant="outlined"
-                    slotProps={{
-                      inputLabel: { shrink: !!field.value?.value },
-                      htmlInput: { readOnly: disabled },
-                    }}
-                  />
+                render={({ field }) => (
+                  <Field label={`Role ${index + 1}`} error={errors.roles?.[index]?.value?.message}>
+                    <Input
+                      value={field.value.value ?? ""}
+                      onChange={(e) => field.onChange({ value: e.target.value })}
+                      readOnly={disabled}
+                    />
+                  </Field>
                 )}
               />
             </div>
 
-            {/* Remove button only */}
-            <div className="flex gap-2 justify-center">
-              <IconButton onClick={() => remove(index)} size="small" disabled={disabled}>
-                <DeleteSharp color={disabled ? "disabled" : "error"} />
-              </IconButton>
+            <div className="flex justify-center gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={() => remove(index)}
+                disabled={disabled}
+                className="h-10 w-10"
+                aria-label={`Remove role ${index + 1}`}
+              >
+                <Trash2 className="h-5 w-5 text-red-500" />
+              </Button>
             </div>
           </div>
         ))}

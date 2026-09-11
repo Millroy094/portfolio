@@ -1,10 +1,11 @@
 "use client";
 
-import { TextField } from "@mui/material";
 import { Control, Controller, FieldErrors, UseFormRegister } from "react-hook-form";
 
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
 import LinkTextField from "@/components/controls/LinkTextField";
+import { Field } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 
 export interface IdentitySectionProps {
   register: UseFormRegister<ProfileSchemaType>;
@@ -20,49 +21,20 @@ export default function IdentitySection({
   disabled,
 }: IdentitySectionProps) {
   return (
-    <div className="flex flex-col gap-4 w-full">
-      {/* Full Name */}
+    <div className="flex w-full flex-col gap-4">
       <div className="w-full lg:max-w-xl">
-        <TextField
-          {...register("fullName")}
-          label="Full Name"
-          fullWidth
-          error={!!errors.fullName}
-          helperText={errors.fullName?.message ?? ""}
-          slotProps={{
-            inputLabel: {
-              shrink: true,
-            },
-            htmlInput: { readOnly: disabled },
-          }}
-        />
+        <Field label="Full Name" error={errors.fullName?.message}>
+          <Input {...register("fullName")} readOnly={disabled} />
+        </Field>
       </div>
 
-      {/* Punch line */}
       <div className="w-full lg:w-1/2">
-        <TextField
-          label="Punch line"
-          fullWidth
-          {...register("punchLine")}
-          error={!!errors.punchLine}
-          helperText={errors.punchLine?.message ?? ""}
-          slotProps={{
-            inputLabel: {
-              shrink: true,
-            },
-            htmlInput: { readOnly: disabled },
-          }}
-        />
+        <Field label="Punch line" error={errors.punchLine?.message}>
+          <Input {...register("punchLine")} readOnly={disabled} />
+        </Field>
       </div>
 
-      {/* Links (LinkedIn, Github, StackOverflow) */}
-      <div
-        className="
-          grid grid-cols-1 gap-4
-          md:grid-cols-1
-          lg:grid-cols-4
-      "
-      >
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-1 lg:grid-cols-4">
         <Controller
           name="linkedIn"
           control={control}
@@ -124,7 +96,6 @@ export default function IdentitySection({
         />
       </div>
 
-      {/* Resume */}
       <div className="w-full lg:w-1/2">
         <Controller
           name="resume"

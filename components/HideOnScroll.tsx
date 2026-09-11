@@ -1,7 +1,6 @@
 "use client";
 
-import Slide from "@mui/material/Slide";
-import useScrollTrigger from "@mui/material/useScrollTrigger";
+import { AnimatePresence, motion } from "framer-motion";
 import * as React from "react";
 
 interface HideOnScrollProps {
@@ -10,11 +9,34 @@ interface HideOnScrollProps {
 }
 
 export default function HideOnScroll({ children, threshold = 12 }: HideOnScrollProps) {
-  const trigger = useScrollTrigger({ threshold, disableHysteresis: true });
+  const [visible, setVisible] = React.useState(true);
+  const prevY = React.useRef(0);
+
+  React.useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      const delta = y - prevY.current;
+      if (Math.abs(delta) < threshold) return;
+      setVisible(delta < 0 || y < threshold);
+      prevY.current = y;
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [threshold]);
 
   return (
-    <Slide appear={false} direction="down" in={!trigger}>
-      {children}
-    </Slide>
+    <AnimatePresence initial={false}>
+      {visible && (
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -20, opacity: 0 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+        >
+          {children}
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

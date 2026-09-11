@@ -1,5 +1,7 @@
-import { TextField } from "@mui/material";
 import React, { FC } from "react";
+
+import { Field } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 
 type YearTextFieldProps = {
   label: string;
@@ -20,29 +22,23 @@ const YearTextField: FC<YearTextFieldProps> = ({
   errorText,
   disabled,
 }) => (
-  <TextField
-    type="number"
-    label={label}
-    value={value}
-    onChange={(e) => {
-      const v = e.target.value;
-      if (v === "") return onChange(undefined);
-      const parsed = Number(v);
-      onChange(Number.isNaN(parsed) ? undefined : parsed);
-    }}
-    slotProps={{
-      htmlInput: {
-        inputMode: "numeric",
-        min: 1900,
-        max: currentYear,
-        step: 1,
-        readOnly: disabled,
-      },
-    }}
-    fullWidth
-    error={error}
-    helperText={errorText}
-  />
+  <Field label={label} error={error ? errorText : undefined}>
+    <Input
+      type="number"
+      value={value ?? ""}
+      onChange={(e) => {
+        const v = e.target.value;
+        if (v === "") return onChange(undefined);
+        const parsed = Number(v);
+        onChange(Number.isNaN(parsed) ? undefined : parsed);
+      }}
+      inputMode="numeric"
+      min={1900}
+      max={currentYear}
+      step={1}
+      readOnly={disabled}
+    />
+  </Field>
 );
 
 export default YearTextField;

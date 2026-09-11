@@ -31,6 +31,7 @@ const schema = a.schema({
       showProjects: a.boolean().default(true),
       showSkills: a.boolean().default(true),
       showPosts: a.boolean().default(true),
+      mediumPostCount: a.integer().default(3),
     })
     .authorization((allow) => [
       allow.publicApiKey().to(["read"]),

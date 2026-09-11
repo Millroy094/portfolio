@@ -1,8 +1,9 @@
 "use client";
 
-import { Slider, Dialog, DialogContent, DialogActions, Button } from "@mui/material";
 import { FC, useEffect, useMemo, useState } from "react";
 import Cropper, { Area, Point } from "react-easy-crop";
+
+import { Button } from "@/components/ui/button";
 
 import createCroppedImage from "./createCropperImage";
 
@@ -49,13 +50,15 @@ const AvatarCropper: FC<AvatorCropperProps> = ({ file, open, onClose, onCropped 
     }
   };
 
+  if (!open) return null;
+
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogContent>
-        <div className="relative h-[300px]">
+    <div className="fixed inset-0 z-1200 flex items-center justify-center bg-black/70 p-4">
+      <div className="w-full max-w-2xl rounded-lg border border-neutral-700 bg-neutral-950 p-4">
+        <div className="relative h-[300px] overflow-hidden rounded-md">
           {file && (
             <Cropper
-              image={URL.createObjectURL(file)}
+              image={objectUrl ?? undefined}
               crop={crop}
               zoom={zoom}
               aspect={1}
@@ -67,16 +70,28 @@ const AvatarCropper: FC<AvatorCropperProps> = ({ file, open, onClose, onCropped 
           )}
         </div>
 
-        <Slider value={zoom} min={1} max={3} step={0.1} onChange={(_, val) => setZoom(val)} />
-      </DialogContent>
+        <div className="mt-4">
+          <input
+            type="range"
+            min={1}
+            max={3}
+            step={0.1}
+            value={zoom}
+            onChange={(e) => setZoom(Number(e.target.value))}
+            className="w-full accent-red-600"
+          />
+        </div>
 
-      <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button variant="contained" onClick={getCroppedImage}>
-          Save Crop
-        </Button>
-      </DialogActions>
-    </Dialog>
+        <div className="mt-4 flex justify-end gap-2">
+          <Button type="button" variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="button" onClick={getCroppedImage}>
+            Save Crop
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 };
 

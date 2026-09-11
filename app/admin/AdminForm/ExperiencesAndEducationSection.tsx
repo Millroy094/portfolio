@@ -1,12 +1,14 @@
 "use client";
 
-import { DeleteSharp } from "@mui/icons-material";
-import { TextField, IconButton } from "@mui/material";
+import { Trash2 } from "lucide-react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
 import YearTextField from "@/components/controls/YearTextField";
 import { FormSection } from "@/components/FormSection";
+import { Button } from "@/components/ui/button";
+import { Field } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 
 type ExperienceRecord = {
   year: number;
@@ -47,7 +49,6 @@ export default function ExperiencesEducationSection({
 }: ExperiencesEducationProps) {
   return (
     <div className="flex flex-col gap-8">
-      {/* Experiences */}
       <FormSection
         title="Experiences"
         description="Add organizations, titles, and the year for each role you’ve held."
@@ -62,7 +63,7 @@ export default function ExperiencesEducationSection({
         count={experiences.fields.length}
         disabled={disabled}
         showVisibilityToggle
-        visKey={"experiences"}
+        visKey="experiences"
         showAddButton
       >
         <div className="flex flex-col gap-4">
@@ -77,45 +78,44 @@ export default function ExperiencesEducationSection({
               const index = exp.index;
               return (
                 <div key={exp.id} className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3">
-                  {/* Organization */}
                   <div className="w-full lg:col-span-4">
                     <Controller
                       control={control}
                       name={`experiences.${index}.organization`}
-                      render={({ field, fieldState }) => (
-                        <TextField
+                      render={({ field }) => (
+                        <Field
                           label="Organization"
-                          fullWidth
-                          value={field.value}
-                          onChange={(e) => field.onChange(e.target.value)}
-                          error={!!fieldState.error}
-                          helperText={errors.experiences?.[index]?.organization?.message}
-                          slotProps={{ htmlInput: { readOnly: disabled } }}
-                        />
+                          error={errors.experiences?.[index]?.organization?.message}
+                        >
+                          <Input
+                            value={field.value}
+                            onChange={(e) => field.onChange(e.target.value)}
+                            readOnly={disabled}
+                          />
+                        </Field>
                       )}
                     />
                   </div>
 
-                  {/* Title */}
                   <div className="w-full lg:col-span-4">
                     <Controller
                       control={control}
                       name={`experiences.${index}.title`}
-                      render={({ field, fieldState }) => (
-                        <TextField
+                      render={({ field }) => (
+                        <Field
                           label="Job Title"
-                          fullWidth
-                          value={field.value}
-                          onChange={(e) => field.onChange(e.target.value)}
-                          error={!!fieldState.error}
-                          helperText={errors.experiences?.[index]?.title?.message}
-                          slotProps={{ htmlInput: { readOnly: disabled } }}
-                        />
+                          error={errors.experiences?.[index]?.title?.message}
+                        >
+                          <Input
+                            value={field.value}
+                            onChange={(e) => field.onChange(e.target.value)}
+                            readOnly={disabled}
+                          />
+                        </Field>
                       )}
                     />
                   </div>
 
-                  {/* Year */}
                   <div className="w-full lg:col-span-3">
                     <Controller
                       control={control}
@@ -133,22 +133,25 @@ export default function ExperiencesEducationSection({
                     />
                   </div>
 
-                  {/* Remove button only */}
-                  <div className="flex gap-2 justify-center">
-                    <IconButton
+                  <div className="flex justify-center gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
                       onClick={() => experiences.remove(index)}
-                      size="small"
                       disabled={disabled}
+                      className="h-10 w-10"
+                      aria-label={`Remove experience ${index + 1}`}
                     >
-                      <DeleteSharp color={disabled ? "disabled" : "error"} />
-                    </IconButton>
+                      <Trash2 className="h-5 w-5 text-red-500" />
+                    </Button>
                   </div>
                 </div>
               );
             })}
         </div>
       </FormSection>
-      {/* Education */}
+
       <FormSection
         title="Education"
         description="List your education—include institute, qualification, and year."
@@ -163,7 +166,7 @@ export default function ExperiencesEducationSection({
         count={education.fields.length}
         disabled={disabled}
         showVisibilityToggle
-        visKey={"education"}
+        visKey="education"
         showAddButton
       >
         <div className="flex flex-col gap-4">
@@ -178,45 +181,44 @@ export default function ExperiencesEducationSection({
               const index = edu.index;
               return (
                 <div key={edu.id} className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3">
-                  {/* Institute */}
                   <div className="w-full lg:col-span-4">
                     <Controller
                       control={control}
                       name={`education.${index}.institute`}
-                      render={({ field, fieldState }) => (
-                        <TextField
+                      render={({ field }) => (
+                        <Field
                           label="Institute"
-                          value={field.value}
-                          onChange={(e) => field.onChange(e.target.value)}
-                          fullWidth
-                          error={!!fieldState.error}
-                          helperText={errors.education?.[index]?.institute?.message}
-                          slotProps={{ htmlInput: { readOnly: disabled } }}
-                        />
+                          error={errors.education?.[index]?.institute?.message}
+                        >
+                          <Input
+                            value={field.value}
+                            onChange={(e) => field.onChange(e.target.value)}
+                            readOnly={disabled}
+                          />
+                        </Field>
                       )}
                     />
                   </div>
 
-                  {/* Qualification */}
                   <div className="w-full lg:col-span-4">
                     <Controller
                       control={control}
                       name={`education.${index}.qualification`}
-                      render={({ field, fieldState }) => (
-                        <TextField
+                      render={({ field }) => (
+                        <Field
                           label="Qualification"
-                          value={field.value}
-                          onChange={(e) => field.onChange(e.target.value)}
-                          fullWidth
-                          error={!!fieldState.error}
-                          helperText={errors.education?.[index]?.qualification?.message}
-                          slotProps={{ htmlInput: { readOnly: disabled } }}
-                        />
+                          error={errors.education?.[index]?.qualification?.message}
+                        >
+                          <Input
+                            value={field.value}
+                            onChange={(e) => field.onChange(e.target.value)}
+                            readOnly={disabled}
+                          />
+                        </Field>
                       )}
                     />
                   </div>
 
-                  {/* Year */}
                   <div className="w-full lg:col-span-3">
                     <Controller
                       control={control}
@@ -234,15 +236,18 @@ export default function ExperiencesEducationSection({
                     />
                   </div>
 
-                  {/* Remove button only (no up/down) */}
-                  <div className="flex gap-2 justify-center">
-                    <IconButton
+                  <div className="flex justify-center gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
                       onClick={() => education.remove(index)}
-                      size="small"
                       disabled={disabled}
+                      className="h-10 w-10"
+                      aria-label={`Remove education ${index + 1}`}
                     >
-                      <DeleteSharp color={disabled ? "disabled" : "error"} />
-                    </IconButton>
+                      <Trash2 className="h-5 w-5 text-red-500" />
+                    </Button>
                   </div>
                 </div>
               );

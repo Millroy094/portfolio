@@ -144,7 +144,10 @@ function mediumFeedUrlFromProfileUrl(profileUrl: string): string | null {
   }
 }
 
-async function getLatestMediumPosts(profileUrl: string): Promise<MediumPost[]> {
+async function getLatestMediumPosts(
+  profileUrl: string,
+  postCount: number = 3,
+): Promise<MediumPost[]> {
   const feedUrl = mediumFeedUrlFromProfileUrl(profileUrl);
   if (!feedUrl) return [];
 
@@ -155,7 +158,7 @@ async function getLatestMediumPosts(profileUrl: string): Promise<MediumPost[]> {
     const xml = await res.text();
     const items = [...xml.matchAll(/<item>([\s\S]*?)<\/item>/gi)];
 
-    return items.slice(0, 3).map((item) => {
+    return items.slice(0, postCount).map((item) => {
       const block = item[1];
       const content = extractTagValue(block, "content:encoded");
       const descriptionHtml = extractTagValue(block, "description");
@@ -277,7 +280,10 @@ export default async function getWebsiteData(): Promise<WebsiteData> {
             url: e.url ?? "",
           }))
         : [],
-      mediumPosts: visibility.posts && p.medium ? await getLatestMediumPosts(p.medium) : [],
+      mediumPosts:
+        visibility.posts && p.medium
+          ? await getLatestMediumPosts(p.medium, p.mediumPostCount ?? 3)
+          : [],
 
       visibility,
     };

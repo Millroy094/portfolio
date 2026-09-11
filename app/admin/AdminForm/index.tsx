@@ -1,9 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Edit, Save, LockSharp } from "@mui/icons-material";
-import { Card, Button, Alert } from "@mui/material";
-import Box from "@mui/material/Box";
+import { Edit3, Lock, Save } from "lucide-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   useForm,
@@ -20,6 +18,9 @@ import { getProfileData } from "@/app/admin/AdminForm/actions/getProfileData";
 import { saveProfileData } from "@/app/admin/AdminForm/actions/saveProfileData";
 import { ProfileSchema, ProfileSchemaType } from "@/app/admin/AdminForm/schema";
 import SeoSection from "@/app/admin/AdminForm/SeoSection";
+import { Alert } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { uploadFileToS3 } from "@/services/amplify/storage/uploadFileToS3";
 
 import AboutMeSection from "./AboutMeSection";
@@ -251,69 +252,52 @@ export default function AdminForm(props: AdminFormProps) {
 
   if (loading) {
     return (
-      <Box
-        sx={{
-          width: "100%",
-          height: "100vh",
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <div className="flex h-screen w-full items-center justify-center">
         <Atom color="#32cd32" size="large" text="" textColor="loading" />
-      </Box>
+      </div>
     );
   }
 
   return (
-    <Card className="p-2">
+    <Card className="p-0">
       <ToastContainer />
 
-      {!isEditable && (
-        <Alert
-          severity="info"
-          sx={{
-            mb: 2,
-            borderRadius: 2,
-            fontSize: "1rem",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          This form is currently in read‑only mode. Click Edit to make changes.
-        </Alert>
-      )}
+      <div className="border-b border-neutral-800 px-6 py-6">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-col gap-2">
+            <h1 className="text-2xl font-bold text-neutral-100">Profile</h1>
+            <p className="text-sm text-neutral-400">
+              {isEditable
+                ? "You are in edit mode. Make changes and save when ready."
+                : "View-only mode. Click Edit to make changes."}
+            </p>
+          </div>
+          <Button
+            variant={isEditable ? "default" : "outline"}
+            onClick={() => setIsEditable((prev) => !prev)}
+            disabled={hasChanges}
+            className="gap-2"
+          >
+            {isEditable ? <Lock className="h-4 w-4" /> : <Edit3 className="h-4 w-4" />}
+            {isEditable ? "Lock" : "Edit"}
+          </Button>
+        </div>
 
-      {hasChanges && (
-        <Alert
-          severity="warning"
-          sx={{
-            mb: 2,
-            borderRadius: 2,
-            fontSize: "1rem",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          You have unsaved changes.
-        </Alert>
-      )}
+        {!isEditable && (
+          <Alert variant="info" className="mt-4">
+            This form is in read-only mode. Click Edit to make changes.
+          </Alert>
+        )}
 
-      <div className="flex justify-end p-4 gap-2">
-        <Button
-          variant="outlined"
-          color={isEditable ? "warning" : "primary"}
-          onClick={() => setIsEditable((prev) => !prev)}
-          startIcon={isEditable ? <LockSharp /> : <Edit />}
-          disabled={hasChanges}
-        >
-          {isEditable ? "Lock" : "Edit"}
-        </Button>
+        {hasChanges && (
+          <Alert variant="warning" className="mt-3">
+            You have unsaved changes.
+          </Alert>
+        )}
       </div>
       <FormProvider {...methods}>
         <form
-          className="flex flex-col p-4 sm:p-6 md:p-8 gap-6"
+          className="flex flex-col p-6 sm:p-8 md:p-10 gap-6"
           onSubmit={handleSubmit(onSubmit, onInvalid)}
         >
           <input
@@ -398,14 +382,8 @@ export default function AdminForm(props: AdminFormProps) {
           <SeoSection register={register} errors={errors} disabled={!isEditable} />
 
           <div className="flex flex-col sm:flex-row sm:justify-end gap-3 sm:gap-4 mt-6">
-            <Button
-              disabled={!isEditable || processing}
-              type="submit"
-              variant="contained"
-              color="success"
-              startIcon={<Save />}
-              sx={{ width: { xs: "100%", sm: "auto" } }}
-            >
+            <Button disabled={!isEditable || processing} type="submit" className="w-full sm:w-auto">
+              <Save className="h-4 w-4" />
               Save changes
             </Button>
           </div>

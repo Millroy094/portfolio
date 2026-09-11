@@ -1,6 +1,6 @@
 "use client";
 
-import { School, Work, TrendingUp } from "@mui/icons-material";
+import { GraduationCap, TrendingUp, BriefcaseBusiness } from "lucide-react";
 
 import GrowOnHover from "@/hoc/GrowOnHover";
 
@@ -84,7 +84,11 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
                         : "bg-red-600 text-white border-red-400"
                     }`}
                 >
-                  {isPromotion ? <TrendingUp fontSize="small" /> : <Work fontSize="small" />}
+                  {isPromotion ? (
+                    <TrendingUp className="h-4 w-4" />
+                  ) : (
+                    <BriefcaseBusiness className="h-4 w-4" />
+                  )}
                 </div>
 
                 <GrowOnHover>
@@ -118,7 +122,7 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
               )}
 
               <div className="absolute -left-2.5 top-1 w-7 h-7 rounded-full flex items-center justify-center bg-blue-600 border border-blue-400 text-white shadow-lg z-10">
-                <School fontSize="small" />
+                <GraduationCap className="h-4 w-4" />
               </div>
 
               <div className="absolute -left-40 top-2 w-32 text-right">

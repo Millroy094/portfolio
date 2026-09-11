@@ -1,6 +1,7 @@
-import { InputAdornment, TextField } from "@mui/material";
 import { FC } from "react";
 
+import { Field } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 import { addHttps, stripProtocol } from "@/utils/url";
 
 type LinkTextFieldProps = {
@@ -20,20 +21,19 @@ const LinkTextField: FC<LinkTextFieldProps> = ({
   errorText,
   disabled,
 }) => (
-  <TextField
-    label={label}
-    fullWidth
-    value={stripProtocol(value)}
-    onChange={(e) => onChange(addHttps(e.target.value))}
-    slotProps={{
-      input: {
-        startAdornment: <InputAdornment position="start">https://</InputAdornment>,
-      },
-      htmlInput: { readOnly: disabled },
-    }}
-    error={error}
-    helperText={errorText ?? ""}
-  />
+  <Field label={label} error={error ? errorText : undefined}>
+    <div className="relative">
+      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-neutral-400">
+        https://
+      </span>
+      <Input
+        value={stripProtocol(value)}
+        onChange={(e) => onChange(addHttps(e.target.value))}
+        readOnly={disabled}
+        className="pl-20"
+      />
+    </div>
+  </Field>
 );
 
 export default LinkTextField;

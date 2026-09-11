@@ -135,6 +135,12 @@ export const ProfileSchema = z.object({
     skills: true,
     posts: true,
   }),
+  mediumPostCount: z.coerce
+    .number()
+    .int()
+    .gte(1, { message: "Must display at least 1 post" })
+    .lte(10, { message: "Cannot display more than 10 posts" })
+    .default(3),
 });
 
 export type ProfileSchemaType = z.input<typeof ProfileSchema>;

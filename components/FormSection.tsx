@@ -1,22 +1,14 @@
-import AddIcon from "@mui/icons-material/Add";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-import {
-  Paper,
-  Stack,
-  Typography,
-  Divider,
-  Button,
-  Box,
-  Chip,
-  IconButton,
-  Tooltip,
-} from "@mui/material";
+"use client";
+
 import * as React from "react";
-import { useFormContext, useWatch, Path } from "react-hook-form";
+import { Path, useFormContext, useWatch } from "react-hook-form";
+import { FiEye, FiEyeOff, FiPlus } from "react-icons/fi";
 
 import type { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 type VisibilityKey = keyof NonNullable<ProfileSchemaType["visibility"]>;
 
@@ -46,12 +38,10 @@ export const FormSection: React.FC<FormSectionProps> = ({
   showAddButton = false,
 }) => {
   const { control, setValue } = useFormContext<ProfileSchemaType>();
-
   const watchedVisible = useWatch({
     control,
     name: `visibility.${visKey ?? "avatar"}` as Path<ProfileSchemaType>,
   }) as boolean | undefined;
-
   const isVisible = visKey ? Boolean(watchedVisible) : true;
 
   const toggleVisibility = () => {
@@ -63,84 +53,58 @@ export const FormSection: React.FC<FormSectionProps> = ({
   };
 
   return (
-    <Paper
-      variant="outlined"
-      sx={{
-        p: 2,
-        transition: "filter .2s ease, opacity .2s ease",
-        ...(visKey && !isVisible ? { filter: "grayscale(1)", opacity: 0.8 } : undefined),
-      }}
-    >
-      {/* Header */}
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <Typography variant="h6">{title}</Typography>
+    <Card className={`p-5 transition ${visKey && !isVisible ? "grayscale opacity-75" : ""}`}>
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <h3 className="text-base font-semibold text-neutral-100">{title}</h3>
+          {!isVisible && visKey && <Badge>Hidden</Badge>}
+        </div>
 
-          {!isVisible && visKey && (
-            <Chip
-              size="small"
-              variant="outlined"
-              label="Hidden"
-              icon={<VisibilityOffOutlinedIcon fontSize="small" />}
-            />
-          )}
-        </Stack>
-
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <div className="flex items-center gap-2">
           {visKey && showVisibilityToggle && (
-            <Tooltip title={isVisible ? "Visible on public page" : "Hidden on public page"}>
-              <IconButton
-                onClick={toggleVisibility}
-                color={isVisible ? "default" : "warning"}
-                size="small"
-                disabled={disabled}
-              >
-                {isVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
-              </IconButton>
-            </Tooltip>
+            <Button
+              type="button"
+              variant={isVisible ? "outline" : "secondary"}
+              size="icon"
+              onClick={toggleVisibility}
+              disabled={disabled}
+              aria-label={isVisible ? "Visible on public page" : "Hidden on public page"}
+            >
+              {isVisible ? <FiEye size={18} /> : <FiEyeOff size={18} />}
+            </Button>
           )}
 
-          {/* Optional Add button */}
           {showAddButton && onAdd && (
-            <Tooltip title={addLabel ?? "Add"}>
-              <IconButton
-                onClick={onAdd}
-                color="primary"
-                size="small"
-                disabled={disabled}
-                aria-label={addLabel ?? "Add"}
-              >
-                <AddIcon />
-              </IconButton>
-            </Tooltip>
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={onAdd}
+              disabled={disabled}
+              aria-label={addLabel}
+            >
+              <FiPlus size={18} />
+            </Button>
           )}
-        </Stack>
-      </Stack>
+        </div>
+      </div>
 
-      <Divider sx={{ mb: 2 }} />
+      <Separator className="mb-5" />
 
-      {/* Body */}
-      {showAddButton ? (
-        count > 0 ? (
-          <Box component="fieldset" disabled={disabled} sx={{ p: 0, border: 0, m: 0 }}>
-            {children}
-          </Box>
-        ) : (
-          <EmptyState
-            title={`No ${title.toLowerCase()} yet`}
-            description={description}
-            actionLabel={addLabel}
-            onAction={onAdd!}
-            disabled={disabled}
-          />
-        )
+      {showAddButton && count === 0 && onAdd ? (
+        <EmptyState
+          title={`No ${title.toLowerCase()} yet`}
+          description={description}
+          actionLabel={addLabel}
+          onAction={onAdd}
+          disabled={disabled}
+        />
       ) : (
-        // No empty state when no Add button
-        <Box component="fieldset" disabled={disabled} sx={{ p: 0, border: 0, m: 0 }}>
+        <fieldset disabled={disabled} className="m-0 border-0 p-0">
           {children}
-        </Box>
+        </fieldset>
       )}
-    </Paper>
+    </Card>
   );
 };
 
@@ -157,24 +121,12 @@ const EmptyState = ({
   onAction: () => void;
   disabled?: boolean;
 }) => (
-  <Stack
-    spacing={1.5}
-    alignItems="flex-start"
-    sx={{
-      p: 2,
-      borderRadius: 1,
-      border: "1px dashed",
-      borderColor: (t) => t.palette.divider,
-      backgroundColor: (t) =>
-        t.palette.mode === "dark" ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)",
-    }}
-  >
-    <Typography variant="subtitle1">{title}</Typography>
-    <Typography variant="body2" color="text.secondary">
-      {description}
-    </Typography>
-    <Button variant="outlined" startIcon={<AddIcon />} onClick={onAction} disabled={disabled}>
+  <div className="rounded-lg border border-dashed border-neutral-700 bg-neutral-900/50 p-5">
+    <p className="text-base font-medium text-neutral-200">{title}</p>
+    <p className="mt-1 text-sm text-neutral-400">{description}</p>
+    <Button type="button" variant="outline" className="mt-4" onClick={onAction} disabled={disabled}>
+      <FiPlus size={16} />
       {actionLabel}
     </Button>
-  </Stack>
+  </div>
 );

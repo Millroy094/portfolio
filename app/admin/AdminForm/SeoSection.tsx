@@ -1,11 +1,12 @@
 "use client";
 
-import { Stack, TextField } from "@mui/material";
 import * as React from "react";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
 import { FormSection } from "@/components/FormSection";
+import { Field } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 
 export interface SeoSectionProps {
   register: UseFormRegister<ProfileSchemaType>;
@@ -16,40 +17,37 @@ export interface SeoSectionProps {
 export default function SeoSection({ register, errors, disabled }: SeoSectionProps) {
   return (
     <FormSection
-      title="SEO"
-      description="Control the title and description used for search engines."
+      title="Settings"
+      description="Configure SEO and content display options."
       count={1}
       disabled={disabled}
     >
-      <Stack direction="column" alignItems="start" gap={2} sx={{ mb: 1, width: "100%" }}>
-        <div className="w-full">
-          <TextField
-            {...register("seoTitle")}
-            label="Website Title"
-            fullWidth
-            error={!!errors.seoTitle}
-            helperText={errors.seoTitle?.message ?? ""}
-            slotProps={{
-              inputLabel: { shrink: true },
-              htmlInput: { readOnly: disabled },
-            }}
-          />
+      <div className="mb-1 flex w-full flex-col items-start gap-4">
+        <div className="w-full lg:w-1/2">
+          <Field label="Website Title" error={errors.seoTitle?.message}>
+            <Input {...register("seoTitle")} readOnly={disabled} />
+          </Field>
         </div>
 
-        <div className="w-full">
-          <TextField
-            label="SEO Description"
-            fullWidth
-            {...register("seoDescription")}
-            error={!!errors.seoDescription}
-            helperText={errors.seoDescription?.message ?? ""}
-            slotProps={{
-              inputLabel: { shrink: true },
-              htmlInput: { readOnly: disabled },
-            }}
-          />
+        <div className="w-full lg:w-1/2">
+          <Field label="SEO Description" error={errors.seoDescription?.message}>
+            <Input {...register("seoDescription")} readOnly={disabled} />
+          </Field>
         </div>
-      </Stack>
+
+        <div className="w-full lg:w-1/4">
+          <Field label="Medium Posts to Display" error={errors.mediumPostCount?.message}>
+            <Input
+              type="number"
+              {...register("mediumPostCount", { valueAsNumber: true })}
+              readOnly={disabled}
+              min="1"
+              max="10"
+              inputMode="numeric"
+            />
+          </Field>
+        </div>
+      </div>
     </FormSection>
   );
 }

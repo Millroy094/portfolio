@@ -1,7 +1,6 @@
 "use client";
 
-import { DeleteSharp } from "@mui/icons-material";
-import { TextField, IconButton, Typography } from "@mui/material";
+import { Trash2 } from "lucide-react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
@@ -9,6 +8,9 @@ import LinkTextField from "@/components/controls/LinkTextField";
 import SkillSelect from "@/components/controls/SkillSelect";
 import { SkillId } from "@/components/controls/SkillSelect/SkillRegistery";
 import { FormSection } from "@/components/FormSection";
+import { Button } from "@/components/ui/button";
+import { Field } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 
 type ProjectRecord = {
   name: string;
@@ -35,7 +37,6 @@ export default function ProjectsSkillsSection({
 }: ProjectsSkillsProps) {
   return (
     <div className="flex flex-col gap-8">
-      {/* Skills */}
       <FormSection
         title="Skills"
         description="Select the skills you want to highlight."
@@ -71,12 +72,11 @@ export default function ProjectsSkillsSection({
         count={1}
         disabled={disabled}
       >
-        <Typography variant="body2" color="text.secondary">
+        <p className="text-sm text-neutral-400">
           Uses the Medium profile URL from Identity and displays your latest 3 posts.
-        </Typography>
+        </p>
       </FormSection>
 
-      {/* Projects */}
       <FormSection
         title="Projects"
         description="Showcase your projects with a short description and repository/demo URL."
@@ -89,7 +89,7 @@ export default function ProjectsSkillsSection({
           })
         }
         showVisibilityToggle
-        visKey={"projects"}
+        visKey="projects"
         count={projects.fields.length}
         disabled={disabled}
         showAddButton
@@ -97,53 +97,41 @@ export default function ProjectsSkillsSection({
         <div className="flex flex-col gap-4">
           {projects.fields.map((project, index) => (
             <div key={project.id} className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3">
-              {/* Name */}
               <div className="w-full lg:col-span-2">
                 <Controller
                   control={control}
                   name={`projects.${index}.name`}
-                  render={({ field, fieldState }) => (
-                    <TextField
-                      label="Project name"
-                      value={field.value}
-                      onChange={(e) => field.onChange(e.target.value)}
-                      fullWidth
-                      error={!!fieldState.error}
-                      helperText={errors.projects?.[index]?.name?.message}
-                      variant="outlined"
-                      slotProps={{
-                        inputLabel: { shrink: !!field.value },
-                        htmlInput: { readOnly: disabled },
-                      }}
-                    />
+                  render={({ field }) => (
+                    <Field label="Project name" error={errors.projects?.[index]?.name?.message}>
+                      <Input
+                        value={field.value}
+                        onChange={(e) => field.onChange(e.target.value)}
+                        readOnly={disabled}
+                      />
+                    </Field>
                   )}
                 />
               </div>
 
-              {/* Description */}
               <div className="w-full lg:col-span-5">
                 <Controller
                   control={control}
                   name={`projects.${index}.description`}
-                  render={({ field, fieldState }) => (
-                    <TextField
+                  render={({ field }) => (
+                    <Field
                       label="Project Description"
-                      value={field.value}
-                      onChange={(e) => field.onChange(e.target.value)}
-                      fullWidth
-                      error={!!fieldState.error}
-                      helperText={errors.projects?.[index]?.description?.message}
-                      variant="outlined"
-                      slotProps={{
-                        inputLabel: { shrink: !!field.value },
-                        htmlInput: { readOnly: disabled },
-                      }}
-                    />
+                      error={errors.projects?.[index]?.description?.message}
+                    >
+                      <Input
+                        value={field.value}
+                        onChange={(e) => field.onChange(e.target.value)}
+                        readOnly={disabled}
+                      />
+                    </Field>
                   )}
                 />
               </div>
 
-              {/* URL */}
               <div className="w-full lg:col-span-4">
                 <Controller
                   control={control}
@@ -161,11 +149,18 @@ export default function ProjectsSkillsSection({
                 />
               </div>
 
-              {/* Remove button only */}
-              <div className="flex gap-2 justify-center">
-                <IconButton onClick={() => projects.remove(index)} size="small" disabled={disabled}>
-                  <DeleteSharp color={disabled ? "disabled" : "error"} />
-                </IconButton>
+              <div className="flex justify-center gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => projects.remove(index)}
+                  disabled={disabled}
+                  className="h-10 w-10"
+                  aria-label={`Remove project ${index + 1}`}
+                >
+                  <Trash2 className="h-5 w-5 text-red-500" />
+                </Button>
               </div>
             </div>
           ))}
