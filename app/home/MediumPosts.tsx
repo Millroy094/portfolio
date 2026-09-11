@@ -25,17 +25,17 @@ export default function MediumPosts() {
   if (!data.visibility.posts || visiblePosts.length === 0) return null;
 
   return (
-    <section className="relative z-10 mb-16 px-4">
-      <div className="w-full text-center mb-10">
+    <section className="relative z-10 mb-16">
+      <div className="w-full text-center mb-10 px-4">
         <h2 className="inline-block font-bold uppercase tracking-wide text-[20px] md:text-[35px] mr-1 mb-3 text-white/90">
           Latest
         </h2>
-        <h2 className="ml-1 inline-block font-bold uppercase tracking-wide text-[20px] md:text-[35px] text-red-700 mb-3">
+        <h2 className="ml-1 inline-block font-bold uppercase tracking-wide text-[20px] md:text-[35px] text-white bg-red-700 mb-3">
           Writing
         </h2>
       </div>
 
-      <div className="mx-auto max-w-325 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+      <div className="mx-auto max-w-7xl px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {visiblePosts.map((post) => (
           <article
             key={post.link}

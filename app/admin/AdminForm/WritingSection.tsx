@@ -57,7 +57,7 @@ export default function WritingSection({
               <Input
                 type="number"
                 {...register("mediumPostCount", { valueAsNumber: true })}
-                readOnly={disabled}
+                disabled={disabled}
                 min="1"
                 max="10"
                 inputMode="numeric"

@@ -95,7 +95,7 @@ export default function ProjectsSkillsSection({
                       <Input
                         value={field.value}
                         onChange={(e) => field.onChange(e.target.value)}
-                        readOnly={disabled}
+                        disabled={disabled}
                       />
                     </Field>
                   )}
@@ -114,7 +114,7 @@ export default function ProjectsSkillsSection({
                       <Input
                         value={field.value}
                         onChange={(e) => field.onChange(e.target.value)}
-                        readOnly={disabled}
+                        disabled={disabled}
                       />
                     </Field>
                   )}

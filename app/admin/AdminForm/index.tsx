@@ -316,14 +316,21 @@ export default function AdminForm(props: AdminFormProps) {
       <ToastContainer />
       <Card className="p-0 flex-1">
         <div className="border-b border-neutral-800/40 bg-linear-to-b from-neutral-900/50 to-transparent px-6 py-6">
-          <div className="flex flex-col gap-2">
-            <h1 className="text-2xl font-bold text-neutral-100">Profile</h1>
-            <p
-              className={`text-sm font-medium ${isEditable ? "text-amber-400" : "text-neutral-200"}`}
-            >
-              {isEditable
-                ? "✓ Edit mode active - Make changes and save when ready."
-                : "🔒 View-only mode - Click Edit to make changes."}
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+              <h1 className="text-2xl font-bold text-neutral-100">Profile</h1>
+              <div
+                className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                  isEditable
+                    ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
+                    : "bg-neutral-800/60 text-neutral-300 border border-neutral-700/60"
+                }`}
+              >
+                {isEditable ? "EDIT MODE" : "VIEW ONLY"}
+              </div>
+            </div>
+            <p className={`text-sm ${isEditable ? "text-amber-200/80" : "text-neutral-400"}`}>
+              {isEditable ? "Make changes and save when ready." : "Click Edit to make changes."}
             </p>
           </div>
         </div>
@@ -431,8 +438,7 @@ export default function AdminForm(props: AdminFormProps) {
             </Alert>
           )}
 
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3 w-full">
-            <div />
+          <div className="flex flex-col sm:flex-row items-center justify-end gap-2 sm:gap-3 w-full">
             <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
               <Button
                 variant="outline"

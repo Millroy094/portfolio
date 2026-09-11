@@ -71,7 +71,7 @@ export default function BadgesSection({
                   <Input
                     value={field.value ?? ""}
                     onChange={(e) => field.onChange(e.target.value)}
-                    readOnly={disabled}
+                    disabled={disabled}
                   />
                 </Field>
               )}

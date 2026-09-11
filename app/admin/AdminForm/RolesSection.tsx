@@ -50,7 +50,7 @@ export default function RolesSection({
                     <Input
                       value={field.value.value ?? ""}
                       onChange={(e) => field.onChange({ value: e.target.value })}
-                      readOnly={disabled}
+                      disabled={disabled}
                     />
                   </Field>
                 )}

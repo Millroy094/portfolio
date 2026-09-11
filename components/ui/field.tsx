@@ -13,9 +13,13 @@ type FieldProps = {
 
 export function Field({ label, error, className, children }: FieldProps) {
   return (
-    <label className={cn("block w-full", className)}>
-      <span className="mb-2 block text-sm font-medium text-neutral-300">{label}</span>
-      {children}
+    <div className={cn("w-full relative", className)}>
+      <label className="relative block">
+        {children}
+        <span className="absolute left-3.5 -top-2 bg-neutral-950 px-1 text-xs font-medium text-neutral-300 transition-colors pointer-events-none">
+          {label}
+        </span>
+      </label>
       <span
         className={cn(
           "mt-1.5 block min-h-4 text-xs transition-colors",
@@ -24,6 +28,6 @@ export function Field({ label, error, className, children }: FieldProps) {
       >
         {error ?? "."}
       </span>
-    </label>
+    </div>
   );
 }
