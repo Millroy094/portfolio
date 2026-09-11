@@ -30,7 +30,7 @@ export default function MediumPosts() {
         <h2 className="inline-block font-bold uppercase tracking-wide text-[20px] md:text-[35px] mr-1 mb-3 text-white/90">
           Latest
         </h2>
-        <h2 className="ml-1 inline-block font-bold uppercase tracking-wide text-[20px] md:text-[35px] text-white bg-red-700 mb-3">
+        <h2 className="ml-1 inline-block rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide text-[20px] text-neutral-950 md:text-[35px] mb-3">
           Writing
         </h2>
       </div>

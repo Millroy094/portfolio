@@ -79,9 +79,9 @@ export default function Skills() {
           Technology &amp;
         </h2>
         <h2
-          className="ml-1 inline-block font-bold uppercase tracking-wide
+          className="ml-1 inline-block rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide
                        text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px]
-                       text-red-700 mb-3"
+                       text-neutral-950 mb-3"
         >
           Skills
         </h2>

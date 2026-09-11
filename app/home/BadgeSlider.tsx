@@ -20,7 +20,7 @@ export default function BadgeSlider({ badges }: { badges: Badge[] }) {
     <div className="relative py-6">
       <div
         ref={emblaRef}
-        className="overflow-hidden pl-14 pr-14 sm:pl-16 sm:pr-16 md:pl-20 md:pr-20 rounded-lg"
+        className="overflow-hidden pl-4 pr-4 sm:pl-8 sm:pr-8 md:pl-10 md:pr-10 rounded-lg"
       >
         <div className="flex gap-4">
           {badges.map((badge, i) => (

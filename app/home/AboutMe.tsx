@@ -31,8 +31,8 @@ function AboutMe() {
               About
             </h2>
             <h2
-              className="inline-block font-bold uppercase tracking-wide
-                         text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] text-red-700"
+              className="inline-block rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide
+                         text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] text-neutral-950"
             >
               Me
             </h2>

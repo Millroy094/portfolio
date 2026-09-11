@@ -44,6 +44,7 @@ export async function getProfileData(): Promise<{
       aboutMe: p.aboutMe || "<p></p>",
       seoTitle: p.seoTitle ?? "",
       seoDescription: p.seoDescription ?? "",
+      mediumPostCount: p.mediumPostCount ?? 3,
 
       roles: roles.data.map((r) => ({ value: r.value })) ?? [],
       badges: badges.data.map((b) => ({ value: b.value, label: b.label })) ?? [],

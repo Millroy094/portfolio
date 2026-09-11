@@ -431,14 +431,16 @@ export default function AdminForm(props: AdminFormProps) {
       </Card>
 
       <div className="fixed bottom-0 left-0 right-0 border-t border-neutral-800 bg-neutral-950 shadow-2xl z-50">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8 py-3 sm:py-4 flex flex-col gap-3">
-          {hasChanges && (
-            <Alert variant="warning" className="m-0 text-xs sm:text-sm">
-              You have unsaved changes
-            </Alert>
-          )}
+        <div className="w-full px-4 sm:px-6 md:px-8 py-3 sm:py-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 w-full">
+            {hasChanges && (
+              <Alert variant="warning" className="m-0 text-xs sm:text-sm w-full sm:w-auto">
+                You have unsaved changes
+              </Alert>
+            )}
 
-          <div className="flex flex-col sm:flex-row items-center justify-end gap-2 sm:gap-3 w-full">
+            {!hasChanges && <div className="hidden sm:block" />}
+
             <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
               <Button
                 variant="outline"
