@@ -79,7 +79,7 @@ export default function ExperiencesEducationSection({
               return (
                 <div
                   key={exp.id}
-                  className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-end"
+                  className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-start"
                 >
                   <div className="w-full lg:col-span-4">
                     <Controller
@@ -136,7 +136,7 @@ export default function ExperiencesEducationSection({
                     />
                   </div>
 
-                  <div className="flex justify-center gap-2 lg:pb-1">
+                  <div className="flex w-full justify-center gap-2 lg:items-start">
                     <Button
                       type="button"
                       variant="outline"
@@ -185,7 +185,7 @@ export default function ExperiencesEducationSection({
               return (
                 <div
                   key={edu.id}
-                  className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-end"
+                  className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-start"
                 >
                   <div className="w-full lg:col-span-4">
                     <Controller
@@ -242,7 +242,7 @@ export default function ExperiencesEducationSection({
                     />
                   </div>
 
-                  <div className="flex justify-center gap-2 lg:pb-1">
+                  <div className="flex w-full justify-center gap-2 lg:items-start">
                     <Button
                       type="button"
                       variant="outline"
