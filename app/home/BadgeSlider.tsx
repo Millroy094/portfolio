@@ -20,7 +20,7 @@ export default function BadgeSlider({ badges }: { badges: Badge[] }) {
     <div className="relative py-6">
       <div
         ref={emblaRef}
-        className="overflow-hidden pl-4 pr-4 sm:pl-8 sm:pr-8 md:pl-10 md:pr-10 rounded-lg"
+        className="overflow-hidden pl-12 pr-12 sm:pl-16 sm:pr-16 md:pl-20 md:pr-20 rounded-lg"
       >
         <div className="flex gap-4">
           {badges.map((badge, i) => (
@@ -49,18 +49,18 @@ export default function BadgeSlider({ badges }: { badges: Badge[] }) {
 
       <button
         onClick={prev}
-        className="absolute top-1/2 left-3 -translate-y-1/2
-                   w-10 h-10 rounded-full bg-black/30 text-white
-                   flex items-center justify-center"
+        className="absolute top-1/2 left-1 sm:left-2 -translate-y-1/2
+                   w-10 h-10 rounded-full bg-black/30 hover:bg-black/50 text-white
+                   flex items-center justify-center transition-colors"
       >
         ‹
       </button>
 
       <button
         onClick={next}
-        className="absolute top-1/2 right-3 -translate-y-1/2
-                   w-10 h-10 rounded-full bg-black/30 text-white
-                   flex items-center justify-center"
+        className="absolute top-1/2 right-1 sm:right-2 -translate-y-1/2
+                   w-10 h-10 rounded-full bg-black/30 hover:bg-black/50 text-white
+                   flex items-center justify-center transition-colors"
       >
         ›
       </button>
