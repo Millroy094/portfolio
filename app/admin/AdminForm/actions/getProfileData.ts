@@ -39,6 +39,7 @@ export async function getProfileData(): Promise<{
       linkedIn: p.linkedIn ?? "",
       github: p.github ?? "",
       stackOverflow: p.stackOverflow ?? "",
+      medium: p.medium ?? "",
       resume: p.resume ?? "",
       aboutMe: p.aboutMe || "<p></p>",
       seoTitle: p.seoTitle ?? "",
@@ -78,6 +79,7 @@ export async function getProfileData(): Promise<{
         education: p.showEducation ?? true,
         projects: p.showProjects ?? true,
         skills: p.showSkills ?? true,
+        posts: p.showPosts ?? true,
       },
     },
   };

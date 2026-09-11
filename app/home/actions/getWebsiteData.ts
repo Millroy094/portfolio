@@ -3,6 +3,7 @@
 import { generateServerClientUsingCookies } from "@aws-amplify/adapter-nextjs/api";
 import { Nullable } from "@aws-amplify/data-schema";
 import { getUrl } from "aws-amplify/storage/server";
+import { decode } from "he";
 import { cookies } from "next/headers";
 
 import type { Schema } from "@/amplify/data/resource";
@@ -32,6 +33,14 @@ export type BadgesData = {
   label: string;
 };
 
+export type MediumPost = {
+  title: string;
+  link: string;
+  publishedAt: string;
+  description: string;
+  imageUrl: string;
+};
+
 export type WebsiteData = {
   seoTitle: string;
   seoDescription: string;
@@ -41,6 +50,7 @@ export type WebsiteData = {
   github: string;
   linkedin: string;
   stackOverflow: string;
+  medium: string;
   resume: string;
   roles: string[];
   skills: string[];
@@ -49,6 +59,7 @@ export type WebsiteData = {
   experiences: ExperienceData[];
   education: EducationData[];
   projects: ProjectData[];
+  mediumPosts: MediumPost[];
 
   visibility: {
     roles: boolean;
@@ -58,6 +69,7 @@ export type WebsiteData = {
     education: boolean;
     projects: boolean;
     skills: boolean;
+    posts: boolean;
   };
 };
 
@@ -69,6 +81,7 @@ const emptyWebsiteData: WebsiteData = {
   github: "",
   linkedin: "",
   stackOverflow: "",
+  medium: "",
   resume: "",
   punchLine: "",
   skills: [],
@@ -78,6 +91,7 @@ const emptyWebsiteData: WebsiteData = {
   experiences: [],
   education: [],
   projects: [],
+  mediumPosts: [],
 
   visibility: {
     roles: true,
@@ -87,8 +101,79 @@ const emptyWebsiteData: WebsiteData = {
     education: true,
     projects: true,
     skills: true,
+    posts: true,
   },
 };
+
+function extractTagValue(block: string, tag: string): string {
+  const re = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`, "i");
+  const m = block.match(re);
+  return m?.[1]?.trim() ?? "";
+}
+
+function stripHtml(input: string): string {
+  return decode(input.replace(/<!\[CDATA\[([\s\S]*?)]]>/g, "$1").replace(/<[^>]+>/g, " "))
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function extractFirstImageUrl(input: string): string {
+  const cleaned = input.replace(/<!\[CDATA\[([\s\S]*?)]]>/g, "$1");
+  const match = cleaned.match(/<img[^>]*\ssrc=["']([^"']+)["'][^>]*>/i);
+  return match?.[1]?.trim() ?? "";
+}
+
+function extractMediaContentUrl(itemXml: string): string {
+  const match = itemXml.match(/<media:content[^>]*\surl=["']([^"']+)["'][^>]*>/i);
+  return match?.[1]?.trim() ?? "";
+}
+
+function mediumFeedUrlFromProfileUrl(profileUrl: string): string | null {
+  try {
+    const url = new URL(profileUrl);
+    if (url.pathname.startsWith("/feed")) return url.toString();
+    if (url.hostname === "medium.com" && url.pathname.startsWith("/@")) {
+      return `https://medium.com/feed${url.pathname}`;
+    }
+    if (url.hostname.endsWith(".medium.com")) {
+      return `${url.origin}/feed`;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+async function getLatestMediumPosts(profileUrl: string): Promise<MediumPost[]> {
+  const feedUrl = mediumFeedUrlFromProfileUrl(profileUrl);
+  if (!feedUrl) return [];
+
+  try {
+    const res = await fetch(feedUrl, { next: { revalidate: 3600 } });
+    if (!res.ok) return [];
+
+    const xml = await res.text();
+    const items = [...xml.matchAll(/<item>([\s\S]*?)<\/item>/gi)];
+
+    return items.slice(0, 3).map((item) => {
+      const block = item[1];
+      const content = extractTagValue(block, "content:encoded");
+      const descriptionHtml = extractTagValue(block, "description");
+      const title = stripHtml(extractTagValue(block, "title"));
+      const link = extractTagValue(block, "link");
+      const publishedAt = extractTagValue(block, "pubDate");
+      const description = stripHtml(descriptionHtml).slice(0, 220);
+      const imageUrl =
+        extractFirstImageUrl(content) ||
+        extractFirstImageUrl(descriptionHtml) ||
+        extractMediaContentUrl(block);
+      return { title, link, publishedAt, description, imageUrl };
+    });
+  } catch (error) {
+    console.error("Failed to fetch Medium posts", error);
+    return [];
+  }
+}
 
 const generateS3UrlFromKey = async (path: string) => {
   const assetUrl = await runWithAmplifyServerContext({
@@ -133,6 +218,7 @@ export default async function getWebsiteData(): Promise<WebsiteData> {
       education: p.showEducation ?? true,
       projects: p.showProjects ?? true,
       skills: p.showSkills ?? true,
+      posts: p.showPosts ?? true,
     };
 
     const avatarUrl = p.avatarKey ? await generateS3UrlFromKey(p.avatarKey) : "";
@@ -155,6 +241,7 @@ export default async function getWebsiteData(): Promise<WebsiteData> {
       github: p.github ?? "",
       linkedin: p.linkedIn ?? "",
       stackOverflow: p.stackOverflow ?? "",
+      medium: p.medium ?? "",
       resume: p.resume ?? "",
 
       roles: visibility.roles ? rolesRes.data.map((r) => r.value) : [],
@@ -190,6 +277,7 @@ export default async function getWebsiteData(): Promise<WebsiteData> {
             url: e.url ?? "",
           }))
         : [],
+      mediumPosts: visibility.posts && p.medium ? await getLatestMediumPosts(p.medium) : [],
 
       visibility,
     };

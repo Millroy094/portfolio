@@ -45,6 +45,7 @@ export default function PortfolioAppBar() {
     )
       list.push("Education And Experience");
     if (data.visibility.projects && data.projects?.length) list.push("Projects");
+    if (data.visibility.posts && data.mediumPosts?.length) list.push("Writing");
     return list;
   }, [data]);
 

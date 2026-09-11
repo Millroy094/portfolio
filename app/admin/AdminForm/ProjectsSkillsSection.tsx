@@ -1,7 +1,7 @@
 "use client";
 
 import { DeleteSharp } from "@mui/icons-material";
-import { TextField, IconButton } from "@mui/material";
+import { TextField, IconButton, Typography } from "@mui/material";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
@@ -60,6 +60,20 @@ export default function ProjectsSkillsSection({
             />
           )}
         />
+      </FormSection>
+
+      <FormSection
+        title="Writing"
+        description="Show your latest Medium posts on the public profile."
+        visKey="posts"
+        showVisibilityToggle
+        showAddButton={false}
+        count={1}
+        disabled={disabled}
+      >
+        <Typography variant="body2" color="text.secondary">
+          Uses the Medium profile URL from Identity and displays your latest 3 posts.
+        </Typography>
       </FormSection>
 
       {/* Projects */}

@@ -1,6 +1,6 @@
 "use client";
 
-import { SiStackoverflow } from "@icons-pack/react-simple-icons";
+import { SiMedium, SiStackoverflow } from "@icons-pack/react-simple-icons";
 import { JSX } from "react";
 import { TypeAnimation } from "react-type-animation";
 
@@ -136,6 +136,16 @@ export default function Introduction(): JSX.Element {
                 className="hover:scale-110 transition-transform"
               >
                 <SiStackoverflow className="w-7 h-7 text-[#F58025]" />
+              </button>
+            )}
+
+            {data.medium && (
+              <button
+                onClick={() => window.open(data.medium, "_blank")}
+                aria-label="Medium"
+                className="hover:scale-110 transition-transform"
+              >
+                <SiMedium className="w-7 h-7 text-[#ffffff]" />
               </button>
             )}
           </div>

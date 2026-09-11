@@ -58,6 +58,7 @@ export default function AdminForm(props: AdminFormProps) {
         education: true,
         projects: true,
         skills: true,
+        posts: true,
       },
     },
   });

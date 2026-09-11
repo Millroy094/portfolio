@@ -25,6 +25,7 @@ type ProfilePayload = {
   linkedIn?: string;
   github?: string;
   stackOverflow?: string;
+  medium?: string;
   resume?: string;
   aboutMe?: string;
   skills: string[];
@@ -35,6 +36,7 @@ type ProfilePayload = {
   showEducation: boolean;
   showProjects: boolean;
   showSkills: boolean;
+  showPosts: boolean;
 };
 
 async function replaceChildren<K extends Exclude<keyof Client["models"], "Profile">>(
@@ -72,6 +74,7 @@ export async function saveProfileData(
     linkedIn: formData.linkedIn ?? undefined,
     github: formData.github ?? undefined,
     stackOverflow: formData.stackOverflow ?? undefined,
+    medium: formData.medium ?? undefined,
     resume: formData.resume ?? undefined,
     aboutMe: formData.aboutMe ?? undefined,
     skills: [...(formData.skills ?? [])],
@@ -84,6 +87,7 @@ export async function saveProfileData(
     showEducation: formData.visibility?.education ?? true,
     showProjects: formData.visibility?.projects ?? true,
     showSkills: formData.visibility?.skills ?? true,
+    showPosts: formData.visibility?.posts ?? true,
   };
 
   let profileId: string;

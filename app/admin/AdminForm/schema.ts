@@ -28,6 +28,7 @@ const SectionVisibilitySchema = z.object({
   education: z.boolean().default(true),
   projects: z.boolean().default(true),
   skills: z.boolean().default(true),
+  posts: z.boolean().default(true),
 });
 
 export const ProfileSchema = z.object({
@@ -66,6 +67,7 @@ export const ProfileSchema = z.object({
   linkedIn: z.string().optional().transform(transformUrl).pipe(z.string().url().optional()),
   github: z.string().optional().transform(transformUrl).pipe(z.string().url().optional()),
   stackOverflow: z.string().optional().transform(transformUrl).pipe(z.string().url().optional()),
+  medium: z.string().optional().transform(transformUrl).pipe(z.string().url().optional()),
   resume: z.string().optional().transform(transformUrl).pipe(z.string().url().optional()),
   aboutMe: z
     .string()
@@ -131,6 +133,7 @@ export const ProfileSchema = z.object({
     education: true,
     projects: true,
     skills: true,
+    posts: true,
   }),
 });
 

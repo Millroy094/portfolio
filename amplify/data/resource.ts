@@ -9,6 +9,7 @@ const schema = a.schema({
       linkedIn: a.string(),
       github: a.string(),
       stackOverflow: a.string(),
+      medium: a.string(),
       resume: a.string(),
       aboutMe: a.string(),
 
@@ -29,6 +30,7 @@ const schema = a.schema({
       showEducation: a.boolean().default(true),
       showProjects: a.boolean().default(true),
       showSkills: a.boolean().default(true),
+      showPosts: a.boolean().default(true),
     })
     .authorization((allow) => [
       allow.publicApiKey().to(["read"]),

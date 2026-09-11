@@ -8,6 +8,7 @@ import { Element, Events, scrollSpy } from "react-scroll";
 import AboutMe from "@/app/home/AboutMe";
 import EducationAndExperience from "@/app/home/EducationAndExpierence";
 import Introduction from "@/app/home/Introduction";
+import MediumPosts from "@/app/home/MediumPosts";
 import Projects from "@/app/home/Projects";
 import Skills from "@/app/home/Skills";
 import BackgroundParticles from "@/components/BackgroundParticles";
@@ -125,6 +126,12 @@ export default function Home() {
       <Element name="projects">
         <section id="projects">
           <Projects />
+        </section>
+      </Element>
+
+      <Element name="writing">
+        <section id="writing">
+          <MediumPosts />
         </section>
       </Element>
 

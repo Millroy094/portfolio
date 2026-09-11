@@ -60,7 +60,7 @@ export default function IdentitySection({
         className="
           grid grid-cols-1 gap-4
           md:grid-cols-1
-          lg:grid-cols-3
+          lg:grid-cols-4
       "
       >
         <Controller
@@ -99,6 +99,21 @@ export default function IdentitySection({
           render={({ field, fieldState }) => (
             <LinkTextField
               label="Stack Overflow"
+              value={field.value ?? ""}
+              onChange={field.onChange}
+              error={!!fieldState.error}
+              errorText={fieldState.error?.message}
+              disabled={disabled}
+            />
+          )}
+        />
+
+        <Controller
+          name="medium"
+          control={control}
+          render={({ field, fieldState }) => (
+            <LinkTextField
+              label="Medium"
               value={field.value ?? ""}
               onChange={field.onChange}
               error={!!fieldState.error}
