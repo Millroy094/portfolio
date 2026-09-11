@@ -35,15 +35,18 @@ export default function MediumPosts() {
         </h2>
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="mx-auto max-w-7xl px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {visiblePosts.map((post) => (
-          <article
+          <a
             key={post.link}
-            className="rounded-lg border border-neutral-800 bg-neutral-900 p-6 hover:bg-neutral-850 hover:shadow-md transition-all group"
+            href={post.link}
+            target="_blank"
+            rel="noreferrer"
+            className="group rounded-lg border border-neutral-800 bg-neutral-900 overflow-hidden hover:bg-neutral-850 hover:shadow-md transition-all flex flex-col"
           >
             {post.imageUrl && (
               <div
-                className="mb-4 relative w-full overflow-hidden rounded-md bg-neutral-800"
+                className="relative w-full overflow-hidden bg-neutral-800"
                 style={{ aspectRatio: "16/9" }}
               >
                 <Image
@@ -56,27 +59,26 @@ export default function MediumPosts() {
               </div>
             )}
 
-            <h3 className="text-lg font-semibold text-neutral-100 line-clamp-2">{post.title}</h3>
+            <div className="flex flex-col gap-2 p-4 flex-grow">
+              <h3 className="text-base font-semibold text-neutral-100 line-clamp-2">
+                {post.title}
+              </h3>
 
-            {post.publishedAt && (
-              <p className="text-xs text-neutral-500 mt-2">
-                {formatPublishedDate(post.publishedAt)}
+              {post.publishedAt && (
+                <p className="text-xs text-neutral-500">{formatPublishedDate(post.publishedAt)}</p>
+              )}
+
+              {post.description && (
+                <p className="text-sm text-neutral-400 line-clamp-2 flex-grow">
+                  {post.description}
+                </p>
+              )}
+
+              <p className="text-sm font-semibold text-neutral-200 group-hover:text-white transition-colors mt-2">
+                Read on Medium →
               </p>
-            )}
-
-            {post.description && (
-              <p className="text-sm text-neutral-400 mt-3 line-clamp-3">{post.description}</p>
-            )}
-
-            <a
-              href={post.link}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-block mt-5 text-sm font-medium text-neutral-300 hover:text-neutral-100 transition-colors"
-            >
-              Read on Medium →
-            </a>
-          </article>
+            </div>
+          </a>
         ))}
       </div>
     </section>

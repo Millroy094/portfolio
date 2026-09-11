@@ -84,7 +84,7 @@ export default function ProjectsSkillsSection({
           {projects.fields.map((project, index) => (
             <div
               key={project.id}
-              className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-center"
+              className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-start"
             >
               <div className="w-full lg:col-span-2">
                 <Controller

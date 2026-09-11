@@ -9,9 +9,11 @@ type AlertVariant = "default" | "info" | "warning" | "error";
 const variantStyles: Record<AlertVariant, string> = {
   default:
     "border-[var(--admin-border-strong)] bg-[var(--admin-surface-muted)] text-[var(--admin-text)]",
-  info: "border-blue-700/50 bg-blue-950/30 text-blue-200",
-  warning: "border-amber-700/50 bg-amber-950/30 text-amber-100",
-  error: "border-red-700/50 bg-red-950/30 text-red-100",
+  info: "border-blue-700/50 dark:border-blue-700/50 bg-blue-100/40 dark:bg-blue-950/30 text-blue-700 dark:text-blue-200",
+  warning:
+    "border-amber-700/50 dark:border-amber-700/50 bg-amber-100/40 dark:bg-amber-950/30 text-amber-700 dark:text-amber-100",
+  error:
+    "border-red-700/50 dark:border-red-700/50 bg-red-100/40 dark:bg-red-950/30 text-red-700 dark:text-red-100",
 };
 
 function Alert({

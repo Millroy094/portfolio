@@ -61,89 +61,93 @@ export default function SkillSelect({
 
   return (
     <div ref={containerRef} className="relative w-full">
-      <label className="mb-2 block text-sm font-medium text-[var(--admin-text)]">{label}</label>
+      <label className="relative block">
+        <input type="hidden" name={name} onBlur={onBlurAction} value={value.join(",")} />
 
-      <input type="hidden" name={name} onBlur={onBlurAction} value={value.join(",")} />
-
-      <div className="relative">
-        <button
-          type="button"
-          className={cn(
-            "flex min-h-10 w-full items-center justify-between rounded-lg border bg-[var(--admin-input-bg)] px-3.5 py-2.5 text-left text-sm text-[var(--admin-text)] transition-colors",
-            error
-              ? "border-red-600/60 focus-visible:ring-red-500/40"
-              : "border-[var(--admin-border-strong)] focus-visible:ring-neutral-400/40",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--admin-focus-offset)]",
-          )}
-          onClick={() => setOpen((prev) => !prev)}
-          disabled={disabled}
-        >
-          <span className="text-[var(--admin-text-muted)]">
-            {selectedOptions.length ? `${selectedOptions.length} selected` : label}
-          </span>
-          <ChevronDown
-            className="h-4 w-4 text-[var(--admin-text-muted)] transition-transform"
-            style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
-          />
-        </button>
-
-        {open && !disabled && (
-          <div className="absolute top-full left-0 right-0 z-50 mt-2 max-h-80 w-full rounded-lg border border-[var(--admin-border-strong)] bg-[var(--admin-surface)] p-2 shadow-lg">
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search skills..."
-              className="mb-2 w-full rounded-lg border border-[var(--admin-border-strong)] bg-[var(--admin-input-bg)] px-3 py-2 text-sm text-[var(--admin-text)] placeholder:text-[var(--admin-text-muted)] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--admin-focus-offset)]"
+        <div className="relative">
+          <button
+            type="button"
+            className={cn(
+              "flex min-h-10 w-full items-center justify-between rounded-lg border bg-[var(--admin-input-bg)] px-3.5 py-2.5 text-left text-sm text-[var(--admin-text)] transition-colors",
+              error
+                ? "border-red-600/60 focus-visible:ring-red-500/40"
+                : "border-[var(--admin-border-strong)] focus-visible:ring-neutral-400/40",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--admin-focus-offset)]",
+            )}
+            onClick={() => setOpen((prev) => !prev)}
+            disabled={disabled}
+          >
+            <span className="text-[var(--admin-text-muted)]">
+              {selectedOptions.length ? `${selectedOptions.length} selected` : label}
+            </span>
+            <ChevronDown
+              className="h-4 w-4 text-[var(--admin-text-muted)] transition-transform"
+              style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
             />
-            <ul className="max-h-64 overflow-y-auto">
-              {filtered.map((option) => {
-                const selected = value.includes(option.id);
-                return (
-                  <li key={option.id}>
-                    <button
-                      type="button"
-                      className="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm text-[var(--admin-text)] transition-colors hover:bg-[var(--admin-surface-muted)]"
-                      onClick={() => toggleSkill(option.id)}
-                    >
-                      <span
-                        className={cn(
-                          "inline-flex h-4 w-4 items-center justify-center rounded border transition-colors",
-                          selected
-                            ? "border-[var(--admin-border-strong)] bg-[var(--admin-btn-bg)] text-[var(--admin-btn-text)]"
-                            : "border-[var(--admin-border-strong)] bg-transparent text-transparent",
-                        )}
+          </button>
+
+          {open && !disabled && (
+            <div className="absolute top-full left-0 right-0 z-50 mt-2 max-h-80 w-full rounded-lg border border-[var(--admin-border-strong)] bg-[var(--admin-surface)] p-2 shadow-lg">
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search skills..."
+                className="mb-2 w-full rounded-lg border border-[var(--admin-border-strong)] bg-[var(--admin-input-bg)] px-3 py-2 text-sm text-[var(--admin-text)] placeholder:text-[var(--admin-text-muted)] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--admin-focus-offset)]"
+              />
+              <ul className="max-h-64 overflow-y-auto">
+                {filtered.map((option) => {
+                  const selected = value.includes(option.id);
+                  return (
+                    <li key={option.id}>
+                      <button
+                        type="button"
+                        className="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm text-[var(--admin-text)] transition-colors hover:bg-[var(--admin-surface-muted)]"
+                        onClick={() => toggleSkill(option.id)}
                       >
-                        <Check className="h-3 w-3" />
-                      </span>
-                      <span className="inline-flex items-center [svg]:h-5 [svg]:w-5">
-                        {option.render()}
-                      </span>
-                      <span>{option.label}</span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        )}
-      </div>
+                        <span
+                          className={cn(
+                            "flex-shrink-0 inline-flex h-4 w-4 items-center justify-center rounded border transition-colors",
+                            selected
+                              ? "border-[var(--admin-border-strong)] bg-[var(--admin-btn-bg)] text-[var(--admin-btn-text)]"
+                              : "border-[var(--admin-border-strong)] bg-transparent text-transparent",
+                          )}
+                        >
+                          <Check className="h-3 w-3" />
+                        </span>
+                        <span className="flex-shrink-0 inline-flex items-center [svg]:h-5 [svg]:w-5">
+                          {option.render()}
+                        </span>
+                        <span className="flex-shrink-0">{option.label}</span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+        </div>
+
+        <span className="pointer-events-none absolute left-3.5 -top-2 rounded-sm bg-[var(--admin-field-label-bg)] px-1 text-xs font-medium text-[var(--admin-text-muted)] transition-colors">
+          {label}
+        </span>
+      </label>
 
       {selectedOptions.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-2">
           {selectedOptions.map((option) => (
             <span
               key={option.id}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--admin-border-strong)] bg-[var(--admin-surface-muted)] px-2.5 py-1.5 text-xs text-[var(--admin-text)] transition-colors"
+              className="inline-flex items-center gap-1 rounded-lg border border-[var(--admin-border-strong)] bg-[var(--admin-surface-muted)] px-2.5 py-1.5 text-xs text-[var(--admin-text)] transition-colors"
             >
               <span className="inline-flex items-center [svg]:h-4 [svg]:w-4">
                 {option.render()}
               </span>
-              {option.label}
+              <span className="flex-shrink-0">{option.label}</span>
               {!disabled && (
                 <button
                   type="button"
                   onClick={() => toggleSkill(option.id)}
-                  className="rounded p-0.5 transition-colors hover:bg-[var(--admin-btn-bg-hover)]"
+                  className="ml-1 rounded p-0.5 transition-colors hover:bg-[var(--admin-btn-bg-hover)]"
                   aria-label={`Remove ${option.label}`}
                 >
                   <X className="h-3 w-3" />
