@@ -36,7 +36,14 @@ function EducationAndExperience() {
         )}
 
         <div className="hidden xl:flex justify-center items-center self-center w-75 max-w-65">
-          <LottiePlayer src="/lotties/work-and-education.json" className="w-full h-auto max-w-90" />
+          <LottiePlayer
+            src="/lotties/work-and-education.json"
+            className="w-full h-auto max-w-90"
+            renderer="canvas"
+            playInView={true}
+            fps={30}
+            style={{ contain: "layout style paint" }}
+          />
         </div>
 
         {hasEducation && (

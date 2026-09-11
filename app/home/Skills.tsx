@@ -81,7 +81,7 @@ export default function Skills() {
         <h2
           className="ml-1 inline-block rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide
                        text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px]
-                       text-neutral-950 mb-3"
+                       text-red-500 mb-3"
         >
           Skills
         </h2>

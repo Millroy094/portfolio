@@ -50,7 +50,7 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
 
   return (
     <div className="flex flex-col items-center w-full lg:w-1/2 max-w-160 mx-auto">
-      <h2 className="rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide text-[20px] text-neutral-950 md:text-[35px] mb-8">
+      <h2 className="rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide text-[20px] text-red-500 md:text-[35px] mb-8">
         {title}
       </h2>
 

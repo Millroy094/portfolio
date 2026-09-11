@@ -26,6 +26,7 @@ type Props = {
   speed?: number;
   segments?: [number, number];
   renderer?: "svg" | "canvas";
+  fps?: number;
 
   pauseOnHover?: boolean;
   respectReducedMotion?: boolean;
@@ -53,6 +54,7 @@ export default function LottiePlayer({
   speed = 1,
   segments,
   renderer = "svg",
+  fps = 30,
 
   pauseOnHover = false,
   respectReducedMotion = true,
@@ -144,6 +146,7 @@ export default function LottiePlayer({
     loop,
     speed,
     segments,
+    fps,
     pauseOnHover,
     playInView,
     prefersReducedMotion,
@@ -173,6 +176,8 @@ export default function LottiePlayer({
     position: "relative",
     width: width ?? "100%",
     height: height ?? "100%",
+    contain: "layout style paint",
+    willChange: "transform",
   };
 
   /** Fade-in Lottie layer */

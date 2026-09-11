@@ -34,7 +34,7 @@ export default function Projects() {
     <section className="relative z-10 mb-15 px-5 sm:px-10">
       <div className="flex justify-center md:justify-center lg:justify-start gap-2">
         <h2
-          className="rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide text-neutral-950
+          className="rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide text-red-500
                      text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] mb-5"
         >
           Projects
