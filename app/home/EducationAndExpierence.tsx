@@ -1,11 +1,23 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import HistoryTimeline from "@/app/home/HistoryTimeline";
 import LottiePlayer from "@/components/LottiePlayer";
 import { useWebsiteData } from "@/context/WebsiteData";
 
 function EducationAndExperience() {
   const { data } = useWebsiteData();
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
+
+  useEffect(() => {
+    const checkScreen = () => {
+      setIsLargeScreen(window.innerWidth >= 1280);
+    };
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
 
   const hasEducation = data.visibility.education && data.education && data.education.length > 0;
 
@@ -35,16 +47,18 @@ function EducationAndExperience() {
           </div>
         )}
 
-        <div className="hidden xl:flex justify-center items-center self-center w-75 max-w-65">
-          <LottiePlayer
-            src="/lotties/work-and-education.json"
-            className="w-full h-auto max-w-90"
-            renderer="canvas"
-            playInView={true}
-            fps={30}
-            style={{ contain: "layout style paint" }}
-          />
-        </div>
+        {isLargeScreen && (
+          <div className="hidden xl:flex justify-center items-center self-center w-75 max-w-65">
+            <LottiePlayer
+              src="/lotties/work-and-education.json"
+              className="w-full h-auto"
+              renderer="canvas"
+              playInView={true}
+              fps={30}
+              style={{ contain: "layout style paint" }}
+            />
+          </div>
+        )}
 
         {hasEducation && (
           <div className="w-full lg:w-1/2">

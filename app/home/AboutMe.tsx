@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import LottiePlayer from "@/components/LottiePlayer";
 import { useWebsiteData } from "@/context/WebsiteData";
 import GrowOnHover from "@/hoc/GrowOnHover";
@@ -7,6 +9,16 @@ import { htmlToText, splitHtmlIntoParagraphs } from "@/utils/paragraph";
 
 function AboutMe() {
   const { data } = useWebsiteData();
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
+
+  useEffect(() => {
+    const checkScreen = () => {
+      setIsLargeScreen(window.innerWidth >= 1024);
+    };
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
 
   const aboutMe =
     data.visibility.aboutMe && data.aboutMe
@@ -18,16 +30,18 @@ function AboutMe() {
   return (
     <section className="relative z-10 mb-15 flex flex-col">
       <div className="flex w-full flex-col lg:flex-row items-start lg:items-center gap-6 lg:gap-10">
-        <div className="hidden lg:flex justify-center items-end w-1/3">
-          <LottiePlayer
-            src="/lotties/about-me.json"
-            className="w-full h-auto max-w-90"
-            renderer="canvas"
-            playInView={true}
-            fps={30}
-            style={{ contain: "layout style paint" }}
-          />
-        </div>
+        {isLargeScreen && (
+          <div className="hidden lg:flex justify-center items-end w-1/3">
+            <LottiePlayer
+              src="/lotties/about-me.json"
+              className="w-full h-auto"
+              renderer="canvas"
+              playInView={true}
+              fps={30}
+              style={{ contain: "layout style paint" }}
+            />
+          </div>
+        )}
 
         <div className="w-full lg:w-2/3 px-5 flex flex-col items-center lg:items-start">
           <div className="flex justify-center gap-2 mb-4">
@@ -48,7 +62,9 @@ function AboutMe() {
           <div className="w-full lg:pr-2 space-y-4">
             {aboutMe.map((text) => (
               <GrowOnHover key={text}>
-                <p className="text-[20px] leading-relaxed text-white/90">{text}</p>
+                <p className="text-center lg:text-left text-[20px] leading-relaxed text-white/90">
+                  {text}
+                </p>
               </GrowOnHover>
             ))}
           </div>

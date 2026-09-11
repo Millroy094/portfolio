@@ -35,7 +35,7 @@ export default function MediumPosts() {
         </h2>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 px-5 sm:grid-cols-2 sm:px-10 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+      <div className="grid grid-cols-1 gap-4 px-5 sm:grid-cols-2 sm:gap-5 sm:px-10 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {visiblePosts.map((post) => (
           <a
             key={post.link}
