@@ -31,12 +31,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="bg-black min-h-screen text-white">
-      <header className="w-full bg-[#0b0b0b] border-b border-red-800 shadow-lg">
+      <header className="w-full bg-linear-to-b from-neutral-900/60 to-black border-b border-neutral-800/40 shadow-lg">
         <div className="mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4 py-4 px-4">
           <div className="text-center sm:text-left">
-            <div className="inline-block px-4 py-2 border border-red-800 rounded-md bg-black/40">
-              <span className="text-sm tracking-wide text-white">
-                Welcome <strong>{username}</strong>
+            <div className="inline-block px-4 py-2 border border-neutral-700/50 rounded-lg bg-neutral-900/50">
+              <span className="text-sm tracking-wide text-neutral-200">
+                Welcome <strong className="text-neutral-100">{username}</strong>
               </span>
             </div>
           </div>
@@ -44,10 +44,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="flex flex-col w-full sm:w-auto sm:flex-row gap-2">
             <Link
               className="
-          bg-red-700 hover:bg-red-800 active:bg-red-900
-          text-white px-4 py-3 rounded-md uppercase text-xs tracking-wide font-semibold
+          bg-neutral-700 hover:bg-neutral-600 active:bg-neutral-500
+          text-white px-4 py-3 rounded-lg uppercase text-xs tracking-wide font-semibold
           text-center w-full sm:w-auto transition-colors
-          focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black
+          focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black
         "
               href="/"
             >
@@ -68,17 +68,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               className="
           inline-flex items-center justify-center
           w-full sm:w-auto
-          rounded-md px-4 py-2
+          rounded-lg px-4 py-3
           uppercase tracking-wide
-          bg-white text-black hover:bg-white/90
+          bg-neutral-100 text-black hover:bg-neutral-200
           transition-colors
           disabled:opacity-70 disabled:cursor-not-allowed
-          focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black
+          focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black
+          text-xs font-semibold
         "
             >
-              <span className="text-xs font-semibold">
-                {signingOut ? "Logging out..." : "Logout"}
-              </span>
+              {signingOut ? "Logging out..." : "Logout"}
             </button>
           </div>
         </div>

@@ -79,21 +79,6 @@ export default function IdentitySection({
             />
           )}
         />
-
-        <Controller
-          name="medium"
-          control={control}
-          render={({ field, fieldState }) => (
-            <LinkTextField
-              label="Medium"
-              value={field.value ?? ""}
-              onChange={field.onChange}
-              error={!!fieldState.error}
-              errorText={fieldState.error?.message}
-              disabled={disabled}
-            />
-          )}
-        />
       </div>
 
       <div className="w-full lg:w-1/2">

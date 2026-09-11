@@ -30,6 +30,7 @@ import ExperiencesAndEducationSection from "./ExperiencesAndEducationSection";
 import IdentitySection from "./IdentitySection";
 import ProjectsSkillsSection from "./ProjectsSkillsSection";
 import RolesSection from "./RolesSection";
+import WritingSection from "./WritingSection";
 
 type AdminFormProps = { data: ProfileSchemaType | null; profileId: string | null };
 
@@ -361,6 +362,13 @@ export default function AdminForm(props: AdminFormProps) {
               disabled={!isEditable}
             />
 
+            <WritingSection
+              register={register}
+              control={control}
+              errors={errors}
+              disabled={!isEditable}
+            />
+
             <RolesSection
               control={control}
               errors={errors}
@@ -413,50 +421,48 @@ export default function AdminForm(props: AdminFormProps) {
         </FormProvider>
       </Card>
 
-      {(isEditable || hasChanges) && (
-        <div className="fixed bottom-0 left-0 right-0 border-t border-neutral-800 bg-neutral-950 shadow-2xl z-50">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8 py-3 sm:py-4 flex flex-col gap-3">
-            {hasChanges && (
-              <Alert variant="warning" className="m-0 text-xs sm:text-sm">
-                You have unsaved changes
-              </Alert>
-            )}
+      <div className="fixed bottom-0 left-0 right-0 border-t border-neutral-800 bg-neutral-950 shadow-2xl z-50">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8 py-3 sm:py-4 flex flex-col gap-3">
+          {hasChanges && (
+            <Alert variant="warning" className="m-0 text-xs sm:text-sm">
+              You have unsaved changes
+            </Alert>
+          )}
 
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3">
-              <Button
-                variant="outline"
-                onClick={() => setIsEditable((prev) => !prev)}
-                disabled={hasChanges}
-                className="gap-2 text-sm sm:text-base"
-              >
-                {isEditable ? <Lock className="h-4 w-4" /> : <Edit3 className="h-4 w-4" />}
-                {isEditable ? "Lock" : "Edit"}
-              </Button>
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3">
+            <Button
+              variant="outline"
+              onClick={() => setIsEditable((prev) => !prev)}
+              disabled={hasChanges}
+              className="gap-2 text-sm sm:text-base"
+            >
+              {isEditable ? <Lock className="h-4 w-4" /> : <Edit3 className="h-4 w-4" />}
+              {isEditable ? "Lock" : "Edit"}
+            </Button>
 
-              <Button
-                disabled={!isEditable || processing}
-                type="submit"
-                onClick={handleSubmit(onSubmit, onInvalid)}
-                className="gap-2 text-sm sm:text-base"
-              >
-                {processing ? (
-                  <>
-                    <span className="inline-block animate-spin">◌</span>
-                    Saving...
-                  </>
-                ) : (
-                  <>
-                    <Save className="h-4 w-4" />
-                    Save
-                  </>
-                )}
-              </Button>
-            </div>
+            <Button
+              disabled={!isEditable || processing}
+              type="submit"
+              onClick={handleSubmit(onSubmit, onInvalid)}
+              className="gap-2 text-sm sm:text-base"
+            >
+              {processing ? (
+                <>
+                  <span className="inline-block animate-spin">◌</span>
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 w-4" />
+                  Save
+                </>
+              )}
+            </Button>
           </div>
         </div>
-      )}
+      </div>
 
-      {(isEditable || hasChanges) && <div className="h-40 sm:h-24" />}
+      <div className="h-40 sm:h-24" />
     </div>
   );
 }

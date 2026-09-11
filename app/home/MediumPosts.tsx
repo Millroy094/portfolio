@@ -27,10 +27,10 @@ export default function MediumPosts() {
   return (
     <section className="relative z-10 mb-16 px-4">
       <div className="w-full text-center mb-10">
-        <h2 className="inline-block font-bold uppercase tracking-wide text-[20px] md:text-[35px] mr-1 mb-3 text-neutral-200">
+        <h2 className="inline-block font-bold uppercase tracking-wide text-[20px] md:text-[35px] mr-1 mb-3 text-white/90">
           Latest
         </h2>
-        <h2 className="ml-1 inline-block font-bold uppercase tracking-wide text-[20px] md:text-[35px] text-neutral-900 bg-neutral-300 px-2 mb-3">
+        <h2 className="ml-1 inline-block font-bold uppercase tracking-wide text-[20px] md:text-[35px] text-red-700 mb-3">
           Writing
         </h2>
       </div>

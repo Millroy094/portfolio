@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
@@ -32,19 +31,6 @@ export default function SeoSection({ register, errors, disabled }: SeoSectionPro
         <div className="w-full lg:w-1/2">
           <Field label="SEO Description" error={errors.seoDescription?.message}>
             <Input {...register("seoDescription")} readOnly={disabled} />
-          </Field>
-        </div>
-
-        <div className="w-full lg:w-1/4">
-          <Field label="Medium Posts to Display" error={errors.mediumPostCount?.message}>
-            <Input
-              type="number"
-              {...register("mediumPostCount", { valueAsNumber: true })}
-              readOnly={disabled}
-              min="1"
-              max="10"
-              inputMode="numeric"
-            />
           </Field>
         </div>
       </div>
