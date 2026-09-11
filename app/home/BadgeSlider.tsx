@@ -32,13 +32,13 @@ export default function BadgeSlider({ badges }: { badges: Badge[] }) {
                 h-55 sm:h-65
               "
             >
-              <div className="w-full max-w-60 sm:max-w-80 px-2">
+              <div className="flex h-48 w-48 items-center justify-center sm:h-56 sm:w-56">
                 <ImageWithSkeleton
                   src={badge.url}
                   alt={badge.label}
                   width={300}
                   height={300}
-                  className="w-full h-auto object-contain"
+                  className="h-full w-full object-contain"
                   priority={i === 0}
                 />
               </div>

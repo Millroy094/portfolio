@@ -25,7 +25,7 @@ export default function ImageWithSkeleton({
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <div className={`relative block w-full ${className}`}>
+    <div className="relative block h-full w-full">
       {!loaded && (
         <>
           <svg
@@ -47,9 +47,9 @@ export default function ImageWithSkeleton({
         height={height}
         priority={priority}
         loading={loading}
-        className={`block w-full h-auto rounded-full object-cover transition-opacity duration-300 ${
+        className={`block max-h-full max-w-full transition-opacity duration-300 ${
           loaded ? "opacity-100" : "opacity-0"
-        }`}
+        } ${className}`}
         onLoadingComplete={() => setLoaded(true)}
         onError={() => setLoaded(true)}
       />

@@ -16,7 +16,7 @@ export function Field({ label, error, className, children }: FieldProps) {
     <div className={cn("w-full relative", className)}>
       <label className="relative block">
         {children}
-        <span className="pointer-events-none absolute left-3.5 -top-2 rounded-sm bg-[var(--admin-field-label-bg)] px-1 text-xs font-medium text-[var(--admin-text-muted)] transition-colors">
+        <span className="pointer-events-none absolute left-3.5 -top-2 rounded-sm bg-[var(--admin-field-label-bg)] px-1 text-xs font-medium text-[var(--admin-field-label-text)] transition-colors">
           {label}
         </span>
       </label>

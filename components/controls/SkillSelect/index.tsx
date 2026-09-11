@@ -68,7 +68,7 @@ export default function SkillSelect({
           <button
             type="button"
             className={cn(
-              "flex min-h-10 w-full items-center justify-between rounded-lg border bg-(--admin-input-bg) px-4 py-3 text-left text-sm text-(--admin-text) transition-colors",
+              "flex min-h-11 w-full items-center justify-between rounded-lg border bg-(--admin-input-bg) px-4 py-3 text-left text-sm text-(--admin-text) transition-colors",
               disabled && "opacity-50 cursor-not-allowed bg-(--admin-input-disabled-bg)",
               error
                 ? "border-red-600/60 focus-visible:ring-red-500/40"
@@ -93,7 +93,7 @@ export default function SkillSelect({
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search skills..."
-                className="mb-2 w-full rounded-lg border border-(--admin-border-strong) bg-(--admin-input-bg) px-3 py-2 text-sm text-(--admin-text) placeholder:text-(--admin-text-muted) outline-none transition-colors focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 focus-visible:ring-offset-(--admin-focus-offset)"
+                className="mb-2 w-full rounded-lg border border-(--admin-border-strong) bg-(--admin-input-bg) px-4 py-2.5 text-sm text-(--admin-text) placeholder:text-(--admin-text-muted) outline-none transition-colors focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 focus-visible:ring-offset-(--admin-focus-offset)"
               />
               <ul className="max-h-64 overflow-y-auto">
                 {filtered.map((option) => {
@@ -128,7 +128,7 @@ export default function SkillSelect({
           )}
         </div>
 
-        <span className="pointer-events-none absolute left-3.5 -top-2 rounded-sm bg-(--admin-field-label-bg) px-1 text-xs font-medium text-(--admin-text-muted) transition-colors">
+        <span className="pointer-events-none absolute left-3.5 -top-2 rounded-sm bg-(--admin-field-label-bg) px-1 text-xs font-medium text-(--admin-field-label-text) transition-colors">
           {label}
         </span>
       </label>

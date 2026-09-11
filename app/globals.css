@@ -29,6 +29,7 @@
   --admin-btn-secondary-bg-active: #3730a3;
   --admin-btn-secondary-text: #e0e7ff;
   --admin-field-label-bg: rgba(10, 10, 10, 0.85);
+  --admin-field-label-text: #a3a3a3;
   --admin-drawer-bg: #0a0a0a;
   --admin-drawer-border: #262626;
 }
@@ -78,6 +79,7 @@ body {
   --admin-btn-secondary-bg-active: #3730a3;
   --admin-btn-secondary-text: #e0e7ff;
   --admin-field-label-bg: rgba(10, 10, 10, 0.85);
+  --admin-field-label-text: #a3a3a3;
   --admin-drawer-bg: #0a0a0a;
   --admin-drawer-border: #262626;
 }
@@ -106,7 +108,8 @@ body {
   --admin-btn-secondary-bg-hover: #e0e7ff;
   --admin-btn-secondary-bg-active: #c7d2fe;
   --admin-btn-secondary-text: #3730a3;
-  --admin-field-label-bg: rgba(255, 255, 255, 0.88);
+  --admin-field-label-bg: rgba(255, 255, 255, 0.72);
+  --admin-field-label-text: #71717a;
   --admin-drawer-bg: #ffffff;
   --admin-drawer-border: #d4d4d8;
 }

@@ -354,7 +354,7 @@ export default function AdminForm(props: AdminFormProps) {
               <div
                 className={`px-3 py-1 rounded-full text-xs font-semibold ${
                   isEditable
-                    ? "bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/40"
+                    ? "border border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-500/40 dark:bg-amber-500/20 dark:text-amber-300"
                     : "border border-(--admin-border-strong) bg-(--admin-surface-muted) text-(--admin-text-muted)"
                 }`}
               >
@@ -362,7 +362,7 @@ export default function AdminForm(props: AdminFormProps) {
               </div>
             </div>
             <p
-              className={`text-sm ${isEditable ? "text-amber-600 dark:text-amber-500" : "text-(--admin-text-muted)"}`}
+              className={`text-sm ${isEditable ? "text-amber-700 dark:text-amber-500" : "text-(--admin-text-muted)"}`}
             >
               {isEditable ? "Make changes and save when ready." : "Click Edit to make changes."}
             </p>

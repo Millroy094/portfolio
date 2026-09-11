@@ -72,12 +72,14 @@ export default function Introduction(): JSX.Element {
           </div>
         )}
         {/* Name */}
-        <div className="flex justify-center flex-wrap gap-2 text-center mb-1">
-          <span className="text-[20px] sm:text-[40px] md:text-[60px] font-normal text-white/90">
-            Hi, I am
-          </span>
-          <h1 className="text-[20px] sm:text-[40px] md:text-[60px] font-bold text-red-600">
-            {data.fullName || "Unknown"}
+        <div className="mb-1 flex justify-center text-center">
+          <h1 className="flex flex-wrap items-center justify-center gap-2">
+            <span className="text-[20px] font-bold uppercase tracking-wide text-white/90 sm:text-[40px] md:text-[60px]">
+              Hi, I am
+            </span>
+            <span className="rounded-md bg-neutral-100 px-2 py-0.5 text-[20px] font-bold text-neutral-950 sm:text-[40px] md:text-[60px]">
+              {data.fullName || "Unknown"}
+            </span>
           </h1>
         </div>
         {!data.fullName && <div className="text-sm opacity-70 mb-2">Please finish my setup</div>}
