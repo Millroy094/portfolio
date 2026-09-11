@@ -23,14 +23,14 @@ const LinkTextField: FC<LinkTextFieldProps> = ({
 }) => (
   <Field label={label} error={error ? errorText : undefined}>
     <div className="relative">
-      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-neutral-400">
+      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-neutral-300">
         https://
       </span>
       <Input
         value={stripProtocol(value)}
         onChange={(e) => onChange(addHttps(e.target.value))}
         readOnly={disabled}
-        className="pl-20"
+        className="pl-20 font-mono text-sm"
       />
     </div>
   </Field>

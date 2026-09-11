@@ -35,13 +35,11 @@ export const ProfileSchema = z.object({
   avatar: z
     .union([
       z.custom<File>((v) => isBrowserFile(v), { message: "Invalid file" }),
-      z
-        .string()
-        .min(1, "Please upload an avatar")
-        .regex(/^avatars\//, "Invalid avatar key"),
-      z.string().url(),
+      z.string().regex(/^avatars\//, "Invalid avatar key"),
+      z.string().url("Invalid avatar URL"),
     ])
-    .optional(),
+    .optional()
+    .nullable(),
   fullName: z
     .string()
     .max(50, { message: "Full name must be maximum of 50 characters" })

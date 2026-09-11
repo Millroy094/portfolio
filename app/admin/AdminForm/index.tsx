@@ -127,7 +127,17 @@ export default function AdminForm(props: AdminFormProps) {
   };
 
   const uploadAssets = async (data: ProfileSchemaType) => {
-    const avatarKey = await uploadFileToS3("avatars", data.avatar);
+    let avatarKey: string | undefined;
+
+    try {
+      avatarKey = await uploadFileToS3("avatars", data.avatar);
+    } catch (error) {
+      console.error("Failed to upload avatar:", error);
+      toast.error("Failed to upload avatar. Please try again.", {
+        theme: "colored",
+      });
+      throw error;
+    }
 
     if (!data.badges?.length) {
       return { badgeKeys: [], avatarKey };
@@ -135,13 +145,18 @@ export default function AdminForm(props: AdminFormProps) {
 
     const uploads = await Promise.all(
       data.badges.map(async (i) => {
-        const key = await uploadFileToS3("badges", i.value);
-        return { key, label: i.label };
+        try {
+          const key = await uploadFileToS3("badges", i.value);
+          return { key, label: i.label };
+        } catch (error) {
+          console.error("Failed to upload badge:", error);
+          return null;
+        }
       }),
     );
 
     const badgeKeyLabels = uploads.filter(
-      (x): x is { key: string; label: string } => x.key !== null && x.label !== null,
+      (x): x is { key: string; label: string } => x !== null && x.key !== null && x.label !== null,
     );
 
     return { badgeKeyLabels, avatarKey };
@@ -154,19 +169,35 @@ export default function AdminForm(props: AdminFormProps) {
       toast.error("Only PNG files are allowed.", {
         theme: "colored",
       });
+      if (badgeFileInputRef.current) {
+        badgeFileInputRef.current.value = "";
+      }
       return;
     }
 
     const img = new Image();
     img.src = URL.createObjectURL(file);
 
+    const timeout = setTimeout(() => {
+      URL.revokeObjectURL(img.src);
+      toast.error("Failed to load image. Please try again.", { theme: "colored" });
+      if (badgeFileInputRef.current) {
+        badgeFileInputRef.current.value = "";
+      }
+    }, 5000);
+
     img.onload = () => {
+      clearTimeout(timeout);
       const { width, height } = img;
 
       if (width !== height) {
         toast.error("Image must be 1:1 aspect ratio (square).", {
           theme: "colored",
         });
+        URL.revokeObjectURL(img.src);
+        if (badgeFileInputRef.current) {
+          badgeFileInputRef.current.value = "";
+        }
         return;
       }
 
@@ -175,7 +206,14 @@ export default function AdminForm(props: AdminFormProps) {
       canvas.height = height;
 
       const ctx = canvas.getContext("2d");
-      if (!ctx) return;
+      if (!ctx) {
+        toast.error("Failed to process image.", { theme: "colored" });
+        URL.revokeObjectURL(img.src);
+        if (badgeFileInputRef.current) {
+          badgeFileInputRef.current.value = "";
+        }
+        return;
+      }
 
       ctx.drawImage(img, 0, 0);
       const pixelData = ctx.getImageData(0, 0, width, height).data;
@@ -192,15 +230,29 @@ export default function AdminForm(props: AdminFormProps) {
         toast.error("PNG must have a transparent background.", {
           theme: "colored",
         });
+        URL.revokeObjectURL(img.src);
+        if (badgeFileInputRef.current) {
+          badgeFileInputRef.current.value = "";
+        }
         return;
       }
 
       badges.append({ value: file, label: "" });
+      URL.revokeObjectURL(img.src);
+      if (badgeFileInputRef.current) {
+        badgeFileInputRef.current.value = "";
+      }
+      toast.success("Badge added successfully!", { theme: "colored" });
     };
 
-    if (badgeFileInputRef.current) {
-      badgeFileInputRef.current.value = "";
-    }
+    img.onerror = () => {
+      clearTimeout(timeout);
+      toast.error("Failed to load image.", { theme: "colored" });
+      URL.revokeObjectURL(img.src);
+      if (badgeFileInputRef.current) {
+        badgeFileInputRef.current.value = "";
+      }
+    };
   };
 
   const isFieldError = (err: unknown): err is FieldError => {
@@ -259,11 +311,10 @@ export default function AdminForm(props: AdminFormProps) {
   }
 
   return (
-    <Card className="p-0">
+    <div className="min-h-screen flex flex-col">
       <ToastContainer />
-
-      <div className="border-b border-neutral-800 px-6 py-6">
-        <div className="flex items-center justify-between gap-4">
+      <Card className="p-0 flex-1">
+        <div className="border-b border-neutral-800/40 bg-gradient-to-b from-neutral-900/50 to-transparent px-6 py-6">
           <div className="flex flex-col gap-2">
             <h1 className="text-2xl font-bold text-neutral-100">Profile</h1>
             <p className="text-sm text-neutral-400">
@@ -272,123 +323,140 @@ export default function AdminForm(props: AdminFormProps) {
                 : "View-only mode. Click Edit to make changes."}
             </p>
           </div>
-          <Button
-            variant={isEditable ? "default" : "outline"}
-            onClick={() => setIsEditable((prev) => !prev)}
-            disabled={hasChanges}
-            className="gap-2"
-          >
-            {isEditable ? <Lock className="h-4 w-4" /> : <Edit3 className="h-4 w-4" />}
-            {isEditable ? "Lock" : "Edit"}
-          </Button>
         </div>
+        <FormProvider {...methods}>
+          <form
+            className="flex flex-col p-6 sm:p-8 md:p-10 gap-6"
+            onSubmit={handleSubmit(onSubmit, onInvalid)}
+          >
+            <input
+              type="file"
+              accept="image/*"
+              hidden
+              ref={avatarInputRef}
+              onChange={handleAvatarFileChange}
+            />
+            <input
+              type="file"
+              accept="image/png"
+              hidden
+              ref={badgeFileInputRef}
+              onChange={handleBadgeFile}
+            />
 
-        {!isEditable && (
-          <Alert variant="info" className="mt-4">
-            This form is in read-only mode. Click Edit to make changes.
-          </Alert>
-        )}
+            <AvatarSection
+              errors={errors}
+              control={control}
+              cropOpen={cropOpen}
+              cropFile={cropFile}
+              setCropOpen={setCropOpen}
+              avatarInputRef={avatarInputRef}
+              disabled={!isEditable}
+            />
 
-        {hasChanges && (
-          <Alert variant="warning" className="mt-3">
-            You have unsaved changes.
-          </Alert>
-        )}
-      </div>
-      <FormProvider {...methods}>
-        <form
-          className="flex flex-col p-6 sm:p-8 md:p-10 gap-6"
-          onSubmit={handleSubmit(onSubmit, onInvalid)}
-        >
-          <input
-            type="file"
-            accept="image/*"
-            hidden
-            ref={avatarInputRef}
-            onChange={handleAvatarFileChange}
-          />
-          <input
-            type="file"
-            accept="image/png"
-            hidden
-            ref={badgeFileInputRef}
-            onChange={handleBadgeFile}
-          />
+            <IdentitySection
+              register={register}
+              control={control}
+              errors={errors}
+              disabled={!isEditable}
+            />
 
-          <AvatarSection
-            errors={errors}
-            control={control}
-            cropOpen={cropOpen}
-            cropFile={cropFile}
-            setCropOpen={setCropOpen}
-            avatarInputRef={avatarInputRef}
-            disabled={!isEditable}
-          />
+            <RolesSection
+              control={control}
+              errors={errors}
+              fields={roles.fields}
+              append={roles.append}
+              remove={roles.remove}
+              disabled={!isEditable}
+            />
 
-          <IdentitySection
-            register={register}
-            control={control}
-            errors={errors}
-            disabled={!isEditable}
-          />
+            <BadgesSection
+              control={control}
+              errors={errors}
+              fields={badges.fields}
+              remove={badges.remove}
+              badgeFileInputRef={badgeFileInputRef}
+              disabled={!isEditable}
+            />
 
-          <RolesSection
-            control={control}
-            errors={errors}
-            fields={roles.fields}
-            append={roles.append}
-            remove={roles.remove}
-            disabled={!isEditable}
-          />
+            <AboutMeSection control={control} errors={errors} disabled={!isEditable} />
 
-          <BadgesSection
-            control={control}
-            errors={errors}
-            fields={badges.fields}
-            remove={badges.remove}
-            badgeFileInputRef={badgeFileInputRef}
-            disabled={!isEditable}
-          />
+            <ExperiencesAndEducationSection
+              control={control}
+              errors={errors}
+              experiences={{
+                fields: experiences.fields,
+                append: experiences.append,
+                remove: experiences.remove,
+              }}
+              education={{
+                fields: education.fields,
+                append: education.append,
+                remove: education.remove,
+              }}
+              disabled={!isEditable}
+            />
 
-          <AboutMeSection control={control} errors={errors} disabled={!isEditable} />
+            <ProjectsSkillsSection
+              control={control}
+              errors={errors}
+              projects={{
+                fields: projects.fields,
+                append: projects.append,
+                remove: projects.remove,
+              }}
+              disabled={!isEditable}
+            />
 
-          <ExperiencesAndEducationSection
-            control={control}
-            errors={errors}
-            experiences={{
-              fields: experiences.fields,
-              append: experiences.append,
-              remove: experiences.remove,
-            }}
-            education={{
-              fields: education.fields,
-              append: education.append,
-              remove: education.remove,
-            }}
-            disabled={!isEditable}
-          />
+            <SeoSection register={register} errors={errors} disabled={!isEditable} />
+          </form>
+        </FormProvider>
+      </Card>
 
-          <ProjectsSkillsSection
-            control={control}
-            errors={errors}
-            projects={{
-              fields: projects.fields,
-              append: projects.append,
-              remove: projects.remove,
-            }}
-            disabled={!isEditable}
-          />
+      {(isEditable || hasChanges) && (
+        <div className="fixed bottom-0 left-0 right-0 border-t border-neutral-800 bg-neutral-950 shadow-2xl z-50">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8 py-3 sm:py-4 flex flex-col gap-3">
+            {hasChanges && (
+              <Alert variant="warning" className="m-0 text-xs sm:text-sm">
+                You have unsaved changes
+              </Alert>
+            )}
 
-          <SeoSection register={register} errors={errors} disabled={!isEditable} />
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3">
+              <Button
+                variant="outline"
+                onClick={() => setIsEditable((prev) => !prev)}
+                disabled={hasChanges}
+                className="gap-2 text-sm sm:text-base"
+              >
+                {isEditable ? <Lock className="h-4 w-4" /> : <Edit3 className="h-4 w-4" />}
+                {isEditable ? "Lock" : "Edit"}
+              </Button>
 
-          <div className="flex flex-col sm:flex-row sm:justify-end gap-3 sm:gap-4 mt-6">
-            <Button disabled={!isEditable || processing} type="submit" className="w-full sm:w-auto">
-              <Save className="h-4 w-4" />
-              Save changes
-            </Button>
+              <Button
+                disabled={!isEditable || processing}
+                type="submit"
+                onClick={handleSubmit(onSubmit, onInvalid)}
+                className="gap-2 text-sm sm:text-base"
+              >
+                {processing ? (
+                  <>
+                    <span className="inline-block animate-spin">◌</span>
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save className="h-4 w-4" />
+                    Save
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
-        </form>
-      </FormProvider>
-    </Card>
+        </div>
+      )}
+
+      {(isEditable || hasChanges) && <div className="h-40 sm:h-24" />}
+    </div>
   );
 }

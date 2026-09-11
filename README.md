@@ -3,16 +3,16 @@
 A production-ready **Next.js** personal portfolio deployed on **AWS
 Amplify**, backed by:
 
--   🔐 AWS Cognito (authentication)
--   🗄 DynamoDB via AppSync (data layer)
--   📦 S3 (storage)
--   🏗 Terraform Cloud (Infrastructure as Code)
--   🔄 GitHub Actions with OIDC (secure CI/CD)
+- 🔐 AWS Cognito (authentication)
+- 🗄 DynamoDB via AppSync (data layer)
+- 📦 S3 (storage)
+- 🏗 Terraform Cloud (Infrastructure as Code)
+- 🔄 GitHub Actions with OIDC (secure CI/CD)
 
 Designed to be secure, scalable, and extremely cost-efficient (runs for
 pennies per month).
 
-------------------------------------------------------------------------
+---
 
 # 🏛 Architecture Overview
 
@@ -28,7 +28,7 @@ Route53 (custom domain)
 
 No long-lived AWS credentials are stored.
 
-------------------------------------------------------------------------
+---
 
 # 🌐 Application Structure
 
@@ -47,7 +47,7 @@ sections - Update projects and skills - Modify profile information
 
 No redeploy required for content updates.
 
-------------------------------------------------------------------------
+---
 
 # 🧩 Website Sections
 
@@ -55,11 +55,11 @@ Each section is configurable via the admin dashboard.
 
 ### Introduction
 
--   Avatar
--   Roles held
--   Punchline
--   Social links
--   Certifications (e.g. AWS badges)
+- Avatar
+- Roles held
+- Punchline
+- Social links
+- Certifications (e.g. AWS badges)
 
 ### About Me
 
@@ -79,7 +79,7 @@ Personal GitHub projects.
 
 All sections can be toggled on or off.
 
-------------------------------------------------------------------------
+---
 
 # 🔐 Required IAM Setup
 
@@ -91,12 +91,12 @@ Used only to trigger Amplify builds.
 
 Required permissions:
 
--   amplify:StartJob
--   amplify:GetJob
--   amplify:ListJobs
--   amplify:GetBranch
--   amplify:ListBackendEnvironments
--   amplifybackend:GetBackend
+- amplify:StartJob
+- amplify:GetJob
+- amplify:ListJobs
+- amplify:GetBranch
+- amplify:ListBackendEnvironments
+- amplifybackend:GetBackend
 
 ## 2️⃣ Terraform Cloud Role
 
@@ -104,76 +104,78 @@ Used for provisioning infrastructure.
 
 ### Amplify Permissions
 
--   amplify:CreateApp
--   amplify:UpdateApp
--   amplify:DeleteApp
--   amplify:GetApp
--   amplify:ListApps
--   amplify:CreateBranch
--   amplify:UpdateBranch
--   amplify:DeleteBranch
--   amplify:GetBranch
--   amplify:ListBranches
--   amplify:CreateDomainAssociation
--   amplify:UpdateDomainAssociation
--   amplify:DeleteDomainAssociation
--   amplify:GetDomainAssociation
--   amplify:ListDomainAssociations
--   amplify:TagResource
--   amplify:UntagResource
--   amplify:ListTagsForResource
+- amplify:CreateApp
+- amplify:UpdateApp
+- amplify:DeleteApp
+- amplify:GetApp
+- amplify:ListApps
+- amplify:CreateBranch
+- amplify:UpdateBranch
+- amplify:DeleteBranch
+- amplify:GetBranch
+- amplify:ListBranches
+- amplify:CreateDomainAssociation
+- amplify:UpdateDomainAssociation
+- amplify:DeleteDomainAssociation
+- amplify:GetDomainAssociation
+- amplify:ListDomainAssociations
+- amplify:TagResource
+- amplify:UntagResource
+- amplify:ListTagsForResource
 
 ### IAM Permissions
 
--   iam:CreateRole
--   iam:GetRole
--   iam:DeleteRole
--   iam:AttachRolePolicy
--   iam:DetachRolePolicy
--   iam:PutRolePolicy
--   iam:DeleteRolePolicy
--   iam:PassRole
--   iam:ListRolePolicies
--   iam:ListAttachedRolePolicies
--   iam:ListInstanceProfilesForRole
--   iam:CreatePolicy
--   iam:TagRole
--   iam:TagPolicy
--   iam:GetPolicy
--   iam:DeletePolicy
--   iam:GetPolicyVersion
--   iam:ListPolicyVersions
+- iam:CreateRole
+- iam:GetRole
+- iam:DeleteRole
+- iam:AttachRolePolicy
+- iam:DetachRolePolicy
+- iam:PutRolePolicy
+- iam:DeleteRolePolicy
+- iam:PassRole
+- iam:ListRolePolicies
+- iam:ListAttachedRolePolicies
+- iam:ListInstanceProfilesForRole
+- iam:CreatePolicy
+- iam:TagRole
+- iam:TagPolicy
+- iam:GetPolicy
+- iam:DeletePolicy
+- iam:GetPolicyVersion
+- iam:ListPolicyVersions
 
 ### Route53 Permissions
 
--   route53:ListHostedZones
--   route53:ListResourceRecordSets
--   route53:ListHostedZonesByName
+- route53:ListHostedZones
+- route53:ListResourceRecordSets
+- route53:ListHostedZonesByName
 
-------------------------------------------------------------------------
+---
 
 # ⚙ Required Terraform Cloud Variables
 
-  Variable Name   Description              Type        Example
-  --------------- ------------------------ ----------- -----------------
-  github_token    GitHub PAT               Sensitive   
-  domain          Custom domain name       String      myportfolio.com
-  gh_owner        GitHub org/user          String      yourusername
-  gh_repo         GitHub repository name   String      portfolio
-  g_tag           Google Analytics ID      String      G-XXXX
+Variable Name Description Type Example
 
-------------------------------------------------------------------------
+---
+
+github_token GitHub PAT Sensitive  
+ domain Custom domain name String myportfolio.com
+gh_owner GitHub org/user String yourusername
+gh_repo GitHub repository name String portfolio
+g_tag Google Analytics ID String G-XXXX
+
+---
 
 # 🔑 GitHub Actions Secrets
 
 Configure in your repository settings:
 
--   AWS_REGION
--   AWS_ROLE_ARN
--   TF_ORG
--   TF_API_TOKEN
+- AWS_REGION
+- AWS_ROLE_ARN
+- TF_ORG
+- TF_API_TOKEN
 
-------------------------------------------------------------------------
+---
 
 # 🧪 Running Amplify Backend Locally
 
@@ -191,7 +193,7 @@ npx ampx sandbox or npm run dev:backend:build
 
 > **Note:** Once you are done with the backend you can destroy the infrastructure by using `npx ampx sandbox delete` or `npm run dev:backend:destroy` command to avoid incurring any charges.
 
-------------------------------------------------------------------------
+---
 
 # 💻 Local Next.js Development
 
@@ -201,7 +203,7 @@ npm ci
 
 ### Create `.env.local`
 
-PUBLIC_URL=http://localhost:3000 NEXT_PUBLIC_G\_TAG=G-XXXXX
+PUBLIC_URL=http://localhost:3000 NEXT_PUBLIC_G_TAG=G-XXXXX
 
 ### Start development server
 
@@ -209,7 +211,7 @@ npm run dev
 
 Visit http://localhost:3000
 
-------------------------------------------------------------------------
+---
 
 # 🚀 First-Time Setup After Deployment
 
@@ -219,7 +221,7 @@ Visit http://localhost:3000
 4.  Configure visibility of sections
 5.  Visit / to view your site
 
-------------------------------------------------------------------------
+---
 
 # 🧑‍💻 If You Plan to Use This Repository
 
@@ -234,18 +236,18 @@ assets.
 
 Create `/public/llms.txt`:
 
-------------------------------------------------------------------------
+---
 
 # 🎯 Design Principles
 
--   Infrastructure as Code
--   Secure OIDC-based authentication
--   No long-lived AWS credentials
--   Cost-efficient architecture
--   Admin-driven content management
--   Clear separation of public and protected routes
+- Infrastructure as Code
+- Secure OIDC-based authentication
+- No long-lived AWS credentials
+- Cost-efficient architecture
+- Admin-driven content management
+- Clear separation of public and protected routes
 
-------------------------------------------------------------------------
+---
 
 # 📜 License
 

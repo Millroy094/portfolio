@@ -77,7 +77,10 @@ export default function ExperiencesEducationSection({
             .map((exp) => {
               const index = exp.index;
               return (
-                <div key={exp.id} className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3">
+                <div
+                  key={exp.id}
+                  className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-end"
+                >
                   <div className="w-full lg:col-span-4">
                     <Controller
                       control={control}
@@ -133,7 +136,7 @@ export default function ExperiencesEducationSection({
                     />
                   </div>
 
-                  <div className="flex justify-center gap-2">
+                  <div className="flex justify-center gap-2 lg:pb-1">
                     <Button
                       type="button"
                       variant="outline"
@@ -180,7 +183,10 @@ export default function ExperiencesEducationSection({
             .map((edu) => {
               const index = edu.index;
               return (
-                <div key={edu.id} className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3">
+                <div
+                  key={edu.id}
+                  className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-end"
+                >
                   <div className="w-full lg:col-span-4">
                     <Controller
                       control={control}
@@ -236,7 +242,7 @@ export default function ExperiencesEducationSection({
                     />
                   </div>
 
-                  <div className="flex justify-center gap-2">
+                  <div className="flex justify-center gap-2 lg:pb-1">
                     <Button
                       type="button"
                       variant="outline"

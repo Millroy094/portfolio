@@ -29,6 +29,7 @@ type ProfilePayload = {
   resume?: string;
   aboutMe?: string;
   skills: string[];
+  mediumPostCount: number;
   showRoles: boolean;
   showBadges: boolean;
   showAboutMe: boolean;
@@ -78,6 +79,7 @@ export async function saveProfileData(
     resume: formData.resume ?? undefined,
     aboutMe: formData.aboutMe ?? undefined,
     skills: [...(formData.skills ?? [])],
+    mediumPostCount: formData.mediumPostCount ?? 3,
     seoTitle: formData.seoTitle,
     seoDescription: formData.seoDescription,
     showRoles: formData.visibility?.roles ?? true,
