@@ -135,8 +135,8 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
 
                   <ul className="mt-1 space-y-1 text-sm text-gray-400">
                     {items.map((i) => (
-                      <li key={`${i.subTitle}-${i.year}`} className="flex items-center gap-2">
-                        <span className="flex-shrink-0 h-1.5 w-1.5 rounded-full bg-red-400"></span>
+                      <li key={`${i.subTitle}-${i.year}`} className="flex items-start gap-2">
+                        <span className="mt-1.5 flex-shrink-0 h-1.5 w-1.5 rounded-full bg-red-400"></span>
                         <span>
                           <span className="font-medium text-white/90">{i.year}</span> — {i.subTitle}
                         </span>
