@@ -40,8 +40,11 @@ export default function RolesSection({
     >
       <div className="flex flex-col gap-4">
         {fields.map((role, index) => (
-          <div key={role.id} className="flex gap-2 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-start">
-            <div className="w-full lg:col-span-11">
+          <div
+            key={role.id}
+            className="flex items-start gap-2 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-start"
+          >
+            <div className="min-w-0 flex-1 lg:col-span-11">
               <Controller
                 control={control}
                 name={`roles.${index}`}
@@ -57,17 +60,16 @@ export default function RolesSection({
               />
             </div>
 
-            <div className="flex w-full justify-center gap-2 lg:items-start">
+            <div className="shrink-0 lg:items-start">
               <Button
                 type="button"
                 variant="outline"
                 size="icon"
                 onClick={() => remove(index)}
                 disabled={disabled}
-                className="h-10 w-10"
                 aria-label={`Remove role ${index + 1}`}
               >
-                <Trash2 className="h-5 w-5 text-red-500" />
+                <Trash2 className="h-4 w-4 text-red-500" />
               </Button>
             </div>
           </div>
