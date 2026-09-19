@@ -96,15 +96,19 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
     };
   }, [router]);
 
+  const isDark = theme === "dark";
+
   if (checking) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-black">
-        <Loader2 className="h-8 w-8 animate-spin text-neutral-400" />
+      <div
+        className={`flex min-h-screen items-center justify-center ${isDark ? "bg-black" : "bg-neutral-50"}`}
+      >
+        <Loader2
+          className={`h-8 w-8 animate-spin ${isDark ? "text-neutral-400" : "text-neutral-500"}`}
+        />
       </div>
     );
   }
-
-  const isDark = theme === "dark";
 
   return (
     <div

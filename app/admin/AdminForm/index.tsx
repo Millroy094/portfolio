@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Edit3, Lock, Save } from "lucide-react";
+import { Edit3, Loader2, Lock, Save } from "lucide-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   useForm,
@@ -11,7 +11,6 @@ import {
   FieldError,
   FormProvider,
 } from "react-hook-form";
-import { Atom } from "react-loading-indicators";
 import { ToastContainer, toast } from "react-toastify";
 
 import { getProfileData } from "@/app/admin/AdminForm/actions/getProfileData";
@@ -338,7 +337,7 @@ export default function AdminForm(props: AdminFormProps) {
   if (loading) {
     return (
       <div className="flex h-screen w-full items-center justify-center">
-        <Atom color="#32cd32" size="large" text="" textColor="loading" />
+        <Loader2 className="h-10 w-10 animate-spin text-[var(--admin-text-muted)]" />
       </div>
     );
   }
