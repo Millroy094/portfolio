@@ -52,8 +52,8 @@ function AvatarDisplay({ value }: { value?: File | string | null }): JSX.Element
   }
 
   return (
-    <div className="flex h-24 w-24 items-center justify-center rounded-full border border-neutral-700 bg-neutral-900">
-      <UserRound className="h-10 w-10 text-neutral-400" />
+    <div className="flex h-24 w-24 items-center justify-center rounded-full border border-[var(--admin-border-strong)] bg-[var(--admin-surface-muted)]">
+      <UserRound className="h-10 w-10 text-[var(--admin-text-muted)]" />
     </div>
   );
 }
