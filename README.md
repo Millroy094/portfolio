@@ -115,6 +115,13 @@ npx ampx sandbox secret set OIDC_CLIENT_ID
 npx ampx sandbox secret set OIDC_CLIENT_SECRET
 ```
 
+> ⚠️ On your **custom OIDC provider's** side, you also need to register
+> Cognito's own redirect URI as an allowed callback URL - not just
+> `OIDC_CALLBACK_URLS` above (those are Cognito's callbacks, for your app).
+> Find it in the Cognito console under the user pool's app client, or
+> construct it as:
+> `https://<cognito-domain>.auth.<region>.amazoncognito.com/oauth2/idpresponse`
+
 **In production/CI**, the plain env vars come from the Amplify app's
 `environment_variables` (set by Terraform in `infra/app.tf` from the
 `oidc_issuer_url`/`oidc_provider_name` Terraform Cloud variables), and the
