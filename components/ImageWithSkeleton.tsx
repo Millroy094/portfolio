@@ -50,7 +50,7 @@ export default function ImageWithSkeleton({
         className={`block max-h-full max-w-full transition-opacity duration-300 ${
           loaded ? "opacity-100" : "opacity-0"
         } ${className}`}
-        onLoadingComplete={() => setLoaded(true)}
+        onLoad={() => setLoaded(true)}
         onError={() => setLoaded(true)}
       />
     </div>

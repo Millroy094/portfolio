@@ -25,5 +25,13 @@ export function BadgeDisplay({ value }: { value: File | string }) {
 
   if (!url) return null;
 
-  return <Image alt="badge" src={url} fill className="object-contain p-3" />;
+  return (
+    <Image
+      alt="badge"
+      src={url}
+      fill
+      sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
+      className="object-contain p-3"
+    />
+  );
 }

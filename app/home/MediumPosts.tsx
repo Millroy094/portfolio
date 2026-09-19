@@ -53,6 +53,7 @@ export default function MediumPosts() {
                   src={post.imageUrl}
                   alt={post.title}
                   fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
                   className="object-cover group-hover:opacity-90 transition-opacity"
                   unoptimized
                 />

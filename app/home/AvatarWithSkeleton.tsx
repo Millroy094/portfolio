@@ -35,7 +35,7 @@ export default function AvatarWithSkeleton({ data }: AvatarWithSkeletonProps) {
           transition-opacity duration-300
           ${loaded ? "opacity-100" : "opacity-0"}
         `}
-        onLoadingComplete={() => setLoaded(true)}
+        onLoad={() => setLoaded(true)}
       />
     </div>
   );
