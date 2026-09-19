@@ -20,7 +20,15 @@ export async function proxy(request: NextRequest) {
     },
   });
 
-  if (!authenticated && request.nextUrl.pathname.startsWith("/admin")) {
+  // Cognito redirects back to `/admin?code=...&state=...` on success or
+  // `/admin?error=...&error_description=...&state=...` on failure. Either
+  // way, handling only happens client-side and there's no auth cookie yet,
+  // so let this one request through instead of bouncing to /login.
+  const isOAuthCallback =
+    request.nextUrl.searchParams.has("state") &&
+    (request.nextUrl.searchParams.has("code") || request.nextUrl.searchParams.has("error"));
+
+  if (!authenticated && request.nextUrl.pathname.startsWith("/admin") && !isOAuthCallback) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 

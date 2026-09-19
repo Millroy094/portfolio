@@ -1,26 +1,23 @@
 "use client";
 
-import { useAuthenticator } from "@aws-amplify/ui-react";
-import { getCurrentUser, signOut } from "aws-amplify/auth";
-import { Moon, Sun } from "lucide-react";
+import { getCurrentUser, fetchUserAttributes, signOut, type AuthUser } from "aws-amplify/auth";
+import { Hub } from "aws-amplify/utils";
+import { Loader2, Moon, Sun } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
-import { AdminThemeProvider } from "@/context/AdminTheme";
 
 function AdminLayoutContent({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [checking, setChecking] = useState(true);
   const [signingOut, setSigningOut] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
 
-  const { user, route } = useAuthenticator((context) => [context.user, context.route]);
-
-  const username = user?.signInDetails?.loginId ?? user?.username ?? "Unknown user";
+  const displayName = email ?? user?.signInDetails?.loginId ?? user?.username ?? "Unknown user";
 
   useEffect(() => {
-    // Load theme from localStorage
     const savedTheme = localStorage.getItem("adminTheme") as "dark" | "light" | null;
     if (savedTheme) {
       setTheme(savedTheme);
@@ -28,23 +25,84 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    // Save theme to localStorage
     localStorage.setItem("adminTheme", theme);
   }, [theme]);
 
   useEffect(() => {
-    (async () => {
+    // `getCurrentUser` may still reject mid-OAuth-callback even though
+    // sign-in is about to succeed, so rely on Hub for "signedIn" /
+    // "signInWithRedirect_failure" instead of bouncing early.
+    let cancelled = false;
+
+    // Cognito surfaces failures (bad issuer, missing attributes, etc.) as
+    // `/admin?error=...&error_description=...`. Log it and forward to
+    // /login so it's visible instead of silently redirecting away.
+    const params = new URLSearchParams(window.location.search);
+    const oauthError = params.get("error");
+    if (oauthError) {
+      const description = params.get("error_description") ?? oauthError;
+      console.error("OAuth callback error on /admin:", description);
+      router.replace(`/login?error=${encodeURIComponent(description)}`);
+      return;
+    }
+
+    const checkUser = async () => {
       try {
-        await getCurrentUser();
-        setChecking(false);
-      } catch (error) {
-        console.error(error);
-        router.replace("/login");
+        const current = await getCurrentUser();
+        if (!cancelled) {
+          setUser(current);
+          setChecking(false);
+        }
+        // Amplify's own cleanup uses a raw `window.history.replaceState`,
+        // which Next's App Router isn't aware of and can later resync back
+        // to the dirty URL (e.g. on HMR/refresh). Use `router.replace`
+        // instead. Also covers the exchange itself failing (stale/reused code).
+        const currentParams = new URLSearchParams(window.location.search);
+        if (currentParams.has("code") || currentParams.has("state")) {
+          router.replace(window.location.pathname);
+        }
+        try {
+          const attributes = await fetchUserAttributes();
+          if (!cancelled && attributes.email) setEmail(attributes.email);
+        } catch (err) {
+          console.error("Failed to fetch user attributes:", err);
+        }
+      } catch {
+        const hasOAuthCode = new URLSearchParams(window.location.search).has("code");
+        if (!hasOAuthCode && !cancelled) {
+          router.replace("/login");
+        }
       }
-    })();
+    };
+
+    checkUser();
+
+    const unsubscribe = Hub.listen("auth", ({ payload }) => {
+      if (payload.event === "signedIn") {
+        checkUser();
+      }
+      if (payload.event === "signInWithRedirect_failure") {
+        console.error("signInWithRedirect failed on /admin:", payload.data?.error);
+        if (!cancelled) router.replace("/login?error=oauth_failed");
+      }
+      if (payload.event === "signedOut") {
+        if (!cancelled) router.replace("/login");
+      }
+    });
+
+    return () => {
+      cancelled = true;
+      unsubscribe();
+    };
   }, [router]);
 
-  if (checking) return null;
+  if (checking) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-black">
+        <Loader2 className="h-8 w-8 animate-spin text-neutral-400" />
+      </div>
+    );
+  }
 
   const isDark = theme === "dark";
 
@@ -71,7 +129,7 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
               >
                 Welcome{" "}
                 <strong className={isDark ? "text-neutral-100" : "text-neutral-900"}>
-                  {username}
+                  {displayName}
                 </strong>
               </span>
             </div>
@@ -111,8 +169,10 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
                 setSigningOut(true);
                 try {
                   await signOut();
+                } catch (err) {
+                  console.error("Sign out failed:", err);
                 } finally {
-                  if (route !== "signIn") window.location.href = "/login";
+                  window.location.href = "/login";
                 }
               }}
               disabled={signingOut}
@@ -137,9 +197,5 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
 }
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <AdminThemeProvider>
-      <AdminLayoutContent>{children}</AdminLayoutContent>
-    </AdminThemeProvider>
-  );
+  return <AdminLayoutContent>{children}</AdminLayoutContent>;
 }

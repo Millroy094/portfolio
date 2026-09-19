@@ -34,6 +34,24 @@ resource "aws_iam_policy" "amplify_service_role_policy" {
       {
         Effect = "Allow",
         Action = [
+          "ssm:GetParameter",
+          "ssm:GetParameters",
+          "ssm:GetParametersByPath"
+        ],
+        Resource = "arn:aws:ssm:*:*:parameter/amplify/shared/${aws_amplify_app.portfolio.id}/*"
+      },
+
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:Decrypt"
+        ],
+        Resource = "*"
+      },
+
+      {
+        Effect = "Allow",
+        Action = [
           "cloudformation:*",
           "iam:PassRole",
           "iam:GetRole",

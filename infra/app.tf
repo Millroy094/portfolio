@@ -6,8 +6,12 @@ resource "aws_amplify_app" "portfolio" {
   platform             = "WEB_COMPUTE"
   iam_service_role_arn = aws_iam_role.amplify_service_role.arn
   environment_variables = {
-    PUBLIC_URL = "https://www.${var.domain}"
-    NEXT_PUBLIC_G_TAG      = var.g_tag
+    PUBLIC_URL         = "https://www.${var.domain}"
+    NEXT_PUBLIC_G_TAG  = var.g_tag
+    OIDC_ISSUER_URL    = var.oidc_issuer_url
+    OIDC_PROVIDER_NAME = var.oidc_provider_name
+    OIDC_CALLBACK_URLS = "https://www.${var.domain}/admin,http://localhost:3000/admin"
+    OIDC_LOGOUT_URLS   = "https://www.${var.domain}/admin,http://localhost:3000/admin"
   }
 }
 
