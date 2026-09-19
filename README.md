@@ -115,12 +115,27 @@ npx ampx sandbox secret set OIDC_CLIENT_ID
 npx ampx sandbox secret set OIDC_CLIENT_SECRET
 ```
 
+> ℹ️ The sandbox secrets above and the Terraform-managed SSM secrets used
+> in production (`infra/secrets.tf`) are stored independently - `ampx
+> sandbox secret set` writes to a sandbox-specific SSM path, not the shared
+> production path. If you rotate the OIDC client secret, update it in
+> **both** places.
+
 > ⚠️ On your **custom OIDC provider's** side, you also need to register
 > Cognito's own redirect URI as an allowed callback URL - not just
 > `OIDC_CALLBACK_URLS` above (those are Cognito's callbacks, for your app).
-> Find it in the Cognito console under the user pool's app client, or
-> construct it as:
+> The URL is:
 > `https://<cognito-domain>.auth.<region>.amazoncognito.com/oauth2/idpresponse`
+>
+> To find `<cognito-domain>`: AWS Console → **Cognito** → **User pools** →
+> select the pool → **App integration** tab → **Domain** section (the
+> `<cognito-domain>` prefix is shown there, e.g. `0ebc2285b12aae78646f`).
+> Or via CLI: `aws cognito-idp describe-user-pool --user-pool-id <pool-id> --query UserPool.Domain`.
+>
+> **Sandbox and every deployed branch (including production) each get their
+> own Cognito user pool and domain**, so you need to register a separate
+> callback URL on the custom OIDC provider for each one you use - adding
+> production's doesn't replace sandbox's.
 
 **In production/CI**, the plain env vars come from the Amplify app's
 `environment_variables` (set by Terraform in `infra/app.tf` from the
