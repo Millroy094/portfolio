@@ -32,14 +32,16 @@ const SectionVisibilitySchema = z.object({
 });
 
 export const ProfileSchema = z.object({
+  // Not actually optional: the default form value is "", which fails the union
+  // below and is rejected by the refine with a clear "please upload" message.
   avatar: z
     .union([
       z.custom<File>((v) => isBrowserFile(v), { message: "Invalid file" }),
       z.string().regex(/^avatars\//, "Invalid avatar key"),
       z.string().url("Invalid avatar URL"),
+      z.literal(""),
     ])
-    .optional()
-    .nullable(),
+    .refine((v) => v !== "", { message: "Please upload an avatar" }),
   fullName: z
     .string()
     .max(50, { message: "Full name must be maximum of 50 characters" })

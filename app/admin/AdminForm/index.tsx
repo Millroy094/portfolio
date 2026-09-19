@@ -288,7 +288,7 @@ export default function AdminForm(props: AdminFormProps) {
     try {
       const assets = await uploadAssets(data);
       const serializableData: ProfileSchemaType = {
-        avatar: assets.avatarKey ?? (typeof data.avatar === "string" ? data.avatar : undefined),
+        avatar: assets.avatarKey ?? (typeof data.avatar === "string" ? data.avatar : ""),
         fullName: data.fullName,
         punchLine: data.punchLine,
         linkedIn: data.linkedIn,
