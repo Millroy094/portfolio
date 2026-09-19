@@ -32,8 +32,6 @@ const SectionVisibilitySchema = z.object({
 });
 
 export const ProfileSchema = z.object({
-  // Not actually optional: the default form value is "", which fails the union
-  // below and is rejected by the refine with a clear "please upload" message.
   avatar: z
     .union([
       z.custom<File>((v) => isBrowserFile(v), { message: "Invalid file" }),

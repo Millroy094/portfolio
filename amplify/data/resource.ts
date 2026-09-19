@@ -5,7 +5,7 @@ const schema = a.schema({
     .model({
       fullName: a.string().required(),
       punchLine: a.string(),
-      avatarKey: a.string(),
+      avatarKey: a.string().required(),
       linkedIn: a.string(),
       github: a.string(),
       stackOverflow: a.string(),

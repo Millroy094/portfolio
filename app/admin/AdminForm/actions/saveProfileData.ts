@@ -21,7 +21,7 @@ type ProfilePayload = {
   seoTitle: string;
   seoDescription: string;
   punchLine?: string;
-  avatarKey?: string;
+  avatarKey: string;
   linkedIn?: string;
   github?: string;
   stackOverflow?: string;
@@ -63,6 +63,10 @@ export async function saveProfileData(
   existingProfileId?: string | null,
   assets?: Assets,
 ) {
+  if (!assets?.avatarKey) {
+    throw new Error("avatarKey is required to save a profile");
+  }
+
   const client = generateServerClientUsingCookies<Schema>({
     config: outputs,
     cookies,
@@ -71,7 +75,7 @@ export async function saveProfileData(
   const payload: ProfilePayload = {
     fullName: formData.fullName,
     punchLine: formData.punchLine ?? undefined,
-    avatarKey: assets?.avatarKey,
+    avatarKey: assets.avatarKey,
     linkedIn: formData.linkedIn ?? undefined,
     github: formData.github ?? undefined,
     stackOverflow: formData.stackOverflow ?? undefined,
