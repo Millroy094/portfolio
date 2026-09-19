@@ -81,6 +81,55 @@ All sections can be toggled on or off.
 
 ---
 
+# 🔐 Admin Authentication (External OIDC SSO)
+
+The `/admin` panel is protected by AWS Cognito, federated to an **external
+OIDC identity provider** (no native Cognito username/password sign-in is
+used). This is configured in `amplify/auth/resource.ts` and driven entirely
+by environment variables/secrets - nothing is hardcoded:
+
+| Variable              | Purpose                                          | Source                                    |
+| ----------------------- | --------------------------------------------------- | -------------------------------------------- |
+| `OIDC_ISSUER_URL`      | Issuer URL of your external IdP                  | `.env` locally / Amplify env var in prod  |
+| `OIDC_PROVIDER_NAME`   | Provider name registered in Cognito              | `.env` locally / Amplify env var in prod  |
+| `OIDC_CALLBACK_URLS`   | Comma-separated allowed OAuth redirect URLs      | `.env` locally / Amplify env var in prod  |
+| `OIDC_LOGOUT_URLS`     | Comma-separated allowed OAuth logout redirect URLs | `.env` locally / Amplify env var in prod |
+| `OIDC_CLIENT_ID`       | OIDC app's client ID                             | Amplify Gen2 secret, via Terraform → SSM  |
+| `OIDC_CLIENT_SECRET`   | OIDC app's client secret                         | Amplify Gen2 secret, via Terraform → SSM  |
+
+**Locally**, `amplify/auth/resource.ts` reads these from a `.env` file at the
+repo root (not `.env.local`, since `npx ampx sandbox` needs it too):
+
+```
+OIDC_ISSUER_URL=https://auth.example.com/api/oidc
+OIDC_PROVIDER_NAME=Auth
+OIDC_CALLBACK_URLS=https://www.example.com/admin,http://localhost:3000/admin
+OIDC_LOGOUT_URLS=https://www.example.com/admin,http://localhost:3000/admin
+```
+
+`OIDC_CLIENT_ID`/`OIDC_CLIENT_SECRET` are never read from `.env` - they're
+Amplify-managed secrets, set once per sandbox with:
+
+```
+npx ampx sandbox secret set OIDC_CLIENT_ID
+npx ampx sandbox secret set OIDC_CLIENT_SECRET
+```
+
+**In production/CI**, the plain env vars come from the Amplify app's
+`environment_variables` (set by Terraform in `infra/app.tf` from the
+`oidc_issuer_url`/`oidc_provider_name` Terraform Cloud variables), and the
+client ID/secret come from SSM parameters Terraform creates
+(`infra/secrets.tf`) at the shared path Amplify's `secret()` resolves for
+branch deployments - so no manual Amplify Console step is needed.
+
+The frontend (`app/login/page.tsx`) reads the provider name via
+`NEXT_PUBLIC_OIDC_PROVIDER_NAME` (exposed from `OIDC_PROVIDER_NAME` in
+`next.config.ts`) and calls `signInWithRedirect({ provider: { custom: name } })`,
+which redirects straight to the external IdP - Cognito's own hosted UI is
+never shown to end users.
+
+---
+
 # 🔐 Required IAM Setup
 
 You must create **two separate OIDC roles**.
@@ -154,15 +203,23 @@ Used for provisioning infrastructure.
 
 # ⚙ Required Terraform Cloud Variables
 
-Variable Name Description Type Example
+| Variable Name        | Description                                   | Type      | Example                              |
+| --------------------- | ---------------------------------------------- | --------- | ------------------------------------- |
+| github_token          | GitHub PAT                                    | Sensitive |                                       |
+| domain                | Custom domain name                            | String    | myportfolio.com                      |
+| gh_owner              | GitHub org/user                               | String    | yourusername                         |
+| gh_repo               | GitHub repository name                        | String    | portfolio                            |
+| g_tag                 | Google Analytics ID                           | String    | G-XXXX                               |
+| oidc_issuer_url       | Issuer URL of your external OIDC provider     | String    | https://auth.example.com/api/oidc    |
+| oidc_provider_name    | Provider name (must match `amplify/auth/resource.ts`) | String | Auth                             |
+| oidc_client_id        | OIDC app's client ID                          | Sensitive |                                       |
+| oidc_client_secret    | OIDC app's client secret                      | Sensitive |                                       |
 
----
-
-github_token GitHub PAT Sensitive  
- domain Custom domain name String myportfolio.com
-gh_owner GitHub org/user String yourusername
-gh_repo GitHub repository name String portfolio
-g_tag Google Analytics ID String G-XXXX
+`oidc_client_id`/`oidc_client_secret` are written by Terraform to SSM
+(`infra/secrets.tf`) at `/amplify/shared/<appId>/OIDC_CLIENT_ID` and
+`.../OIDC_CLIENT_SECRET` - the exact path Amplify Gen2's `secret()` resolves
+for branch/pipeline deployments, so no manual Amplify Console step is
+needed.
 
 ---
 
@@ -201,9 +258,24 @@ npx ampx sandbox or npm run dev:backend:build
 
 npm ci
 
-### Create `.env.local`
+### Create `.env`
 
-PUBLIC_URL=http://localhost:3000 NEXT_PUBLIC_G_TAG=G-XXXXX
+```
+PUBLIC_URL=http://localhost:3000
+NEXT_PUBLIC_G_TAG=G-XXXXX
+OIDC_ISSUER_URL=https://auth.example.com/api/oidc
+OIDC_PROVIDER_NAME=Auth
+OIDC_CALLBACK_URLS=https://www.example.com/admin,http://localhost:3000/admin
+OIDC_LOGOUT_URLS=https://www.example.com/admin,http://localhost:3000/admin
+```
+
+Then set the sandbox-only OIDC client secrets once (see
+[Admin Authentication](#-admin-authentication-external-oidc-sso) above):
+
+```
+npx ampx sandbox secret set OIDC_CLIENT_ID
+npx ampx sandbox secret set OIDC_CLIENT_SECRET
+```
 
 ### Start development server
 
@@ -215,8 +287,8 @@ Visit http://localhost:3000
 
 # 🚀 First-Time Setup After Deployment
 
-1.  Create a user in AWS Cognito
-2.  Sign in at /admin
+1.  Register your admin user with your external OIDC provider
+2.  Sign in at /admin via SSO
 3.  Add your portfolio content
 4.  Configure visibility of sections
 5.  Visit / to view your site
