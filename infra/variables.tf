@@ -1,3 +1,20 @@
+variable "aws_region" {
+  description = "AWS region to deploy resources into"
+  type        = string
+  default     = "eu-west-2"
+}
+
+variable "project_name" {
+  description = "Name of the project, used for resource tagging"
+  type        = string
+  default     = "portfolio"
+}
+
+variable "author" {
+  description = "Author/owner of the project, used for resource tagging"
+  type        = string
+}
+
 variable "github_token" {
   description = "GitHub repo token"
   type        = string
