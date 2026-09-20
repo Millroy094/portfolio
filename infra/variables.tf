@@ -15,6 +15,18 @@ variable "author" {
   type        = string
 }
 
+variable "environment" {
+  description = "Deployment environment, used for resource tagging"
+  type        = string
+  default     = "production"
+}
+
+variable "managed_by" {
+  description = "Tool managing the infrastructure, used for resource tagging"
+  type        = string
+  default     = "Terraform"
+}
+
 variable "github_token" {
   description = "GitHub repo token"
   type        = string

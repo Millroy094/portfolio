@@ -21,10 +21,10 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Environment = "production"
+      Environment = var.environment
       Project     = var.project_name
       Author      = var.author
-      ManagedBy   = "Terraform"
+      ManagedBy   = var.managed_by
     }
   }
 }
