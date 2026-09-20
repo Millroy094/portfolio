@@ -10,8 +10,8 @@ resource "aws_amplify_app" "portfolio" {
     NEXT_PUBLIC_G_TAG  = var.g_tag
     OIDC_ISSUER_URL    = var.oidc_issuer_url
     OIDC_PROVIDER_NAME = var.oidc_provider_name
-    OIDC_CALLBACK_URLS = "https://www.${var.domain}/admin,http://localhost:3000/admin"
-    OIDC_LOGOUT_URLS   = "https://www.${var.domain}/admin,http://localhost:3000/admin"
+    OIDC_CALLBACK_URLS = "https://www.${var.domain}/admin"
+    OIDC_LOGOUT_URLS   = "https://www.${var.domain}/admin"
   }
 }
 

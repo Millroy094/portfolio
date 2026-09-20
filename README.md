@@ -287,8 +287,8 @@ PUBLIC_URL=http://localhost:3000
 NEXT_PUBLIC_G_TAG=G-XXXXX
 OIDC_ISSUER_URL=https://auth.example.com/api/oidc
 OIDC_PROVIDER_NAME=Auth
-OIDC_CALLBACK_URLS=https://www.example.com/admin,http://localhost:3000/admin
-OIDC_LOGOUT_URLS=https://www.example.com/admin,http://localhost:3000/admin
+OIDC_CALLBACK_URLS=http://localhost:3000/admin
+OIDC_LOGOUT_URLS=http://localhost:3000/admin
 ```
 
 Then set the sandbox-only OIDC client secrets once (see
