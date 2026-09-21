@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import HistoryTimeline from "@/app/home/HistoryTimeline";
-import LottiePlayer from "@/components/LottiePlayer";
+import CircuitGraphic from "@/components/CircuitGraphic";
 import { useWebsiteData } from "@/context/WebsiteData";
 
 function EducationAndExperience() {
@@ -49,12 +49,9 @@ function EducationAndExperience() {
 
         {isLargeScreen && (
           <div className="hidden xl:flex justify-center items-center self-center w-75 max-w-65">
-            <LottiePlayer
-              src="/lotties/work-and-education.json"
+            <CircuitGraphic
+              variant="pathway"
               className="w-full h-auto"
-              renderer="canvas"
-              playInView={true}
-              fps={30}
               style={{ contain: "layout style paint" }}
             />
           </div>

@@ -57,20 +57,6 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link
-          rel="preload"
-          as="fetch"
-          href="/lotties/work-and-education.json"
-          type="application/json"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          as="fetch"
-          href="/lotties/about-me.json"
-          type="application/json"
-          crossOrigin="anonymous"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
