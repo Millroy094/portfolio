@@ -31,6 +31,8 @@ function EducationAndExperience() {
   const experienceRowCount = data.experiences?.length ?? 0;
   const educationRowCount = new Set(data.education?.map((e) => e.institute)).size;
   const longerRowCount = Math.max(experienceRowCount, educationRowCount);
+  const fadeStartPercent =
+    longerRowCount > 1 ? Math.min(40, Math.max(8, (1 / (longerRowCount - 1)) * 100)) : 10;
   const fadeEndPercent =
     longerRowCount > 1
       ? Math.min(92, Math.max(60, ((longerRowCount - 2) / (longerRowCount - 1)) * 100))
@@ -60,6 +62,7 @@ function EducationAndExperience() {
             <VerticalEnergyGraphic
               style={{
                 contain: "layout style paint",
+                ["--connector-fade-start" as string]: `${fadeStartPercent}%`,
                 ["--connector-fade-end" as string]: `${fadeEndPercent}%`,
               }}
             />
