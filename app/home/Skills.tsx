@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { skillsRegistry, SkillId, Skill } from "@/components/controls/SkillSelect/SkillRegistery";
 import { SkillsGlobe } from "@/components/SkillsGlobe";
@@ -65,8 +65,11 @@ export default function Skills() {
     [data?.skills],
   );
   const groups = useMemo(() => groupSkills(skillIds), [skillIds]);
+  const [activeGroup, setActiveGroup] = useState<GroupKey | null>(null);
 
   if (!data?.visibility?.skills || skillIds.length === 0) return null;
+
+  const selectedGroup = groups.find((g) => g.group === activeGroup) ?? groups[0];
 
   return (
     <section className="relative z-10 mb-20 md:mb-28 px-0">
@@ -87,41 +90,54 @@ export default function Skills() {
         </h2>
       </div>
 
-      <div className="w-screen ml-[calc(-50vw+50%)]">
-        <div
-          className="mx-auto aspect-square relative bg-transparent"
-          style={{
-            width: "min(100svw, 78svh)",
-          }}
-        >
-          <SkillsGlobe skillIds={skillIds} radius={2.8} height="100%" />
-        </div>
-      </div>
+      <div className="mx-auto w-full max-w-[1400px] px-4 lg:px-8">
+        <div className="flex flex-col gap-10 lg:grid lg:grid-cols-2 lg:items-start lg:gap-8">
+          <div className="w-screen ml-[calc(-50vw+50%)] lg:w-full lg:ml-0">
+            <div
+              className="mx-auto aspect-square relative bg-transparent lg:max-w-[650px]"
+              style={{
+                width: "min(100svw, 78svh)",
+              }}
+            >
+              <SkillsGlobe skillIds={skillIds} radius={2.8} height="100%" />
+            </div>
+          </div>
 
-      <div className="mt-10 w-full px-4 ">
-        <div
-          className="
-      mx-auto
-      max-w-325
-      flex flex-wrap justify-center
-      gap-x-10 gap-y-8
-    "
-        >
-          {groups.map(({ group, items }) => (
-            <div key={group} className="flex flex-col items-center">
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-neutral-400 mb-3 text-center">
-                {labelForGroup(group)}
+          <div className="mx-auto w-full max-w-325 lg:max-w-full">
+            <div className="mb-6 flex flex-wrap justify-center lg:justify-start gap-2">
+              {groups.map(({ group }) => {
+                const isActive = selectedGroup.group === group;
+                return (
+                  <button
+                    key={group}
+                    type="button"
+                    onClick={() => setActiveGroup(group)}
+                    className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                      isActive
+                        ? "border-red-500 bg-red-500/20 text-white"
+                        : "border-neutral-700/60 bg-neutral-900/30 text-neutral-300 hover:border-neutral-500"
+                    }`}
+                  >
+                    {labelForGroup(group)}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="flex flex-col items-center lg:items-start">
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-neutral-400 mb-3 text-center lg:text-left">
+                {labelForGroup(selectedGroup.group)}
               </h3>
 
-              <ul className="flex flex-wrap justify-center gap-3 max-w-72 sm:max-w-80">
-                {items.map((skill) => (
+              <ul className="flex flex-wrap justify-center lg:justify-start gap-3 max-w-72 sm:max-w-80 lg:max-w-full">
+                {selectedGroup.items.map((skill) => (
                   <li
                     key={skill.id}
                     className="
-                flex items-center px-3 py-2 rounded-md
-                bg-neutral-900/40 border border-neutral-700/40
-                hover:bg-neutral-900/70 transition
-              "
+                      flex items-center px-3 py-2 rounded-md
+                      bg-neutral-900/40 border border-neutral-700/40
+                      hover:bg-neutral-900/70 transition
+                    "
                   >
                     {skill.render()}
                     <span className="ml-2 text-sm text-neutral-200">{skill.label}</span>
@@ -129,7 +145,7 @@ export default function Skills() {
                 ))}
               </ul>
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </section>
