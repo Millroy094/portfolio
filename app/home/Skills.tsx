@@ -103,8 +103,8 @@ export default function Skills() {
             </div>
           </div>
 
-          <div className="mx-auto w-full max-w-325 lg:max-w-full">
-            <div className="mb-6 flex flex-wrap justify-center lg:justify-start gap-2">
+          <div className="mx-auto w-full max-w-[325px] lg:max-w-full">
+            <div className="mb-6 grid grid-cols-[repeat(auto-fit,minmax(8.5rem,1fr))] gap-2">
               {groups.map(({ group }) => {
                 const isActive = selectedGroup.group === group;
                 return (
@@ -112,7 +112,7 @@ export default function Skills() {
                     key={group}
                     type="button"
                     onClick={() => setActiveGroup(group)}
-                    className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                    className={`w-full rounded-full border px-4 py-2 text-center text-sm font-medium whitespace-nowrap transition ${
                       isActive
                         ? "border-red-500 bg-red-500/20 text-white"
                         : "border-neutral-700/60 bg-neutral-900/30 text-neutral-300 hover:border-neutral-500"
