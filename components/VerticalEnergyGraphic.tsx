@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 type Props = {
@@ -12,10 +12,16 @@ type Props = {
   sparkCount?: number;
 };
 
-const VIEW_HEIGHT = 300;
+const BASE_VIEW_HEIGHT = 300;
+const VIEW_WIDTH = 100;
 const AMPLITUDE = 30;
 const CENTER_X = 50;
-const TWISTS = 2.25;
+const BASE_TWISTS = 2.25;
+// Target vertical distance (in viewBox units, at the reference aspect ratio)
+// for a single full twist of the helix - used to keep the coil's visual
+// density constant as the column grows taller, instead of stretching a
+// fixed number of twists over a taller viewBox.
+const TWIST_PERIOD = BASE_VIEW_HEIGHT / BASE_TWISTS;
 const ROTATION_FRAMES = 12;
 const ROTATION_DURATION = "6s";
 
@@ -39,11 +45,11 @@ const OUTER_DRIFTERS = [
   { top: "88%", left: "20%", delay: "1s", duration: "8.5s" },
 ];
 
-function buildFrames(rungCount: number) {
+function buildFrames(rungCount: number, viewHeight: number, twists: number) {
   const steps = 48;
   const baseSamples = Array.from({ length: steps + 1 }, (_, i) => {
     const t = i / steps;
-    return { t, y: t * VIEW_HEIGHT };
+    return { t, y: t * viewHeight };
   });
 
   const rungIndices = (() => {
@@ -63,7 +69,7 @@ function buildFrames(rungCount: number) {
   for (let f = 0; f <= ROTATION_FRAMES; f += 1) {
     const rotation = (f / ROTATION_FRAMES) * Math.PI * 2;
     const points: { xA: number; xB: number; y: number }[] = baseSamples.map((s) => {
-      const phase = s.t * Math.PI * 2 * TWISTS + rotation;
+      const phase = s.t * Math.PI * 2 * twists + rotation;
       return {
         xA: CENTER_X + AMPLITUDE * Math.sin(phase),
         xB: CENTER_X - AMPLITUDE * Math.sin(phase),
@@ -124,7 +130,40 @@ export default function VerticalEnergyGraphic({
     return () => query.removeEventListener("change", update);
   }, []);
 
-  const frames = useMemo(() => buildFrames(rungCount), [rungCount]);
+  // Measure the helix column's real rendered size so the wave's viewBox
+  // matches its actual aspect ratio (avoiding the vertical stretch caused by
+  // preserveAspectRatio="none" when a fixed viewBox is scaled to a taller
+  // box), and so the number of twists grows with height instead of a fixed
+  // count of twists being stretched thinner/taller.
+  const helixColRef = useRef<HTMLDivElement>(null);
+  const [helixSize, setHelixSize] = useState({ width: 60, height: BASE_VIEW_HEIGHT * 0.6 });
+
+  useEffect(() => {
+    const el = helixColRef.current;
+    if (!el) return undefined;
+
+    const update = () => {
+      const { width, height } = el.getBoundingClientRect();
+      if (width > 0 && height > 0) setHelixSize({ width, height });
+    };
+    update();
+
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const { viewHeight, twists } = useMemo(() => {
+    const aspect = helixSize.height / helixSize.width;
+    const height = VIEW_WIDTH * aspect;
+    const rawTwists = height / TWIST_PERIOD;
+    return { viewHeight: height, twists: Math.min(6, Math.max(1.5, rawTwists)) };
+  }, [helixSize]);
+
+  const frames = useMemo(
+    () => buildFrames(rungCount, viewHeight, twists),
+    [rungCount, viewHeight, twists],
+  );
   const sparks = useMemo(() => SPARK_LAYOUT.slice(0, sparkCount), [sparkCount]);
   const animate = inView && !reducedMotion;
 
@@ -173,9 +212,13 @@ export default function VerticalEnergyGraphic({
         ))}
       </div>
 
-      <div className="helix-col" aria-hidden="true">
+      <div className="helix-col" aria-hidden="true" ref={helixColRef}>
         <div className="helix-glow" />
-        <svg className="helix-svg" viewBox={`0 0 100 ${VIEW_HEIGHT}`} preserveAspectRatio="none">
+        <svg
+          className="helix-svg"
+          viewBox={`0 0 ${VIEW_WIDTH} ${viewHeight.toFixed(1)}`}
+          preserveAspectRatio="none"
+        >
           <defs>
             <linearGradient id="helix-rung-gradient" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0%" stopColor="rgba(239, 68, 68, 0.6)" />
