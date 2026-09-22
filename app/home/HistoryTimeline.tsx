@@ -136,9 +136,7 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
               <div className={`min-w-0 max-w-72 sm:max-w-80 ${isLast ? "pb-0" : "pb-10"}`}>
                 <GrowOnHover>
                   <div>
-                    <h3 className="text-lg font-semibold text-white/90">
-                      {institution}
-                    </h3>
+                    <h3 className="text-lg font-semibold text-white/90">{institution}</h3>
 
                     <ul className="mt-1 space-y-1 text-sm text-gray-400">
                       {items.map((i) => (
