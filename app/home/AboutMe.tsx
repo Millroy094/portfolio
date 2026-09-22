@@ -39,13 +39,13 @@ function AboutMe() {
         <div className="flex justify-center gap-2 lg:justify-start lg:col-start-2 lg:row-start-1">
           <h2
             className="inline-block font-bold uppercase tracking-wide
-                         text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] text-white/90"
+                         text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:text-[20px] text-white/90"
           >
             About
           </h2>
           <h2
             className="inline-block rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide
-                         text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] text-red-500"
+                         text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:text-[20px] text-red-500"
           >
             Me
           </h2>
