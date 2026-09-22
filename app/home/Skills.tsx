@@ -91,20 +91,15 @@ export default function Skills() {
       </div>
 
       <div className="mx-auto w-full max-w-[1400px] px-4 lg:px-8">
-        <div className="flex flex-col gap-10 lg:grid lg:grid-cols-2 lg:items-start lg:gap-8">
+        <div className="flex flex-col gap-10 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start lg:gap-10">
           <div className="w-screen ml-[calc(-50vw+50%)] lg:w-full lg:ml-0">
-            <div
-              className="mx-auto aspect-square relative bg-transparent lg:max-w-[650px]"
-              style={{
-                width: "min(100svw, 78svh)",
-              }}
-            >
+            <div className="mx-auto relative aspect-square w-[min(100svw,78svh)] max-w-full bg-transparent lg:w-full lg:max-w-[650px]">
               <SkillsGlobe skillIds={skillIds} radius={2.8} height="100%" />
             </div>
           </div>
 
-          <div className="mx-auto w-full max-w-325 lg:max-w-full">
-            <div className="mb-6 flex flex-wrap justify-center lg:justify-start gap-2">
+          <div className="relative z-10 mx-auto w-full max-w-[325px] lg:max-w-full">
+            <div className="mb-6 grid grid-cols-[repeat(auto-fit,minmax(8.5rem,1fr))] gap-2">
               {groups.map(({ group }) => {
                 const isActive = selectedGroup.group === group;
                 return (
@@ -112,7 +107,7 @@ export default function Skills() {
                     key={group}
                     type="button"
                     onClick={() => setActiveGroup(group)}
-                    className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                    className={`w-full rounded-full border px-4 py-2 text-center text-sm font-medium whitespace-nowrap transition ${
                       isActive
                         ? "border-red-500 bg-red-500/20 text-white"
                         : "border-neutral-700/60 bg-neutral-900/30 text-neutral-300 hover:border-neutral-500"
