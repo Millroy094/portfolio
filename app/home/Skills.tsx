@@ -66,6 +66,7 @@ export default function Skills() {
   );
   const groups = useMemo(() => groupSkills(skillIds), [skillIds]);
   const [activeGroup, setActiveGroup] = useState<GroupKey | null>(null);
+  const [mobileGroupMenuOpen, setMobileGroupMenuOpen] = useState(false);
 
   if (!data?.visibility?.skills || skillIds.length === 0) return null;
 
@@ -99,7 +100,34 @@ export default function Skills() {
           </div>
 
           <div className="relative z-10 mx-auto w-full max-w-[325px] md:max-w-full">
-            <div className="mb-6 grid grid-cols-[repeat(auto-fit,minmax(8.5rem,1fr))] gap-2">
+            <div className="mb-4 md:hidden relative">
+              <button
+                type="button"
+                onClick={() => setMobileGroupMenuOpen((prev) => !prev)}
+                className="w-full rounded-full border border-neutral-700/60 bg-neutral-900/40 px-4 py-2 text-xs font-medium uppercase tracking-wide text-neutral-200"
+              >
+                {labelForGroup(selectedGroup.group)}
+              </button>
+              {mobileGroupMenuOpen && (
+                <div className="absolute z-20 mt-2 w-full overflow-hidden rounded-xl border border-white/10 bg-[rgba(18,18,24,0.92)] backdrop-blur-md">
+                  {groups.map(({ group }) => (
+                    <button
+                      key={group}
+                      type="button"
+                      onClick={() => {
+                        setActiveGroup(group);
+                        setMobileGroupMenuOpen(false);
+                      }}
+                      className="w-full px-4 py-2 text-center text-xs font-bold uppercase tracking-wide text-white hover:bg-white/10 transition-colors"
+                    >
+                      {labelForGroup(group)}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="mb-6 hidden md:grid grid-cols-[repeat(auto-fit,minmax(8.5rem,1fr))] gap-2">
               {groups.map(({ group }) => {
                 const isActive = selectedGroup.group === group;
                 return (
