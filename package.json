@@ -16,7 +16,7 @@
   "dependencies": {
     "@aws-amplify/adapter-nextjs": "^1.7.3",
     "@aws-amplify/ui-react": "^6.15.4",
-    "@hookform/resolvers": "^5.2.2",
+    "@hookform/resolvers": "^5.9.1",
     "@icons-pack/react-simple-icons": "^13.13.0",
     "@next/third-parties": "^16.2.6",
     "@react-three/fiber": "^9.6.1",
