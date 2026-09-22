@@ -1,33 +1,25 @@
 "use client";
 
-import { useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 
 type Props = {
   className?: string;
   style?: React.CSSProperties;
-  /** Number of energy particles released outward from the orb */
-  particleCount?: number;
 };
 
-/**
- * Lightweight, dependency-free "techy" orb graphic that pulses and releases
- * outward bursts of energy. Pure SVG + CSS animation, no external libraries.
- */
-export default function OrbGraphic({ className, style, particleCount = 10 }: Props) {
-  const { ref, inView } = useInView({ threshold: 0.2, triggerOnce: false });
+const ORBITS = [
+  { rx: 85, ry: 32, rotate: -20, duration: 9, satelliteSize: 3.5 },
+  { rx: 85, ry: 32, rotate: 35, duration: 13, satelliteSize: 3 },
+  { rx: 85, ry: 32, rotate: 90, duration: 16, satelliteSize: 2.5 },
+];
 
-  const particles = useMemo(
-    () =>
-      Array.from({ length: particleCount }, (_, i) => {
-        const angle = (360 / particleCount) * i;
-        return {
-          angle,
-          delay: (i / particleCount) * 2.4,
-        };
-      }),
-    [particleCount],
-  );
+/**
+ * Lightweight, dependency-free "techy" orb graphic: a steady glowing core
+ * orbited by satellite particles on tilted elliptical paths, evoking an atom
+ * rather than a pulsing alarm/radar beacon. Pure SVG + CSS animation.
+ */
+export default function OrbGraphic({ className, style }: Props) {
+  const { ref, inView } = useInView({ threshold: 0.2, triggerOnce: false });
 
   return (
     <div
@@ -38,10 +30,7 @@ export default function OrbGraphic({ className, style, particleCount = 10 }: Pro
       <svg
         viewBox="0 0 200 200"
         className="w-full h-full"
-        style={{
-          overflow: "visible",
-          animationPlayState: inView ? "running" : "paused",
-        }}
+        style={{ overflow: "visible" }}
         aria-hidden="true"
         focusable="false"
       >
@@ -53,50 +42,33 @@ export default function OrbGraphic({ className, style, particleCount = 10 }: Pro
           </radialGradient>
         </defs>
 
-        {/* Expanding energy rings */}
-        {[0, 1, 2].map((i) => (
-          <circle
-            key={`ring-${i}`}
-            cx="100"
-            cy="100"
-            r="18"
-            fill="none"
-            stroke="rgba(239, 68, 68, 0.6)"
-            strokeWidth="1.5"
-            className="orb-ring"
-            style={{
-              animationDelay: `${i * 1.2}s`,
-              animationPlayState: inView ? "running" : "paused",
-            }}
-          />
+        {ORBITS.map((orbit, i) => (
+          <g key={i} transform={`translate(100 100) rotate(${orbit.rotate})`}>
+            <ellipse
+              rx={orbit.rx}
+              ry={orbit.ry}
+              fill="none"
+              stroke="rgba(239, 68, 68, 0.35)"
+              strokeWidth="1"
+            />
+            <g
+              className="orb-orbit"
+              style={{
+                animationDuration: `${orbit.duration}s`,
+                animationPlayState: inView ? "running" : "paused",
+              }}
+            >
+              <circle
+                cx={orbit.rx}
+                cy="0"
+                r={orbit.satelliteSize}
+                fill="rgba(239, 68, 68, 0.95)"
+                className="orb-satellite"
+              />
+            </g>
+          </g>
         ))}
 
-        {/* Outward-flying particles */}
-        {particles.map((p, i) => {
-          const rad = (p.angle * Math.PI) / 180;
-          const tx = Math.cos(rad) * 85;
-          const ty = Math.sin(rad) * 85;
-          return (
-            <circle
-              key={`particle-${i}`}
-              cx="100"
-              cy="100"
-              r="2.5"
-              fill="rgba(239, 68, 68, 0.9)"
-              className="orb-particle"
-              style={
-                {
-                  "--tx": `${tx}px`,
-                  "--ty": `${ty}px`,
-                  animationDelay: `${p.delay}s`,
-                  animationPlayState: inView ? "running" : "paused",
-                } as React.CSSProperties
-              }
-            />
-          );
-        })}
-
-        {/* Core */}
         <circle cx="100" cy="100" r="22" fill="url(#orb-core)" className="orb-core" />
       </svg>
     </div>

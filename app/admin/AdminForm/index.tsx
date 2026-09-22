@@ -337,7 +337,7 @@ export default function AdminForm(props: AdminFormProps) {
   if (loading) {
     return (
       <div className="flex h-screen w-full items-center justify-center">
-        <Loader2 className="h-10 w-10 animate-spin text-[var(--admin-text-muted)]" />
+        <Loader2 className="h-10 w-10 animate-spin text-(--admin-text-muted)" />
       </div>
     );
   }
@@ -410,6 +410,7 @@ export default function AdminForm(props: AdminFormProps) {
               fields={roles.fields}
               append={roles.append}
               remove={roles.remove}
+              move={roles.move}
               disabled={!isEditable}
             />
 
@@ -447,6 +448,7 @@ export default function AdminForm(props: AdminFormProps) {
                 fields: projects.fields,
                 append: projects.append,
                 remove: projects.remove,
+                move: projects.move,
               }}
               disabled={!isEditable}
             />

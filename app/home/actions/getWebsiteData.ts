@@ -247,7 +247,9 @@ export default async function getWebsiteData(): Promise<WebsiteData> {
       medium: p.medium ?? "",
       resume: p.resume ?? "",
 
-      roles: visibility.roles ? rolesRes.data.map((r) => r.value) : [],
+      roles: visibility.roles
+        ? [...rolesRes.data].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)).map((r) => r.value)
+        : [],
 
       skills: visibility.skills
         ? (p?.skills?.filter((s): s is string => typeof s === "string") ?? [])
@@ -274,11 +276,13 @@ export default async function getWebsiteData(): Promise<WebsiteData> {
         : [],
 
       projects: visibility.projects
-        ? projRes.data.map((e) => ({
-            description: e.description ?? "",
-            name: e.name,
-            url: e.url ?? "",
-          }))
+        ? [...projRes.data]
+            .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+            .map((e) => ({
+              description: e.description ?? "",
+              name: e.name,
+              url: e.url ?? "",
+            }))
         : [],
       mediumPosts:
         visibility.posts && p.medium

@@ -22,7 +22,6 @@ export default function VerticalEnergyGraphic({ className, style, pulseCount = 5
     () =>
       Array.from({ length: pulseCount }, (_, i) => ({
         delay: (i / pulseCount) * 3.5,
-        offset: i % 2 === 0 ? -6 : 6,
       })),
     [pulseCount],
   );
@@ -39,7 +38,6 @@ export default function VerticalEnergyGraphic({ className, style, pulseCount = 5
         ...style,
       }}
     >
-      {/* Static beam */}
       <div
         className="energy-beam"
         style={{
@@ -52,8 +50,7 @@ export default function VerticalEnergyGraphic({ className, style, pulseCount = 5
         }}
       />
 
-      {/* Anchor nodes at top / middle / bottom */}
-      {[0, 50, 100].map((topPct) => (
+      {[0, 100].map((topPct) => (
         <span
           key={topPct}
           className="energy-node"
@@ -66,15 +63,11 @@ export default function VerticalEnergyGraphic({ className, style, pulseCount = 5
         />
       ))}
 
-      {/* Traveling glowing pulses */}
       {pulses.map((p, i) => (
         <span
           key={i}
-          className="energy-pulse"
+          className="energy-comet"
           style={{
-            position: "absolute",
-            left: "50%",
-            marginLeft: `${p.offset}px`,
             animationDelay: `${p.delay}s`,
             animationPlayState: inView ? "running" : "paused",
           }}

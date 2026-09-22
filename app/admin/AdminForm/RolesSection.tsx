@@ -1,6 +1,6 @@
 "use client";
 
-import { Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, Trash2 } from "lucide-react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
@@ -15,6 +15,7 @@ export interface RolesSectionProps {
   fields: { id: string; value: string }[];
   append: (v: { value: string }) => void;
   remove: (index: number) => void;
+  move: (from: number, to: number) => void;
   disabled: boolean;
 }
 
@@ -24,6 +25,7 @@ export default function RolesSection({
   fields,
   append,
   remove,
+  move,
   disabled,
 }: RolesSectionProps) {
   return (
@@ -44,7 +46,7 @@ export default function RolesSection({
             key={role.id}
             className="flex items-start gap-2 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-start"
           >
-            <div className="min-w-0 flex-1 lg:col-span-11">
+            <div className="min-w-0 flex-1 lg:col-span-9">
               <Controller
                 control={control}
                 name={`roles.${index}`}
@@ -60,7 +62,29 @@ export default function RolesSection({
               />
             </div>
 
-            <div className="shrink-0 lg:items-start">
+            <div className="flex shrink-0 items-center gap-2 lg:col-span-3 lg:justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={() => index > 0 && move(index, index - 1)}
+                disabled={disabled || index === 0}
+                aria-label={`Move role ${index + 1} up`}
+              >
+                <ArrowUp className="h-4 w-4" />
+              </Button>
+
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={() => index < fields.length - 1 && move(index, index + 1)}
+                disabled={disabled || index === fields.length - 1}
+                aria-label={`Move role ${index + 1} down`}
+              >
+                <ArrowDown className="h-4 w-4" />
+              </Button>
+
               <Button
                 type="button"
                 variant="outline"

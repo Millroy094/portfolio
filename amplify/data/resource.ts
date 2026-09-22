@@ -41,6 +41,7 @@ const schema = a.schema({
   Role: a
     .model({
       value: a.string().required(),
+      order: a.integer(),
       profileId: a.id().required(),
       profile: a.belongsTo("Profile", "profileId"),
     })
@@ -92,6 +93,7 @@ const schema = a.schema({
       name: a.string().required(),
       description: a.string(),
       url: a.string(),
+      order: a.integer(),
       profileId: a.id().required(),
       profile: a.belongsTo("Profile", "profileId"),
     })

@@ -120,14 +120,13 @@ body {
   transform-origin: 100px 100px;
 }
 
-.orb-ring {
-  animation: orb-ring-expand 3.6s ease-out infinite;
-  transform-origin: 100px 100px;
+.orb-orbit {
+  animation: orb-rotate linear infinite;
+  transform-origin: 0 0;
 }
 
-.orb-particle {
-  animation: orb-particle-fly 2.4s ease-out infinite;
-  transform-origin: 100px 100px;
+.orb-satellite {
+  filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.9));
 }
 
 @keyframes orb-breathe {
@@ -142,28 +141,12 @@ body {
   }
 }
 
-@keyframes orb-ring-expand {
-  0% {
-    transform: scale(1);
-    opacity: 0.8;
+@keyframes orb-rotate {
+  from {
+    transform: rotate(0deg);
   }
-  100% {
-    transform: scale(3.2);
-    opacity: 0;
-  }
-}
-
-@keyframes orb-particle-fly {
-  0% {
-    transform: translate(0, 0) scale(1);
-    opacity: 0;
-  }
-  15% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate(var(--tx), var(--ty)) scale(0.3);
-    opacity: 0;
+  to {
+    transform: rotate(360deg);
   }
 }
 
@@ -186,13 +169,21 @@ body {
   animation: energy-node-glow 2.4s ease-in-out infinite;
 }
 
-.energy-pulse {
-  width: 6px;
-  height: 6px;
+.energy-comet {
+  position: absolute;
+  left: 50%;
+  top: -6%;
+  width: 4px;
+  height: 48px;
   border-radius: 9999px;
-  background: rgba(239, 68, 68, 0.95);
-  box-shadow: 0 0 8px 2px rgba(239, 68, 68, 0.8);
-  animation: energy-pulse-travel 3.5s linear infinite;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    to bottom,
+    rgba(239, 68, 68, 0) 0%,
+    rgba(239, 68, 68, 0.95) 100%
+  );
+  filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.85));
+  animation: energy-comet-travel 3.5s linear infinite;
 }
 
 @keyframes energy-node-glow {
@@ -207,9 +198,9 @@ body {
   }
 }
 
-@keyframes energy-pulse-travel {
+@keyframes energy-comet-travel {
   0% {
-    top: -4%;
+    top: -6%;
     opacity: 0;
   }
   10% {
@@ -219,17 +210,16 @@ body {
     opacity: 1;
   }
   100% {
-    top: 104%;
+    top: 100%;
     opacity: 0;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .orb-core,
-  .orb-ring,
-  .orb-particle,
+  .orb-orbit,
   .energy-node,
-  .energy-pulse {
+  .energy-comet {
     animation: none;
   }
 }

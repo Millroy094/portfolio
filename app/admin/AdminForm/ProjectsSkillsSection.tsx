@@ -1,6 +1,6 @@
 "use client";
 
-import { Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, Trash2 } from "lucide-react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
@@ -25,6 +25,7 @@ export interface ProjectsSkillsProps {
     fields: { id: string }[];
     append: (v: ProjectRecord) => void;
     remove: (index: number) => void;
+    move: (from: number, to: number) => void;
   };
   disabled: boolean;
 }
@@ -102,7 +103,7 @@ export default function ProjectsSkillsSection({
                 />
               </div>
 
-              <div className="w-full lg:col-span-5">
+              <div className="w-full lg:col-span-4">
                 <Controller
                   control={control}
                   name={`projects.${index}.description`}
@@ -138,7 +139,33 @@ export default function ProjectsSkillsSection({
                 />
               </div>
 
-              <div className="flex w-full justify-center lg:col-span-1 lg:items-center">
+              <div className="flex w-full items-center justify-center gap-2 lg:col-span-2 lg:justify-end">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => index > 0 && projects.move(index, index - 1)}
+                  disabled={disabled || index === 0}
+                  className="h-10 w-10"
+                  aria-label={`Move project ${index + 1} up`}
+                >
+                  <ArrowUp className="h-5 w-5" />
+                </Button>
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() =>
+                    index < projects.fields.length - 1 && projects.move(index, index + 1)
+                  }
+                  disabled={disabled || index === projects.fields.length - 1}
+                  className="h-10 w-10"
+                  aria-label={`Move project ${index + 1} down`}
+                >
+                  <ArrowDown className="h-5 w-5" />
+                </Button>
+
                 <Button
                   type="button"
                   variant="outline"

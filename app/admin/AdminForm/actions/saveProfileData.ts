@@ -113,7 +113,7 @@ export async function saveProfileData(
     client,
     "Role",
     profileId,
-    (formData.roles ?? []).map((r) => ({ value: r.value })),
+    (formData.roles ?? []).map((r, index) => ({ value: r.value, order: index })),
   );
 
   await replaceChildren(
@@ -128,7 +128,12 @@ export async function saveProfileData(
 
   await replaceChildren(client, "Experience", profileId, formData.experiences ?? []);
   await replaceChildren(client, "Education", profileId, formData.education ?? []);
-  await replaceChildren(client, "Project", profileId, formData.projects ?? []);
+  await replaceChildren(
+    client,
+    "Project",
+    profileId,
+    (formData.projects ?? []).map((project, index) => ({ ...project, order: index })),
+  );
 
   return { ok: true, profileId };
 }

@@ -47,7 +47,12 @@ export async function getProfileData(): Promise<{
         seoDescription: p.seoDescription ?? "",
         mediumPostCount: p.mediumPostCount ?? 3,
 
-        roles: roles.data.map((r) => ({ value: r.value })) ?? [],
+        roles:
+          [...roles.data]
+            .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+            .map((r) => ({
+              value: r.value,
+            })) ?? [],
         badges: badges.data.map((b) => ({ value: b.value, label: b.label })) ?? [],
 
         experiences:
@@ -65,11 +70,13 @@ export async function getProfileData(): Promise<{
           })) ?? [],
 
         projects:
-          projects.data.map((p) => ({
-            name: p.name,
-            description: p.description ?? "",
-            url: p.url ?? "",
-          })) ?? [],
+          [...projects.data]
+            .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+            .map((p) => ({
+              name: p.name,
+              description: p.description ?? "",
+              url: p.url ?? "",
+            })) ?? [],
 
         skills: (p.skills ?? []).filter((s): s is string => typeof s === "string") ?? [],
 
