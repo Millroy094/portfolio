@@ -32,10 +32,10 @@ export default function Projects() {
 
   return (
     <section className="relative z-10 mb-20 md:mb-28 px-5 sm:px-10">
-      <div className="flex justify-center md:justify-center lg:justify-start gap-2">
+      <div className="flex justify-center md:justify-center lg:justify-start gap-2 mb-10 md:mb-14">
         <h2
           className="rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide text-red-500
-                     text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] mb-5"
+                     text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px]"
         >
           Projects
         </h2>
@@ -43,7 +43,7 @@ export default function Projects() {
 
       <div
         className="
-          grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4 mt-6
+          grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4
         "
       >
         {data.projects?.map((project) => (

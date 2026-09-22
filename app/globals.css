@@ -397,12 +397,19 @@ body {
   }
 }
 
+.scan-core-ray-mask {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
 .scan-core-ray {
   position: absolute;
-  left: -20%;
-  right: -20%;
+  left: 4%;
+  right: 4%;
   height: 10px;
-  top: -10px;
+  top: 0;
   background: linear-gradient(
     to right,
     rgba(239, 68, 68, 0) 0%,
@@ -415,17 +422,17 @@ body {
 
 @keyframes scan-sweep {
   0% {
-    top: -10px;
+    top: 8%;
     opacity: 0;
   }
-  8% {
+  15% {
     opacity: 1;
   }
-  92% {
+  85% {
     opacity: 1;
   }
   100% {
-    top: 100%;
+    top: calc(92% - 10px);
     opacity: 0;
   }
 }

@@ -37,7 +37,7 @@ function AboutMe() {
         )}
 
         <div className="w-full lg:w-2/3 flex flex-col items-center lg:items-start">
-          <div className="flex justify-center gap-2 mb-4">
+          <div className="flex justify-center gap-2 mb-10 md:mb-14">
             <h2
               className="inline-block font-bold uppercase tracking-wide
                          text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] text-white/90"

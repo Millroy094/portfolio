@@ -142,7 +142,9 @@ export default function AboutMeGraphic({ className, style }: Props) {
                     <div className="scan-core-face scan-core-face-5" />
                     <div className="scan-core-face scan-core-face-6" />
                   </div>
-                  <div className="scan-core-ray" style={{ animationPlayState: playState }} />
+                  <div className="scan-core-ray-mask">
+                    <div className="scan-core-ray" style={{ animationPlayState: playState }} />
+                  </div>
                 </div>
               </div>
             </div>
