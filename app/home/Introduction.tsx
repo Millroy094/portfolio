@@ -73,10 +73,8 @@ export default function Introduction(): JSX.Element {
         )}
         {/* Name */}
         <div className="flex justify-center flex-wrap gap-2 text-center mb-1">
-          <span className="text-[20px] sm:text-[40px] md:text-[60px] font-normal text-white/90">
-            Hi, I am
-          </span>
-          <h1 className="text-[20px] sm:text-[40px] md:text-[60px] font-bold text-red-600">
+          <span className="text-[20px] md:text-[60px] font-normal text-white/90">Hi, I am</span>
+          <h1 className="text-[20px] md:text-[60px] font-bold text-red-600">
             {data.fullName || "Unknown"}
           </h1>
         </div>
@@ -88,7 +86,7 @@ export default function Introduction(): JSX.Element {
               wrapper="div"
               speed={50}
               className="
-                text-[18px] sm:text-[28px] md:text-[40px]
+                text-[18px] md:text-[40px]
                 leading-none
                 tracking-wide
                 text-white/90

@@ -113,7 +113,7 @@ export default function PortfolioAppBar() {
                         relative inline-block
                         font-bold uppercase tracking-wide text-xs
                         pb-1
-                        md:text-shadow-[0_1px_3px_rgba(0,0,0,0.75)]
+                        text-shadow-[0_1px_3px_rgba(0,0,0,0.75)]
                         after:absolute after:left-0 after:bottom-0
                         after:h-0.5 after:w-0 after:bg-red-500
                         after:transition-all after:duration-300
