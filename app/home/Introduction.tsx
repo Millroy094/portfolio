@@ -62,7 +62,7 @@ export default function Introduction(): JSX.Element {
     relative z-10
     min-h-[100svh]
     flex flex-col items-center justify-center
-    px-4 sm:px-6
+    px-4 pb-12 sm:px-6 md:pb-16
   "
       >
         {/* Avatar */}
