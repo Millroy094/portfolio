@@ -70,13 +70,13 @@ export default function PortfolioAppBar() {
           bg-transparent
         "
       >
-        <div className="mx-auto max-w-384 px-3 md:px-4">
-          <div className="h-12 md:h-14 flex items-center gap-3">
+        <div className="mx-auto max-w-384 px-3 sm:px-4">
+          <div className="h-12 sm:h-14 flex items-center gap-3">
             {/* Mobile menu toggle */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="
-                md:hidden
+                sm:hidden
                 text-white/90 hover:text-white
                 focus:outline-none
               "
@@ -95,7 +95,7 @@ export default function PortfolioAppBar() {
               </svg>
             </button>
 
-            <nav className="hidden md:flex gap-5 items-center">
+            <nav className="hidden sm:flex gap-5 items-center">
               {pages.map((page) => {
                 const id = normalizeId(page);
                 return (
@@ -113,7 +113,7 @@ export default function PortfolioAppBar() {
                         relative inline-block
                         font-bold uppercase tracking-wide text-xs
                         pb-1
-                        md:text-shadow-[0_1px_3px_rgba(0,0,0,0.75)]
+                        text-shadow-[0_1px_3px_rgba(0,0,0,0.75)]
                         after:absolute after:left-0 after:bottom-0
                         after:h-0.5 after:w-0 after:bg-red-500
                         after:transition-all after:duration-300
@@ -133,7 +133,7 @@ export default function PortfolioAppBar() {
               <button
                 onClick={() => router.push("/admin")}
                 className="
-                  hidden md:flex items-center gap-2
+                  hidden sm:flex items-center gap-2
                   bg-red-600 hover:bg-red-700 active:bg-red-800
                   text-white uppercase text-xs
                   px-3 py-1.5 rounded
@@ -149,7 +149,7 @@ export default function PortfolioAppBar() {
 
         <div
           className={`
-            md:hidden w-full
+            sm:hidden w-full
             ${mobileOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}
             overflow-hidden transition-all duration-200 ease-out
             bg-[rgba(18,18,24,0.92)] backdrop-blur-md border-t border-white/10

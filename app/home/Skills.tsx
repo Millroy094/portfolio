@@ -100,14 +100,14 @@ export default function Skills() {
       </div>
 
       <div className="mx-auto w-full max-w-[1400px] px-4 lg:px-8">
-        <div className="flex flex-col gap-10 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-start md:gap-8 lg:gap-10">
-          <div className="w-screen ml-[calc(-50vw+50%)] md:w-full md:ml-0">
-            <div className="mx-auto relative aspect-square w-[min(100svw,78svh)] max-w-full bg-transparent md:w-full md:max-w-[560px] lg:max-w-[650px]">
+        <div className="flex flex-col gap-10 sm:grid sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:items-start sm:gap-8 lg:gap-10">
+          <div className="w-screen ml-[calc(-50vw+50%)] sm:w-full sm:ml-0">
+            <div className="mx-auto relative aspect-square w-[min(100svw,78svh)] max-w-full bg-transparent sm:w-full sm:max-w-[560px] lg:max-w-[650px]">
               <SkillsGlobe skillIds={skillIds} radius={2.8} height="100%" />
             </div>
           </div>
 
-          <div className="relative z-10 mx-auto w-full max-w-[325px] md:max-w-full">
+          <div className="relative z-10 mx-auto w-full max-w-[325px] sm:max-w-full">
             <div className="mb-4 flex items-center gap-2 md:hidden">
               <button
                 type="button"
@@ -156,10 +156,6 @@ export default function Skills() {
             </div>
 
             <div className="flex flex-col items-center lg:items-start">
-              <h3 className="text-xs sm:text-sm font-semibold uppercase tracking-wide text-neutral-400 mb-3 text-center lg:text-left">
-                {labelForGroup(selectedGroup.group)}
-              </h3>
-
               <ul className="flex flex-wrap justify-center lg:justify-start gap-3 max-w-72 sm:max-w-80 lg:max-w-full">
                 {selectedGroup.items.map((skill) => (
                   <li
