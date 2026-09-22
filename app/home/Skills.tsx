@@ -100,15 +100,15 @@ export default function Skills() {
       </div>
 
       <div className="mx-auto w-full max-w-[1400px] px-4 lg:px-8">
-        <div className="flex flex-col gap-10 sm:grid sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:items-start sm:gap-8 lg:gap-10">
-          <div className="w-screen ml-[calc(-50vw+50%)] sm:w-full sm:ml-0">
-            <div className="mx-auto relative aspect-square w-[min(100svw,78svh)] max-w-full bg-transparent sm:w-full sm:max-w-[560px] lg:max-w-[650px]">
+        <div className="flex flex-col gap-10 sm:grid sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:items-start sm:gap-8 lg:gap-10 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:flex [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:flex-col">
+          <div className="w-screen ml-[calc(-50vw+50%)] sm:w-full sm:ml-0 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:w-screen [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:ml-[calc(-50vw+50%)]">
+            <div className="mx-auto relative aspect-square w-[min(100svw,78svh)] max-w-full bg-transparent sm:w-full sm:max-w-[560px] lg:max-w-[650px] [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:w-[min(100svw,78svh)] [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:max-w-full">
               <SkillsGlobe skillIds={skillIds} radius={2.8} height="100%" />
             </div>
           </div>
 
           <div className="relative z-10 mx-auto w-full max-w-[325px] sm:max-w-full">
-            <div className="mb-4 flex items-center gap-2 md:hidden">
+            <div className="mb-4 flex items-center gap-2 md:hidden [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:flex">
               <button
                 type="button"
                 onClick={() => changeMobileGroup("prev")}
@@ -135,7 +135,7 @@ export default function Skills() {
               </button>
             </div>
 
-            <div className="mb-6 hidden md:grid grid-cols-[repeat(auto-fit,minmax(8.5rem,1fr))] gap-2">
+            <div className="mb-6 hidden md:grid [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:hidden grid-cols-[repeat(auto-fit,minmax(8.5rem,1fr))] gap-2">
               {groups.map(({ group }) => {
                 const isActive = selectedGroup.group === group;
                 return (

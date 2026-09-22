@@ -77,6 +77,7 @@ export default function PortfolioAppBar() {
               onClick={() => setMobileOpen(!mobileOpen)}
               className="
                 md:hidden
+                [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:block
                 text-white/90 hover:text-white
                 focus:outline-none
               "
@@ -95,7 +96,7 @@ export default function PortfolioAppBar() {
               </svg>
             </button>
 
-            <nav className="hidden md:flex gap-5 items-center">
+            <nav className="hidden md:flex [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:hidden gap-5 items-center">
               {pages.map((page) => {
                 const id = normalizeId(page);
                 return (
@@ -134,6 +135,7 @@ export default function PortfolioAppBar() {
                 onClick={() => router.push("/admin")}
                 className="
                   hidden md:flex items-center gap-2
+                  [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:hidden
                   bg-red-600 hover:bg-red-700 active:bg-red-800
                   text-white uppercase text-xs
                   px-3 py-1.5 rounded
@@ -150,6 +152,7 @@ export default function PortfolioAppBar() {
         <div
           className={`
             md:hidden w-full
+            [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:block
             ${mobileOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}
             overflow-hidden transition-all duration-200 ease-out
             bg-[rgba(18,18,24,0.92)] backdrop-blur-md border-t border-white/10
