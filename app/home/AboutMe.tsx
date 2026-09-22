@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import CircuitGraphic from "@/components/CircuitGraphic";
+import OrbGraphic from "@/components/OrbGraphic";
 import { useWebsiteData } from "@/context/WebsiteData";
 import GrowOnHover from "@/hoc/GrowOnHover";
 import { htmlToText, splitHtmlIntoParagraphs } from "@/utils/paragraph";
@@ -32,11 +32,7 @@ function AboutMe() {
       <div className="flex w-full flex-col lg:flex-row items-start lg:items-center gap-6 lg:gap-10">
         {isLargeScreen && (
           <div className="hidden lg:flex justify-center items-end w-1/3">
-            <CircuitGraphic
-              variant="network"
-              className="w-full h-auto"
-              style={{ contain: "layout style paint" }}
-            />
+            <OrbGraphic className="w-full h-auto" style={{ contain: "layout style paint" }} />
           </div>
         )}
 

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import HistoryTimeline from "@/app/home/HistoryTimeline";
-import CircuitGraphic from "@/components/CircuitGraphic";
+import VerticalEnergyGraphic from "@/components/VerticalEnergyGraphic";
 import { useWebsiteData } from "@/context/WebsiteData";
 
 function EducationAndExperience() {
@@ -30,9 +30,9 @@ function EducationAndExperience() {
 
   return (
     <section className="relative z-10 mb-15 flex flex-col px-6 sm:px-0">
-      <div className="flex flex-col lg:flex-row items-center lg:items-start gap-10">
+      <div className="flex flex-col xl:flex-row items-center xl:items-stretch gap-10">
         {hasExperience && (
-          <div className="w-full lg:w-1/2">
+          <div className="w-full xl:w-1/2">
             <HistoryTimeline
               title="Experience"
               timeline={
@@ -48,17 +48,13 @@ function EducationAndExperience() {
         )}
 
         {isLargeScreen && (
-          <div className="hidden xl:flex justify-center items-center self-center w-75 max-w-65">
-            <CircuitGraphic
-              variant="pathway"
-              className="w-full h-auto"
-              style={{ contain: "layout style paint" }}
-            />
+          <div className="hidden xl:flex justify-center items-stretch w-16">
+            <VerticalEnergyGraphic style={{ contain: "layout style paint" }} />
           </div>
         )}
 
         {hasEducation && (
-          <div className="w-full lg:w-1/2">
+          <div className="w-full xl:w-1/2">
             <HistoryTimeline
               title="Education"
               timeline={

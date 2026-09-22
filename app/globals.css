@@ -114,19 +114,102 @@ body {
   --admin-drawer-border: #d4d4d8;
 }
 
-.circuit-pulse {
-  offset-rotate: 0deg;
-  animation: circuit-travel 3s linear infinite;
+/* Orb graphic (About Me) */
+.orb-core {
+  animation: orb-breathe 2.6s ease-in-out infinite;
+  transform-origin: 100px 100px;
 }
 
-.circuit-node {
-  fill: rgba(239, 68, 68, 0.9);
-  animation: circuit-glow 2.4s ease-in-out infinite;
+.orb-ring {
+  animation: orb-ring-expand 3.6s ease-out infinite;
+  transform-origin: 100px 100px;
 }
 
-@keyframes circuit-travel {
+.orb-particle {
+  animation: orb-particle-fly 2.4s ease-out infinite;
+  transform-origin: 100px 100px;
+}
+
+@keyframes orb-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.6));
+  }
+  50% {
+    transform: scale(1.12);
+    filter: drop-shadow(0 0 16px rgba(239, 68, 68, 0.95));
+  }
+}
+
+@keyframes orb-ring-expand {
   0% {
-    offset-distance: 0;
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+
+@keyframes orb-particle-fly {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(0.3);
+    opacity: 0;
+  }
+}
+
+/* Vertical energy stream (between Education & Experience) */
+.energy-beam {
+  background: linear-gradient(
+    to bottom,
+    rgba(239, 68, 68, 0) 0%,
+    rgba(239, 68, 68, 0.55) 15%,
+    rgba(239, 68, 68, 0.55) 85%,
+    rgba(239, 68, 68, 0) 100%
+  );
+}
+
+.energy-node {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: rgba(239, 68, 68, 0.9);
+  animation: energy-node-glow 2.4s ease-in-out infinite;
+}
+
+.energy-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: rgba(239, 68, 68, 0.95);
+  box-shadow: 0 0 8px 2px rgba(239, 68, 68, 0.8);
+  animation: energy-pulse-travel 3.5s linear infinite;
+}
+
+@keyframes energy-node-glow {
+  0%,
+  100% {
+    opacity: 0.5;
+    filter: drop-shadow(0 0 0 rgba(239, 68, 68, 0));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.9));
+  }
+}
+
+@keyframes energy-pulse-travel {
+  0% {
+    top: -4%;
     opacity: 0;
   }
   10% {
@@ -136,26 +219,17 @@ body {
     opacity: 1;
   }
   100% {
-    offset-distance: 100%;
+    top: 104%;
     opacity: 0;
   }
 }
 
-@keyframes circuit-glow {
-  0%,
-  100% {
-    opacity: 0.4;
-    filter: drop-shadow(0 0 0 rgba(239, 68, 68, 0));
-  }
-  50% {
-    opacity: 1;
-    filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.9));
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .circuit-pulse,
-  .circuit-node {
+  .orb-core,
+  .orb-ring,
+  .orb-particle,
+  .energy-node,
+  .energy-pulse {
     animation: none;
   }
 }
