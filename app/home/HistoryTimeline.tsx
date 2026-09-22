@@ -50,7 +50,7 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
 
   return (
     <div className="flex flex-col items-center w-full max-w-160 mx-auto">
-      <h2 className="rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide text-xs sm:text-[20px] text-red-500 md:text-[35px] mb-10 md:mb-14">
+      <h2 className="rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide text-[20px] text-red-500 md:text-[35px] mb-10 md:mb-14">
         {title}
       </h2>
 
@@ -68,7 +68,7 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
               <div key={`${item.title}-${item.year}`} className="flex gap-3 sm:gap-4">
                 <div className="w-12 sm:w-14 shrink-0 pt-1 text-right">
                   <p
-                    className={`text-xs sm:text-base font-bold ${
+                    className={`text-base font-bold ${
                       isPromotion ? "text-red-300" : "text-white/90"
                     }`}
                   >
@@ -98,7 +98,7 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
                   <GrowOnHover>
                     <div>
                       <h3
-                        className={`text-sm sm:text-lg font-semibold flex items-center gap-2 ${
+                        className={`text-lg font-semibold flex items-center gap-2 ${
                           isPromotion ? "text-red-300" : "text-white/90"
                         }`}
                       >
@@ -110,7 +110,7 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
                         )}
                       </h3>
 
-                      <p className="text-xs sm:text-sm text-gray-400">{item.subTitle}</p>
+                      <p className="text-sm text-gray-400">{item.subTitle}</p>
                     </div>
                   </GrowOnHover>
                 </div>
@@ -123,7 +123,7 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
           return (
             <div key={institution} className="flex gap-3 sm:gap-4">
               <div className="w-12 sm:w-14 shrink-0 pt-1 text-right">
-                <p className="text-xs sm:text-base font-bold text-neutral-300">{items[0].year}</p>
+                <p className="text-base font-bold text-neutral-300">{items[0].year}</p>
               </div>
 
               <div className="flex shrink-0 flex-col items-center">
@@ -136,11 +136,9 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
               <div className={`min-w-0 max-w-72 sm:max-w-80 ${isLast ? "pb-0" : "pb-10"}`}>
                 <GrowOnHover>
                   <div>
-                    <h3 className="text-sm sm:text-lg font-semibold text-white/90">
-                      {institution}
-                    </h3>
+                    <h3 className="text-lg font-semibold text-white/90">{institution}</h3>
 
-                    <ul className="mt-1 space-y-1 text-xs sm:text-sm text-gray-400">
+                    <ul className="mt-1 space-y-1 text-sm text-gray-400">
                       {items.map((i) => (
                         <li key={`${i.subTitle}-${i.year}`} className="flex items-start gap-2">
                           <span className="mt-1.5 flex-shrink-0 h-1.5 w-1.5 rounded-full bg-red-400"></span>
