@@ -101,23 +101,23 @@ export default function Skills() {
           <div className="relative z-10 mx-auto w-full max-w-[325px] md:max-w-full">
             <div className="mb-6 -mx-2 overflow-x-auto px-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               <div className="inline-flex min-w-full gap-2 md:flex-wrap">
-              {groups.map(({ group }) => {
-                const isActive = selectedGroup.group === group;
-                return (
-                  <button
-                    key={group}
-                    type="button"
-                    onClick={() => setActiveGroup(group)}
-                    className={`shrink-0 rounded-full border px-4 py-2 text-center text-xs sm:text-sm font-medium whitespace-nowrap transition ${
-                      isActive
-                        ? "border-red-500 bg-red-500/20 text-white"
-                        : "border-neutral-700/60 bg-neutral-900/30 text-neutral-300 hover:border-neutral-500"
-                    }`}
-                  >
-                    {labelForGroup(group)}
-                  </button>
-                );
-              })}
+                {groups.map(({ group }) => {
+                  const isActive = selectedGroup.group === group;
+                  return (
+                    <button
+                      key={group}
+                      type="button"
+                      onClick={() => setActiveGroup(group)}
+                      className={`shrink-0 rounded-full border px-4 py-2 text-center text-xs sm:text-sm font-medium whitespace-nowrap transition ${
+                        isActive
+                          ? "border-red-500 bg-red-500/20 text-white"
+                          : "border-neutral-700/60 bg-neutral-900/30 text-neutral-300 hover:border-neutral-500"
+                      }`}
+                    >
+                      {labelForGroup(group)}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
