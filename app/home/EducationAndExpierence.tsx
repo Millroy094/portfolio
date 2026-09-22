@@ -40,9 +40,9 @@ function EducationAndExperience() {
 
   return (
     <section className="relative z-10 mb-20 md:mb-28 flex flex-col px-6 sm:px-0">
-      <div className="flex flex-col md:flex-row items-center md:items-start gap-10">
+      <div className="flex flex-col xl:flex-row items-center xl:items-start gap-10">
         {hasExperience && (
-          <div className="w-full md:flex-1 md:min-w-0">
+          <div className="w-full xl:flex-1 xl:min-w-0">
             <HistoryTimeline
               title="Experience"
               timeline={
@@ -70,7 +70,7 @@ function EducationAndExperience() {
         )}
 
         {hasEducation && (
-          <div className="w-full md:flex-1 md:min-w-0">
+          <div className="w-full xl:flex-1 xl:min-w-0">
             <HistoryTimeline
               title="Education"
               timeline={
