@@ -47,7 +47,7 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
-    "@aws-amplify/backend": "^1.22.0",
+    "@aws-amplify/backend": "^1.25.1",
     "@aws-amplify/backend-cli": "^1.8.2",
     "@aws-sdk/types": "^3.973.8",
     "@tailwindcss/postcss": "^4",
