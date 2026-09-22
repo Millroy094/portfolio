@@ -66,6 +66,7 @@ export default function Skills() {
   );
   const groups = useMemo(() => groupSkills(skillIds), [skillIds]);
   const [activeGroup, setActiveGroup] = useState<GroupKey | null>(null);
+  const [mobileGroupMenuOpen, setMobileGroupMenuOpen] = useState(false);
 
   if (!data?.visibility?.skills || skillIds.length === 0) return null;
 
@@ -77,13 +78,13 @@ export default function Skills() {
       <div className="w-full text-center mb-10 md:mb-14">
         <h2
           className="inline-block font-bold uppercase tracking-wide
-                       text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] mr-1 text-white/90"
+                       text-xs sm:text-[20px] md:text-[35px] lg:text-[35px] mr-1 text-white/90"
         >
           Technology &amp;
         </h2>
         <h2
           className="ml-1 inline-block rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide
-                       text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px]
+                       text-xs sm:text-[20px] md:text-[35px] lg:text-[35px]
                        text-red-500"
         >
           Skills
@@ -91,15 +92,42 @@ export default function Skills() {
       </div>
 
       <div className="mx-auto w-full max-w-[1400px] px-4 lg:px-8">
-        <div className="flex flex-col gap-10 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start lg:gap-10">
-          <div className="w-screen ml-[calc(-50vw+50%)] lg:w-full lg:ml-0">
-            <div className="mx-auto relative aspect-square w-[min(100svw,78svh)] max-w-full bg-transparent lg:w-full lg:max-w-[650px]">
+        <div className="flex flex-col gap-10 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-start md:gap-8 lg:gap-10">
+          <div className="w-screen ml-[calc(-50vw+50%)] md:w-full md:ml-0">
+            <div className="mx-auto relative aspect-square w-[min(100svw,78svh)] max-w-full bg-transparent md:w-full md:max-w-[560px] lg:max-w-[650px]">
               <SkillsGlobe skillIds={skillIds} radius={2.8} height="100%" />
             </div>
           </div>
 
-          <div className="relative z-10 mx-auto w-full max-w-[325px] lg:max-w-full">
-            <div className="mb-6 grid grid-cols-[repeat(auto-fit,minmax(8.5rem,1fr))] gap-2">
+          <div className="relative z-10 mx-auto w-full max-w-[325px] md:max-w-full">
+            <div className="mb-4 md:hidden relative">
+              <button
+                type="button"
+                onClick={() => setMobileGroupMenuOpen((prev) => !prev)}
+                className="w-full rounded-full border border-neutral-700/60 bg-neutral-900/40 px-4 py-2 text-xs font-medium uppercase tracking-wide text-neutral-200"
+              >
+                {labelForGroup(selectedGroup.group)}
+              </button>
+              {mobileGroupMenuOpen && (
+                <div className="absolute z-20 mt-2 w-full overflow-hidden rounded-xl border border-white/10 bg-[rgba(18,18,24,0.92)] backdrop-blur-md">
+                  {groups.map(({ group }) => (
+                    <button
+                      key={group}
+                      type="button"
+                      onClick={() => {
+                        setActiveGroup(group);
+                        setMobileGroupMenuOpen(false);
+                      }}
+                      className="w-full px-4 py-2 text-center text-xs font-bold uppercase tracking-wide text-white hover:bg-white/10 transition-colors"
+                    >
+                      {labelForGroup(group)}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="mb-6 hidden md:grid grid-cols-[repeat(auto-fit,minmax(8.5rem,1fr))] gap-2">
               {groups.map(({ group }) => {
                 const isActive = selectedGroup.group === group;
                 return (
@@ -107,7 +135,7 @@ export default function Skills() {
                     key={group}
                     type="button"
                     onClick={() => setActiveGroup(group)}
-                    className={`w-full rounded-full border px-4 py-2 text-center text-sm font-medium whitespace-nowrap transition ${
+                    className={`w-full rounded-full border px-4 py-2 text-center text-xs sm:text-sm font-medium whitespace-nowrap transition ${
                       isActive
                         ? "border-red-500 bg-red-500/20 text-white"
                         : "border-neutral-700/60 bg-neutral-900/30 text-neutral-300 hover:border-neutral-500"
@@ -120,7 +148,7 @@ export default function Skills() {
             </div>
 
             <div className="flex flex-col items-center lg:items-start">
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-neutral-400 mb-3 text-center lg:text-left">
+              <h3 className="text-xs sm:text-sm font-semibold uppercase tracking-wide text-neutral-400 mb-3 text-center lg:text-left">
                 {labelForGroup(selectedGroup.group)}
               </h3>
 
@@ -135,7 +163,7 @@ export default function Skills() {
                     "
                   >
                     {skill.render()}
-                    <span className="ml-2 text-sm text-neutral-200">{skill.label}</span>
+                    <span className="ml-2 text-xs sm:text-sm text-neutral-200">{skill.label}</span>
                   </li>
                 ))}
               </ul>
