@@ -40,9 +40,9 @@ function EducationAndExperience() {
 
   return (
     <section className="relative z-10 mb-20 md:mb-28 flex flex-col px-6 sm:px-0">
-      <div className="flex flex-col xl:flex-row items-center xl:items-stretch gap-10">
+      <div className="flex flex-col lg:flex-row items-center lg:items-stretch gap-10">
         {hasExperience && (
-          <div className="w-full xl:w-1/2">
+          <div className="w-full lg:flex-1 lg:min-w-0">
             <HistoryTimeline
               title="Experience"
               timeline={
@@ -58,7 +58,7 @@ function EducationAndExperience() {
         )}
 
         {isLargeScreen && (
-          <div className="hidden xl:flex justify-center items-stretch w-32 pt-16">
+          <div className="hidden xl:flex justify-center items-stretch w-32 pt-16 shrink-0">
             <VerticalEnergyGraphic
               style={{
                 contain: "layout style paint",
@@ -70,7 +70,7 @@ function EducationAndExperience() {
         )}
 
         {hasEducation && (
-          <div className="w-full xl:w-1/2">
+          <div className="w-full lg:flex-1 lg:min-w-0">
             <HistoryTimeline
               title="Education"
               timeline={

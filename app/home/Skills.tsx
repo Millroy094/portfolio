@@ -103,21 +103,17 @@ export default function Skills() {
           className="
       mx-auto
       max-w-325
-      grid
-      gap-10
-      grid-cols-1
-      sm:grid-cols-2
-      lg:grid-cols-3
-      xl:grid-cols-4
+      flex flex-wrap justify-center
+      gap-x-10 gap-y-8
     "
         >
           {groups.map(({ group, items }) => (
-            <div key={group}>
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-neutral-400 mb-3">
+            <div key={group} className="flex flex-col items-center">
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-neutral-400 mb-3 text-center">
                 {labelForGroup(group)}
               </h3>
 
-              <ul className="flex flex-wrap gap-3">
+              <ul className="flex flex-wrap justify-center gap-3 max-w-72 sm:max-w-80">
                 {items.map((skill) => (
                   <li
                     key={skill.id}
