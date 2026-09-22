@@ -86,13 +86,13 @@ export default function Skills() {
       <div className="w-full text-center mb-10 md:mb-14">
         <h2
           className="inline-block font-bold uppercase tracking-wide
-                       text-xs sm:text-[20px] md:text-[35px] lg:text-[35px] mr-1 text-white/90"
+                       text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] mr-1 text-white/90"
         >
           Technology &amp;
         </h2>
         <h2
           className="ml-1 inline-block rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide
-                       text-xs sm:text-[20px] md:text-[35px] lg:text-[35px]
+                       text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px]
                        text-red-500"
         >
           Skills
