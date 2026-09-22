@@ -176,7 +176,7 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
                 } catch (err) {
                   console.error("Sign out failed:", err);
                 } finally {
-                  window.location.href = "/login";
+                  router.replace("/login");
                 }
               }}
               disabled={signingOut}
