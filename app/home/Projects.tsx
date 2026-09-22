@@ -35,7 +35,7 @@ export default function Projects() {
       <div className="flex justify-center md:justify-center lg:justify-start gap-2 mb-6 md:mb-8">
         <h2
           className="rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide text-red-500
-                     text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px]"
+                     text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:text-[20px]"
         >
           Projects
         </h2>

@@ -86,28 +86,28 @@ export default function Skills() {
       <div className="w-full text-center mb-10 md:mb-14">
         <h2
           className="inline-block font-bold uppercase tracking-wide
-                       text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] mr-1 text-white/90"
+                       text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:text-[20px] mr-1 text-white/90"
         >
           Technology &amp;
         </h2>
         <h2
           className="ml-1 inline-block rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide
                        text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px]
-                       text-red-500"
+                       [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:text-[20px] text-red-500"
         >
           Skills
         </h2>
       </div>
 
       <div className="mx-auto w-full max-w-[1400px] px-4 lg:px-8">
-        <div className="flex flex-col gap-10 sm:grid sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:items-start sm:gap-8 lg:gap-10 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:flex [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:flex-col">
-          <div className="w-screen ml-[calc(-50vw+50%)] sm:w-full sm:ml-0 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:w-screen [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:ml-[calc(-50vw+50%)]">
-            <div className="mx-auto relative aspect-square w-[min(100svw,78svh)] max-w-full bg-transparent sm:w-full sm:max-w-[560px] lg:max-w-[650px] [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:w-[min(100svw,78svh)] [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:max-w-full">
+        <div className="flex flex-col gap-10 sm:grid sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:items-start sm:gap-8 lg:gap-10 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:flex [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:flex-row [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:items-start">
+          <div className="w-screen ml-[calc(-50vw+50%)] sm:w-full sm:ml-0 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:w-1/2 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:ml-0">
+            <div className="mx-auto relative aspect-square w-[min(100svw,78svh)] max-w-full bg-transparent sm:w-full sm:max-w-[560px] lg:max-w-[650px] [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:w-full [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:max-w-[420px]">
               <SkillsGlobe skillIds={skillIds} radius={2.8} height="100%" />
             </div>
           </div>
 
-          <div className="relative z-10 mx-auto w-full max-w-[325px] sm:max-w-full">
+          <div className="relative z-10 mx-auto w-full max-w-[325px] sm:max-w-full [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:w-1/2 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:max-w-full">
             <div className="mb-4 flex items-center gap-2 md:hidden [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:flex">
               <button
                 type="button"
