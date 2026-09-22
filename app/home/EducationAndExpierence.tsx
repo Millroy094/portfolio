@@ -48,7 +48,7 @@ function EducationAndExperience() {
         )}
 
         {isLargeScreen && (
-          <div className="hidden xl:flex justify-center items-stretch w-16">
+          <div className="hidden xl:flex justify-center items-stretch w-24">
             <VerticalEnergyGraphic style={{ contain: "layout style paint" }} />
           </div>
         )}

@@ -248,7 +248,7 @@ export default async function getWebsiteData(): Promise<WebsiteData> {
       resume: p.resume ?? "",
 
       roles: visibility.roles
-        ? [...rolesRes.data].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)).map((r) => r.value)
+        ? [...rolesRes.data].sort((a, b) => a.order - b.order).map((r) => r.value)
         : [],
 
       skills: visibility.skills
@@ -277,7 +277,7 @@ export default async function getWebsiteData(): Promise<WebsiteData> {
 
       projects: visibility.projects
         ? [...projRes.data]
-            .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+            .sort((a, b) => a.order - b.order)
             .map((e) => ({
               description: e.description ?? "",
               name: e.name,

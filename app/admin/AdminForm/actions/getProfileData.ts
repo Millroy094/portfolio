@@ -49,7 +49,7 @@ export async function getProfileData(): Promise<{
 
         roles:
           [...roles.data]
-            .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+            .sort((a, b) => a.order - b.order)
             .map((r) => ({
               value: r.value,
             })) ?? [],
@@ -71,7 +71,7 @@ export async function getProfileData(): Promise<{
 
         projects:
           [...projects.data]
-            .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+            .sort((a, b) => a.order - b.order)
             .map((p) => ({
               name: p.name,
               description: p.description ?? "",

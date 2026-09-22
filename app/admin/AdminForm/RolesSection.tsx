@@ -44,9 +44,9 @@ export default function RolesSection({
         {fields.map((role, index) => (
           <div
             key={role.id}
-            className="flex items-start gap-2 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-start"
+            className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-start"
           >
-            <div className="min-w-0 flex-1 lg:col-span-9">
+            <div className="w-full lg:col-span-9">
               <Controller
                 control={control}
                 name={`roles.${index}`}
@@ -62,7 +62,7 @@ export default function RolesSection({
               />
             </div>
 
-            <div className="flex shrink-0 items-center gap-2 lg:col-span-3 lg:justify-end">
+            <div className="flex w-full items-center justify-center gap-2 lg:col-span-3 lg:justify-end">
               <Button
                 type="button"
                 variant="outline"
