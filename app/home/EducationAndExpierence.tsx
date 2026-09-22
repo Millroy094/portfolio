@@ -39,10 +39,10 @@ function EducationAndExperience() {
       : 90;
 
   return (
-    <section className="relative z-10 mb-20 md:mb-28 flex flex-col px-6 sm:px-0">
-      <div className="flex flex-col md:flex-row items-center md:items-start [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:flex-col [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:items-center gap-10">
+    <section className="relative z-10 mb-20 md:mb-28 flex flex-col px-6 sm:px-0 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:px-2">
+      <div className="flex flex-col md:flex-row items-center md:items-start [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:flex-row [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:items-start [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:gap-4 gap-10">
         {hasExperience && (
-          <div className="w-full md:flex-1 md:min-w-0">
+          <div className="w-full md:flex-1 md:min-w-0 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:flex-1 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:min-w-0">
             <HistoryTimeline
               title="Experience"
               timeline={
@@ -70,7 +70,7 @@ function EducationAndExperience() {
         )}
 
         {hasEducation && (
-          <div className="w-full md:flex-1 md:min-w-0">
+          <div className="w-full md:flex-1 md:min-w-0 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:flex-1 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:min-w-0">
             <HistoryTimeline
               title="Education"
               timeline={
