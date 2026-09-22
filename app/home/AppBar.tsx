@@ -71,7 +71,7 @@ export default function PortfolioAppBar() {
         "
       >
         <div className="mx-auto max-w-384 px-3 md:px-4">
-          <div className="h-14 md:h-16 flex items-center gap-4">
+          <div className="h-12 md:h-14 flex items-center gap-3">
             {/* Mobile menu toggle */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -83,7 +83,7 @@ export default function PortfolioAppBar() {
               aria-label="Open navigation"
             >
               <svg
-                className="w-7 h-7"
+                className="w-6 h-6"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth={2}
@@ -95,7 +95,7 @@ export default function PortfolioAppBar() {
               </svg>
             </button>
 
-            <nav className="hidden md:flex gap-6 items-center">
+            <nav className="hidden md:flex gap-5 items-center">
               {pages.map((page) => {
                 const id = normalizeId(page);
                 return (
@@ -111,7 +111,7 @@ export default function PortfolioAppBar() {
                     <span
                       className="
                         relative inline-block
-                        font-bold uppercase tracking-wide text-sm
+                        font-bold uppercase tracking-wide text-xs
                         pb-1
                         md:text-shadow-[0_1px_3px_rgba(0,0,0,0.75)]
                         after:absolute after:left-0 after:bottom-0
@@ -136,12 +136,12 @@ export default function PortfolioAppBar() {
                   hidden md:flex items-center gap-2
                   bg-red-600 hover:bg-red-700 active:bg-red-800
                   text-white uppercase text-xs
-                  px-4 py-2 rounded
+                  px-3 py-1.5 rounded
                   transition-colors
                 "
               >
                 <EditIcon />
-                <span className="text-sm font-bold">Edit Website</span>
+                <span className="text-xs font-bold">Edit Website</span>
               </button>
             )}
           </div>

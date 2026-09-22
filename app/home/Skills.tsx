@@ -75,16 +75,16 @@ export default function Skills() {
   return (
     <section className="relative z-10 mb-20 md:mb-28 px-0">
       {/* Header */}
-      <div className="w-full text-center mb-10 md:mb-14">
+      <div className="w-full text-center mb-8 md:mb-12">
         <h2
           className="inline-block font-bold uppercase tracking-wide
-                       text-xs sm:text-[20px] md:text-[35px] lg:text-[35px] mr-1 text-white/90"
+                       text-xs sm:text-lg md:text-3xl lg:text-3xl mr-1 text-white/90"
         >
           Technology &amp;
         </h2>
         <h2
           className="ml-1 inline-block rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide
-                       text-xs sm:text-[20px] md:text-[35px] lg:text-[35px]
+                       text-xs sm:text-lg md:text-3xl lg:text-3xl
                        text-red-500"
         >
           Skills
@@ -127,7 +127,7 @@ export default function Skills() {
               )}
             </div>
 
-            <div className="mb-6 hidden md:grid grid-cols-[repeat(auto-fit,minmax(8.5rem,1fr))] gap-2">
+            <div className="mb-5 hidden md:grid grid-cols-[repeat(auto-fit,minmax(8.5rem,1fr))] gap-2">
               {groups.map(({ group }) => {
                 const isActive = selectedGroup.group === group;
                 return (
@@ -135,7 +135,7 @@ export default function Skills() {
                     key={group}
                     type="button"
                     onClick={() => setActiveGroup(group)}
-                    className={`w-full rounded-full border px-4 py-2 text-center text-xs sm:text-sm font-medium whitespace-nowrap transition ${
+                    className={`w-full rounded-full border px-3 py-1.5 text-center text-xs font-medium whitespace-nowrap transition ${
                       isActive
                         ? "border-red-500 bg-red-500/20 text-white"
                         : "border-neutral-700/60 bg-neutral-900/30 text-neutral-300 hover:border-neutral-500"
@@ -148,22 +148,22 @@ export default function Skills() {
             </div>
 
             <div className="flex flex-col items-center lg:items-start">
-              <h3 className="text-xs sm:text-sm font-semibold uppercase tracking-wide text-neutral-400 mb-3 text-center lg:text-left">
+              <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-400 mb-2 text-center lg:text-left">
                 {labelForGroup(selectedGroup.group)}
               </h3>
 
-              <ul className="flex flex-wrap justify-center lg:justify-start gap-3 max-w-72 sm:max-w-80 lg:max-w-full">
+              <ul className="flex flex-wrap justify-center lg:justify-start gap-2.5 max-w-72 sm:max-w-80 lg:max-w-full">
                 {selectedGroup.items.map((skill) => (
                   <li
                     key={skill.id}
                     className="
-                      flex items-center px-3 py-2 rounded-md
+                      flex items-center px-2.5 py-1.5 rounded-md
                       bg-neutral-900/40 border border-neutral-700/40
                       hover:bg-neutral-900/70 transition
                     "
                   >
                     {skill.render()}
-                    <span className="ml-2 text-xs sm:text-sm text-neutral-200">{skill.label}</span>
+                    <span className="ml-1.5 text-xs text-neutral-200">{skill.label}</span>
                   </li>
                 ))}
               </ul>
