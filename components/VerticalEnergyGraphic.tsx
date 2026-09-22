@@ -17,17 +17,10 @@ const VIEW_WIDTH = 100;
 const AMPLITUDE = 30;
 const CENTER_X = 50;
 const BASE_TWISTS = 2.25;
-// Target vertical distance (in viewBox units, at the reference aspect ratio)
-// for a single full twist of the helix - used to keep the coil's visual
-// density constant as the column grows taller, instead of stretching a
-// fixed number of twists over a taller viewBox.
 const TWIST_PERIOD = BASE_VIEW_HEIGHT / BASE_TWISTS;
 const ROTATION_FRAMES = 12;
 const ROTATION_DURATION = "6s";
 
-// Fixed (non-random) layout for the two side particle streams so
-// server/client markup matches: varied offsets, sizes and timing give each
-// stream an organic feel without using Math.random() during render.
 const SPARK_LAYOUT = [
   { offset: "0%", size: 4, duration: 3.2, delay: 0, variant: 1 },
   { offset: "-30%", size: 3, duration: 4.1, delay: 0.6, variant: 2 },
@@ -36,8 +29,6 @@ const SPARK_LAYOUT = [
   { offset: "18%", size: 2, duration: 3.1, delay: 2.5, variant: 1 },
 ];
 
-// Ambient drifters scattered in the outer margin of each side column,
-// beyond the rising-spark track, so that space doesn't feel empty.
 const OUTER_DRIFTERS = [
   { top: "14%", left: "78%", delay: "0s", duration: "9s" },
   { top: "40%", left: "16%", delay: "1.4s", duration: "10.5s" },
@@ -105,13 +96,6 @@ function buildFrames(rungCount: number, viewHeight: number, twists: number) {
   };
 }
 
-/**
- * Lightweight, dependency-free vertical graphic connecting the Experience
- * and Education timelines: a rotating DNA double-helix in the center (built
- * from precomputed SVG frames animated via SMIL <animate>, giving a true
- * turntable-style rotation) flanked by two upward-rising particle streams,
- * one on each side. Fills whatever height the section takes.
- */
 export default function VerticalEnergyGraphic({
   className,
   style,
@@ -130,11 +114,6 @@ export default function VerticalEnergyGraphic({
     return () => query.removeEventListener("change", update);
   }, []);
 
-  // Measure the helix column's real rendered size so the wave's viewBox
-  // matches its actual aspect ratio (avoiding the vertical stretch caused by
-  // preserveAspectRatio="none" when a fixed viewBox is scaled to a taller
-  // box), and so the number of twists grows with height instead of a fixed
-  // count of twists being stretched thinner/taller.
   const helixColRef = useRef<HTMLDivElement>(null);
   const [helixSize, setHelixSize] = useState({ width: 60, height: BASE_VIEW_HEIGHT * 0.6 });
 

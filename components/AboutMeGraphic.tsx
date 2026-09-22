@@ -30,13 +30,7 @@ const STRIP_BARS = [
   { duration: "3.4s", delay: "1.2s" },
 ];
 
-/**
- * Single wide HUD-style panel for the About Me section, combining the
- * identity orbit and the rotating data core inside one shared rectangular
- * frame (rather than two separate boxes). The wrapper fills the available
- * section height and centers a capped-width rectangle so it never stretches
- * into an odd shape regardless of the section's height.
- */
+/** HUD-style panel for the About Me section: identity orbit + rotating data core. */
 export default function AboutMeGraphic({ className, style }: Props) {
   const { ref, inView } = useInView({ threshold: 0.2, triggerOnce: false });
   const playState = inView ? "running" : "paused";

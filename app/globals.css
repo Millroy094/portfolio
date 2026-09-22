@@ -284,8 +284,7 @@ body {
   }
 }
 
-/* Scan graphic: rotating 3D wireframe polyhedron "data core" scanned by a
-   ray (shares the HUD frame) */
+/* Scan graphic: rotating "data core" cube scanned by a ray */
 .scan-core-scene {
   position: relative;
   width: 6.5rem;
@@ -598,8 +597,7 @@ body {
   }
 }
 
-/* Combined connector (between Education & Experience): rotating DNA helix
-   in the center flanked by two upward-rising particle streams */
+/* Education/Experience connector: DNA helix + particle streams */
 .connector-fade {
   -webkit-mask-image: linear-gradient(
     to bottom,
