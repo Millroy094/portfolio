@@ -40,7 +40,7 @@ function EducationAndExperience() {
 
   return (
     <section className="relative z-10 mb-20 md:mb-28 flex flex-col px-6 sm:px-0">
-      <div className="flex flex-col md:flex-row items-center md:items-start gap-10">
+      <div className="flex flex-col md:flex-row items-center md:items-start [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:flex-col [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:items-center gap-10">
         {hasExperience && (
           <div className="w-full md:flex-1 md:min-w-0">
             <HistoryTimeline
