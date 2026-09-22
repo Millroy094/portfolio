@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { skillsRegistry, SkillId, Skill } from "@/components/controls/SkillSelect/SkillRegistery";
@@ -70,6 +71,14 @@ export default function Skills() {
   if (!data?.visibility?.skills || skillIds.length === 0) return null;
 
   const selectedGroup = groups.find((g) => g.group === activeGroup) ?? groups[0];
+  const selectedGroupIndex = groups.findIndex((g) => g.group === selectedGroup.group);
+
+  const changeMobileGroup = (direction: "prev" | "next") => {
+    if (groups.length <= 1) return;
+    const delta = direction === "prev" ? -1 : 1;
+    const nextIndex = (selectedGroupIndex + delta + groups.length) % groups.length;
+    setActiveGroup(groups[nextIndex].group);
+  };
 
   return (
     <section className="relative z-10 mb-20 md:mb-28 px-0">
@@ -99,26 +108,31 @@ export default function Skills() {
           </div>
 
           <div className="relative z-10 mx-auto w-full max-w-[325px] md:max-w-full">
-            <div className="mb-4 md:hidden -mx-2 overflow-x-auto px-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              <div className="inline-flex gap-2">
-                {groups.map(({ group }) => {
-                  const isActive = selectedGroup.group === group;
-                  return (
-                    <button
-                      key={group}
-                      type="button"
-                      onClick={() => setActiveGroup(group)}
-                      className={`shrink-0 rounded-full border px-4 py-2 text-center text-xs sm:text-sm font-medium whitespace-nowrap transition ${
-                        isActive
-                          ? "border-red-500 bg-red-500/20 text-white"
-                          : "border-neutral-700/60 bg-neutral-900/30 text-neutral-300 hover:border-neutral-500"
-                      }`}
-                    >
-                      {labelForGroup(group)}
-                    </button>
-                  );
-                })}
-              </div>
+            <div className="mb-4 flex items-center gap-2 md:hidden">
+              <button
+                type="button"
+                onClick={() => changeMobileGroup("prev")}
+                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-neutral-700/60 bg-neutral-900/30 text-neutral-300 transition hover:border-neutral-500"
+                aria-label="Previous skill group"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+
+              <button
+                type="button"
+                className="w-full rounded-full border border-red-500 bg-red-500/20 px-4 py-2 text-center text-xs sm:text-sm font-medium whitespace-nowrap text-white"
+              >
+                {labelForGroup(selectedGroup.group)}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => changeMobileGroup("next")}
+                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-neutral-700/60 bg-neutral-900/30 text-neutral-300 transition hover:border-neutral-500"
+                aria-label="Next skill group"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
             </div>
 
             <div className="mb-6 hidden md:grid grid-cols-[repeat(auto-fit,minmax(8.5rem,1fr))] gap-2">
