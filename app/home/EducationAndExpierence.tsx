@@ -29,7 +29,7 @@ function EducationAndExperience() {
   if (!hasOneExperienceOrEducation) return null;
 
   return (
-    <section className="relative z-10 mb-15 flex flex-col px-6 sm:px-0">
+    <section className="relative z-10 mb-20 md:mb-28 flex flex-col px-6 sm:px-0">
       <div className="flex flex-col xl:flex-row items-center xl:items-stretch gap-10">
         {hasExperience && (
           <div className="w-full xl:w-1/2">
@@ -48,7 +48,7 @@ function EducationAndExperience() {
         )}
 
         {isLargeScreen && (
-          <div className="hidden xl:flex justify-center items-stretch w-24 pt-20 pb-10">
+          <div className="hidden xl:flex justify-center items-stretch w-32 pt-16">
             <VerticalEnergyGraphic style={{ contain: "layout style paint" }} />
           </div>
         )}

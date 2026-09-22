@@ -14,7 +14,7 @@ type Props = {
 
 const BASE_VIEW_HEIGHT = 300;
 const VIEW_WIDTH = 100;
-const AMPLITUDE = 30;
+const AMPLITUDE = 22;
 const CENTER_X = 50;
 const BASE_TWISTS = 2.25;
 const TWIST_PERIOD = BASE_VIEW_HEIGHT / BASE_TWISTS;
@@ -36,8 +36,28 @@ const OUTER_DRIFTERS = [
   { top: "88%", left: "20%", delay: "1s", duration: "8.5s" },
 ];
 
+function buildPathFromPoints(points: { x: number; y: number }[]): string {
+  if (points.length < 3) {
+    return `M ${points.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" L ")}`;
+  }
+
+  const segments: string[] = [`M ${points[0].x.toFixed(1)},${points[0].y.toFixed(1)}`];
+  for (let i = 1; i < points.length - 1; i += 1) {
+    const curr = points[i];
+    const next = points[i + 1];
+    const midX = (curr.x + next.x) / 2;
+    const midY = (curr.y + next.y) / 2;
+    segments.push(
+      `Q ${curr.x.toFixed(1)},${curr.y.toFixed(1)} ${midX.toFixed(1)},${midY.toFixed(1)}`,
+    );
+  }
+  const last = points[points.length - 1];
+  segments.push(`L ${last.x.toFixed(1)},${last.y.toFixed(1)}`);
+  return segments.join(" ");
+}
+
 function buildFrames(rungCount: number, viewHeight: number, twists: number) {
-  const steps = 48;
+  const steps = Math.max(60, Math.round(twists * 32));
   const baseSamples = Array.from({ length: steps + 1 }, (_, i) => {
     const t = i / steps;
     return { t, y: t * viewHeight };
@@ -68,8 +88,8 @@ function buildFrames(rungCount: number, viewHeight: number, twists: number) {
       };
     });
 
-    strandAFrames.push(points.map((p) => `${p.xA.toFixed(1)},${p.y.toFixed(1)}`).join(" L "));
-    strandBFrames.push(points.map((p) => `${p.xB.toFixed(1)},${p.y.toFixed(1)}`).join(" L "));
+    strandAFrames.push(buildPathFromPoints(points.map((p) => ({ x: p.xA, y: p.y }))));
+    strandBFrames.push(buildPathFromPoints(points.map((p) => ({ x: p.xB, y: p.y }))));
 
     rungIndices.forEach((idx, ri) => {
       rungXA[ri].push(points[idx].xA);
@@ -80,10 +100,10 @@ function buildFrames(rungCount: number, viewHeight: number, twists: number) {
   }
 
   return {
-    strandA: `M ${strandAFrames[0]}`,
-    strandAValues: strandAFrames.map((p) => `M ${p}`).join(";"),
-    strandB: `M ${strandBFrames[0]}`,
-    strandBValues: strandBFrames.map((p) => `M ${p}`).join(";"),
+    strandA: strandAFrames[0],
+    strandAValues: strandAFrames.join(";"),
+    strandB: strandBFrames[0],
+    strandBValues: strandBFrames.join(";"),
     rungs: rungIndices.map((idx, ri) => ({
       y: baseSamples[idx].y,
       xA0: rungXA[ri][0],
@@ -123,7 +143,11 @@ export default function VerticalEnergyGraphic({
 
     const update = () => {
       const { width, height } = el.getBoundingClientRect();
-      if (width > 0 && height > 0) setHelixSize({ width, height });
+      if (width <= 0 || height <= 0) return;
+      const rounded = { width: Math.round(width / 4) * 4, height: Math.round(height / 8) * 8 };
+      setHelixSize((prev) =>
+        prev.width === rounded.width && prev.height === rounded.height ? prev : rounded,
+      );
     };
     update();
 
@@ -204,15 +228,8 @@ export default function VerticalEnergyGraphic({
               <stop offset="100%" stopColor="rgba(212, 212, 216, 0.6)" />
             </linearGradient>
           </defs>
-          {frames.rungs.map((r) => (
-            <line
-              key={`rung-${r.y}`}
-              className="helix-rung"
-              x1={r.xA0}
-              y1={r.y}
-              x2={r.xB0}
-              y2={r.y}
-            >
+          {frames.rungs.map((r, ri) => (
+            <line key={`rung-${ri}`} className="helix-rung" x1={r.xA0} y1={r.y} x2={r.xB0} y2={r.y}>
               {animate && (
                 <>
                   <animate
@@ -257,13 +274,13 @@ export default function VerticalEnergyGraphic({
             )}
           </path>
 
-          {frames.rungs.map((r) => (
-            <g key={`nodes-${r.y}`}>
+          {frames.rungs.map((r, ri) => (
+            <g key={`nodes-${ri}`}>
               <circle
                 className="helix-node helix-node-a"
                 cx={r.xA0}
                 cy={r.y}
-                r={3.2}
+                r={4}
                 fill="rgba(56, 189, 248, 0.95)"
               >
                 {animate && (
@@ -280,7 +297,7 @@ export default function VerticalEnergyGraphic({
                 className="helix-node helix-node-b"
                 cx={r.xB0}
                 cy={r.y}
-                r={3.2}
+                r={4}
                 fill="rgba(239, 68, 68, 0.85)"
               >
                 {animate && (

@@ -69,7 +69,7 @@ export default function Skills() {
   if (!data?.visibility?.skills || skillIds.length === 0) return null;
 
   return (
-    <section className="relative z-10 mb-16 px-0">
+    <section className="relative z-10 mb-20 md:mb-28 px-0">
       {/* Header */}
       <div className="w-full text-center">
         <h2

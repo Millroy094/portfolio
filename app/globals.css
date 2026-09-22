@@ -653,7 +653,7 @@ body {
 .helix-col {
   position: relative;
   flex: 0 0 auto;
-  width: 3.75rem;
+  width: 5rem;
   height: 100%;
 }
 
@@ -678,31 +678,31 @@ body {
 
 .helix-strand {
   fill: none;
-  stroke-width: 2.8;
+  stroke-width: 3.6;
   stroke-linecap: round;
 }
 
 .helix-strand-a {
-  stroke: rgba(212, 212, 216, 0.9);
-  filter: drop-shadow(0 0 5px rgba(212, 212, 216, 0.6));
+  stroke: rgba(226, 232, 240, 0.95);
+  filter: drop-shadow(0 0 6px rgba(226, 232, 240, 0.7));
 }
 
 .helix-strand-b {
-  stroke: rgba(239, 68, 68, 0.85);
-  filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.7));
+  stroke: rgba(239, 68, 68, 0.95);
+  filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.75));
 }
 
 .helix-rung {
   stroke: url(#helix-rung-gradient);
-  stroke-width: 1.8;
+  stroke-width: 2.4;
 }
 
 .helix-node-a {
-  filter: drop-shadow(0 0 4px rgba(212, 212, 216, 0.85));
+  filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.9));
 }
 
 .helix-node-b {
-  filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.9));
+  filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.95));
 }
 
 .stream-track {

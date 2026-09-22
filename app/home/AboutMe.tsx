@@ -28,7 +28,7 @@ function AboutMe() {
   if (!data.visibility.aboutMe || aboutMe.length === 0) return null;
 
   return (
-    <section className="relative z-10 mb-15 flex flex-col px-6 lg:px-10">
+    <section className="relative z-10 mb-20 md:mb-28 flex flex-col px-6 lg:px-10">
       <div className="flex w-full max-w-384 mx-auto flex-col lg:flex-row items-start lg:items-stretch gap-6 lg:gap-10">
         {isLargeScreen && (
           <div className="hidden lg:flex justify-center items-stretch w-1/3">

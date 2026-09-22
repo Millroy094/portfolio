@@ -65,7 +65,10 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
             const isPromotion = prev && prev.type === "experience" && prev.title === item.title;
 
             return (
-              <div key={`${item.title}-${item.year}`} className="relative pb-10">
+              <div
+                key={`${item.title}-${item.year}`}
+                className={`relative ${isLast ? "pb-0" : "pb-10"}`}
+              >
                 {!isLast && (
                   <div className="absolute left-0.75 top-8 w-0.5 bottom-0 bg-gray-300 dark:bg-gray-600" />
                 )}
@@ -116,7 +119,7 @@ export default function HistoryTimeline({ title, timeline }: IHistoryTimelinePro
           const { title: institution, items } = entry;
 
           return (
-            <div key={institution} className="relative pb-10">
+            <div key={institution} className={`relative ${isLast ? "pb-0" : "pb-10"}`}>
               {!isLast && (
                 <div className="absolute left-0.75 top-8 w-0.5 bottom-0 bg-gray-300 dark:bg-gray-600" />
               )}

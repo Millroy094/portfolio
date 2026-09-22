@@ -105,6 +105,82 @@ const emptyWebsiteData: WebsiteData = {
   },
 };
 
+const mockWebsiteData: WebsiteData = {
+  seoTitle: "Jane Doe — Software Engineer",
+  seoDescription: "Portfolio of Jane Doe, a full-stack software engineer.",
+  fullName: "Jane Doe",
+  punchLine: "I build fast, reliable, and delightful web experiences.",
+  aboutMe:
+    "<p>I'm a software engineer with 8+ years of experience building web applications across fintech and e-commerce. I love turning complex problems into simple, elegant solutions.</p><p>Outside of work I contribute to open source and write about frontend architecture.</p>",
+  github: "https://github.com/janedoe",
+  linkedin: "https://linkedin.com/in/janedoe",
+  stackOverflow: "https://stackoverflow.com/users/123456/janedoe",
+  medium: "https://medium.com/@janedoe",
+  resume: "https://example.com/resume.pdf",
+  roles: ["Full-Stack Engineer", "Tech Lead", "Open Source Maintainer"],
+  skills: ["typescript", "react", "nodejs", "aws", "graphql"],
+  avatarUrl: "/logo.svg",
+  badges: [
+    { url: "/logo.svg", label: "AWS Certified" },
+    { url: "/logo.svg", label: "Top Contributor" },
+  ],
+  experiences: [
+    { year: 2024, title: "Staff Software Engineer", organization: "Acme Corp" },
+    { year: 2023, title: "Senior Software Engineer", organization: "Acme Corp" },
+    { year: 2021, title: "Software Engineer II", organization: "Acme Corp" },
+    { year: 2020, title: "Software Engineer", organization: "Globex Inc" },
+    { year: 2018, title: "Software Engineer", organization: "Initech" },
+    { year: 2017, title: "Junior Developer", organization: "Initech" },
+    { year: 2015, title: "Intern Developer", organization: "Umbrella Labs" },
+  ],
+  education: [
+    { year: 2016, qualification: "MSc Computer Science", institute: "University of Example" },
+    { year: 2014, qualification: "BSc Computer Science", institute: "Example State University" },
+    { year: 2012, qualification: "A-Levels", institute: "Example College" },
+    { year: 2010, qualification: "Foundation Diploma", institute: "Example Sixth Form" },
+    { year: 2009, qualification: "GCSEs", institute: "Example High School" },
+  ],
+  projects: [
+    {
+      name: "DevBoard",
+      description: "A real-time dashboard for tracking developer productivity metrics.",
+      url: "https://github.com/janedoe/devboard",
+    },
+    {
+      name: "SnapAPI",
+      description: "A lightweight tool for mocking REST APIs during development.",
+      url: "https://github.com/janedoe/snapapi",
+    },
+  ],
+  mediumPosts: [
+    {
+      title: "Scaling React Apps: Lessons Learned",
+      link: "https://medium.com/@janedoe/scaling-react-apps",
+      publishedAt: new Date().toISOString(),
+      description: "A deep dive into patterns that helped us scale our React codebase.",
+      imageUrl: "/logo.svg",
+    },
+    {
+      title: "Why We Moved to Serverless",
+      link: "https://medium.com/@janedoe/why-serverless",
+      publishedAt: new Date().toISOString(),
+      description: "Our journey migrating from EC2 to a fully serverless architecture.",
+      imageUrl: "/logo.svg",
+    },
+  ],
+
+  visibility: {
+    roles: true,
+    badges: true,
+    aboutMe: true,
+    experiences: true,
+    education: true,
+    projects: true,
+    skills: true,
+    posts: true,
+  },
+};
+
 function extractTagValue(block: string, tag: string): string {
   const re = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`, "i");
   const m = block.match(re);
@@ -193,6 +269,10 @@ const generateS3UrlFromKey = async (path: string) => {
 };
 
 export default async function getWebsiteData(): Promise<WebsiteData> {
+  if (process.env.NEXT_PUBLIC_USE_MOCK_DATA === "true") {
+    return mockWebsiteData;
+  }
+
   try {
     const client = generateServerClientUsingCookies<Schema>({
       config: outputs,

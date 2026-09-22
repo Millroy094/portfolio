@@ -25,7 +25,7 @@ export default function MediumPosts() {
   if (!data.visibility.posts || visiblePosts.length === 0) return null;
 
   return (
-    <section className="relative z-10 mb-16">
+    <section className="relative z-10 mb-20 md:mb-28">
       <div className="w-full text-center mb-10 px-4">
         <h2 className="inline-block font-bold uppercase tracking-wide text-[20px] md:text-[35px] mr-1 mb-3 text-white/90">
           Latest
