@@ -28,6 +28,14 @@ function EducationAndExperience() {
 
   if (!hasOneExperienceOrEducation) return null;
 
+  const experienceRowCount = data.experiences?.length ?? 0;
+  const educationRowCount = new Set(data.education?.map((e) => e.institute)).size;
+  const longerRowCount = Math.max(experienceRowCount, educationRowCount);
+  const fadeEndPercent =
+    longerRowCount > 1
+      ? Math.min(92, Math.max(60, ((longerRowCount - 2) / (longerRowCount - 1)) * 100))
+      : 90;
+
   return (
     <section className="relative z-10 mb-20 md:mb-28 flex flex-col px-6 sm:px-0">
       <div className="flex flex-col xl:flex-row items-center xl:items-stretch gap-10">
@@ -49,7 +57,12 @@ function EducationAndExperience() {
 
         {isLargeScreen && (
           <div className="hidden xl:flex justify-center items-stretch w-32 pt-16">
-            <VerticalEnergyGraphic style={{ contain: "layout style paint" }} />
+            <VerticalEnergyGraphic
+              style={{
+                contain: "layout style paint",
+                ["--connector-fade-end" as string]: `${fadeEndPercent}%`,
+              }}
+            />
           </div>
         )}
 

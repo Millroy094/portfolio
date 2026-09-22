@@ -29,9 +29,9 @@ function AboutMe() {
 
   return (
     <section className="relative z-10 mb-20 md:mb-28 flex flex-col px-6 lg:px-10">
-      <div className="flex w-full max-w-384 mx-auto flex-col lg:flex-row items-start gap-6 lg:gap-10">
+      <div className="flex w-full max-w-384 mx-auto flex-col lg:flex-row items-center gap-6 lg:gap-10">
         {isLargeScreen && (
-          <div className="hidden lg:flex justify-center items-start w-1/3">
+          <div className="hidden lg:flex justify-center items-center w-1/3">
             <AboutMeGraphic className="w-full" style={{ contain: "layout style paint" }} />
           </div>
         )}

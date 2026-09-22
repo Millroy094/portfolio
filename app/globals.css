@@ -633,19 +633,20 @@ body {
 
 /* Education/Experience connector: DNA helix + particle streams */
 .connector-fade {
+  --connector-fade-end: 90%;
   -webkit-mask-image: linear-gradient(
     to bottom,
     transparent 0%,
     black 10%,
-    black 90%,
-    transparent 100%
+    black var(--connector-fade-end),
+    transparent calc(var(--connector-fade-end) + 8%)
   );
   mask-image: linear-gradient(
     to bottom,
     transparent 0%,
     black 10%,
-    black 90%,
-    transparent 100%
+    black var(--connector-fade-end),
+    transparent calc(var(--connector-fade-end) + 8%)
   );
 }
 
