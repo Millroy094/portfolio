@@ -29,15 +29,15 @@ function AboutMe() {
 
   return (
     <section className="relative z-10 mb-20 md:mb-28 flex flex-col px-6 lg:px-10">
-      <div className="flex w-full max-w-384 mx-auto flex-col lg:flex-row items-start lg:items-stretch gap-6 lg:gap-10">
+      <div className="flex w-full max-w-384 mx-auto flex-col lg:flex-row items-start gap-6 lg:gap-10">
         {isLargeScreen && (
-          <div className="hidden lg:flex justify-center items-stretch w-1/3">
+          <div className="hidden lg:flex justify-center items-start w-1/3">
             <AboutMeGraphic className="w-full" style={{ contain: "layout style paint" }} />
           </div>
         )}
 
         <div className="w-full lg:w-2/3 flex flex-col items-center lg:items-start">
-          <div className="flex justify-center gap-2 mb-10 md:mb-14">
+          <div className="flex justify-center gap-2 mb-6 md:mb-8">
             <h2
               className="inline-block font-bold uppercase tracking-wide
                          text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] text-white/90"

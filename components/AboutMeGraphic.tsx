@@ -103,6 +103,7 @@ export default function AboutMeGraphic({ className, style }: Props) {
 
             <span className="tech-label tech-label-tl">SYS.ID</span>
             <span className="tech-label tech-label-br">DATA.CORE</span>
+            <div className="tech-outer-ring" style={{ animationPlayState: playState }} />
 
             <div className="relative z-10 flex h-full w-full items-center justify-center gap-2 px-4">
               <div className="flex flex-1 items-center justify-center">
@@ -149,8 +150,6 @@ export default function AboutMeGraphic({ className, style }: Props) {
               </div>
             </div>
           </div>
-
-          <div className="tech-outer-ring" style={{ animationPlayState: playState }} />
         </div>
 
         <div className="tech-strip">
