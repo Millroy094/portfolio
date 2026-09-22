@@ -91,14 +91,14 @@ export default function Skills() {
       </div>
 
       <div className="mx-auto w-full max-w-[1400px] px-4 lg:px-8">
-        <div className="flex flex-col gap-10 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start lg:gap-10">
-          <div className="w-screen ml-[calc(-50vw+50%)] lg:w-full lg:ml-0">
-            <div className="mx-auto relative aspect-square w-[min(100svw,78svh)] max-w-full bg-transparent lg:w-full lg:max-w-[650px]">
+        <div className="flex flex-col gap-10 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-start md:gap-8 lg:gap-10">
+          <div className="w-screen ml-[calc(-50vw+50%)] md:w-full md:ml-0">
+            <div className="mx-auto relative aspect-square w-[min(100svw,78svh)] max-w-full bg-transparent md:w-full md:max-w-[560px] lg:max-w-[650px]">
               <SkillsGlobe skillIds={skillIds} radius={2.8} height="100%" />
             </div>
           </div>
 
-          <div className="relative z-10 mx-auto w-full max-w-[325px] lg:max-w-full">
+          <div className="relative z-10 mx-auto w-full max-w-[325px] md:max-w-full">
             <div className="mb-6 grid grid-cols-[repeat(auto-fit,minmax(8.5rem,1fr))] gap-2">
               {groups.map(({ group }) => {
                 const isActive = selectedGroup.group === group;
