@@ -79,10 +79,10 @@ export const ProfileSchema = z.object({
       z.object({
         organization: z.string().nonempty("Organization name is required"),
         title: z.string().nonempty("Job Title is required"),
-        year: z.coerce
+        year: z
           .number({
-            required_error: "Year is required",
-            invalid_type_error: "Year must be a number",
+            error: (issue) =>
+              issue.input === undefined ? "Year is required" : "Year must be a number",
           })
           .int()
           .gte(1900, { message: "Year must be 1900 or later" })
@@ -95,10 +95,10 @@ export const ProfileSchema = z.object({
       z.object({
         institute: z.string().nonempty("Institute is required"),
         qualification: z.string().nonempty("Qualification is required"),
-        year: z.coerce
+        year: z
           .number({
-            required_error: "Year is required",
-            invalid_type_error: "Year must be a number",
+            error: (issue) =>
+              issue.input === undefined ? "Year is required" : "Year must be a number",
           })
           .int()
           .gte(1900, { message: "Year must be 1900 or later" })
@@ -133,7 +133,7 @@ export const ProfileSchema = z.object({
     skills: true,
     posts: true,
   }),
-  mediumPostCount: z.coerce
+  mediumPostCount: z
     .number()
     .int()
     .gte(1, { message: "Must display at least 1 post" })
