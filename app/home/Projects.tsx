@@ -31,7 +31,7 @@ export default function Projects() {
   if (!hasProjects) return null;
 
   return (
-    <section className="relative z-10 mb-20 md:mb-28 px-5 sm:px-10">
+    <section className="relative z-10 mb-20 md:mb-28 px-3 sm:px-10">
       <div className="mx-auto w-full max-w-384">
         <div className="flex justify-center gap-2 mb-6 md:mb-8">
           <h2
@@ -42,12 +42,7 @@ export default function Projects() {
           </h2>
         </div>
 
-        <div
-          className="
-          mx-auto grid max-w-[1260px] justify-center gap-4 sm:gap-5
-          [grid-template-columns:repeat(auto-fit,minmax(260px,300px))]
-        "
-        >
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 md:grid-cols-3 [@media(min-width:1400px)]:grid-cols-4">
           {data.projects?.map((project) => (
             <article
               key={project.name}

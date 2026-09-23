@@ -36,7 +36,7 @@ export default function MediumPosts() {
           </h2>
         </div>
 
-        <div className="mx-auto grid max-w-[1140px] justify-center gap-4 px-5 sm:gap-5 sm:px-10 [grid-template-columns:repeat(auto-fit,minmax(230px,270px))]">
+        <div className="grid grid-cols-1 gap-4 px-3 sm:grid-cols-2 sm:gap-5 sm:px-10 md:grid-cols-3 [@media(min-width:1400px)]:grid-cols-4">
           {visiblePosts.map((post) => (
             <a
               key={post.link}
