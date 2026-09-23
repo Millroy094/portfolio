@@ -10,6 +10,7 @@ import { Suspense, useEffect, useState } from "react";
 function LoginPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const isOAuthCallback = searchParams.has("code") || searchParams.has("state");
   const [checking, setChecking] = useState(true);
   const [starting, setStarting] = useState(false);
   const [error, setError] = useState<string | null>(() => {
@@ -32,11 +33,30 @@ function LoginPageContent() {
         if (!cancelled) {
           setError("Sign in failed. Please try again.");
           setStarting(false);
+          setChecking(false);
         }
       }
     });
 
     (async () => {
+      if (isOAuthCallback) {
+        for (let attempt = 0; attempt < 12; attempt += 1) {
+          try {
+            await getCurrentUser();
+            if (!cancelled) router.replace("/admin");
+            return;
+          } catch {
+            await new Promise((resolve) => setTimeout(resolve, 250));
+          }
+        }
+
+        if (!cancelled) {
+          setError("Sign in is taking longer than expected. Please try again.");
+          setChecking(false);
+        }
+        return;
+      }
+
       try {
         // Already signed in (e.g. back button after auth) - skip the button.
         await getCurrentUser();
@@ -50,7 +70,7 @@ function LoginPageContent() {
       cancelled = true;
       unsubscribe();
     };
-  }, [router]);
+  }, [isOAuthCallback, router]);
 
   const handleSignIn = async () => {
     setError(null);
