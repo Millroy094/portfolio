@@ -67,7 +67,10 @@ function LoginPageContent() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-black px-4 text-white">
+    <main
+      id="main-content"
+      className="flex min-h-screen flex-col items-center justify-center gap-6 bg-black px-4 text-white"
+    >
       <div className="flex w-full max-w-sm flex-col items-center gap-6 rounded-2xl border border-neutral-800/60 bg-neutral-900/40 px-8 py-10 text-center shadow-xl">
         <Image src="/logo.svg" alt="Logo" width={64} height={64} priority />
 
@@ -103,7 +106,7 @@ function LoginPageContent() {
           </div>
         )}
       </div>
-    </div>
+    </main>
   );
 }
 

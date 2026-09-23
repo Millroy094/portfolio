@@ -23,13 +23,13 @@ export default function SeoSection({ register, errors, disabled }: SeoSectionPro
     >
       <div className="mb-1 flex w-full flex-col items-start gap-4">
         <div className="w-full lg:w-1/2">
-          <Field label="Website Title" error={errors.seoTitle?.message}>
+          <Field label="Website Title" error={errors.seoTitle?.message} required>
             <Input {...register("seoTitle")} disabled={disabled} />
           </Field>
         </div>
 
         <div className="w-full lg:w-1/2">
-          <Field label="SEO Description" error={errors.seoDescription?.message}>
+          <Field label="SEO Description" error={errors.seoDescription?.message} required>
             <Input {...register("seoDescription")} disabled={disabled} />
           </Field>
         </div>

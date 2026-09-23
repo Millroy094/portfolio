@@ -42,7 +42,7 @@ function AvatarDisplay({ value }: { value?: File | string | null }): JSX.Element
   if (url) {
     return (
       <Image
-        alt="avatar"
+        alt="Your uploaded profile avatar preview"
         width={100}
         height={100}
         src={url}
@@ -85,7 +85,9 @@ export default function AvatarSection({
               <AvatarDisplay value={field.value} />
 
               {errors.avatar?.message && (
-                <p className="pl-1 text-sm text-red-400">{errors.avatar.message}</p>
+                <p id="avatar-error" role="alert" className="pl-1 text-sm text-red-400">
+                  {errors.avatar.message}
+                </p>
               )}
 
               <Button
@@ -94,6 +96,7 @@ export default function AvatarSection({
                 onClick={() => avatarInputRef.current?.click()}
                 className="w-full max-w-80"
                 disabled={disabled}
+                aria-describedby={errors.avatar?.message ? "avatar-error" : undefined}
               >
                 <Upload className="h-4 w-4" />
                 Choose Avatar

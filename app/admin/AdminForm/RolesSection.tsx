@@ -51,7 +51,11 @@ export default function RolesSection({
                 control={control}
                 name={`roles.${index}`}
                 render={({ field }) => (
-                  <Field label={`Role ${index + 1}`} error={errors.roles?.[index]?.value?.message}>
+                  <Field
+                    label={`Role ${index + 1}`}
+                    error={errors.roles?.[index]?.value?.message}
+                    required
+                  >
                     <Input
                       value={field.value.value ?? ""}
                       onChange={(e) => field.onChange({ value: e.target.value })}

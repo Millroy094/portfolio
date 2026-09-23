@@ -63,6 +63,12 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+:focus-visible {
+  outline: 2px solid #ef4444;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 .admin-theme-dark {
   --admin-page-bg: #09090b;
   --admin-page-text: #f5f5f5;

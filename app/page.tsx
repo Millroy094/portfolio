@@ -3,7 +3,7 @@ import Home from "@/app/home/Home";
 export default async function HomePage() {
   return (
     <div>
-      <main>
+      <main id="main-content">
         <Home />
       </main>
     </div>

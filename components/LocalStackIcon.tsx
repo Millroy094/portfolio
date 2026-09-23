@@ -17,6 +17,8 @@ const LocalstackIcon: React.FC<Props> = ({ size = 40, className, style }) => {
       className={className}
       style={style}
       xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      focusable="false"
     >
       <rect width="120" height="120" rx="12" fill="#3B2176" />
       <defs>

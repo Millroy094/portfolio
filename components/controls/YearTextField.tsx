@@ -10,6 +10,7 @@ type YearTextFieldProps = {
   error?: boolean;
   errorText?: string;
   disabled?: boolean;
+  required?: boolean;
 };
 
 const currentYear = new Date().getFullYear();
@@ -21,8 +22,9 @@ const YearTextField: FC<YearTextFieldProps> = ({
   error,
   errorText,
   disabled,
+  required,
 }) => (
-  <Field label={label} error={error ? errorText : undefined}>
+  <Field label={label} error={error ? errorText : undefined} required={required}>
     <Input
       type="number"
       value={value ?? ""}

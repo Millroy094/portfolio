@@ -32,13 +32,13 @@ export default function IdentitySection({
     >
       <div className="flex w-full flex-col gap-4">
         <div className="w-full lg:max-w-xl">
-          <Field label="Full Name" error={errors.fullName?.message}>
+          <Field label="Full Name" error={errors.fullName?.message} required>
             <Input {...register("fullName")} disabled={disabled} />
           </Field>
         </div>
 
         <div className="w-full lg:w-1/2">
-          <Field label="Punch line" error={errors.punchLine?.message}>
+          <Field label="Punch line" error={errors.punchLine?.message} required>
             <Input {...register("punchLine")} disabled={disabled} />
           </Field>
         </div>

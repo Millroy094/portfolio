@@ -100,9 +100,7 @@ export default function Introduction(): JSX.Element {
           </div>
         )}
         <div className="flex flex-col items-center">
-          {data.punchLine && (
-            <span className="text-sm text-white/90 opacity-80 mb-2">{data.punchLine}</span>
-          )}
+          {data.punchLine && <span className="text-sm text-white/90 mb-2">{data.punchLine}</span>}
 
           {data.visibility.badges && data.badges.length > 0 && <BadgeSlider badges={data.badges} />}
 

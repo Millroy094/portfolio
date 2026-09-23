@@ -195,7 +195,7 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      {children}
+      <main id="main-content">{children}</main>
     </div>
   );
 }

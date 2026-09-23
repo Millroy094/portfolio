@@ -21,6 +21,8 @@ const PlaywrightIcon: React.FC<Props> = ({ size = 40, style, className }) => {
       preserveAspectRatio="xMidYMid meet"
       className={className}
       style={style}
+      aria-hidden="true"
+      focusable="false"
     >
       <path
         fill="#2d4552"

@@ -92,7 +92,11 @@ export default function ProjectsSkillsSection({
                   control={control}
                   name={`projects.${index}.name`}
                   render={({ field }) => (
-                    <Field label="Project name" error={errors.projects?.[index]?.name?.message}>
+                    <Field
+                      label="Project name"
+                      error={errors.projects?.[index]?.name?.message}
+                      required
+                    >
                       <Input
                         value={field.value}
                         onChange={(e) => field.onChange(e.target.value)}
@@ -111,6 +115,7 @@ export default function ProjectsSkillsSection({
                     <Field
                       label="Project Description"
                       error={errors.projects?.[index]?.description?.message}
+                      required
                     >
                       <Input
                         value={field.value}

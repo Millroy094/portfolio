@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { Element, Events, scrollSpy } from "react-scroll";
 
@@ -29,6 +29,7 @@ function SwipeUpIcon({ className = "" }) {
 export default function Home() {
   const [showBtn, setShowBtn] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
 
   const showBtnRef = useRef(showBtn);
 
@@ -78,7 +79,8 @@ export default function Home() {
     };
   }, []);
 
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+  const scrollToTop = () =>
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" });
 
   if (!mounted) return null;
 
@@ -128,10 +130,10 @@ export default function Home() {
           <div className="fixed right-5 bottom-5 z-100">
             <motion.div
               key="scrollToTopButton"
-              initial={{ opacity: 0, y: "15%" }}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: "15%" }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: "10%" }}
-              transition={{ ease: "easeOut", duration: 0.3 }}
+              exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: "10%" }}
+              transition={{ ease: "easeOut", duration: prefersReducedMotion ? 0 : 0.3 }}
             >
               <button
                 onClick={scrollToTop}

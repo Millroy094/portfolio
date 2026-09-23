@@ -67,7 +67,7 @@ export default function BadgesSection({
               control={control}
               name={`badges.${index}.label`}
               render={({ field }) => (
-                <Field label="Badge Label" error={errors.badges?.[index]?.label?.message}>
+                <Field label="Badge Label" error={errors.badges?.[index]?.label?.message} required>
                   <Input
                     value={field.value ?? ""}
                     onChange={(e) => field.onChange(e.target.value)}

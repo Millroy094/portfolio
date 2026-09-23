@@ -78,6 +78,12 @@ export default async function RootLayout({
       <Providers>
         <WebsiteDataProvider initialData={data}>
           <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-2000 focus:rounded-md focus:bg-red-700 focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-white"
+            >
+              Skip to main content
+            </a>
             {children}
             <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_G_TAG} />
           </body>

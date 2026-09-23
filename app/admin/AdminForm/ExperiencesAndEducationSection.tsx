@@ -89,6 +89,7 @@ export default function ExperiencesEducationSection({
                         <Field
                           label="Organization"
                           error={errors.experiences?.[index]?.organization?.message}
+                          required
                         >
                           <Input
                             value={field.value}
@@ -108,6 +109,7 @@ export default function ExperiencesEducationSection({
                         <Field
                           label="Job Title"
                           error={errors.experiences?.[index]?.title?.message}
+                          required
                         >
                           <Input
                             value={field.value}
@@ -131,6 +133,7 @@ export default function ExperiencesEducationSection({
                           error={!!fieldState.error}
                           errorText={errors.experiences?.[index]?.year?.message}
                           disabled={disabled}
+                          required
                         />
                       )}
                     />
@@ -195,6 +198,7 @@ export default function ExperiencesEducationSection({
                         <Field
                           label="Institute"
                           error={errors.education?.[index]?.institute?.message}
+                          required
                         >
                           <Input
                             value={field.value}
@@ -214,6 +218,7 @@ export default function ExperiencesEducationSection({
                         <Field
                           label="Qualification"
                           error={errors.education?.[index]?.qualification?.message}
+                          required
                         >
                           <Input
                             value={field.value}
@@ -237,6 +242,7 @@ export default function ExperiencesEducationSection({
                           error={!!fieldState.error}
                           errorText={errors.education?.[index]?.year?.message}
                           disabled={disabled}
+                          required
                         />
                       )}
                     />

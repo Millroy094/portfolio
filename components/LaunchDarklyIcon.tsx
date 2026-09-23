@@ -17,6 +17,8 @@ const LaunchDarklyIcon: React.FC<Props> = ({ size = 40, className, style }) => {
       className={className}
       style={style}
       xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      focusable="false"
     >
       <rect x="132" y="0" width="24" height="24" rx="4" fill="#1F1F1F" />
       <path

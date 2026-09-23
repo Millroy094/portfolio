@@ -2,7 +2,7 @@
 
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { useRouter } from "next/navigation";
-import React, { useMemo, useRef, useState, useCallback } from "react";
+import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 
 import HideOnScroll from "@/components/HideOnScroll";
 import { useWebsiteData } from "@/context/WebsiteData";
@@ -19,6 +19,8 @@ function EditIcon({ className = "" }) {
       stroke="currentColor"
       strokeWidth="2"
       viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
     >
       <path
         strokeLinecap="round"
@@ -35,7 +37,9 @@ export default function PortfolioAppBar() {
   const { data } = useWebsiteData();
 
   const headerRef = useRef<HTMLDivElement | null>(null);
+  const mobileToggleRef = useRef<HTMLButtonElement | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const mobileMenuId = useId();
 
   const pages = useMemo(() => {
     const list: string[] = [];
@@ -61,6 +65,22 @@ export default function PortfolioAppBar() {
     window.scrollTo({ top: targetY, behavior: "smooth" });
   }, []);
 
+  const closeMobileMenu = useCallback(() => {
+    setMobileOpen(false);
+    mobileToggleRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeMobileMenu();
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [mobileOpen, closeMobileMenu]);
+
   return (
     <HideOnScroll threshold={16}>
       <header
@@ -74,6 +94,7 @@ export default function PortfolioAppBar() {
           <div className="h-12 md:h-14 flex items-center gap-3">
             {/* Mobile menu toggle */}
             <button
+              ref={mobileToggleRef}
               onClick={() => setMobileOpen(!mobileOpen)}
               className="
                 md:hidden
@@ -81,7 +102,9 @@ export default function PortfolioAppBar() {
                 text-white/90 hover:text-white
                 focus:outline-none
               "
-              aria-label="Open navigation"
+              aria-label={mobileOpen ? "Close navigation" : "Open navigation"}
+              aria-expanded={mobileOpen}
+              aria-controls={mobileMenuId}
             >
               <svg
                 className="w-6 h-6"
@@ -89,6 +112,8 @@ export default function PortfolioAppBar() {
                 stroke="currentColor"
                 strokeWidth={2}
                 viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
               >
                 <path strokeLinecap="round" d="M4 6h16" />
                 <path strokeLinecap="round" d="M4 12h16" />
@@ -96,7 +121,10 @@ export default function PortfolioAppBar() {
               </svg>
             </button>
 
-            <nav className="hidden md:flex [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:hidden gap-5 items-center">
+            <nav
+              aria-label="Main"
+              className="hidden md:flex [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:hidden gap-5 items-center"
+            >
               {pages.map((page) => {
                 const id = normalizeId(page);
                 return (
@@ -112,7 +140,7 @@ export default function PortfolioAppBar() {
                     <span
                       className="
                         relative inline-block
-                        font-bold uppercase tracking-wide text-xs
+                        font-bold uppercase tracking-wide text-xs md:text-sm
                         pb-1
                         text-shadow-[0_1px_3px_rgba(0,0,0,0.75)]
                         after:absolute after:left-0 after:bottom-0
@@ -151,6 +179,9 @@ export default function PortfolioAppBar() {
         </div>
 
         <div
+          id={mobileMenuId}
+          aria-hidden={!mobileOpen}
+          inert={!mobileOpen}
           className={`
             md:hidden w-full
             [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:block
