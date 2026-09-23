@@ -29,14 +29,9 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
   }, [theme]);
 
   useEffect(() => {
-    // `getCurrentUser` may still reject mid-OAuth-callback even though
-    // sign-in is about to succeed, so rely on Hub for "signedIn" /
-    // "signInWithRedirect_failure" instead of bouncing early.
     let cancelled = false;
 
-    // Cognito surfaces failures (bad issuer, missing attributes, etc.) as
-    // `/admin?error=...&error_description=...`. Log it and forward to
-    // /login so it's visible instead of silently redirecting away.
+    // Cognito surfaces failures as `/admin?error=...&error_description=...`.
     const params = new URLSearchParams(window.location.search);
     const oauthError = params.get("error");
     if (oauthError) {
@@ -46,20 +41,20 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
       return;
     }
 
+    // Amplify's raw `window.history.replaceState` cleanup can be undone by
+    // Next's router resyncing to its own stale URL, so strip `code`/`state`
+    // via `router.replace` ourselves instead of waiting on the Hub "signedIn"
+    // round trip.
+    if (params.has("code") || params.has("state")) {
+      router.replace(window.location.pathname);
+    }
+
     const checkUser = async () => {
       try {
         const current = await getCurrentUser();
         if (!cancelled) {
           setUser(current);
           setChecking(false);
-        }
-        // Amplify's own cleanup uses a raw `window.history.replaceState`,
-        // which Next's App Router isn't aware of and can later resync back
-        // to the dirty URL (e.g. on HMR/refresh). Use `router.replace`
-        // instead. Also covers the exchange itself failing (stale/reused code).
-        const currentParams = new URLSearchParams(window.location.search);
-        if (currentParams.has("code") || currentParams.has("state")) {
-          router.replace(window.location.pathname);
         }
         try {
           const attributes = await fetchUserAttributes();
@@ -68,8 +63,9 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
           console.error("Failed to fetch user attributes:", err);
         }
       } catch {
-        const hasOAuthCode = new URLSearchParams(window.location.search).has("code");
-        if (!hasOAuthCode && !cancelled) {
+        // Read from the params captured on mount, not `window.location.search`,
+        // since the `router.replace` above may not have applied yet.
+        if (!params.has("code") && !cancelled) {
           router.replace("/login");
         }
       }
@@ -158,8 +154,8 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
           text-center w-full sm:w-auto transition-colors h-10 flex items-center justify-center
           focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${
             isDark
-              ? "bg-neutral-700 hover:bg-neutral-600 active:bg-neutral-500 text-white focus-visible:ring-neutral-500/70 focus-visible:ring-offset-black"
-              : "bg-neutral-300 hover:bg-neutral-400 active:bg-neutral-500 text-neutral-950 focus-visible:ring-neutral-400/70 focus-visible:ring-offset-neutral-50"
+              ? "hover:bg-neutral-600 active:bg-neutral-500 text-white focus-visible:ring-neutral-500/70 focus-visible:ring-offset-black"
+              : "bg-neutral-300 hover:bg-neutral-400 text-neutral-950 focus-visible:ring-neutral-400/70 focus-visible:ring-offset-neutral-50"
           }
         `}
               href="/"
