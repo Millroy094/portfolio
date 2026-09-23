@@ -2,6 +2,8 @@
 
 import { useInView } from "react-intersection-observer";
 
+import HorizontalEnergyGraphic from "@/components/HorizontalEnergyGraphic";
+
 type Props = {
   className?: string;
   style?: React.CSSProperties;
@@ -21,13 +23,6 @@ const AMBIENT_DRIFTERS = [
   { top: "82%", left: "8%", delay: "1.5s", duration: "11s" },
   { top: "14%", left: "94%", delay: "3s", duration: "10s" },
   { top: "76%", left: "92%", delay: "4.5s", duration: "8s" },
-];
-
-const STRIP_BARS = [
-  { duration: "2.4s", delay: "0s" },
-  { duration: "3.1s", delay: "0.4s" },
-  { duration: "2.7s", delay: "0.8s" },
-  { duration: "3.4s", delay: "1.2s" },
 ];
 
 /** HUD-style panel for the About Me section: identity orbit + rotating data core. */
@@ -73,8 +68,8 @@ export default function AboutMeGraphic({ className, style }: Props) {
         <div
           className="relative w-full"
           style={{
-            aspectRatio: "8 / 5",
-            maxHeight: "calc(100% - 3.25rem)",
+            aspectRatio: "8 / 4.3",
+            maxHeight: "calc(100% - 5rem)",
           }}
         >
           <div className="tech-ambient-glow" />
@@ -152,24 +147,10 @@ export default function AboutMeGraphic({ className, style }: Props) {
           </div>
         </div>
 
-        <div className="tech-strip">
-          <div className="tech-strip-header">
-            <span>SYS.LOAD</span>
-            <span>SYNC</span>
-          </div>
-          {STRIP_BARS.map((bar) => (
-            <div key={bar.delay} className="tech-strip-bar">
-              <span
-                className="tech-strip-bar-fill"
-                style={{
-                  animationDuration: bar.duration,
-                  animationDelay: bar.delay,
-                  animationPlayState: playState,
-                }}
-              />
-            </div>
-          ))}
-        </div>
+        <HorizontalEnergyGraphic
+          className="w-full shrink-0"
+          style={{ contain: "layout style paint" }}
+        />
       </div>
     </div>
   );

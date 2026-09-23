@@ -493,59 +493,6 @@ body {
 }
 
 /* Techy horizontal loading/scan strip shown below the main HUD panel */
-.tech-strip {
-  position: relative;
-  width: 100%;
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid rgba(239, 68, 68, 0.25);
-  border-radius: 0.375rem;
-  background: rgba(239, 68, 68, 0.04);
-  backdrop-filter: blur(1px);
-}
-
-.tech-strip-header {
-  display: flex;
-  justify-content: space-between;
-  font-family: var(--font-geist-mono, monospace);
-  font-size: 0.55rem;
-  letter-spacing: 0.08em;
-  color: rgba(239, 68, 68, 0.65);
-}
-
-.tech-strip-bar {
-  position: relative;
-  height: 3px;
-  border-radius: 9999px;
-  background: rgba(239, 68, 68, 0.12);
-  overflow: hidden;
-}
-
-.tech-strip-bar-fill {
-  position: absolute;
-  inset: 0;
-  width: 35%;
-  background: linear-gradient(
-    to right,
-    rgba(239, 68, 68, 0) 0%,
-    rgba(239, 68, 68, 0.95) 50%,
-    rgba(239, 68, 68, 0) 100%
-  );
-  animation: tech-strip-scan 2.6s linear infinite;
-}
-
-@keyframes tech-strip-scan {
-  0% {
-    transform: translateX(-120%);
-  }
-  100% {
-    transform: translateX(320%);
-  }
-}
-
 .identity-ring {
   position: absolute;
   inset: 0;
@@ -668,6 +615,156 @@ body {
   height: 100%;
 }
 
+.horizontal-energy-col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+}
+
+.stream-row {
+  position: relative;
+  flex: 0 0 auto;
+  width: 100%;
+  height: 0.85rem;
+  overflow: visible;
+}
+
+.stream-track-h {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  transform: translateY(-50%);
+  filter: blur(0.3px);
+  background: linear-gradient(
+    to right,
+    rgba(239, 68, 68, 0) 0%,
+    rgba(239, 68, 68, 0.32) 30%,
+    rgba(239, 68, 68, 0.32) 70%,
+    rgba(239, 68, 68, 0) 100%
+  );
+}
+
+.stream-row-bottom .stream-track-h {
+  background: linear-gradient(
+    to right,
+    rgba(212, 212, 216, 0) 0%,
+    rgba(212, 212, 216, 0.32) 30%,
+    rgba(212, 212, 216, 0.32) 70%,
+    rgba(212, 212, 216, 0) 100%
+  );
+}
+
+.stream-spark-h {
+  position: absolute;
+  top: 50%;
+  left: -10%;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(239, 68, 68, 0.95) 55%,
+    rgba(239, 68, 68, 0) 100%
+  );
+  filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.85));
+  animation-name: stream-move-h-1;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.stream-row-bottom .stream-spark-h {
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(212, 212, 216, 0.95) 55%,
+    rgba(212, 212, 216, 0) 100%
+  );
+  filter: drop-shadow(0 0 4px rgba(212, 212, 216, 0.85));
+}
+
+.stream-spark-h-v2 {
+  animation-name: stream-move-h-2;
+}
+
+.stream-spark-h-v3 {
+  animation-name: stream-move-h-3;
+}
+
+@keyframes stream-move-h-1 {
+  0% {
+    left: -10%;
+    transform: translateY(-50%) scale(0.6);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(calc(-50% + 6px)) scale(1);
+  }
+  90% {
+    opacity: 0.9;
+  }
+  100% {
+    left: 110%;
+    transform: translateY(-50%) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes stream-move-h-2 {
+  0% {
+    left: -10%;
+    transform: translateY(-50%) scale(0.6);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(calc(-50% - 8px)) scale(1);
+  }
+  90% {
+    opacity: 0.9;
+  }
+  100% {
+    left: 110%;
+    transform: translateY(-50%) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes stream-move-h-3 {
+  0% {
+    left: -10%;
+    transform: translateY(-50%) scale(0.6);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(calc(-50% + 3px)) scale(1.15);
+  }
+  90% {
+    opacity: 0.9;
+  }
+  100% {
+    left: 110%;
+    transform: translateY(-50%) scale(0.5);
+    opacity: 0;
+  }
+}
+
+.horizontal-energy-inner {
+  position: relative;
+  width: 100%;
+  height: 4rem;
+}
+
 .helix-glow {
   position: absolute;
   inset: -10% -20%;
@@ -714,6 +811,14 @@ body {
 
 .helix-node-b {
   filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.95));
+}
+
+.helix-endcap-housing {
+  fill: url(#horizontal-endcap-gradient);
+  fill-opacity: 0.97;
+  stroke: rgba(56, 189, 248, 0.75);
+  stroke-width: 1;
+  filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.55));
 }
 
 .stream-track {
@@ -857,9 +962,162 @@ body {
   .ambient-drift,
   .scan-core-spin,
   .scan-core-ray,
-  .tech-strip-bar-fill,
-  .stream-spark {
+  .stream-spark,
+  .stream-spark-h,
+  .circuit-node,
+  .circuit-tick-group,
+  .circuit-node-group,
+  .circuit-orb-layer {
     animation: none;
+  }
+}
+
+/* About Me / Education connector: radial tech-circuit burst */
+.circuit-col {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.circuit-svg {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.circuit-ring {
+  fill: none;
+  stroke-width: 0.6;
+}
+
+.circuit-ring-a {
+  stroke: rgba(212, 212, 216, 0.45);
+  stroke-dasharray: 2 4;
+}
+
+.circuit-ring-b {
+  stroke: rgba(212, 212, 216, 0.4);
+}
+
+.circuit-ring-c {
+  stroke: rgba(212, 212, 216, 0.35);
+  stroke-dasharray: 6 3;
+}
+
+.circuit-ring-e {
+  stroke: rgba(212, 212, 216, 0.22);
+  stroke-dasharray: 1 5;
+}
+
+.circuit-ring-d {
+  stroke: rgba(212, 212, 216, 0.45);
+}
+
+.circuit-trace {
+  fill: none;
+  stroke: rgba(212, 212, 216, 0.3);
+  stroke-width: 0.7;
+}
+
+.circuit-pad {
+  fill: rgba(20, 6, 6, 0.6);
+  stroke: rgba(239, 68, 68, 0.5);
+  stroke-width: 0.6;
+}
+
+.circuit-via {
+  fill: rgba(239, 68, 68, 0.4);
+}
+
+.circuit-tick-group {
+  animation: identity-rotate 90s linear infinite;
+}
+
+.circuit-node-group {
+  animation: identity-rotate 40s linear infinite reverse;
+}
+
+.circuit-tick {
+  stroke: rgba(239, 68, 68, 0.5);
+  stroke-width: 0.8;
+}
+
+.circuit-node {
+  animation: growth-pulse 2.6s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.circuit-node-a {
+  fill: rgba(239, 68, 68, 0.9);
+  filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.85)) drop-shadow(0 0 10px rgba(239, 68, 68, 0.5));
+}
+
+.circuit-node-b {
+  fill: rgba(212, 212, 216, 0.9);
+  filter: drop-shadow(0 0 5px rgba(212, 212, 216, 0.75))
+    drop-shadow(0 0 10px rgba(212, 212, 216, 0.4));
+}
+
+.circuit-spark {
+  fill: rgba(255, 255, 255, 0.95);
+}
+
+.circuit-spark-a {
+  filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.9));
+}
+
+.circuit-spark-b {
+  filter: drop-shadow(0 0 6px rgba(212, 212, 216, 0.85));
+}
+
+.circuit-orb-layer {
+  animation: identity-rotate 16s linear infinite;
+}
+
+.circuit-orb-layer-ring {
+  fill: none;
+  stroke: rgba(212, 212, 216, 0.2);
+  stroke-width: 0.5;
+}
+
+.circuit-orb-layer-ring-inner {
+  stroke: rgba(255, 255, 255, 0.5);
+}
+
+.circuit-orbiting-orb-red {
+  fill: rgba(239, 68, 68, 0.95);
+  filter: drop-shadow(0 0 3px rgba(239, 68, 68, 0.85));
+}
+
+.circuit-orbiting-orb-blue {
+  fill: rgba(56, 189, 248, 0.95);
+  filter: drop-shadow(0 0 3px rgba(56, 189, 248, 0.85));
+}
+
+.circuit-orbiting-orb-white {
+  fill: rgba(255, 255, 255, 0.95);
+  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.85));
+}
+
+.circuit-orb-core {
+  fill: rgba(239, 68, 68, 0.9);
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.85)) drop-shadow(0 0 4px rgba(255, 255, 255, 0.4));
+}
+
+.circuit-orb-crosshair {
+  stroke: rgba(255, 255, 255, 0.5);
+  stroke-width: 0.5;
+}
+
+@keyframes growth-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.25);
   }
 }
 

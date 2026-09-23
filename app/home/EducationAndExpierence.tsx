@@ -3,20 +3,22 @@
 import { useEffect, useState } from "react";
 
 import HistoryTimeline from "@/app/home/HistoryTimeline";
-import VerticalEnergyGraphic from "@/components/VerticalEnergyGraphic";
+import TechCircuitGraphic from "@/components/TechCircuitGraphic";
 import { useWebsiteData } from "@/context/WebsiteData";
 
 function EducationAndExperience() {
   const { data } = useWebsiteData();
-  const [isLargeScreen, setIsLargeScreen] = useState(false);
+  const [showCircuit, setShowCircuit] = useState(false);
 
   useEffect(() => {
-    const checkScreen = () => {
-      setIsLargeScreen(window.innerWidth >= 1280);
-    };
-    checkScreen();
-    window.addEventListener("resize", checkScreen);
-    return () => window.removeEventListener("resize", checkScreen);
+    // Show the circuit background whenever Experience/Education are laid out
+    // side-by-side on a reasonably large viewport (md breakpoint up). Hidden on
+    // small/landscape-mobile screens where it reads as cluttered.
+    const query = window.matchMedia("(min-width: 768px)");
+    const update = () => setShowCircuit(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
   }, []);
 
   const hasEducation = data.visibility.education && data.education && data.education.length > 0;
@@ -28,21 +30,20 @@ function EducationAndExperience() {
 
   if (!hasOneExperienceOrEducation) return null;
 
-  const experienceRowCount = data.experiences?.length ?? 0;
-  const educationRowCount = new Set(data.education?.map((e) => e.institute)).size;
-  const longerRowCount = Math.max(experienceRowCount, educationRowCount);
-  const fadeStartPercent =
-    longerRowCount > 1 ? Math.min(40, Math.max(8, (1 / (longerRowCount - 1)) * 100)) : 10;
-  const fadeEndPercent =
-    longerRowCount > 1
-      ? Math.min(92, Math.max(60, ((longerRowCount - 2) / (longerRowCount - 1)) * 100))
-      : 90;
-
   return (
     <section className="relative z-10 mb-20 md:mb-28 flex flex-col px-6 sm:px-0 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:px-2">
-      <div className="flex flex-col md:flex-row items-center md:items-start [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:flex-row [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:items-start [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:gap-4 gap-10">
+      <div className="relative flex flex-col md:flex-row items-center md:items-start [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:flex-row [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:items-start [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:gap-4 gap-10">
+        {showCircuit && (
+          <div
+            className="hidden md:block absolute inset-0 z-0 opacity-15 pointer-events-none"
+            aria-hidden="true"
+          >
+            <TechCircuitGraphic style={{ contain: "layout style paint" }} />
+          </div>
+        )}
+
         {hasExperience && (
-          <div className="w-full md:flex-1 md:min-w-0 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:flex-1 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:min-w-0">
+          <div className="relative z-10 w-full md:flex-1 md:min-w-0 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:flex-1 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:min-w-0">
             <HistoryTimeline
               title="Experience"
               timeline={
@@ -57,20 +58,8 @@ function EducationAndExperience() {
           </div>
         )}
 
-        {isLargeScreen && (
-          <div className="hidden xl:flex justify-center items-stretch w-32 pt-16 shrink-0">
-            <VerticalEnergyGraphic
-              style={{
-                contain: "layout style paint",
-                ["--connector-fade-start" as string]: `${fadeStartPercent}%`,
-                ["--connector-fade-end" as string]: `${fadeEndPercent}%`,
-              }}
-            />
-          </div>
-        )}
-
         {hasEducation && (
-          <div className="w-full md:flex-1 md:min-w-0 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:flex-1 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:min-w-0">
+          <div className="relative z-10 w-full md:flex-1 md:min-w-0 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:flex-1 [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:min-w-0">
             <HistoryTimeline
               title="Education"
               timeline={
