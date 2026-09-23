@@ -84,17 +84,10 @@ export default function Skills() {
     <section className="relative z-10 mb-20 md:mb-28 px-0">
       {/* Header */}
       <div className="w-full text-center mb-10 md:mb-14">
-        <h2
-          className="inline-block font-bold uppercase tracking-wide
-                       text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:text-[20px] mr-1 text-white/90"
-        >
+        <h2 className="section-title-sm inline-block font-bold uppercase tracking-wide mr-1 text-white/90">
           Technology &amp;
         </h2>
-        <h2
-          className="ml-1 inline-block rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide
-                       text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px]
-                       [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:text-[20px] text-red-500"
-        >
+        <h2 className="section-title-sm ml-1 inline-block rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide text-red-500">
           Skills
         </h2>
       </div>

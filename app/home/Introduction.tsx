@@ -73,12 +73,8 @@ export default function Introduction(): JSX.Element {
         )}
         {/* Name */}
         <div className="flex justify-center flex-wrap gap-2 text-center mb-1">
-          <span className="text-[20px] md:text-[60px] [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:text-[20px] font-normal text-white/90">
-            Hi, I am
-          </span>
-          <h1 className="text-[20px] md:text-[60px] [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:text-[20px] font-bold text-red-600">
-            {data.fullName || "Unknown"}
-          </h1>
+          <span className="hero-title-lg font-normal text-white/90">Hi, I am</span>
+          <h1 className="hero-title-lg font-bold text-red-600">{data.fullName || "Unknown"}</h1>
         </div>
         {!data.fullName && <div className="text-sm opacity-70 mb-2">Please finish my setup</div>}
         {data.visibility.roles && data.roles.length > 0 && (
@@ -88,8 +84,7 @@ export default function Introduction(): JSX.Element {
               wrapper="div"
               speed={50}
               className="
-                text-[18px] md:text-[40px]
-                [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:text-[18px]
+                hero-role-text
                 leading-none
                 tracking-wide
                 text-white/90

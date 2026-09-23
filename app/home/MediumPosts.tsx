@@ -28,15 +28,15 @@ export default function MediumPosts() {
     <section className="relative z-10 mb-20 md:mb-28">
       <div className="mx-auto w-full max-w-384">
         <div className="w-full text-center mb-6 md:mb-8 px-4">
-          <h2 className="inline-block font-bold uppercase tracking-wide text-[20px] md:text-[35px] [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:text-[20px] mr-1 text-white/90">
+          <h2 className="section-title-sm inline-block font-bold uppercase tracking-wide mr-1 text-white/90">
             Latest
           </h2>
-          <h2 className="ml-1 inline-block rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide text-[20px] text-red-500 md:text-[35px] [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:text-[20px]">
+          <h2 className="section-title-sm ml-1 inline-block rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide text-red-500">
             Writing
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 px-3 [@media(min-width:700px)]:grid-cols-2 [@media(min-width:700px)]:gap-5 sm:px-10 [@media(min-width:1000px)]:grid-cols-3 [@media(min-width:1400px)]:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 px-3 tile-2:grid-cols-2 tile-2:gap-5 sm:px-10 tile-3:grid-cols-3 tile-4:grid-cols-4">
           {visiblePosts.map((post) => (
             <a
               key={post.link}

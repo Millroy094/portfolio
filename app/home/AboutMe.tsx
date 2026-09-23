@@ -37,16 +37,10 @@ function AboutMe() {
         )}
 
         <div className="flex justify-center gap-2 lg:mb-6 lg:justify-start lg:block">
-          <h2
-            className="inline-block font-bold uppercase tracking-wide
-                         text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:text-[20px] text-white/90"
-          >
+          <h2 className="section-title-sm inline-block font-bold uppercase tracking-wide text-white/90">
             About
           </h2>
-          <h2
-            className="inline-block rounded-md bg-neutral-100 ml-1 px-2 py-0.5 font-bold uppercase tracking-wide
-                         text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:text-[20px] text-red-500"
-          >
+          <h2 className="section-title-sm inline-block rounded-md bg-neutral-100 ml-1 px-2 py-0.5 font-bold uppercase tracking-wide text-red-500">
             Me
           </h2>
         </div>

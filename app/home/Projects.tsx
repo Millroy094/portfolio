@@ -34,15 +34,12 @@ export default function Projects() {
     <section className="relative z-10 mb-20 md:mb-28 px-3 sm:px-10">
       <div className="mx-auto w-full max-w-384">
         <div className="flex justify-center gap-2 mb-6 md:mb-8">
-          <h2
-            className="rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide text-red-500
-                     text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:text-[20px]"
-          >
+          <h2 className="section-title-sm rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide text-red-500">
             Projects
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 [@media(min-width:700px)]:grid-cols-2 [@media(min-width:700px)]:gap-5 [@media(min-width:1000px)]:grid-cols-3 [@media(min-width:1400px)]:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 tile-2:grid-cols-2 tile-2:gap-5 tile-3:grid-cols-3 tile-4:grid-cols-4">
           {data.projects?.map((project) => (
             <article
               key={project.name}
