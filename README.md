@@ -245,13 +245,14 @@ needed.
 
 ---
 
-# 🔑 GitHub Actions Secrets
+# 🔑 GitHub Actions Variables & Secrets
 
 Configure in your repository settings:
 
 - AWS_REGION
 - AWS_ROLE_ARN
 - TF_ORG
+- TF_WORKSPACE (optional, defaults to `portfolio`)
 - TF_API_TOKEN
 
 ---
