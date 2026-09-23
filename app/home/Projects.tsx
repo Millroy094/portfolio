@@ -32,42 +32,44 @@ export default function Projects() {
 
   return (
     <section className="relative z-10 mb-20 md:mb-28 px-5 sm:px-10">
-      <div className="flex justify-center md:justify-center lg:justify-start gap-2 mb-6 md:mb-8">
-        <h2
-          className="rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide text-red-500
+      <div className="mx-auto w-full max-w-384">
+        <div className="flex justify-center gap-2 mb-6 md:mb-8">
+          <h2
+            className="rounded-md bg-neutral-100 px-2 py-0.5 font-bold uppercase tracking-wide text-red-500
                      text-[20px] sm:text-[20px] md:text-[35px] lg:text-[35px] [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:text-[20px]"
-        >
-          Projects
-        </h2>
-      </div>
+          >
+            Projects
+          </h2>
+        </div>
 
-      <div
-        className="
-          grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4
+        <div
+          className="
+          mx-auto grid max-w-[1260px] justify-center gap-4 sm:gap-5
+          [grid-template-columns:repeat(auto-fit,minmax(260px,300px))]
         "
-      >
-        {data.projects?.map((project) => (
-          <article
-            key={project.name}
-            className="
+        >
+          {data.projects?.map((project) => (
+            <article
+              key={project.name}
+              className="
               group flex flex-col justify-between min-h-62.5
               rounded-xl border border-zinc-800/60 bg-zinc-900/70
               shadow-md hover:shadow-lg transition-shadow
               backdrop-blur supports-backdrop-filter:bg-zinc-900/60
               p-4
             "
-          >
-            <header className="mb-2">
-              <h3 className="text-lg font-semibold text-zinc-100">{project.name}</h3>
-            </header>
+            >
+              <header className="mb-2">
+                <h3 className="text-lg font-semibold text-zinc-100">{project.name}</h3>
+              </header>
 
-            <div className="text-zinc-300 text-sm flex-1">{project.description}</div>
+              <div className="text-zinc-300 text-sm flex-1">{project.description}</div>
 
-            <footer className="mt-4 flex justify-end">
-              <button
-                type="button"
-                onClick={() => window.open(project.url, "_blank", "noopener,noreferrer")}
-                className="
+              <footer className="mt-4 flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => window.open(project.url, "_blank", "noopener,noreferrer")}
+                  className="
                   inline-flex items-center gap-2
                   rounded-md bg-red-700 text-white
                   px-4 py-2 text-sm font-medium
@@ -75,14 +77,15 @@ export default function Projects() {
                   focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/70
                   transition-colors
                 "
-                aria-label={`View ${project.name} repository on GitHub`}
-              >
-                <span>View Repo</span>
-                <GitHubIcon className="h-4 w-4" />
-              </button>
-            </footer>
-          </article>
-        ))}
+                  aria-label={`View ${project.name} repository on GitHub`}
+                >
+                  <span>View Repo</span>
+                  <GitHubIcon className="h-4 w-4" />
+                </button>
+              </footer>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );
