@@ -42,7 +42,7 @@ export default function Projects() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 md:grid-cols-3 [@media(min-width:1400px)]:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 [@media(min-width:700px)]:grid-cols-2 [@media(min-width:700px)]:gap-5 [@media(min-width:1000px)]:grid-cols-3 [@media(min-width:1400px)]:grid-cols-4">
           {data.projects?.map((project) => (
             <article
               key={project.name}
