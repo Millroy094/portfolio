@@ -20,6 +20,7 @@ env:
   AWS_REGION: ${{ vars.AWS_REGION }}
   TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
   TF_ORG: ${{ vars.TF_ORG }}
+  TF_WORKSPACE: ${{ vars.TF_WORKSPACE || 'portfolio' }}
 
 jobs:
   terraform-format-lint-docs:
@@ -87,7 +88,7 @@ jobs:
         id: upload
         with:
           directory: .
-          workspace: portfolio
+          workspace: ${{ env.TF_WORKSPACE }}
           speculative: ${{ needs.set-variables.outputs.dry_run }}
           token: ${{ env.TF_API_TOKEN }}
           organization: ${{ env.TF_ORG }}
@@ -95,7 +96,7 @@ jobs:
       - name: Trigger Terraform Cloud Run
         uses: hashicorp/tfc-workflows-github/actions/create-run@v1.3.2
         with:
-          workspace: portfolio
+          workspace: ${{ env.TF_WORKSPACE }}
           configuration_version: ${{ steps.upload.outputs.configuration_version_id }}
           plan_only: ${{ needs.set-variables.outputs.dry_run }}
           token: ${{ env.TF_API_TOKEN }}
@@ -125,7 +126,7 @@ jobs:
         run: |
           WORKSPACE_ID=$(curl -s \
             --header "Authorization: Bearer ${{ env.TF_API_TOKEN }}" \
-            https://app.terraform.io/api/v2/organizations/${{ env.TF_ORG }}/workspaces/portfolio \
+            https://app.terraform.io/api/v2/organizations/${{ env.TF_ORG }}/workspaces/${{ env.TF_WORKSPACE }} \
             | jq -r '.data.id')
           echo "workspace_id=$WORKSPACE_ID" >> $GITHUB_OUTPUT
 
