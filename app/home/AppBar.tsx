@@ -136,14 +136,15 @@ export default function PortfolioAppBar() {
                 className="
                   hidden md:flex items-center gap-2
                   [@media(orientation:landscape)_and_(max-height:500px)_and_(max-width:1000px)]:hidden
-                  bg-red-600 hover:bg-red-700 active:bg-red-800
-                  text-white uppercase text-xs
-                  px-3 py-1.5 rounded
+                  rounded-md bg-red-700 text-white
+                  px-4 py-2 text-sm font-medium
+                  hover:bg-red-600 active:bg-red-700/90
+                  focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/70
                   transition-colors
                 "
               >
-                <EditIcon />
-                <span className="text-xs font-bold">Edit Website</span>
+                <EditIcon className="h-4 w-4" />
+                <span>Edit Website</span>
               </button>
             )}
           </div>
