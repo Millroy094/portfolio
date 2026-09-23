@@ -584,6 +584,28 @@ body {
   }
 }
 
+/* Skills section: fade/slide transition when the active skill group changes */
+@keyframes skills-group-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.skills-group-fade {
+  animation: skills-group-in 0.35s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skills-group-fade {
+    animation: none;
+  }
+}
+
 /* Education/Experience connector: DNA helix + particle streams */
 .connector-fade {
   --connector-fade-start: 10%;

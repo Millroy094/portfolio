@@ -143,6 +143,8 @@ export default function Skills() {
                     key={group}
                     type="button"
                     onClick={() => setActiveGroup(group)}
+                    onMouseEnter={() => setActiveGroup(group)}
+                    onFocus={() => setActiveGroup(group)}
                     className={`w-full rounded-full border px-4 py-2 text-center text-xs sm:text-sm font-medium whitespace-nowrap transition ${
                       isActive
                         ? "border-red-500 bg-red-500/20 text-white"
@@ -156,7 +158,10 @@ export default function Skills() {
             </div>
 
             <div className="flex flex-col items-center lg:items-start">
-              <ul className="flex flex-wrap justify-center lg:justify-start gap-3 max-w-72 sm:max-w-80 lg:max-w-full">
+              <ul
+                key={selectedGroup.group}
+                className="skills-group-fade flex flex-wrap justify-center lg:justify-start gap-3 max-w-72 sm:max-w-80 lg:max-w-full"
+              >
                 {selectedGroup.items.map((skill) => (
                   <li
                     key={skill.id}
