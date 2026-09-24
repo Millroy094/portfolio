@@ -25,9 +25,9 @@ export default function MediumPosts() {
   if (!data.visibility.posts || visiblePosts.length === 0) return null;
 
   return (
-    <section className="relative z-10 mb-20 md:mb-28">
+    <section className="relative z-10 mb-20 md:mb-28 px-3 sm:px-10">
       <div className="mx-auto w-full max-w-384">
-        <div className="w-full text-center mb-6 md:mb-8 px-4">
+        <div className="w-full text-center mb-6 md:mb-8">
           <h2 className="section-title-sm inline-block font-bold uppercase tracking-wide mr-1 text-white/90">
             Latest
           </h2>
@@ -36,7 +36,7 @@ export default function MediumPosts() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 px-3 tile-2:grid-cols-2 tile-2:gap-5 sm:px-10 tile-3:grid-cols-3 tile-4:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 tile-2:grid-cols-2 tile-2:gap-5 tile-3:grid-cols-3 tile-4:grid-cols-4">
           {visiblePosts.map((post) => (
             <a
               key={post.link}
