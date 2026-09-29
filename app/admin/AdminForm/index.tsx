@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Edit3, Lock, Save } from "lucide-react";
+import { Edit3, Loader2, Lock, Save } from "lucide-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   useForm,
@@ -40,6 +40,11 @@ export default function AdminForm(props: AdminFormProps) {
   const [formId, setFormId] = useState<string | null>(profileId);
   const [processing, setProcessing] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
+  // Server-side fetch commonly returns nothing (OIDC session cookie isn't
+  // written until client JS finishes the token exchange), so we almost
+  // always need a client-side re-fetch. Track that explicitly so we can
+  // show a loading state instead of a flash of empty form fields.
+  const [isLoadingProfile, setIsLoadingProfile] = useState(data === null);
 
   const methods = useForm<ProfileSchemaType>({
     resolver: zodResolver(ProfileSchema),
@@ -102,6 +107,8 @@ export default function AdminForm(props: AdminFormProps) {
         await loadData();
       } catch (error) {
         console.error("Error loading data:", error);
+      } finally {
+        setIsLoadingProfile(false);
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -383,102 +390,109 @@ export default function AdminForm(props: AdminFormProps) {
             </p>
           </div>
         </div>
-        <FormProvider {...methods}>
-          <form
-            className="flex flex-col p-6 sm:p-8 md:p-10 gap-6"
-            onSubmit={handleSubmit(onSubmit, onInvalid)}
-          >
-            <input
-              type="file"
-              accept="image/*"
-              hidden
-              ref={avatarInputRef}
-              onChange={handleAvatarFileChange}
-            />
-            <input
-              type="file"
-              accept="image/png"
-              hidden
-              ref={badgeFileInputRef}
-              onChange={handleBadgeFile}
-            />
+        {isLoadingProfile ? (
+          <div className="flex flex-col items-center justify-center gap-3 p-16 text-(--admin-text-muted)">
+            <Loader2 className="h-8 w-8 animate-spin" />
+            <p className="text-sm">Loading your profile…</p>
+          </div>
+        ) : (
+          <FormProvider {...methods}>
+            <form
+              className="flex flex-col p-6 sm:p-8 md:p-10 gap-6"
+              onSubmit={handleSubmit(onSubmit, onInvalid)}
+            >
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                ref={avatarInputRef}
+                onChange={handleAvatarFileChange}
+              />
+              <input
+                type="file"
+                accept="image/png"
+                hidden
+                ref={badgeFileInputRef}
+                onChange={handleBadgeFile}
+              />
 
-            <AvatarSection
-              errors={errors}
-              control={control}
-              cropOpen={cropOpen}
-              cropFile={cropFile}
-              setCropOpen={setCropOpen}
-              avatarInputRef={avatarInputRef}
-              disabled={!isEditable}
-            />
+              <AvatarSection
+                errors={errors}
+                control={control}
+                cropOpen={cropOpen}
+                cropFile={cropFile}
+                setCropOpen={setCropOpen}
+                avatarInputRef={avatarInputRef}
+                disabled={!isEditable}
+              />
 
-            <IdentitySection
-              register={register}
-              control={control}
-              errors={errors}
-              disabled={!isEditable}
-            />
+              <IdentitySection
+                register={register}
+                control={control}
+                errors={errors}
+                disabled={!isEditable}
+              />
 
-            <RolesSection
-              control={control}
-              errors={errors}
-              fields={roles.fields}
-              append={roles.append}
-              remove={roles.remove}
-              move={roles.move}
-              disabled={!isEditable}
-            />
+              <RolesSection
+                control={control}
+                errors={errors}
+                fields={roles.fields}
+                append={roles.append}
+                remove={roles.remove}
+                move={roles.move}
+                disabled={!isEditable}
+              />
 
-            <BadgesSection
-              control={control}
-              errors={errors}
-              fields={badges.fields}
-              remove={badges.remove}
-              badgeFileInputRef={badgeFileInputRef}
-              disabled={!isEditable}
-            />
+              <BadgesSection
+                control={control}
+                errors={errors}
+                fields={badges.fields}
+                remove={badges.remove}
+                badgeFileInputRef={badgeFileInputRef}
+                disabled={!isEditable}
+              />
 
-            <AboutMeSection control={control} errors={errors} disabled={!isEditable} />
+              <AboutMeSection control={control} errors={errors} disabled={!isEditable} />
 
-            <ExperiencesAndEducationSection
-              control={control}
-              errors={errors}
-              experiences={{
-                fields: experiences.fields,
-                append: experiences.append,
-                remove: experiences.remove,
-              }}
-              education={{
-                fields: education.fields,
-                append: education.append,
-                remove: education.remove,
-              }}
-              disabled={!isEditable}
-            />
+              <ExperiencesAndEducationSection
+                control={control}
+                errors={errors}
+                experiences={{
+                  fields: experiences.fields,
+                  append: experiences.append,
+                  remove: experiences.remove,
+                }}
+                education={{
+                  fields: education.fields,
+                  append: education.append,
+                  remove: education.remove,
+                }}
+                disabled={!isEditable}
+              />
 
-            <ProjectsSkillsSection
-              control={control}
-              errors={errors}
-              projects={{
-                fields: projects.fields,
-                append: projects.append,
-                remove: projects.remove,
-                move: projects.move,
-              }}
-              disabled={!isEditable}
-            />
+              <ProjectsSkillsSection
+                control={control}
+                errors={errors}
+                projects={{
+                  fields: projects.fields,
+                  append: projects.append,
+                  remove: projects.remove,
+                  move: projects.move,
+                }}
+                disabled={!isEditable}
+              />
 
-            <WritingSection
-              register={register}
-              control={control}
-              errors={errors}
-              disabled={!isEditable}
-            />
+              <WritingSection
+                register={register}
+                control={control}
+                errors={errors}
+                disabled={!isEditable}
+              />
 
-            <SeoSection register={register} errors={errors} disabled={!isEditable} />
-          </form>
-        </FormProvider>
+              <SeoSection register={register} errors={errors} disabled={!isEditable} />
+            </form>
+          </FormProvider>
+        )}
       </Card>
 
       <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-(--admin-drawer-border) bg-(--admin-drawer-bg) shadow-2xl">
