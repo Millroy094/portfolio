@@ -18,9 +18,7 @@ const USER_AGENT =
 const INVALID_LINK_ERROR = "Please enter a valid link before fetching details.";
 const MAX_REDIRECTS = 5;
 
-// Blocks requests to loopback/private/link-local addresses so a pasted link
-// can't be used to make this server action reach internal network resources
-// (SSRF). Applied to the initial URL and every redirect hop.
+// Blocks loopback/private/link-local addresses to prevent SSRF via a pasted link.
 function isDisallowedIp(address: string): boolean {
   if (net.isIPv4(address)) {
     const [a, b] = address.split(".").map(Number);
@@ -94,8 +92,6 @@ async function fetchFollowingSafeRedirects(initialUrl: URL): Promise<Response> {
   throw new Error("Couldn't retrieve post details. Please check the link and try again.");
 }
 
-// Matches a <meta ... property|name="X" ... content="Y" ...> tag regardless of
-// attribute order, allowing either single or double quotes.
 function metaContentPatterns(name: string): RegExp[] {
   const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   return [
@@ -148,9 +144,6 @@ export async function fetchMediumPostMeta(url: string): Promise<MediumPostMeta> 
     throw new Error(INVALID_LINK_ERROR);
   }
 
-  // Reading the article page directly (rather than guessing an RSS feed URL)
-  // works the same way for personal profiles, publications, publications on
-  // custom domains, and posts too old to still appear in an RSS feed.
   const res = await fetchFollowingSafeRedirects(postUrl);
 
   if (!res.ok) {
