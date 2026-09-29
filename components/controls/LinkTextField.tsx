@@ -2,6 +2,7 @@ import { FC } from "react";
 
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import { addHttps, stripProtocol } from "@/utils/url";
 
 type LinkTextFieldProps = {
@@ -12,6 +13,7 @@ type LinkTextFieldProps = {
   error?: boolean;
   errorText?: string;
   disabled?: boolean;
+  endAdornment?: React.ReactNode;
 };
 
 const LinkTextField: FC<LinkTextFieldProps> = ({
@@ -22,6 +24,7 @@ const LinkTextField: FC<LinkTextFieldProps> = ({
   error,
   errorText,
   disabled,
+  endAdornment,
 }) => (
   <Field label={label} error={error ? errorText : undefined}>
     <div className="relative">
@@ -33,8 +36,11 @@ const LinkTextField: FC<LinkTextFieldProps> = ({
         onChange={(e) => onChange(addHttps(e.target.value))}
         onBlur={onBlur}
         disabled={disabled}
-        className="pl-20 font-mono text-sm"
+        className={cn("pl-20 font-mono text-sm", endAdornment && "pr-12")}
       />
+      {endAdornment && (
+        <div className="absolute right-1.5 top-1/2 -translate-y-1/2">{endAdornment}</div>
+      )}
     </div>
   </Field>
 );
