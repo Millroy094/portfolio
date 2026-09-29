@@ -40,10 +40,6 @@ export default function AdminForm(props: AdminFormProps) {
   const [formId, setFormId] = useState<string | null>(profileId);
   const [processing, setProcessing] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
-  // Server-side fetch commonly returns nothing (OIDC session cookie isn't
-  // written until client JS finishes the token exchange), so we almost
-  // always need a client-side re-fetch. Track that explicitly so we can
-  // show a loading state instead of a flash of empty form fields.
   const [isLoadingProfile, setIsLoadingProfile] = useState(data === null);
 
   const methods = useForm<ProfileSchemaType>({
