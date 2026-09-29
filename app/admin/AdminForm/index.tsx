@@ -1,8 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Edit3, Loader2, Lock, Save } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { Edit3, Lock, Save } from "lucide-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   useForm,
@@ -37,10 +36,8 @@ type AdminFormProps = { data: ProfileSchemaType | null; profileId: string | null
 
 export default function AdminForm(props: AdminFormProps) {
   const { data, profileId } = props;
-  const searchParams = useSearchParams();
   const authState = useAuthState();
   const [formId, setFormId] = useState<string | null>(profileId);
-  const [loading] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
 
@@ -95,23 +92,18 @@ export default function AdminForm(props: AdminFormProps) {
   }
 
   useEffect(() => {
-    const stabilizeSessionIfNeeded = async () => {
-      const isOAuthRedirect = searchParams.has("code") || searchParams.has("state");
+    // Only load data if not already provided by server
+    if (data !== null) {
+      return;
+    }
 
-      if (isOAuthRedirect) {
-        setSessionStabilizing(true);
-        console.log("OAuth redirect detected, waiting for session to stabilize...");
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        setSessionStabilizing(false);
+    (async () => {
+      try {
+        await loadData();
+      } catch (error) {
+        console.error("Error loading data:", error);
       }
-
-      if (data && profileId) {
-        setFormId(profileId);
-        reset(data);
-      }
-    };
-
-    stabilizeSessionIfNeeded();
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -126,7 +118,6 @@ export default function AdminForm(props: AdminFormProps) {
 
   const [cropFile, setCropFile] = useState<File | null>(null);
   const [cropOpen, setCropOpen] = useState(false);
-  const [sessionStabilizing, setSessionStabilizing] = useState(false);
 
   const hasChanges = useMemo(
     () => isDirty && Object.keys(dirtyFields).length > 0,
@@ -367,14 +358,6 @@ export default function AdminForm(props: AdminFormProps) {
     setIsEditable(true);
   };
 
-  if (loading) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <Loader2 className="h-10 w-10 animate-spin text-(--admin-text-muted)" />
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen flex flex-col">
       <ToastContainer />
@@ -501,33 +484,25 @@ export default function AdminForm(props: AdminFormProps) {
       <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-(--admin-drawer-border) bg-(--admin-drawer-bg) shadow-2xl">
         <div className="w-full px-4 sm:px-6 md:px-8 py-3 sm:py-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 w-full">
-            {sessionStabilizing && (
-              <Alert variant="info" className="m-0 text-xs sm:text-sm w-full sm:w-auto">
-                Authenticating... Please wait before saving.
-              </Alert>
-            )}
-
-            {authState.isRefreshing && !sessionStabilizing && (
+            {authState.isRefreshing && (
               <Alert variant="info" className="m-0 text-xs sm:text-sm w-full sm:w-auto">
                 Refreshing session... Please wait.
               </Alert>
             )}
 
-            {hasChanges && !sessionStabilizing && !authState.isRefreshing && (
+            {hasChanges && !authState.isRefreshing && (
               <Alert variant="warning" className="m-0 text-xs sm:text-sm w-full sm:w-auto">
                 You have unsaved changes
               </Alert>
             )}
 
-            {!hasChanges && !sessionStabilizing && !authState.isRefreshing && (
-              <div className="hidden sm:block" />
-            )}
+            {!hasChanges && !authState.isRefreshing && <div className="hidden sm:block" />}
 
             <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
               <Button
                 variant="outline"
                 onClick={() => setIsEditable((prev) => !prev)}
-                disabled={hasChanges || sessionStabilizing || authState.isRefreshing}
+                disabled={hasChanges || authState.isRefreshing}
                 className="gap-2 flex-1 sm:flex-initial h-10"
               >
                 {isEditable ? <Lock className="h-4 w-4" /> : <Edit3 className="h-4 w-4" />}
@@ -535,7 +510,7 @@ export default function AdminForm(props: AdminFormProps) {
               </Button>
 
               <Button
-                disabled={!isEditable || processing || sessionStabilizing || authState.isRefreshing}
+                disabled={!isEditable || processing || authState.isRefreshing}
                 type="submit"
                 onClick={handleSubmit(onSubmit, onInvalid)}
                 className="gap-2 flex-1 sm:flex-initial h-10"
