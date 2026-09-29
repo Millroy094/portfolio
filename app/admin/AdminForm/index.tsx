@@ -55,6 +55,7 @@ export default function AdminForm(props: AdminFormProps) {
       experiences: [],
       education: [],
       projects: [],
+      mediumPosts: [],
       skills: [],
       visibility: {
         roles: true,
@@ -125,6 +126,7 @@ export default function AdminForm(props: AdminFormProps) {
   const experiences = useFieldArray({ control, name: "experiences" });
   const education = useFieldArray({ control, name: "education" });
   const projects = useFieldArray({ control, name: "projects" });
+  const mediumPosts = useFieldArray({ control, name: "mediumPosts" });
 
   const avatarInputRef = useRef<HTMLInputElement | null>(null);
   const badgeFileInputRef = useRef<HTMLInputElement | null>(null);
@@ -325,6 +327,7 @@ export default function AdminForm(props: AdminFormProps) {
         experiences: data.experiences ?? [],
         education: data.education ?? [],
         projects: data.projects ?? [],
+        mediumPosts: data.mediumPosts ?? [],
         skills: [...(data.skills ?? [])],
         seoTitle: data.seoTitle,
         seoDescription: data.seoDescription,
@@ -338,7 +341,6 @@ export default function AdminForm(props: AdminFormProps) {
           skills: data.visibility?.skills ?? true,
           posts: data.visibility?.posts ?? true,
         },
-        mediumPostCount: data.mediumPostCount ?? 3,
       };
       const result = await saveProfileData(serializableData, formId, assets);
       const { profileId } = result;
@@ -492,10 +494,15 @@ export default function AdminForm(props: AdminFormProps) {
               />
 
               <WritingSection
-                register={register}
                 control={control}
                 errors={errors}
                 disabled={!isEditable}
+                posts={{
+                  fields: mediumPosts.fields,
+                  append: mediumPosts.append,
+                  remove: mediumPosts.remove,
+                  move: mediumPosts.move,
+                }}
               />
 
               <SeoSection register={register} errors={errors} disabled={!isEditable} />

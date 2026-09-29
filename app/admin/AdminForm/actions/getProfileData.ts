@@ -25,7 +25,7 @@ export async function getProfileData(): Promise<{
     const p = list.data[0];
     if (!p) return { profileId: null, data: null };
 
-    const [roles, badges, exps, edus, projects] = await Promise.all([
+    const [roles, badges, exps, edus, projects, mediumPosts] = await Promise.all([
       withAuthRetry(
         () => getClient().models.Role.list({ filter: { profileId: { eq: p.id } } }),
         "Fetch roles",
@@ -46,6 +46,10 @@ export async function getProfileData(): Promise<{
         () => getClient().models.Project.list({ filter: { profileId: { eq: p.id } } }),
         "Fetch projects",
       ),
+      withAuthRetry(
+        () => getClient().models.MediumPost.list({ filter: { profileId: { eq: p.id } } }),
+        "Fetch medium posts",
+      ),
     ]);
 
     return {
@@ -62,7 +66,6 @@ export async function getProfileData(): Promise<{
         aboutMe: p.aboutMe || "<p></p>",
         seoTitle: p.seoTitle ?? "",
         seoDescription: p.seoDescription ?? "",
-        mediumPostCount: p.mediumPostCount ?? 3,
         roles:
           [...roles.data].sort((a, b) => a.order - b.order).map((r) => ({ value: r.value })) ?? [],
         badges: badges.data.map((b) => ({ value: b.value, label: b.label })) ?? [],
@@ -85,6 +88,16 @@ export async function getProfileData(): Promise<{
               name: p.name,
               description: p.description ?? "",
               url: p.url ?? "",
+            })) ?? [],
+        mediumPosts:
+          [...mediumPosts.data]
+            .sort((a, b) => a.order - b.order)
+            .map((post) => ({
+              title: post.title,
+              link: post.link,
+              description: post.description ?? "",
+              imageUrl: post.imageUrl ?? "",
+              publishedAt: post.publishedAt ?? "",
             })) ?? [],
         skills: (p.skills ?? []).filter((s): s is string => typeof s === "string") ?? [],
         visibility: {

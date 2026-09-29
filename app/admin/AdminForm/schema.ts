@@ -113,6 +113,19 @@ export const ProfileSchema = z.object({
       url: z.string().optional().transform(transformUrl).pipe(z.string().url()),
     }),
   ),
+  mediumPosts: z.array(
+    z.object({
+      title: z.string().optional(),
+      link: z
+        .string()
+        .nonempty("Post link is required")
+        .transform(transformUrl)
+        .pipe(z.string().url("Please enter a valid link")),
+      description: z.string().optional(),
+      imageUrl: z.string().optional().transform(transformUrl).pipe(z.string().url().optional()),
+      publishedAt: z.string().optional(),
+    }),
+  ),
   skills: SkillsArrayGeneric,
   seoTitle: z
     .string()
@@ -133,12 +146,6 @@ export const ProfileSchema = z.object({
     skills: true,
     posts: true,
   }),
-  mediumPostCount: z
-    .number()
-    .int()
-    .gte(1, { message: "Must display at least 1 post" })
-    .lte(10, { message: "Cannot display more than 10 posts" })
-    .default(3),
 });
 
 export type ProfileSchemaType = z.input<typeof ProfileSchema>;

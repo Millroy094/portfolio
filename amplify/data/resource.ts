@@ -31,7 +31,23 @@ const schema = a.schema({
       showProjects: a.boolean().default(true),
       showSkills: a.boolean().default(true),
       showPosts: a.boolean().default(true),
-      mediumPostCount: a.integer().default(3),
+      mediumPosts: a.hasMany("MediumPost", "profileId"),
+    })
+    .authorization((allow) => [
+      allow.publicApiKey().to(["read"]),
+      allow.authenticated().to(["read", "create", "update", "delete"]),
+    ]),
+
+  MediumPost: a
+    .model({
+      title: a.string().required(),
+      link: a.string().required(),
+      description: a.string(),
+      imageUrl: a.string(),
+      publishedAt: a.string(),
+      order: a.integer().required(),
+      profileId: a.id().required(),
+      profile: a.belongsTo("Profile", "profileId"),
     })
     .authorization((allow) => [
       allow.publicApiKey().to(["read"]),

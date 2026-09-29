@@ -8,6 +8,7 @@ type LinkTextFieldProps = {
   label: string;
   value: string;
   onChange: (value: string) => void;
+  onBlur?: () => void;
   error?: boolean;
   errorText?: string;
   disabled?: boolean;
@@ -17,18 +18,20 @@ const LinkTextField: FC<LinkTextFieldProps> = ({
   label,
   value,
   onChange,
+  onBlur,
   error,
   errorText,
   disabled,
 }) => (
   <Field label={label} error={error ? errorText : undefined}>
     <div className="relative">
-      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-[var(--admin-text-muted)]">
+      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-(--admin-text-muted)">
         https://
       </span>
       <Input
         value={stripProtocol(value)}
         onChange={(e) => onChange(addHttps(e.target.value))}
+        onBlur={onBlur}
         disabled={disabled}
         className="pl-20 font-mono text-sm"
       />

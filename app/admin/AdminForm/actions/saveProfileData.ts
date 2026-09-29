@@ -5,8 +5,9 @@ import { cookies } from "next/headers";
 
 import { type Schema } from "@/amplify/data/resource";
 import outputs from "@/amplify_outputs.json";
-import type { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
 import { withAuthRetry } from "@/services/amplify/authUtils";
+
+import type { ProfileSchemaType } from "../schema";
 
 type Client = ReturnType<typeof generateServerClientUsingCookies<Schema>>;
 type BaseModel = {
@@ -30,7 +31,6 @@ type ProfilePayload = {
   resume?: string;
   aboutMe?: string;
   skills: string[];
-  mediumPostCount: number;
   showRoles: boolean;
   showBadges: boolean;
   showAboutMe: boolean;
@@ -41,12 +41,6 @@ type ProfilePayload = {
   showPosts: boolean;
 };
 
-const getClient = () =>
-  generateServerClientUsingCookies<Schema>({
-    config: outputs,
-    cookies,
-  });
-
 async function replaceChildren<K extends Exclude<keyof Client["models"], "Profile">>(
   client: Client,
   model: K,
@@ -54,24 +48,25 @@ async function replaceChildren<K extends Exclude<keyof Client["models"], "Profil
   items: unknown[],
 ): Promise<void> {
   const m = client.models[model] as BaseModel;
+
   const existing = await withAuthRetry(
     () => m.list({ filter: { profileId: { eq: profileId } } }),
-    `Fetch ${model}`,
+    `Fetch existing ${model} records`,
   );
 
   if (existing.data.length) {
     await withAuthRetry(
       () => Promise.all(existing.data.map((e) => m.delete({ id: e.id }))),
-      `Delete ${model}`,
+      `Delete existing ${model} records`,
     );
   }
 
-  if (items?.length) {
-    await withAuthRetry(
-      () => Promise.all(items.map((item) => m.create({ ...(item as object), profileId }))),
-      `Create ${model}`,
-    );
-  }
+  if (!items?.length) return;
+
+  await withAuthRetry(
+    () => Promise.all(items.map((item) => m.create({ ...(item as object), profileId }))),
+    `Create new ${model} records`,
+  );
 }
 
 export async function saveProfileData(
@@ -79,9 +74,15 @@ export async function saveProfileData(
   existingProfileId?: string | null,
   assets?: Assets,
 ) {
-  if (!assets?.avatarKey) throw new Error("avatarKey is required");
+  if (!assets?.avatarKey) {
+    throw new Error("avatarKey is required to save a profile");
+  }
 
-  const client = getClient();
+  const client = generateServerClientUsingCookies<Schema>({
+    config: outputs,
+    cookies,
+  });
+
   const payload: ProfilePayload = {
     fullName: formData.fullName,
     punchLine: formData.punchLine ?? undefined,
@@ -93,7 +94,6 @@ export async function saveProfileData(
     resume: formData.resume ?? undefined,
     aboutMe: formData.aboutMe ?? undefined,
     skills: [...(formData.skills ?? [])],
-    mediumPostCount: formData.mediumPostCount ?? 3,
     seoTitle: formData.seoTitle,
     seoDescription: formData.seoDescription,
     showRoles: formData.visibility?.roles ?? true,
@@ -110,6 +110,7 @@ export async function saveProfileData(
 
   if (existingProfileId) {
     profileId = existingProfileId;
+
     await withAuthRetry(
       () => client.models.Profile.update({ id: profileId, ...payload }),
       "Update profile",
@@ -122,6 +123,7 @@ export async function saveProfileData(
     if (!created.data) throw new Error("Failed to create profile");
     profileId = created.data.id;
   }
+
   // @ts-expect-error Amplify TS quirky
   await replaceChildren(
     client,
@@ -144,6 +146,13 @@ export async function saveProfileData(
     "Project",
     profileId,
     (formData.projects ?? []).map((p, i) => ({ ...p, order: i })),
+  );
+
+  await replaceChildren(
+    client,
+    "MediumPost",
+    profileId,
+    (formData.mediumPosts ?? []).map((post, i) => ({ ...post, order: i })),
   );
 
   return { ok: true, profileId };
