@@ -23,6 +23,24 @@ function isRateLimitError(error: unknown): boolean {
   );
 }
 
+export function isAuthExpiredError(error: unknown): boolean {
+  if (!(error instanceof Error)) return false;
+
+  const msg = error.message || "";
+  const cause = error.cause as Error | null;
+  const underlyingError = (error as { underlyingError?: Error }).underlyingError ?? null;
+  const combined = `${msg} ${cause?.message ?? ""} ${underlyingError?.message ?? ""}`;
+
+  return (
+    combined.includes("NotAuthorizedException") ||
+    combined.includes("Refresh Token has expired") ||
+    combined.includes("Access Token has expired") ||
+    combined.includes("NoSignedUser") ||
+    combined.includes("No current user") ||
+    combined.includes("Authentication required")
+  );
+}
+
 export async function withAuthRetry<T>(
   operation: () => Promise<T>,
   operationName: string = "Operation",

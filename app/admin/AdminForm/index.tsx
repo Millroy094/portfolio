@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Edit3, Loader2, Lock, Save } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   useForm,
@@ -21,6 +22,7 @@ import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useAuthState, waitForTokenRefresh } from "@/hooks/useAuthState";
+import { isAuthExpiredError } from "@/services/amplify/authUtils";
 import { uploadFileToS3 } from "@/services/amplify/storage/uploadFileToS3";
 
 import AboutMeSection from "./AboutMeSection";
@@ -36,6 +38,7 @@ type AdminFormProps = { data: ProfileSchemaType | null; profileId: string | null
 
 export default function AdminForm(props: AdminFormProps) {
   const { data, profileId } = props;
+  const router = useRouter();
   const authState = useAuthState();
   const [formId, setFormId] = useState<string | null>(profileId);
   const [processing, setProcessing] = useState(false);
@@ -88,6 +91,13 @@ export default function AdminForm(props: AdminFormProps) {
       }
     } catch (error) {
       console.error("Failed to load profile data", error);
+
+      if (isAuthExpiredError(error)) {
+        toast.error("Your session has expired. Redirecting to login…");
+        router.replace("/login");
+        return;
+      }
+
       toast.error("Failed to retrieve profile. Please try again.");
     }
   }
@@ -340,17 +350,20 @@ export default function AdminForm(props: AdminFormProps) {
     } catch (error) {
       console.error(error);
 
+      if (isAuthExpiredError(error)) {
+        toast.error("Your session has expired. Redirecting to login…", { theme: "colored" });
+        setProcessing(false);
+        router.replace("/login");
+        return;
+      }
+
       let errorMessage = "There was an error while saving profile";
 
-      if (error instanceof Error) {
-        if (error.message.includes("Authentication required")) {
-          errorMessage = "Your session has expired. Please refresh the page and try again.";
-        } else if (
-          error.message.includes("rate limiting") ||
-          error.message.includes("Rate exceeded")
-        ) {
-          errorMessage = "Server is busy. Please wait a moment and try again.";
-        }
+      if (
+        error instanceof Error &&
+        (error.message.includes("rate limiting") || error.message.includes("Rate exceeded"))
+      ) {
+        errorMessage = "Server is busy. Please wait a moment and try again.";
       }
 
       toast.error(errorMessage, {
