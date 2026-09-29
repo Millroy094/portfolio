@@ -39,10 +39,17 @@ function toDateInputValue(rawDate: string): string {
   return parsed.toISOString().slice(0, 10);
 }
 
-function normalizedPath(rawUrl: string): string {
+function extractPostSlug(rawUrl: string): string {
   try {
     const u = new URL(rawUrl);
-    return `${u.hostname}${u.pathname}`.replace(/\/+$/, "").toLowerCase();
+    const segments = u.pathname.split("/").filter(Boolean);
+    // Medium post URLs always end with a unique slug (title + hash), regardless of
+    // whether they're accessed via medium.com/@user/slug or a custom
+    // subdomain/domain (e.g. user.medium.com/slug). Comparing on the slug alone
+    // avoids false negatives caused by hostname/prefix differences between the
+    // link a user pastes and the link Medium returns in the RSS feed.
+    const slug = segments[segments.length - 1] ?? "";
+    return decodeURIComponent(slug).toLowerCase();
   } catch {
     return rawUrl.toLowerCase();
   }
@@ -84,11 +91,15 @@ export async function fetchMediumPostMeta(url: string): Promise<MediumPostMeta> 
     throw new Error("Couldn't retrieve post details. Please check the link and try again.");
   }
 
+  const targetSlug = extractPostSlug(postUrl.toString());
+  if (!targetSlug) {
+    throw new Error("Please enter a valid link before fetching details.");
+  }
+
   const xml = await res.text();
   const items = [...xml.matchAll(/<item>([\s\S]*?)<\/item>/gi)];
-  const targetPath = normalizedPath(postUrl.toString());
   const match = items.find(
-    (item) => normalizedPath(extractTagValue(item[1], "link")) === targetPath,
+    (item) => extractPostSlug(extractTagValue(item[1], "link")) === targetSlug,
   );
 
   if (!match) {
