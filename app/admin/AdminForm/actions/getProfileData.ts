@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 
 import type { Schema } from "@/amplify/data/resource";
 import outputs from "@/amplify_outputs.json";
-import { verifyAuthentication, withAuthRetry } from "@/services/amplify/authUtils";
+import { withAuthRetry } from "@/services/amplify/authUtils";
 
 import type { ProfileSchemaType } from "../schema";
 
@@ -14,8 +14,6 @@ export async function getProfileData(): Promise<{
   data: ProfileSchemaType | null;
 }> {
   try {
-    await verifyAuthentication();
-
     const list = await withAuthRetry(async () => {
       const client = generateServerClientUsingCookies<Schema>({
         config: outputs,
@@ -142,11 +140,22 @@ export async function getProfileData(): Promise<{
 
     const isAuthError =
       error instanceof Error &&
-      (error.message.includes("Authentication required") || error.message.includes("NoSignedUser"));
+      (error.message.includes("Authentication required") ||
+        error.message.includes("NoSignedUser") ||
+        error.message.includes("NotAuthorized"));
 
     if (isAuthError) {
-      console.warn("Session not ready. Retrying may help.");
+      console.warn("Session not ready yet. This may be during OAuth redirect.");
       return { profileId: null, data: null };
+    }
+
+    const isRateLimited =
+      error instanceof Error &&
+      (error.message.includes("TooManyRequests") || error.message.includes("Rate exceeded"));
+
+    if (isRateLimited) {
+      console.warn("Rate limited while fetching profile. Retries will help.");
+      throw error;
     }
 
     throw error;

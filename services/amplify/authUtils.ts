@@ -57,8 +57,6 @@ export async function withAuthRetry<T>(
   operation: () => Promise<T>,
   operationName: string = "Operation",
 ): Promise<T> {
-  await verifyAuthentication();
-
   let lastError: Error | null = null;
 
   for (let attempt = 0; attempt < RETRY_CONFIG.maxAttempts; attempt++) {

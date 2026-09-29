@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 import { type Schema } from "@/amplify/data/resource";
 import outputs from "@/amplify_outputs.json";
 import type { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
-import { verifyAuthentication, withAuthRetry } from "@/services/amplify/authUtils";
+import { withAuthRetry } from "@/services/amplify/authUtils";
 
 type Client = ReturnType<typeof generateServerClientUsingCookies<Schema>>;
 type BaseModel = {
@@ -77,8 +77,6 @@ export async function saveProfileData(
   if (!assets?.avatarKey) {
     throw new Error("avatarKey is required to save a profile");
   }
-
-  await verifyAuthentication();
 
   const client = generateServerClientUsingCookies<Schema>({
     config: outputs,

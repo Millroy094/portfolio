@@ -83,7 +83,9 @@ export default function AdminForm(props: AdminFormProps) {
       if (data && profileId) {
         setFormId(profileId);
         reset(data);
+        return true;
       }
+      return false;
     } catch (error) {
       console.log(error);
 
@@ -97,6 +99,7 @@ export default function AdminForm(props: AdminFormProps) {
       } else {
         toast.error("Failed to retrieve profile");
       }
+      return false;
     }
   }
 
@@ -109,17 +112,33 @@ export default function AdminForm(props: AdminFormProps) {
 
       if (isOAuthRedirect) {
         setSessionStabilizing(true);
-        // Wait for session to stabilize after OAuth redirect
-        // The browser needs time to set the session cookie
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        console.log("OAuth redirect detected, waiting for session to stabilize...");
+
+        await new Promise((resolve) => setTimeout(resolve, 3000));
         setSessionStabilizing(false);
+
+        let success = await loadData();
+
+        if (!success) {
+          console.log("Data still null, retrying in 1.5s...");
+          await new Promise((resolve) => setTimeout(resolve, 1500));
+          success = await loadData();
+        }
+
+        if (!success) {
+          console.log("Data still null, final retry in 2s...");
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+          await loadData();
+        }
+      } else {
+        try {
+          await loadData();
+        } finally {
+          setLoading(false);
+        }
       }
 
-      try {
-        await loadData();
-      } finally {
-        setLoading(false);
-      }
+      setLoading(false);
     };
 
     fetchData();
