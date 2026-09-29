@@ -41,6 +41,12 @@ type ProfilePayload = {
   showPosts: boolean;
 };
 
+const getClient = () =>
+  generateServerClientUsingCookies<Schema>({
+    config: outputs,
+    cookies,
+  });
+
 async function replaceChildren<K extends Exclude<keyof Client["models"], "Profile">>(
   client: Client,
   model: K,
@@ -48,25 +54,24 @@ async function replaceChildren<K extends Exclude<keyof Client["models"], "Profil
   items: unknown[],
 ): Promise<void> {
   const m = client.models[model] as BaseModel;
-
   const existing = await withAuthRetry(
     () => m.list({ filter: { profileId: { eq: profileId } } }),
-    `Fetch existing ${model} records`,
+    `Fetch ${model}`,
   );
 
   if (existing.data.length) {
     await withAuthRetry(
       () => Promise.all(existing.data.map((e) => m.delete({ id: e.id }))),
-      `Delete existing ${model} records`,
+      `Delete ${model}`,
     );
   }
 
-  if (!items?.length) return;
-
-  await withAuthRetry(
-    () => Promise.all(items.map((item) => m.create({ ...(item as object), profileId }))),
-    `Create new ${model} records`,
-  );
+  if (items?.length) {
+    await withAuthRetry(
+      () => Promise.all(items.map((item) => m.create({ ...(item as object), profileId }))),
+      `Create ${model}`,
+    );
+  }
 }
 
 export async function saveProfileData(
@@ -74,15 +79,9 @@ export async function saveProfileData(
   existingProfileId?: string | null,
   assets?: Assets,
 ) {
-  if (!assets?.avatarKey) {
-    throw new Error("avatarKey is required to save a profile");
-  }
+  if (!assets?.avatarKey) throw new Error("avatarKey is required");
 
-  const client = generateServerClientUsingCookies<Schema>({
-    config: outputs,
-    cookies,
-  });
-
+  const client = getClient();
   const payload: ProfilePayload = {
     fullName: formData.fullName,
     punchLine: formData.punchLine ?? undefined,
@@ -111,7 +110,6 @@ export async function saveProfileData(
 
   if (existingProfileId) {
     profileId = existingProfileId;
-
     await withAuthRetry(
       () => client.models.Profile.update({ id: profileId, ...payload }),
       "Update profile",
@@ -130,17 +128,14 @@ export async function saveProfileData(
     client,
     "Role",
     profileId,
-    (formData.roles ?? []).map((r, index) => ({ value: r.value, order: index })),
+    (formData.roles ?? []).map((r, i) => ({ value: r.value, order: i })),
   );
 
   await replaceChildren(
     client,
     "Badge",
     profileId,
-    (assets?.badgeKeyLabels ?? []).map((badgeKeyLabels) => ({
-      value: badgeKeyLabels.key,
-      label: badgeKeyLabels.label,
-    })),
+    (assets?.badgeKeyLabels ?? []).map((b) => ({ value: b.key, label: b.label })),
   );
 
   await replaceChildren(client, "Experience", profileId, formData.experiences ?? []);
@@ -149,7 +144,7 @@ export async function saveProfileData(
     client,
     "Project",
     profileId,
-    (formData.projects ?? []).map((project, index) => ({ ...project, order: index })),
+    (formData.projects ?? []).map((p, i) => ({ ...p, order: i })),
   );
 
   return { ok: true, profileId };

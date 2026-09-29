@@ -83,23 +83,10 @@ export default function AdminForm(props: AdminFormProps) {
       if (data && profileId) {
         setFormId(profileId);
         reset(data);
-        return true;
       }
-      return false;
     } catch (error) {
-      console.log(error);
-
-      const isAuthError =
-        error instanceof Error &&
-        (error.message.includes("Authentication required") ||
-          error.message.includes("NoSignedUser"));
-
-      if (isAuthError) {
-        toast.error("Session not ready. Please wait a moment and try again.");
-      } else {
-        toast.error("Failed to retrieve profile");
-      }
-      return false;
+      console.error("Failed to load profile data", error);
+      toast.error("Failed to retrieve profile. Please try again.");
     }
   }
 
@@ -113,32 +100,15 @@ export default function AdminForm(props: AdminFormProps) {
       if (isOAuthRedirect) {
         setSessionStabilizing(true);
         console.log("OAuth redirect detected, waiting for session to stabilize...");
-
-        await new Promise((resolve) => setTimeout(resolve, 3000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         setSessionStabilizing(false);
-
-        let success = await loadData();
-
-        if (!success) {
-          console.log("Data still null, retrying in 1.5s...");
-          await new Promise((resolve) => setTimeout(resolve, 1500));
-          success = await loadData();
-        }
-
-        if (!success) {
-          console.log("Data still null, final retry in 2s...");
-          await new Promise((resolve) => setTimeout(resolve, 2000));
-          await loadData();
-        }
-      } else {
-        try {
-          await loadData();
-        } finally {
-          setLoading(false);
-        }
       }
 
-      setLoading(false);
+      try {
+        await loadData();
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchData();

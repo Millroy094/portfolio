@@ -1,55 +1,20 @@
-import { getCurrentUser } from "aws-amplify/auth";
-
-export async function verifyAuthentication(): Promise<void> {
-  try {
-    await getCurrentUser();
-  } catch (error) {
-    throw new Error("Authentication required. Please sign in to continue.", {
-      cause: error,
-    });
-  }
-}
-
-const RETRY_CONFIG = {
-  maxAttempts: 3,
-  baseDelayMs: 500,
-  maxDelayMs: 5000,
-};
+const RETRY_CONFIG = { maxAttempts: 3, baseDelayMs: 500, maxDelayMs: 5000 };
 
 function getBackoffDelay(attempt: number): number {
   const delay = Math.min(RETRY_CONFIG.baseDelayMs * Math.pow(2, attempt), RETRY_CONFIG.maxDelayMs);
-  const jitter = delay * 0.1 * (Math.random() * 2 - 1);
-  return delay + jitter;
+  return delay + delay * 0.1 * (Math.random() * 2 - 1);
 }
 
 function isRateLimitError(error: unknown): boolean {
   if (!(error instanceof Error)) return false;
-  const message = error.message || "";
-  const cause = error.cause;
-
-  const hasCauseError =
-    cause instanceof Error &&
-    (cause.message.includes("TooManyRequests") || cause.message.includes("Rate exceeded"));
-
+  const msg = error.message || "";
+  const cause = error.cause as Error | null;
   return (
-    message.includes("TooManyRequests") ||
-    message.includes("Rate exceeded") ||
-    message.includes("throttl") ||
-    hasCauseError
-  );
-}
-
-function isAuthError(error: unknown): boolean {
-  if (!(error instanceof Error)) return false;
-  const message = error.message || "";
-  const cause = error.cause;
-
-  return (
-    message.includes("NoSignedUser") ||
-    message.includes("No current user") ||
-    message.includes("NotAuthorizedException") ||
-    message.includes("Authentication required") ||
-    (cause instanceof Error && cause.message.includes("NoSignedUser"))
+    msg.includes("TooManyRequests") ||
+    msg.includes("Rate exceeded") ||
+    msg.includes("throttl") ||
+    (!!cause && cause.message.includes("TooManyRequests")) ||
+    (!!cause && cause.message.includes("Rate exceeded"))
   );
 }
 
@@ -65,13 +30,7 @@ export async function withAuthRetry<T>(
     } catch (error) {
       lastError = error instanceof Error ? error : new Error(String(error));
 
-      if (isAuthError(error)) {
-        throw lastError;
-      }
-
-      if (!isRateLimitError(error)) {
-        throw lastError;
-      }
+      if (!isRateLimitError(error)) throw lastError;
 
       if (attempt === RETRY_CONFIG.maxAttempts - 1) {
         throw new Error(
@@ -81,9 +40,7 @@ export async function withAuthRetry<T>(
       }
 
       const delay = getBackoffDelay(attempt);
-      console.warn(
-        `${operationName} rate limited. Retrying in ${Math.round(delay)}ms... (attempt ${attempt + 1}/${RETRY_CONFIG.maxAttempts})`,
-      );
+      console.warn(`${operationName} rate limited. Retrying in ${Math.round(delay)}ms...`);
       await new Promise((resolve) => setTimeout(resolve, delay));
     }
   }
