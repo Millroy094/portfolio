@@ -21,6 +21,16 @@ function stripHtml(input: string): string {
     .trim();
 }
 
+// Publication feeds often replace the real snippet with a teaser like
+// "Continue reading on Publication Name »" or "Read more". Strip that out
+// so we don't surface it as the post description.
+function stripReadMoreTeaser(text: string): string {
+  return text
+    .replace(/\s*Continue reading on\b[\s\S]*$/i, "")
+    .replace(/\s*Read more\.?\s*$/i, "")
+    .trim();
+}
+
 function extractFirstImageUrl(input: string): string {
   const cleaned = input.replace(/<!\[CDATA\[([\s\S]*?)]]>/g, "$1");
   const match = cleaned.match(/<img[^>]*\ssrc=["']([^"']+)["'][^>]*>/i);
@@ -108,7 +118,9 @@ export async function fetchMediumPostMeta(url: string): Promise<MediumPostMeta> 
   const descriptionHtml = extractTagValue(block, "description");
   const title = stripHtml(extractTagValue(block, "title"));
   const publishedAtRaw = extractTagValue(block, "pubDate");
-  const description = stripHtml(descriptionHtml).slice(0, 220);
+  const contentDescription = stripReadMoreTeaser(stripHtml(content));
+  const rssDescription = stripReadMoreTeaser(stripHtml(descriptionHtml));
+  const description = (contentDescription || rssDescription).slice(0, 220);
   const imageUrl =
     extractFirstImageUrl(content) ||
     extractFirstImageUrl(descriptionHtml) ||
