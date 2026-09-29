@@ -55,17 +55,22 @@ async function replaceChildren<K extends Exclude<keyof Client["models"], "Profil
   );
 
   if (existing.data.length) {
-    await withAuthRetry(
-      () => Promise.all(existing.data.map((e) => m.delete({ id: e.id }))),
-      `Delete existing ${model} records`,
+    await Promise.all(
+      existing.data.map((e) =>
+        withAuthRetry(() => m.delete({ id: e.id }), `Delete existing ${model} record`),
+      ),
     );
   }
 
   if (!items?.length) return;
 
-  await withAuthRetry(
-    () => Promise.all(items.map((item) => m.create({ ...(item as object), profileId }))),
-    `Create new ${model} records`,
+  await Promise.all(
+    items.map((item) =>
+      withAuthRetry(
+        () => m.create({ ...(item as object), profileId }),
+        `Create new ${model} record`,
+      ),
+    ),
   );
 }
 
