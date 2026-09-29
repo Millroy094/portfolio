@@ -36,7 +36,7 @@ const LinkTextField: FC<LinkTextFieldProps> = ({
         onChange={(e) => onChange(addHttps(e.target.value))}
         onBlur={onBlur}
         disabled={disabled}
-        className={cn("pl-20 font-mono text-sm", endAdornment && "pr-12")}
+        className={cn("pl-24 font-mono text-sm", endAdornment && "pr-12")}
       />
       {endAdornment && (
         <div className="absolute right-1.5 top-1/2 -translate-y-1/2">{endAdornment}</div>
