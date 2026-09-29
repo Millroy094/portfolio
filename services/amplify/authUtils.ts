@@ -1,4 +1,4 @@
-const RETRY_CONFIG = { maxAttempts: 3, baseDelayMs: 500, maxDelayMs: 5000 };
+const RETRY_CONFIG = { maxAttempts: 5, baseDelayMs: 1000, maxDelayMs: 8000 };
 
 function getBackoffDelay(attempt: number): number {
   const delay = Math.min(RETRY_CONFIG.baseDelayMs * Math.pow(2, attempt), RETRY_CONFIG.maxDelayMs);
@@ -7,14 +7,19 @@ function getBackoffDelay(attempt: number): number {
 
 function isRateLimitError(error: unknown): boolean {
   if (!(error instanceof Error)) return false;
+
   const msg = error.message || "";
   const cause = error.cause as Error | null;
+  const underlyingError = (error as { underlyingError?: Error }).underlyingError ?? null;
+
   return (
     msg.includes("TooManyRequests") ||
     msg.includes("Rate exceeded") ||
     msg.includes("throttl") ||
     (!!cause && cause.message.includes("TooManyRequests")) ||
-    (!!cause && cause.message.includes("Rate exceeded"))
+    (!!cause && cause.message.includes("Rate exceeded")) ||
+    (!!underlyingError && underlyingError.message.includes("TooManyRequests")) ||
+    (!!underlyingError && underlyingError.message.includes("Rate exceeded"))
   );
 }
 

@@ -9,10 +9,6 @@ export interface AuthState {
   error: Error | null;
 }
 
-/**
- * Hook to monitor authentication state and session stability
- * Useful for detecting when OIDC tokens are being refreshed
- */
 export function useAuthState(): AuthState {
   const [state, setState] = useState<AuthState>({
     isAuthenticated: false,
@@ -54,4 +50,25 @@ export function useAuthState(): AuthState {
   }, []);
 
   return state;
+}
+
+export async function waitForTokenRefresh(): Promise<void> {
+  const maxWaitTime = 10000;
+
+  return new Promise<void>((resolve) => {
+    let unsubscribe: (() => void) | null = null;
+
+    const timeoutId = setTimeout(() => {
+      if (unsubscribe) unsubscribe();
+      resolve();
+    }, maxWaitTime);
+
+    unsubscribe = Hub.listen("auth", ({ payload }) => {
+      if (payload.event === "tokenRefresh_failure") {
+        clearTimeout(timeoutId);
+        if (unsubscribe) unsubscribe();
+        resolve();
+      }
+    });
+  });
 }

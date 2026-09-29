@@ -81,71 +81,97 @@ export async function saveProfileData(
 ) {
   if (!assets?.avatarKey) throw new Error("avatarKey is required");
 
-  const client = getClient();
-  const payload: ProfilePayload = {
-    fullName: formData.fullName,
-    punchLine: formData.punchLine ?? undefined,
-    avatarKey: assets.avatarKey,
-    linkedIn: formData.linkedIn ?? undefined,
-    github: formData.github ?? undefined,
-    stackOverflow: formData.stackOverflow ?? undefined,
-    medium: formData.medium ?? undefined,
-    resume: formData.resume ?? undefined,
-    aboutMe: formData.aboutMe ?? undefined,
-    skills: [...(formData.skills ?? [])],
-    mediumPostCount: formData.mediumPostCount ?? 3,
-    seoTitle: formData.seoTitle,
-    seoDescription: formData.seoDescription,
-    showRoles: formData.visibility?.roles ?? true,
-    showBadges: formData.visibility?.badges ?? true,
-    showAboutMe: formData.visibility?.aboutMe ?? true,
-    showExperiences: formData.visibility?.experiences ?? true,
-    showEducation: formData.visibility?.education ?? true,
-    showProjects: formData.visibility?.projects ?? true,
-    showSkills: formData.visibility?.skills ?? true,
-    showPosts: formData.visibility?.posts ?? true,
-  };
+  const MAX_SAVE_RETRIES = 3;
 
-  let profileId: string;
+  for (let attempt = 0; attempt < MAX_SAVE_RETRIES; attempt++) {
+    try {
+      const client = getClient();
+      const payload: ProfilePayload = {
+        fullName: formData.fullName,
+        punchLine: formData.punchLine ?? undefined,
+        avatarKey: assets.avatarKey,
+        linkedIn: formData.linkedIn ?? undefined,
+        github: formData.github ?? undefined,
+        stackOverflow: formData.stackOverflow ?? undefined,
+        medium: formData.medium ?? undefined,
+        resume: formData.resume ?? undefined,
+        aboutMe: formData.aboutMe ?? undefined,
+        skills: [...(formData.skills ?? [])],
+        mediumPostCount: formData.mediumPostCount ?? 3,
+        seoTitle: formData.seoTitle,
+        seoDescription: formData.seoDescription,
+        showRoles: formData.visibility?.roles ?? true,
+        showBadges: formData.visibility?.badges ?? true,
+        showAboutMe: formData.visibility?.aboutMe ?? true,
+        showExperiences: formData.visibility?.experiences ?? true,
+        showEducation: formData.visibility?.education ?? true,
+        showProjects: formData.visibility?.projects ?? true,
+        showSkills: formData.visibility?.skills ?? true,
+        showPosts: formData.visibility?.posts ?? true,
+      };
 
-  if (existingProfileId) {
-    profileId = existingProfileId;
-    await withAuthRetry(
-      () => client.models.Profile.update({ id: profileId, ...payload }),
-      "Update profile",
-    );
-  } else {
-    const created = await withAuthRetry(
-      () => client.models.Profile.create(payload),
-      "Create profile",
-    );
-    if (!created.data) throw new Error("Failed to create profile");
-    profileId = created.data.id;
+      let profileId: string;
+
+      if (existingProfileId) {
+        profileId = existingProfileId;
+        await withAuthRetry(
+          () => client.models.Profile.update({ id: profileId, ...payload }),
+          "Update profile",
+        );
+      } else {
+        const created = await withAuthRetry(
+          () => client.models.Profile.create(payload),
+          "Create profile",
+        );
+        if (!created.data) throw new Error("Failed to create profile");
+        profileId = created.data.id;
+      }
+      // @ts-expect-error Amplify TS quirky
+      await replaceChildren(
+        client,
+        "Role",
+        profileId,
+        (formData.roles ?? []).map((r, i) => ({ value: r.value, order: i })),
+      );
+
+      await replaceChildren(
+        client,
+        "Badge",
+        profileId,
+        (assets?.badgeKeyLabels ?? []).map((b) => ({ value: b.key, label: b.label })),
+      );
+
+      await replaceChildren(client, "Experience", profileId, formData.experiences ?? []);
+      await replaceChildren(client, "Education", profileId, formData.education ?? []);
+      await replaceChildren(
+        client,
+        "Project",
+        profileId,
+        (formData.projects ?? []).map((p, i) => ({ ...p, order: i })),
+      );
+
+      return { ok: true, profileId };
+    } catch (error) {
+      const underlyingError = (error as { underlyingError?: { message?: string } }).underlyingError;
+      const isRateLimitError =
+        error instanceof Error &&
+        (error.message.includes("Rate exceeded") ||
+          error.message.includes("TooManyRequests") ||
+          underlyingError?.message?.includes("Rate exceeded"));
+
+      if (isRateLimitError && attempt < MAX_SAVE_RETRIES - 1) {
+        const delayMs = 1000 * Math.pow(1.5, attempt);
+        console.warn(
+          `Save rate limited (attempt ${attempt + 1}/${MAX_SAVE_RETRIES}). Retrying in ${Math.round(delayMs)}ms...`,
+        );
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
+        continue;
+      }
+
+      console.error("Failed to save profile data", error);
+      throw error;
+    }
   }
 
-  // @ts-expect-error Amplify TS quirky
-  await replaceChildren(
-    client,
-    "Role",
-    profileId,
-    (formData.roles ?? []).map((r, i) => ({ value: r.value, order: i })),
-  );
-
-  await replaceChildren(
-    client,
-    "Badge",
-    profileId,
-    (assets?.badgeKeyLabels ?? []).map((b) => ({ value: b.key, label: b.label })),
-  );
-
-  await replaceChildren(client, "Experience", profileId, formData.experiences ?? []);
-  await replaceChildren(client, "Education", profileId, formData.education ?? []);
-  await replaceChildren(
-    client,
-    "Project",
-    profileId,
-    (formData.projects ?? []).map((p, i) => ({ ...p, order: i })),
-  );
-
-  return { ok: true, profileId };
+  throw new Error("Failed to save profile after multiple attempts");
 }

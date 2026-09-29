@@ -19,7 +19,7 @@ export async function getProfileData(): Promise<{
   profileId: string | null;
   data: ProfileSchemaType | null;
 }> {
-  const MAX_AUTH_RETRIES = 5;
+  const MAX_AUTH_RETRIES = 8;
 
   for (let attempt = 0; attempt < MAX_AUTH_RETRIES; attempt++) {
     try {
@@ -104,6 +104,24 @@ export async function getProfileData(): Promise<{
         },
       };
     } catch (error) {
+      const underlyingError = (error as { underlyingError?: { message?: string } }).underlyingError;
+
+      const isRateLimitError =
+        error instanceof Error &&
+        (error.message.includes("Rate exceeded") ||
+          error.message.includes("TooManyRequests") ||
+          underlyingError?.message?.includes("Rate exceeded") ||
+          underlyingError?.message?.includes("TooManyRequests"));
+
+      if (isRateLimitError && attempt < MAX_AUTH_RETRIES - 1) {
+        const delayMs = 500 * Math.pow(1.5, attempt);
+        console.warn(
+          `Auth not ready (attempt ${attempt + 1}/${MAX_AUTH_RETRIES}). Retrying in ${Math.round(delayMs)}ms...`,
+        );
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
+        continue;
+      }
+
       const isAuthError =
         error instanceof Error &&
         (error.message.includes("Authentication required") ||

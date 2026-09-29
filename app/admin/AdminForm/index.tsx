@@ -21,7 +21,7 @@ import SeoSection from "@/app/admin/AdminForm/SeoSection";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useAuthState } from "@/hooks/useAuthState";
+import { useAuthState, waitForTokenRefresh } from "@/hooks/useAuthState";
 import { uploadFileToS3 } from "@/services/amplify/storage/uploadFileToS3";
 
 import AboutMeSection from "./AboutMeSection";
@@ -40,7 +40,7 @@ export default function AdminForm(props: AdminFormProps) {
   const searchParams = useSearchParams();
   const authState = useAuthState();
   const [formId, setFormId] = useState<string | null>(profileId);
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
 
@@ -78,6 +78,10 @@ export default function AdminForm(props: AdminFormProps) {
 
   async function loadData() {
     try {
+      if (authState.isRefreshing) {
+        await waitForTokenRefresh();
+      }
+
       const { profileId, data } = await getProfileData();
 
       if (data && profileId) {
@@ -91,10 +95,7 @@ export default function AdminForm(props: AdminFormProps) {
   }
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setSessionStabilizing(false);
-
+    const stabilizeSessionIfNeeded = async () => {
       const isOAuthRedirect = searchParams.has("code") || searchParams.has("state");
 
       if (isOAuthRedirect) {
@@ -104,14 +105,13 @@ export default function AdminForm(props: AdminFormProps) {
         setSessionStabilizing(false);
       }
 
-      try {
-        await loadData();
-      } finally {
-        setLoading(false);
+      if (data && profileId) {
+        setFormId(profileId);
+        reset(data);
       }
     };
 
-    fetchData();
+    stabilizeSessionIfNeeded();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -301,6 +301,10 @@ export default function AdminForm(props: AdminFormProps) {
     setIsEditable(false);
     setProcessing(true);
     try {
+      if (authState.isRefreshing) {
+        await waitForTokenRefresh();
+      }
+
       const assets = await uploadAssets(data);
       const serializableData: ProfileSchemaType = {
         avatar: assets.avatarKey ?? (typeof data.avatar === "string" ? data.avatar : ""),
