@@ -43,11 +43,6 @@ function extractPostSlug(rawUrl: string): string {
   try {
     const u = new URL(rawUrl);
     const segments = u.pathname.split("/").filter(Boolean);
-    // Medium post URLs always end with a unique slug (title + hash), regardless of
-    // whether they're accessed via medium.com/@user/slug or a custom
-    // subdomain/domain (e.g. user.medium.com/slug). Comparing on the slug alone
-    // avoids false negatives caused by hostname/prefix differences between the
-    // link a user pastes and the link Medium returns in the RSS feed.
     const slug = segments[segments.length - 1] ?? "";
     return decodeURIComponent(slug).toLowerCase();
   } catch {
