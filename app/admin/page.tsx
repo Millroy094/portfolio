@@ -1,6 +1,8 @@
 import AdminForm from "@/app/admin/AdminForm";
 import { getProfileData } from "@/app/admin/AdminForm/actions/getProfileData";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminPage() {
   const { profileId, data } = await getProfileData();
   return (
