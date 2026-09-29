@@ -1,5 +1,8 @@
 "use server";
 
+import { lookup } from "node:dns/promises";
+import net from "node:net";
+
 import { decode } from "he";
 
 export type MediumPostMeta = {
@@ -9,27 +12,121 @@ export type MediumPostMeta = {
   publishedAt: string;
 };
 
-function extractTagValue(block: string, tag: string): string {
-  const re = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`, "i");
-  const m = block.match(re);
-  return m?.[1]?.trim() ?? "";
+const USER_AGENT =
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36";
+
+const INVALID_LINK_ERROR = "Please enter a valid link before fetching details.";
+const MAX_REDIRECTS = 5;
+
+// Blocks loopback/private/link-local addresses to prevent SSRF via a pasted link.
+function isDisallowedIp(address: string): boolean {
+  if (net.isIPv4(address)) {
+    const [a, b] = address.split(".").map(Number);
+    if (a === 127 || a === 10 || a === 0) return true;
+    if (a === 172 && b >= 16 && b <= 31) return true;
+    if (a === 192 && b === 168) return true;
+    if (a === 169 && b === 254) return true;
+    return false;
+  }
+
+  if (net.isIPv6(address)) {
+    const lower = address.toLowerCase();
+    if (lower === "::1" || lower === "::") return true;
+    if (lower.startsWith("fe80:")) return true;
+    if (lower.startsWith("fc") || lower.startsWith("fd")) return true;
+    if (lower.startsWith("::ffff:")) {
+      const mapped = lower.slice("::ffff:".length);
+      return net.isIPv4(mapped) ? isDisallowedIp(mapped) : false;
+    }
+    return false;
+  }
+
+  return true;
 }
 
-function stripHtml(input: string): string {
-  return decode(input.replace(/<!\[CDATA\[([\s\S]*?)]]>/g, "$1").replace(/<[^>]+>/g, " "))
-    .replace(/\s+/g, " ")
-    .trim();
+async function assertSafePublicUrl(target: URL): Promise<void> {
+  if (target.protocol !== "https:") {
+    throw new Error(INVALID_LINK_ERROR);
+  }
+
+  if (target.hostname.toLowerCase() === "localhost") {
+    throw new Error(INVALID_LINK_ERROR);
+  }
+
+  let addresses: string[];
+  try {
+    addresses = (await lookup(target.hostname, { all: true })).map((entry) => entry.address);
+  } catch {
+    throw new Error(INVALID_LINK_ERROR);
+  }
+
+  if (addresses.length === 0 || addresses.some(isDisallowedIp)) {
+    throw new Error(INVALID_LINK_ERROR);
+  }
 }
 
-function extractFirstImageUrl(input: string): string {
-  const cleaned = input.replace(/<!\[CDATA\[([\s\S]*?)]]>/g, "$1");
-  const match = cleaned.match(/<img[^>]*\ssrc=["']([^"']+)["'][^>]*>/i);
-  return match?.[1]?.trim() ?? "";
+async function fetchFollowingSafeRedirects(initialUrl: URL): Promise<Response> {
+  let currentUrl = initialUrl;
+
+  for (let redirectCount = 0; redirectCount <= MAX_REDIRECTS; redirectCount += 1) {
+    await assertSafePublicUrl(currentUrl);
+
+    const res = await fetch(currentUrl.toString(), {
+      headers: {
+        "User-Agent": USER_AGENT,
+        Accept: "text/html,application/xhtml+xml",
+      },
+      redirect: "manual",
+    });
+
+    if (res.status >= 300 && res.status < 400) {
+      const location = res.headers.get("location");
+      if (!location) return res;
+      currentUrl = new URL(location, currentUrl);
+      continue;
+    }
+
+    return res;
+  }
+
+  throw new Error("Couldn't retrieve post details. Please check the link and try again.");
 }
 
-function extractMediaContentUrl(itemXml: string): string {
-  const match = itemXml.match(/<media:content[^>]*\surl=["']([^"']+)["'][^>]*>/i);
-  return match?.[1]?.trim() ?? "";
+function metaContentPatterns(name: string): RegExp[] {
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return [
+    new RegExp(
+      `<meta[^>]*(?:property|name)=["']${escaped}["'][^>]*content=["']([^"']*)["'][^>]*>`,
+      "i",
+    ),
+    new RegExp(
+      `<meta[^>]*content=["']([^"']*)["'][^>]*(?:property|name)=["']${escaped}["'][^>]*>`,
+      "i",
+    ),
+  ];
+}
+
+function extractMeta(html: string, names: string[]): string {
+  for (const name of names) {
+    for (const pattern of metaContentPatterns(name)) {
+      const match = html.match(pattern);
+      if (match?.[1]) return decode(match[1]).trim();
+    }
+  }
+  return "";
+}
+
+function extractTitleTag(html: string): string {
+  const match = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  return match?.[1] ? decode(match[1]).trim() : "";
+}
+
+function extractPublishedTime(html: string): string {
+  const meta = extractMeta(html, ["article:published_time", "og:article:published_time"]);
+  if (meta) return meta;
+
+  const timeTag = html.match(/<time[^>]*datetime=["']([^"']+)["'][^>]*>/i);
+  return timeTag?.[1]?.trim() ?? "";
 }
 
 function toDateInputValue(rawDate: string): string {
@@ -39,80 +136,26 @@ function toDateInputValue(rawDate: string): string {
   return parsed.toISOString().slice(0, 10);
 }
 
-function extractPostSlug(rawUrl: string): string {
-  try {
-    const u = new URL(rawUrl);
-    const segments = u.pathname.split("/").filter(Boolean);
-    const slug = segments[segments.length - 1] ?? "";
-    return decodeURIComponent(slug).toLowerCase();
-  } catch {
-    return rawUrl.toLowerCase();
-  }
-}
-
-function deriveFeedUrl(postUrl: URL): string {
-  if (postUrl.hostname === "medium.com" || postUrl.hostname === "www.medium.com") {
-    const [profileOrPublication] = postUrl.pathname.split("/").filter(Boolean);
-    if (!profileOrPublication) {
-      throw new Error("Couldn't determine the Medium profile for that link.");
-    }
-    return `https://medium.com/feed/${profileOrPublication}`;
-  }
-
-  // Custom Medium subdomains (username.medium.com) and custom domain publications
-  return `${postUrl.origin}/feed`;
-}
-
 export async function fetchMediumPostMeta(url: string): Promise<MediumPostMeta> {
   let postUrl: URL;
   try {
     postUrl = new URL(url);
   } catch {
-    throw new Error("Please enter a valid link before fetching details.");
+    throw new Error(INVALID_LINK_ERROR);
   }
 
-  const feedUrl = deriveFeedUrl(postUrl);
-
-  const res = await fetch(feedUrl, {
-    headers: {
-      "User-Agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
-      Accept: "application/rss+xml, application/xml;q=0.9, */*;q=0.8",
-    },
-    redirect: "follow",
-  });
+  const res = await fetchFollowingSafeRedirects(postUrl);
 
   if (!res.ok) {
     throw new Error("Couldn't retrieve post details. Please check the link and try again.");
   }
 
-  const targetSlug = extractPostSlug(postUrl.toString());
-  if (!targetSlug) {
-    throw new Error("Please enter a valid link before fetching details.");
-  }
+  const html = await res.text();
 
-  const xml = await res.text();
-  const items = [...xml.matchAll(/<item>([\s\S]*?)<\/item>/gi)];
-  const match = items.find(
-    (item) => extractPostSlug(extractTagValue(item[1], "link")) === targetSlug,
-  );
-
-  if (!match) {
-    throw new Error(
-      "Couldn't find that post (it may be too old to appear in the feed). Please check the link.",
-    );
-  }
-
-  const block = match[1];
-  const content = extractTagValue(block, "content:encoded");
-  const descriptionHtml = extractTagValue(block, "description");
-  const title = stripHtml(extractTagValue(block, "title"));
-  const publishedAtRaw = extractTagValue(block, "pubDate");
-  const description = stripHtml(descriptionHtml).slice(0, 220);
-  const imageUrl =
-    extractFirstImageUrl(content) ||
-    extractFirstImageUrl(descriptionHtml) ||
-    extractMediaContentUrl(block);
+  const title = extractMeta(html, ["og:title", "twitter:title"]) || extractTitleTag(html);
+  const description = extractMeta(html, ["og:description", "twitter:description", "description"]);
+  const imageUrl = extractMeta(html, ["og:image", "twitter:image"]);
+  const publishedAtRaw = extractPublishedTime(html);
 
   if (!title && !description && !imageUrl && !publishedAtRaw) {
     throw new Error("Couldn't retrieve post details from that link. Please check the URL.");
@@ -120,7 +163,7 @@ export async function fetchMediumPostMeta(url: string): Promise<MediumPostMeta> 
 
   return {
     title,
-    description,
+    description: description.slice(0, 220),
     imageUrl,
     publishedAt: toDateInputValue(publishedAtRaw),
   };
