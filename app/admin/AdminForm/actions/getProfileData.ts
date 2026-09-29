@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 
 import type { Schema } from "@/amplify/data/resource";
 import outputs from "@/amplify_outputs.json";
+import { verifyAuthentication, withAuthRetry } from "@/services/amplify/authUtils";
 
 import type { ProfileSchemaType } from "../schema";
 
@@ -13,22 +14,66 @@ export async function getProfileData(): Promise<{
   data: ProfileSchemaType | null;
 }> {
   try {
-    const client = generateServerClientUsingCookies<Schema>({
-      config: outputs,
-      cookies,
-    });
+    await verifyAuthentication();
 
-    const list = await client.models.Profile.list({});
+    const list = await withAuthRetry(async () => {
+      const client = generateServerClientUsingCookies<Schema>({
+        config: outputs,
+        cookies,
+      });
+      return client.models.Profile.list({});
+    }, "Fetch profile data");
+
     const p = list.data[0];
 
     if (!p) return { profileId: null, data: null };
 
     const [roles, badges, exps, edus, projects] = await Promise.all([
-      client.models.Role.list({ filter: { profileId: { eq: p.id } } }),
-      client.models.Badge.list({ filter: { profileId: { eq: p.id } } }),
-      client.models.Experience.list({ filter: { profileId: { eq: p.id } } }),
-      client.models.Education.list({ filter: { profileId: { eq: p.id } } }),
-      client.models.Project.list({ filter: { profileId: { eq: p.id } } }),
+      withAuthRetry(async () => {
+        const client = generateServerClientUsingCookies<Schema>({
+          config: outputs,
+          cookies,
+        });
+        return client.models.Role.list({
+          filter: { profileId: { eq: p.id } },
+        });
+      }, "Fetch roles"),
+      withAuthRetry(async () => {
+        const client = generateServerClientUsingCookies<Schema>({
+          config: outputs,
+          cookies,
+        });
+        return client.models.Badge.list({
+          filter: { profileId: { eq: p.id } },
+        });
+      }, "Fetch badges"),
+      withAuthRetry(async () => {
+        const client = generateServerClientUsingCookies<Schema>({
+          config: outputs,
+          cookies,
+        });
+        return client.models.Experience.list({
+          filter: { profileId: { eq: p.id } },
+        });
+      }, "Fetch experiences"),
+      withAuthRetry(async () => {
+        const client = generateServerClientUsingCookies<Schema>({
+          config: outputs,
+          cookies,
+        });
+        return client.models.Education.list({
+          filter: { profileId: { eq: p.id } },
+        });
+      }, "Fetch education"),
+      withAuthRetry(async () => {
+        const client = generateServerClientUsingCookies<Schema>({
+          config: outputs,
+          cookies,
+        });
+        return client.models.Project.list({
+          filter: { profileId: { eq: p.id } },
+        });
+      }, "Fetch projects"),
     ]);
 
     return {
@@ -93,11 +138,17 @@ export async function getProfileData(): Promise<{
       },
     };
   } catch (error) {
-    // During the OAuth redirect callback (/admin?code=...&state=...), this
-    // can render before the browser finishes exchanging the code for
-    // tokens, so there's no session cookie yet and the query throws. Don't
-    // crash the page - just render the "no profile yet" state.
     console.error("Failed to load profile data", error);
-    return { profileId: null, data: null };
+
+    const isAuthError =
+      error instanceof Error &&
+      (error.message.includes("Authentication required") || error.message.includes("NoSignedUser"));
+
+    if (isAuthError) {
+      console.warn("Session not ready. Retrying may help.");
+      return { profileId: null, data: null };
+    }
+
+    throw error;
   }
 }

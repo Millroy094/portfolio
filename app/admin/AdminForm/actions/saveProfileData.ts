@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import { type Schema } from "@/amplify/data/resource";
 import outputs from "@/amplify_outputs.json";
 import type { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
+import { verifyAuthentication, withAuthRetry } from "@/services/amplify/authUtils";
 
 type Client = ReturnType<typeof generateServerClientUsingCookies<Schema>>;
 type BaseModel = {
@@ -48,14 +49,24 @@ async function replaceChildren<K extends Exclude<keyof Client["models"], "Profil
 ): Promise<void> {
   const m = client.models[model] as BaseModel;
 
-  const existing = await m.list({ filter: { profileId: { eq: profileId } } });
+  const existing = await withAuthRetry(
+    () => m.list({ filter: { profileId: { eq: profileId } } }),
+    `Fetch existing ${model} records`,
+  );
+
   if (existing.data.length) {
-    await Promise.all(existing.data.map((e) => m.delete({ id: e.id })));
+    await withAuthRetry(
+      () => Promise.all(existing.data.map((e) => m.delete({ id: e.id }))),
+      `Delete existing ${model} records`,
+    );
   }
 
   if (!items?.length) return;
 
-  await Promise.all(items.map((item) => m.create({ ...(item as object), profileId })));
+  await withAuthRetry(
+    () => Promise.all(items.map((item) => m.create({ ...(item as object), profileId }))),
+    `Create new ${model} records`,
+  );
 }
 
 export async function saveProfileData(
@@ -66,6 +77,8 @@ export async function saveProfileData(
   if (!assets?.avatarKey) {
     throw new Error("avatarKey is required to save a profile");
   }
+
+  await verifyAuthentication();
 
   const client = generateServerClientUsingCookies<Schema>({
     config: outputs,
@@ -101,9 +114,15 @@ export async function saveProfileData(
   if (existingProfileId) {
     profileId = existingProfileId;
 
-    await client.models.Profile.update({ id: profileId, ...payload });
+    await withAuthRetry(
+      () => client.models.Profile.update({ id: profileId, ...payload }),
+      "Update profile",
+    );
   } else {
-    const created = await client.models.Profile.create(payload);
+    const created = await withAuthRetry(
+      () => client.models.Profile.create(payload),
+      "Create profile",
+    );
     if (!created.data) throw new Error("Failed to create profile");
     profileId = created.data.id;
   }
