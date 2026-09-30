@@ -113,19 +113,19 @@ export const ProfileSchema = z.object({
       url: z.string().optional().transform(transformUrl).pipe(z.string().url()),
     }),
   ),
-   mediumPosts: z.array(
-     z.object({
-       title: z.string().nonempty("Post title is required - fetch details from the link"),
-       link: z
-         .string()
-         .nonempty("Post link is required")
-         .transform(transformUrl)
-         .pipe(z.string().url("Please enter a valid link")),
-       description: z.string().optional(),
-       imageUrl: z.string().optional().transform(transformUrl).pipe(z.string().url().optional()),
-       publishedAt: z.string().optional(),
-     }),
-   ),
+  mediumPosts: z.array(
+    z.object({
+      title: z.string().nonempty("Post title is required - fetch details from the link"),
+      link: z
+        .string()
+        .nonempty("Post link is required")
+        .transform(transformUrl)
+        .pipe(z.string().url("Please enter a valid link")),
+      description: z.string().optional(),
+      imageUrl: z.string().optional().transform(transformUrl).pipe(z.string().url().optional()),
+      publishedAt: z.string().optional(),
+    }),
+  ),
   skills: SkillsArrayGeneric,
   seoTitle: z
     .string()
