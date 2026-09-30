@@ -57,10 +57,10 @@ export const FormSection: React.FC<FormSectionProps> = ({
       <div className="mb-4 flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex items-center gap-2">
-            <h3 className="text-base font-semibold text-[var(--admin-text)]">{title}</h3>
+            <h3 className="text-base font-semibold text-(--admin-text)">{title}</h3>
             {!isVisible && visKey && <Badge>Hidden</Badge>}
           </div>
-          <p className="mt-1 text-sm text-[var(--admin-text-muted)]">{description}</p>
+          <p className="mt-1 text-sm text-(--admin-text-muted)">{description}</p>
         </div>
 
         <div className="flex items-center gap-2">
@@ -103,7 +103,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
           disabled={disabled}
         />
       ) : (
-        <fieldset disabled={disabled} className="m-0 border-0 p-0">
+        <fieldset disabled={disabled} className="m-0 border-0 p-0 w-full min-w-0">
           {children}
         </fieldset>
       )}
@@ -124,9 +124,9 @@ const EmptyState = ({
   onAction: () => void;
   disabled?: boolean;
 }) => (
-  <div className="rounded-lg border border-dashed border-[var(--admin-border-strong)] bg-[var(--admin-surface-muted)] p-5">
-    <p className="text-base font-medium text-[var(--admin-text)]">{title}</p>
-    <p className="mt-1 text-sm text-[var(--admin-text-muted)]">{description}</p>
+  <div className="rounded-lg border border-dashed border-(--admin-border-strong) bg-(--admin-surface-muted) p-5">
+    <p className="text-base font-medium text-(--admin-text)">{title}</p>
+    <p className="mt-1 text-sm text-(--admin-text-muted)">{description}</p>
     <Button type="button" variant="outline" className="mt-4" onClick={onAction} disabled={disabled}>
       <FiPlus size={16} />
       {actionLabel}
