@@ -34,18 +34,25 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
   const [fetchingIndex, setFetchingIndex] = useState<number | null>(null);
   const watchedPosts = useWatch({ control, name: "mediumPosts" });
   const isMountedRef = useRef(true);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     return () => {
       isMountedRef.current = false;
+      abortControllerRef.current?.abort();
     };
   }, []);
 
   const fetchDetails = async (index: number) => {
     const link = getValues(`mediumPosts.${index}.link`);
-    if (!link) return;
+    if (!link || !isMountedRef.current) return;
 
-    setFetchingIndex(index);
+    if (isMountedRef.current) {
+      setFetchingIndex(index);
+    }
+
+    abortControllerRef.current = new AbortController();
+
     try {
       const meta = await fetchMediumPostMeta(link);
       if (isMountedRef.current) {
@@ -56,9 +63,8 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
         setValue(`mediumPosts.${index}.publishedAt`, meta.publishedAt, { shouldDirty: true });
       }
     } catch (error) {
-      if (isMountedRef.current) {
-        const errorMessage =
-          error instanceof Error ? error.message : "Couldn't retrieve post details from that link.";
+      if (isMountedRef.current && error instanceof Error && error.name !== "AbortError") {
+        const errorMessage = error.message || "Couldn't retrieve post details from that link.";
         setError(`mediumPosts.${index}.link`, {
           type: "manual",
           message: errorMessage,
