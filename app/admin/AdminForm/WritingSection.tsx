@@ -44,6 +44,18 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
     };
   }, []);
 
+  useEffect(() => {
+    if (expandedIndex !== null && expandedIndex >= posts.fields.length) {
+      setExpandedIndex(null);
+    }
+  }, [posts.fields.length, expandedIndex]);
+
+  const handleExpandToggle = (index: number) => {
+    if (isMountedRef.current) {
+      setExpandedIndex(expandedIndex === index ? null : index);
+    }
+  };
+
   const fetchDetails = async (index: number) => {
     const link = getValues(`mediumPosts.${index}.link`);
     if (!link || !isMountedRef.current) return;
@@ -203,7 +215,7 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
                 <div className="flex flex-col gap-3 min-w-0">
                   <button
                     type="button"
-                    onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
+                    onClick={() => handleExpandToggle(index)}
                     className="flex min-w-0 items-center gap-2 rounded-lg border border-(--admin-border) bg-(--admin-surface-muted) px-4 py-3 text-left hover:bg-(--admin-border) transition-colors"
                   >
                     <ChevronDown
