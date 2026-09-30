@@ -3,6 +3,7 @@
 import { ArrowDown, ArrowUp, ChevronDown, Sparkles, TriangleAlert, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Control, Controller, useFormContext, useWatch } from "react-hook-form";
+import { toast } from "react-toastify";
 
 import { fetchMediumPostMeta } from "@/app/admin/AdminForm/actions/fetchMediumPostMeta";
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
@@ -30,7 +31,7 @@ export interface WritingSectionProps {
 }
 
 export default function WritingSection({ control, disabled, posts }: WritingSectionProps) {
-  const { getValues, setValue, setError, clearErrors } = useFormContext<ProfileSchemaType>();
+  const { getValues, setValue } = useFormContext<ProfileSchemaType>();
   const [fetchingIndex, setFetchingIndex] = useState<number | null>(null);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const watchedPosts = useWatch({ control, name: "mediumPosts" });
@@ -69,19 +70,16 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
     try {
       const meta = await fetchMediumPostMeta(link);
       if (isMountedRef.current) {
-        clearErrors(`mediumPosts.${index}.link`);
         setValue(`mediumPosts.${index}.title`, meta.title, { shouldDirty: true });
         setValue(`mediumPosts.${index}.description`, meta.description, { shouldDirty: true });
         setValue(`mediumPosts.${index}.imageUrl`, meta.imageUrl, { shouldDirty: true });
         setValue(`mediumPosts.${index}.publishedAt`, meta.publishedAt, { shouldDirty: true });
+        toast.success("Post details fetched successfully!");
       }
     } catch (error) {
       if (isMountedRef.current && error instanceof Error && error.name !== "AbortError") {
         const errorMessage = error.message || "Couldn't retrieve post details from that link.";
-        setError(`mediumPosts.${index}.link`, {
-          type: "manual",
-          message: errorMessage,
-        });
+        toast.error(errorMessage);
       }
     } finally {
       if (isMountedRef.current) {
@@ -130,8 +128,8 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
                 </div>
               )}
 
-              <div className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-end min-w-0">
-                <div className="w-full lg:col-span-9 min-w-0">
+              <div className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-start min-w-0">
+                <div className="w-full lg:col-span-10 min-w-0">
                   <Controller
                     control={control}
                     name={`mediumPosts.${index}.link`}
@@ -147,31 +145,32 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
                         error={!!fieldState.error}
                         errorText={fieldState.error?.message}
                         disabled={disabled}
+                        endAdornment={
+                          <Button
+                            type="button"
+                            variant={watchedPost?.title ? "default" : "outline"}
+                            size="icon"
+                            onClick={() => void fetchDetails(index)}
+                            disabled={disabled || fetchingIndex !== null}
+                            className="h-8 w-8"
+                            aria-label={`Fetch details for post ${index + 1}`}
+                            title={
+                              watchedPost?.title
+                                ? "Post validated"
+                                : "Fetch title, description, image and date from this link"
+                            }
+                          >
+                            <Sparkles
+                              className={`h-4 w-4 ${fetchingIndex === index ? "animate-spin" : ""}`}
+                            />
+                          </Button>
+                        }
                       />
                     )}
                   />
                 </div>
 
-                <Button
-                  type="button"
-                  variant={watchedPost?.title ? "default" : "outline"}
-                  size="icon"
-                  onClick={() => void fetchDetails(index)}
-                  disabled={disabled || fetchingIndex !== null}
-                  className="h-10 w-10 lg:col-span-1"
-                  aria-label={`Fetch details for post ${index + 1}`}
-                  title={
-                    watchedPost?.title
-                      ? "Post validated"
-                      : "Fetch title, description, image and date from this link"
-                  }
-                >
-                  <Sparkles
-                    className={`h-5 w-5 ${fetchingIndex === index ? "animate-spin" : ""}`}
-                  />
-                </Button>
-
-                <div className="hidden items-center justify-end gap-2 lg:col-span-2 lg:flex">
+                <div className="hidden w-full items-end justify-end gap-2 lg:col-span-2 lg:flex">
                   <Button
                     type="button"
                     variant="outline"
@@ -281,25 +280,6 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
               )}
 
               <div className="flex w-full flex-wrap items-center justify-center gap-2 lg:hidden">
-                <Button
-                  type="button"
-                  variant={watchedPost?.title ? "default" : "outline"}
-                  size="icon"
-                  onClick={() => void fetchDetails(index)}
-                  disabled={disabled || fetchingIndex !== null}
-                  className="h-10 w-10"
-                  aria-label={`Fetch details for post ${index + 1}`}
-                  title={
-                    watchedPost?.title
-                      ? "Post validated"
-                      : "Fetch title, description, image and date from this link"
-                  }
-                >
-                  <Sparkles
-                    className={`h-5 w-5 ${fetchingIndex === index ? "animate-spin" : ""}`}
-                  />
-                </Button>
-
                 <Button
                   type="button"
                   variant="outline"
