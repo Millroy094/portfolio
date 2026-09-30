@@ -64,31 +64,26 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
     abortControllerRef.current = new AbortController();
 
     if (!isMountedRef.current) return;
-    setFetchingIndex(index);
 
     try {
+      setFetchingIndex(index);
       const meta = await fetchMediumPostMeta(link);
+
       if (!isMountedRef.current) return;
 
       setValue(`mediumPosts.${index}.title`, meta.title, { shouldDirty: true });
       setValue(`mediumPosts.${index}.description`, meta.description, { shouldDirty: true });
       setValue(`mediumPosts.${index}.imageUrl`, meta.imageUrl, { shouldDirty: true });
       setValue(`mediumPosts.${index}.publishedAt`, meta.publishedAt, { shouldDirty: true });
-      toast.success("Post details fetched successfully!");
+
+      if (isMountedRef.current) {
+        toast.success("Post details fetched successfully!");
+      }
     } catch (error) {
       if (!isMountedRef.current) return;
 
-      let errorMessage = "Couldn't retrieve post details from that link.";
-
-      if (error instanceof Error) {
-        errorMessage = error.message;
-      } else if (typeof error === "object" && error !== null && "message" in error) {
-        errorMessage = String((error as Record<string, unknown>).message);
-      } else if (typeof error === "string") {
-        errorMessage = error;
-      }
-
-      toast.error(errorMessage);
+      console.error("Failed to fetch Medium post details:", error);
+      toast.error("Failed to fetch post details. Please check the link and try again.");
     } finally {
       if (isMountedRef.current) {
         setFetchingIndex(null);
