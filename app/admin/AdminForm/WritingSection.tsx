@@ -130,8 +130,8 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
                 </div>
               )}
 
-              <div className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-start min-w-0">
-                <div className="w-full lg:col-span-10 min-w-0">
+              <div className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-end min-w-0">
+                <div className="w-full lg:col-span-9 min-w-0">
                   <Controller
                     control={control}
                     name={`mediumPosts.${index}.link`}
@@ -147,32 +147,31 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
                         error={!!fieldState.error}
                         errorText={fieldState.error?.message}
                         disabled={disabled}
-                        endAdornment={
-                          <Button
-                            type="button"
-                            variant={watchedPost?.title ? "default" : "outline"}
-                            size="icon"
-                            onClick={() => void fetchDetails(index)}
-                            disabled={disabled || fetchingIndex !== null || !field.value}
-                            className="h-8 w-8"
-                            aria-label={`Fetch details for post ${index + 1}`}
-                            title={
-                              watchedPost?.title
-                                ? "Post validated"
-                                : "Fetch title, description, image and date from this link"
-                            }
-                          >
-                            <Sparkles
-                              className={`h-4 w-4 ${fetchingIndex === index ? "animate-spin" : ""}`}
-                            />
-                          </Button>
-                        }
                       />
                     )}
                   />
                 </div>
 
-                <div className="hidden w-full items-end justify-end gap-2 lg:col-span-2 lg:flex">
+                <Button
+                  type="button"
+                  variant={watchedPost?.title ? "default" : "outline"}
+                  size="icon"
+                  onClick={() => void fetchDetails(index)}
+                  disabled={disabled || fetchingIndex !== null}
+                  className="h-10 w-10 lg:col-span-1"
+                  aria-label={`Fetch details for post ${index + 1}`}
+                  title={
+                    watchedPost?.title
+                      ? "Post validated"
+                      : "Fetch title, description, image and date from this link"
+                  }
+                >
+                  <Sparkles
+                    className={`h-5 w-5 ${fetchingIndex === index ? "animate-spin" : ""}`}
+                  />
+                </Button>
+
+                <div className="hidden items-center justify-end gap-2 lg:col-span-2 lg:flex">
                   <Button
                     type="button"
                     variant="outline"
@@ -282,6 +281,25 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
               )}
 
               <div className="flex w-full flex-wrap items-center justify-center gap-2 lg:hidden">
+                <Button
+                  type="button"
+                  variant={watchedPost?.title ? "default" : "outline"}
+                  size="icon"
+                  onClick={() => void fetchDetails(index)}
+                  disabled={disabled || fetchingIndex !== null}
+                  className="h-10 w-10"
+                  aria-label={`Fetch details for post ${index + 1}`}
+                  title={
+                    watchedPost?.title
+                      ? "Post validated"
+                      : "Fetch title, description, image and date from this link"
+                  }
+                >
+                  <Sparkles
+                    className={`h-5 w-5 ${fetchingIndex === index ? "animate-spin" : ""}`}
+                  />
+                </Button>
+
                 <Button
                   type="button"
                   variant="outline"
