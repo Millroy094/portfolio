@@ -495,7 +495,6 @@ export default function AdminForm(props: AdminFormProps) {
 
               <WritingSection
                 control={control}
-                errors={errors}
                 disabled={!isEditable}
                 posts={{
                   fields: mediumPosts.fields,
