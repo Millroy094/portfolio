@@ -9,7 +9,6 @@ import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
 import LinkTextField from "@/components/controls/LinkTextField";
 import { FormSection } from "@/components/FormSection";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 
 type MediumPostRecord = {
   title: string;
@@ -112,8 +111,8 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
                 </div>
               )}
 
-              <div className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-start">
-                <div className="w-full lg:col-span-10">
+              <div className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-start min-w-0">
+                <div className="w-full lg:col-span-10 min-w-0">
                   <Controller
                     control={control}
                     name={`mediumPosts.${index}.link`}
@@ -154,7 +153,7 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
                   />
                 </div>
 
-                <div className="flex w-full items-end justify-center gap-2 lg:col-span-2 lg:justify-end">
+                <div className="flex w-full flex-wrap items-end justify-center gap-2 lg:col-span-2 lg:flex-nowrap lg:justify-end">
                   <Button
                     type="button"
                     variant="outline"
@@ -194,45 +193,50 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
               </div>
 
               {watchedPost?.title && (
-                <>
-                  <Separator className="my-2" />
-                  <div className="rounded-lg bg-(--admin-surface-muted) p-4">
-                    <h4 className="mb-3 text-sm font-semibold text-(--admin-text)">
-                      Fetched Post Details
-                    </h4>
-                    <div className="space-y-2 text-sm">
-                      <div>
-                        <span className="text-(--admin-text-muted)">Title:</span>
-                        <p className="mt-1 text-(--admin-text)">{watchedPost.title}</p>
+                <div className="rounded-lg border border-(--admin-border) bg-linear-to-br from-(--admin-surface-muted) to-transparent p-4 min-w-0 relative overflow-hidden before:absolute before:inset-0 before:left-0 before:w-1 before:bg-linear-to-b before:from-blue-500 before:to-transparent before:opacity-40">
+                  <div className="relative z-10">
+                    <h4 className="mb-4 text-sm font-semibold text-(--admin-text)">Post Details</h4>
+                    <div className="space-y-3 text-sm min-w-0">
+                      <div className="min-w-0">
+                        <span className="text-xs font-medium uppercase tracking-wider text-(--admin-text-muted)">
+                          Title
+                        </span>
+                        <p className="mt-1.5 text-(--admin-text)">{watchedPost.title}</p>
                       </div>
 
                       {watchedPost.publishedAt && (
-                        <div>
-                          <span className="text-(--admin-text-muted)">Published:</span>
-                          <p className="mt-1 text-(--admin-text)">{watchedPost.publishedAt}</p>
+                        <div className="min-w-0">
+                          <span className="text-xs font-medium uppercase tracking-wider text-(--admin-text-muted)">
+                            Published
+                          </span>
+                          <p className="mt-1.5 text-(--admin-text)">{watchedPost.publishedAt}</p>
                         </div>
                       )}
 
                       {watchedPost.description && (
-                        <div>
-                          <span className="text-(--admin-text-muted)">Description:</span>
-                          <p className="mt-1 line-clamp-3 text-(--admin-text)">
+                        <div className="min-w-0">
+                          <span className="text-xs font-medium uppercase tracking-wider text-(--admin-text-muted)">
+                            Description
+                          </span>
+                          <p className="mt-1.5 line-clamp-3 text-(--admin-text)">
                             {watchedPost.description}
                           </p>
                         </div>
                       )}
 
                       {watchedPost.imageUrl && (
-                        <div>
-                          <span className="text-(--admin-text-muted)">Image URL:</span>
-                          <p className="mt-1 truncate text-(--admin-text)">
+                        <div className="min-w-0">
+                          <span className="text-xs font-medium uppercase tracking-wider text-(--admin-text-muted)">
+                            Image URL
+                          </span>
+                          <p className="mt-1.5 break-all text-(--admin-text)">
                             {watchedPost.imageUrl}
                           </p>
                         </div>
                       )}
                     </div>
                   </div>
-                </>
+                </div>
               )}
             </div>
           );
