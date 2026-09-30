@@ -52,9 +52,7 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
   }, [posts.fields.length, expandedIndex]);
 
   const handleExpandToggle = (index: number) => {
-    if (isMountedRef.current) {
-      setExpandedIndex(expandedIndex === index ? null : index);
-    }
+    setExpandedIndex(expandedIndex === index ? null : index);
   };
 
   const fetchDetails = async (index: number) => {
@@ -131,8 +129,8 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
                 </div>
               )}
 
-              <div className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-start">
-                <div className="w-full lg:col-span-10">
+              <div className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-start min-w-0">
+                <div className="w-full lg:col-span-10 min-w-0">
                   <Controller
                     control={control}
                     name={`mediumPosts.${index}.link`}
@@ -141,10 +139,7 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
                         label="Post link (friend link supported)"
                         value={field.value ?? ""}
                         onChange={field.onChange}
-                        onBlur={() => {
-                          field.onBlur();
-                          void fetchDetails(index);
-                        }}
+                        onBlur={field.onBlur}
                         error={!!fieldState.error}
                         errorText={fieldState.error?.message}
                         disabled={disabled}
@@ -213,29 +208,29 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
               </div>
 
               {watchedPost?.title && (
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3 min-w-0">
                   <button
                     type="button"
                     onClick={() => handleExpandToggle(index)}
-                    className="flex items-center gap-2 rounded-lg border border-(--admin-border) bg-(--admin-surface-muted) px-4 py-3 text-left hover:bg-(--admin-border) transition-colors"
+                    className="flex items-center gap-2 rounded-lg border border-(--admin-border) bg-(--admin-surface-muted) px-4 py-3 text-left hover:bg-(--admin-border) transition-colors min-w-0"
                   >
                     <ChevronDown
                       className={`h-5 w-5 shrink-0 text-(--admin-text-muted) transition-transform ${
                         expandedIndex === index ? "rotate-180" : ""
                       }`}
                     />
-                    <span className="flex-1 truncate text-sm font-medium text-(--admin-text)">
+                    <span className="flex-1 truncate text-sm font-medium text-(--admin-text) min-w-0">
                       {watchedPost.title}
                     </span>
                   </button>
 
                   {expandedIndex === index && (
-                    <div className="overflow-hidden rounded-lg border border-(--admin-border) bg-linear-to-br from-(--admin-surface-muted) to-transparent p-4 relative before:absolute before:inset-0 before:left-0 before:w-1 before:bg-linear-to-b before:from-blue-500 before:to-transparent before:opacity-40">
-                      <div className="relative z-10">
+                    <div className="overflow-hidden rounded-lg border border-(--admin-border) bg-linear-to-br from-(--admin-surface-muted) to-transparent p-4 relative before:absolute before:inset-0 before:left-0 before:w-1 before:bg-linear-to-b before:from-blue-500 before:to-transparent before:opacity-40 min-w-0">
+                      <div className="relative z-10 min-w-0">
                         <h4 className="mb-4 text-sm font-semibold text-(--admin-text)">
                           Post Details
                         </h4>
-                        <div className="space-y-3 text-sm">
+                        <div className="space-y-3 text-sm min-w-0">
                           <div>
                             <span className="text-xs font-medium uppercase tracking-wider text-(--admin-text-muted)">
                               Title
