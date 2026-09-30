@@ -1,14 +1,15 @@
 "use client";
 
 import { ArrowDown, ArrowUp, Sparkles, TriangleAlert, Trash2 } from "lucide-react";
-import { useState } from "react";
-import { Control, Controller, FieldErrors, useFormContext, useWatch } from "react-hook-form";
+import { useEffect, useRef, useState } from "react";
+import { Control, Controller, useFormContext, useWatch } from "react-hook-form";
 
 import { fetchMediumPostMeta } from "@/app/admin/AdminForm/actions/fetchMediumPostMeta";
 import { ProfileSchemaType } from "@/app/admin/AdminForm/schema";
 import LinkTextField from "@/components/controls/LinkTextField";
 import { FormSection } from "@/components/FormSection";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 
 type MediumPostRecord = {
   title: string;
@@ -20,7 +21,6 @@ type MediumPostRecord = {
 
 export interface WritingSectionProps {
   control: Control<ProfileSchemaType>;
-  errors: FieldErrors<ProfileSchemaType>;
   disabled: boolean;
   posts: {
     fields: { id: string }[];
@@ -30,10 +30,17 @@ export interface WritingSectionProps {
   };
 }
 
-export default function WritingSection({ control, errors, disabled, posts }: WritingSectionProps) {
+export default function WritingSection({ control, disabled, posts }: WritingSectionProps) {
   const { getValues, setValue, setError, clearErrors } = useFormContext<ProfileSchemaType>();
   const [fetchingIndex, setFetchingIndex] = useState<number | null>(null);
   const watchedPosts = useWatch({ control, name: "mediumPosts" });
+  const isMountedRef = useRef(true);
+
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   const fetchDetails = async (index: number) => {
     const link = getValues(`mediumPosts.${index}.link`);
@@ -42,19 +49,26 @@ export default function WritingSection({ control, errors, disabled, posts }: Wri
     setFetchingIndex(index);
     try {
       const meta = await fetchMediumPostMeta(link);
-      clearErrors(`mediumPosts.${index}.link`);
-      setValue(`mediumPosts.${index}.title`, meta.title, { shouldDirty: true });
-      setValue(`mediumPosts.${index}.description`, meta.description, { shouldDirty: true });
-      setValue(`mediumPosts.${index}.imageUrl`, meta.imageUrl, { shouldDirty: true });
-      setValue(`mediumPosts.${index}.publishedAt`, meta.publishedAt, { shouldDirty: true });
+      if (isMountedRef.current) {
+        clearErrors(`mediumPosts.${index}.link`);
+        setValue(`mediumPosts.${index}.title`, meta.title, { shouldDirty: true });
+        setValue(`mediumPosts.${index}.description`, meta.description, { shouldDirty: true });
+        setValue(`mediumPosts.${index}.imageUrl`, meta.imageUrl, { shouldDirty: true });
+        setValue(`mediumPosts.${index}.publishedAt`, meta.publishedAt, { shouldDirty: true });
+      }
     } catch (error) {
-      setError(`mediumPosts.${index}.link`, {
-        type: "manual",
-        message:
-          error instanceof Error ? error.message : "Couldn't retrieve post details from that link.",
-      });
+      if (isMountedRef.current) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Couldn't retrieve post details from that link.";
+        setError(`mediumPosts.${index}.link`, {
+          type: "manual",
+          message: errorMessage,
+        });
+      }
     } finally {
-      setFetchingIndex(null);
+      if (isMountedRef.current) {
+        setFetchingIndex(null);
+      }
     }
   };
 
@@ -98,78 +112,128 @@ export default function WritingSection({ control, errors, disabled, posts }: Wri
                 </div>
               )}
 
-              <Controller
-                control={control}
-                name={`mediumPosts.${index}.link`}
-                render={({ field, fieldState }) => (
-                  <LinkTextField
-                    label="Post link (friend link supported)"
-                    value={field.value ?? ""}
-                    onChange={field.onChange}
-                    onBlur={() => {
-                      field.onBlur();
-                      void fetchDetails(index);
-                    }}
-                    error={!!fieldState.error}
-                    errorText={errors.mediumPosts?.[index]?.link?.message}
-                    disabled={disabled}
-                    endAdornment={
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon"
-                        onClick={() => void fetchDetails(index)}
-                        disabled={disabled || fetchingIndex !== null || !field.value}
-                        className="h-8 w-8"
-                        aria-label={`Fetch details for post ${index + 1}`}
-                        title="Fetch title, description, image and date from this link"
-                      >
-                        <Sparkles
-                          className={`h-4 w-4 ${fetchingIndex === index ? "animate-spin" : ""}`}
-                        />
-                      </Button>
-                    }
+              <div className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-start">
+                <div className="w-full lg:col-span-10">
+                  <Controller
+                    control={control}
+                    name={`mediumPosts.${index}.link`}
+                    render={({ field, fieldState }) => (
+                      <LinkTextField
+                        label="Post link (friend link supported)"
+                        value={field.value ?? ""}
+                        onChange={field.onChange}
+                        onBlur={() => {
+                          field.onBlur();
+                          void fetchDetails(index);
+                        }}
+                        error={!!fieldState.error}
+                        errorText={fieldState.error?.message}
+                        disabled={disabled}
+                        endAdornment={
+                          <Button
+                            type="button"
+                            variant={watchedPost?.title ? "default" : "outline"}
+                            size="icon"
+                            onClick={() => void fetchDetails(index)}
+                            disabled={disabled || fetchingIndex !== null || !field.value}
+                            className="h-8 w-8"
+                            aria-label={`Fetch details for post ${index + 1}`}
+                            title={
+                              watchedPost?.title
+                                ? "Post validated"
+                                : "Fetch title, description, image and date from this link"
+                            }
+                          >
+                            <Sparkles
+                              className={`h-4 w-4 ${fetchingIndex === index ? "animate-spin" : ""}`}
+                            />
+                          </Button>
+                        }
+                      />
+                    )}
                   />
-                )}
-              />
+                </div>
 
-              <div className="flex w-full items-center justify-end gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="icon"
-                  onClick={() => index > 0 && posts.move(index, index - 1)}
-                  disabled={disabled || index === 0}
-                  className="h-10 w-10"
-                  aria-label={`Move post ${index + 1} up`}
-                >
-                  <ArrowUp className="h-5 w-5" />
-                </Button>
+                <div className="flex w-full items-end justify-center gap-2 lg:col-span-2 lg:justify-end">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    onClick={() => index > 0 && posts.move(index, index - 1)}
+                    disabled={disabled || index === 0}
+                    className="h-10 w-10"
+                    aria-label={`Move post ${index + 1} up`}
+                  >
+                    <ArrowUp className="h-5 w-5" />
+                  </Button>
 
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="icon"
-                  onClick={() => index < posts.fields.length - 1 && posts.move(index, index + 1)}
-                  disabled={disabled || index === posts.fields.length - 1}
-                  className="h-10 w-10"
-                  aria-label={`Move post ${index + 1} down`}
-                >
-                  <ArrowDown className="h-5 w-5" />
-                </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    onClick={() => index < posts.fields.length - 1 && posts.move(index, index + 1)}
+                    disabled={disabled || index === posts.fields.length - 1}
+                    className="h-10 w-10"
+                    aria-label={`Move post ${index + 1} down`}
+                  >
+                    <ArrowDown className="h-5 w-5" />
+                  </Button>
 
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="icon"
-                  onClick={() => posts.remove(index)}
-                  disabled={disabled}
-                  className="h-10 w-10"
-                  aria-label={`Remove post ${index + 1}`}
-                >
-                  <Trash2 className="h-5 w-5 text-red-500" />
-                </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    onClick={() => posts.remove(index)}
+                    disabled={disabled}
+                    className="h-10 w-10"
+                    aria-label={`Remove post ${index + 1}`}
+                  >
+                    <Trash2 className="h-5 w-5 text-red-500" />
+                  </Button>
+                </div>
               </div>
+
+              {watchedPost?.title && (
+                <>
+                  <Separator className="my-2" />
+                  <div className="rounded-lg bg-(--admin-surface-muted) p-4">
+                    <h4 className="mb-3 text-sm font-semibold text-(--admin-text)">
+                      Fetched Post Details
+                    </h4>
+                    <div className="space-y-2 text-sm">
+                      <div>
+                        <span className="text-(--admin-text-muted)">Title:</span>
+                        <p className="mt-1 text-(--admin-text)">{watchedPost.title}</p>
+                      </div>
+
+                      {watchedPost.publishedAt && (
+                        <div>
+                          <span className="text-(--admin-text-muted)">Published:</span>
+                          <p className="mt-1 text-(--admin-text)">{watchedPost.publishedAt}</p>
+                        </div>
+                      )}
+
+                      {watchedPost.description && (
+                        <div>
+                          <span className="text-(--admin-text-muted)">Description:</span>
+                          <p className="mt-1 line-clamp-3 text-(--admin-text)">
+                            {watchedPost.description}
+                          </p>
+                        </div>
+                      )}
+
+                      {watchedPost.imageUrl && (
+                        <div>
+                          <span className="text-(--admin-text-muted)">Image URL:</span>
+                          <p className="mt-1 truncate text-(--admin-text)">
+                            {watchedPost.imageUrl}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           );
         })}
