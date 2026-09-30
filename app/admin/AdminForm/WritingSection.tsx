@@ -136,8 +136,8 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
                 </div>
               )}
 
-              <div className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-start min-w-0">
-                <div className="w-full lg:col-span-10 min-w-0">
+              <div className="flex flex-col gap-3 lg:grid lg:grid-cols-12 lg:gap-3 lg:items-start">
+                <div className="w-full lg:col-span-10">
                   <Controller
                     control={control}
                     name={`mediumPosts.${index}.link`}
@@ -178,7 +178,7 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
                   />
                 </div>
 
-                <div className="hidden w-full items-end justify-end gap-2 lg:col-span-2 lg:flex">
+                <div className="hidden w-full items-center justify-end gap-2 lg:col-span-2 lg:flex">
                   <Button
                     type="button"
                     variant="outline"
@@ -218,30 +218,30 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
               </div>
 
               {watchedPost?.title && (
-                <div className="flex flex-col gap-3 min-w-0">
+                <div className="flex flex-col gap-3">
                   <button
                     type="button"
                     onClick={() => handleExpandToggle(index)}
-                    className="flex min-w-0 items-center gap-2 rounded-lg border border-(--admin-border) bg-(--admin-surface-muted) px-4 py-3 text-left hover:bg-(--admin-border) transition-colors"
+                    className="flex items-center gap-2 rounded-lg border border-(--admin-border) bg-(--admin-surface-muted) px-4 py-3 text-left hover:bg-(--admin-border) transition-colors"
                   >
                     <ChevronDown
                       className={`h-5 w-5 shrink-0 text-(--admin-text-muted) transition-transform ${
                         expandedIndex === index ? "rotate-180" : ""
                       }`}
                     />
-                    <span className="min-w-0 flex-1 truncate text-sm font-medium text-(--admin-text)">
+                    <span className="flex-1 truncate text-sm font-medium text-(--admin-text)">
                       {watchedPost.title}
                     </span>
                   </button>
 
                   {expandedIndex === index && (
-                    <div className="overflow-hidden rounded-lg border border-(--admin-border) bg-linear-to-br from-(--admin-surface-muted) to-transparent p-4 min-w-0 relative before:absolute before:inset-0 before:left-0 before:w-1 before:bg-linear-to-b before:from-blue-500 before:to-transparent before:opacity-40">
-                      <div className="relative z-10 min-w-0">
+                    <div className="overflow-hidden rounded-lg border border-(--admin-border) bg-linear-to-br from-(--admin-surface-muted) to-transparent p-4 relative before:absolute before:inset-0 before:left-0 before:w-1 before:bg-linear-to-b before:from-blue-500 before:to-transparent before:opacity-40">
+                      <div className="relative z-10">
                         <h4 className="mb-4 text-sm font-semibold text-(--admin-text)">
                           Post Details
                         </h4>
-                        <div className="space-y-3 text-sm min-w-0">
-                          <div className="min-w-0">
+                        <div className="space-y-3 text-sm">
+                          <div>
                             <span className="text-xs font-medium uppercase tracking-wider text-(--admin-text-muted)">
                               Title
                             </span>
@@ -249,7 +249,7 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
                           </div>
 
                           {watchedPost.publishedAt && (
-                            <div className="min-w-0">
+                            <div>
                               <span className="text-xs font-medium uppercase tracking-wider text-(--admin-text-muted)">
                                 Published
                               </span>
@@ -260,7 +260,7 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
                           )}
 
                           {watchedPost.description && (
-                            <div className="min-w-0">
+                            <div>
                               <span className="text-xs font-medium uppercase tracking-wider text-(--admin-text-muted)">
                                 Description
                               </span>
@@ -271,7 +271,7 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
                           )}
 
                           {watchedPost.imageUrl && (
-                            <div className="min-w-0">
+                            <div>
                               <span className="text-xs font-medium uppercase tracking-wider text-(--admin-text-muted)">
                                 Image URL
                               </span>
@@ -284,46 +284,48 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
                       </div>
                     </div>
                   )}
+
+                  <div className="flex w-full items-center justify-center gap-2 lg:hidden">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      onClick={() => index > 0 && posts.move(index, index - 1)}
+                      disabled={disabled || index === 0}
+                      className="h-10 w-10"
+                      aria-label={`Move post ${index + 1} up`}
+                    >
+                      <ArrowUp className="h-5 w-5" />
+                    </Button>
+
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      onClick={() =>
+                        index < posts.fields.length - 1 && posts.move(index, index + 1)
+                      }
+                      disabled={disabled || index === posts.fields.length - 1}
+                      className="h-10 w-10"
+                      aria-label={`Move post ${index + 1} down`}
+                    >
+                      <ArrowDown className="h-5 w-5" />
+                    </Button>
+
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      onClick={() => posts.remove(index)}
+                      disabled={disabled}
+                      className="h-10 w-10"
+                      aria-label={`Remove post ${index + 1}`}
+                    >
+                      <Trash2 className="h-5 w-5 text-red-500" />
+                    </Button>
+                  </div>
                 </div>
               )}
-
-              <div className="flex w-full flex-wrap items-center justify-center gap-2 lg:hidden">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="icon"
-                  onClick={() => index > 0 && posts.move(index, index - 1)}
-                  disabled={disabled || index === 0}
-                  className="h-10 w-10"
-                  aria-label={`Move post ${index + 1} up`}
-                >
-                  <ArrowUp className="h-5 w-5" />
-                </Button>
-
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="icon"
-                  onClick={() => index < posts.fields.length - 1 && posts.move(index, index + 1)}
-                  disabled={disabled || index === posts.fields.length - 1}
-                  className="h-10 w-10"
-                  aria-label={`Move post ${index + 1} down`}
-                >
-                  <ArrowDown className="h-5 w-5" />
-                </Button>
-
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="icon"
-                  onClick={() => posts.remove(index)}
-                  disabled={disabled}
-                  className="h-10 w-10"
-                  aria-label={`Remove post ${index + 1}`}
-                >
-                  <Trash2 className="h-5 w-5 text-red-500" />
-                </Button>
-              </div>
             </div>
           );
         })}
