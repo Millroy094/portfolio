@@ -1,156 +1,55 @@
-"use client";
-
-import { useInView } from "react-intersection-observer";
-
-import HorizontalEnergyGraphic from "@/components/HorizontalEnergyGraphic";
-
 type Props = {
   className?: string;
   style?: React.CSSProperties;
 };
 
-const PARTICLES = [
-  { top: "12%", left: "10%", delay: "0s" },
-  { top: "20%", left: "88%", delay: "0.6s" },
-  { top: "78%", left: "92%", delay: "1.2s" },
-  { top: "84%", left: "14%", delay: "1.8s" },
-  { top: "45%", left: "4%", delay: "2.4s" },
-  { top: "40%", left: "96%", delay: "3s" },
-];
-
-const AMBIENT_DRIFTERS = [
-  { top: "10%", left: "4%", delay: "0s", duration: "9s" },
-  { top: "82%", left: "8%", delay: "1.5s", duration: "11s" },
-  { top: "14%", left: "94%", delay: "3s", duration: "10s" },
-  { top: "76%", left: "92%", delay: "4.5s", duration: "8s" },
-];
-
-/** HUD-style panel for the About Me section: identity orbit + rotating data core. */
 export default function AboutMeGraphic({ className, style }: Props) {
-  const { ref, inView } = useInView({ threshold: 0.2, triggerOnce: false });
-  const playState = inView ? "running" : "paused";
-
   return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        position: "relative",
-        width: "100%",
-        height: "100%",
-        minHeight: "16rem",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        ...style,
-      }}
-    >
-      <div className="ambient-field" aria-hidden="true">
-        {AMBIENT_DRIFTERS.map((d) => (
-          <span
-            key={`${d.top}-${d.left}`}
-            className="ambient-drift"
-            style={{
-              top: d.top,
-              left: d.left,
-              animationDelay: d.delay,
-              animationDuration: d.duration,
-              animationPlayState: playState,
-            }}
-          />
-        ))}
-      </div>
+    <div className={className} style={style} aria-hidden="true">
+      <div className="relative py-5">
+        <div className="absolute inset-6 rounded-full bg-red-600/15 blur-3xl" />
 
-      <div
-        className="relative flex h-full w-full flex-col items-center justify-center gap-3"
-        style={{ maxWidth: "28rem" }}
-      >
-        <div
-          className="relative w-full"
-          style={{
-            aspectRatio: "8 / 4.3",
-            maxHeight: "calc(100% - 5rem)",
-          }}
-        >
-          <div className="tech-ambient-glow" />
+        <div className="relative overflow-hidden rounded-xl border border-neutral-700/70 bg-neutral-950/90 shadow-2xl shadow-red-950/30">
+          <div className="flex items-center gap-2 border-b border-neutral-800 bg-neutral-900/80 px-4 py-3">
+            <span className="h-2.5 w-2.5 rounded-full bg-red-500" />
+            <span className="h-2.5 w-2.5 rounded-full bg-neutral-600" />
+            <span className="h-2.5 w-2.5 rounded-full bg-neutral-600" />
+            <span className="ml-auto font-mono text-[11px] text-neutral-400">about.tsx</span>
+          </div>
 
-          <div className="tech-frame">
-            <span className="tech-corner tech-corner-tl" />
-            <span className="tech-corner tech-corner-tr" />
-            <span className="tech-corner tech-corner-bl" />
-            <span className="tech-corner tech-corner-br" />
-            <div className="tech-grid" />
-            <div className="tech-crosshair" />
-            <div className="tech-scanline" style={{ animationPlayState: playState }} />
-
-            {PARTICLES.map((p) => (
-              <span
-                key={`${p.top}-${p.left}`}
-                className="identity-particle"
-                style={{
-                  top: p.top,
-                  left: p.left,
-                  animationDelay: p.delay,
-                  animationPlayState: playState,
-                }}
-              />
-            ))}
-
-            <span className="tech-label tech-label-tl">SYS.ID</span>
-            <span className="tech-label tech-label-br">DATA.CORE</span>
-            <div className="tech-outer-ring" style={{ animationPlayState: playState }} />
-
-            <div className="relative z-10 flex h-full w-full items-center justify-center gap-2 px-4">
-              <div className="flex flex-1 items-center justify-center">
-                <div className="identity-orbit-wrap identity-orbit-wrap-compact">
-                  <div
-                    className="identity-ring identity-ring-outer"
-                    style={{ animationPlayState: playState }}
-                  >
-                    <span className="identity-marker" />
-                  </div>
-                  <div
-                    className="identity-ring identity-ring-mid"
-                    style={{ animationPlayState: playState }}
-                  >
-                    <span className="identity-marker identity-marker-sm" />
-                    <span className="identity-marker identity-marker-sm identity-marker-opposite" />
-                  </div>
-                  <div
-                    className="identity-ring identity-ring-inner"
-                    style={{ animationPlayState: playState }}
-                  >
-                    <span className="identity-marker identity-marker-sm" />
-                  </div>
-                  <div className="identity-core" />
-                </div>
+          <div className="flex gap-4 px-5 py-7 font-mono text-xs leading-7 sm:text-sm">
+            <div className="select-none text-right text-neutral-600">
+              <div>01</div>
+              <div>02</div>
+              <div>03</div>
+              <div>04</div>
+              <div>05</div>
+              <div>06</div>
+            </div>
+            <div className="min-w-0 whitespace-nowrap text-neutral-200">
+              <div>
+                <span className="text-red-400">const</span> about = {"{"}
               </div>
-
-              <div className="tech-panel-divider" />
-
-              <div className="flex flex-1 items-center justify-center">
-                <div className="scan-core-scene scan-core-scene-compact">
-                  <div className="scan-core-spin" style={{ animationPlayState: playState }}>
-                    <div className="scan-core-face scan-core-face-1" />
-                    <div className="scan-core-face scan-core-face-2" />
-                    <div className="scan-core-face scan-core-face-3" />
-                    <div className="scan-core-face scan-core-face-4" />
-                    <div className="scan-core-face scan-core-face-5" />
-                    <div className="scan-core-face scan-core-face-6" />
-                  </div>
-                  <div className="scan-core-ray-mask">
-                    <div className="scan-core-ray" style={{ animationPlayState: playState }} />
-                  </div>
-                </div>
+              <div className="pl-4">
+                focus: <span className="text-red-300">&quot;building&quot;</span>,
               </div>
+              <div className="pl-4">
+                mindset: <span className="text-red-300">&quot;curious&quot;</span>,
+              </div>
+              <div className="pl-4">
+                growth: <span className="text-red-400">true</span>,
+              </div>
+              <div>{"};"}</div>
+              <div className="text-red-500">_</div>
             </div>
           </div>
-        </div>
 
-        <HorizontalEnergyGraphic
-          className="w-full shrink-0"
-          style={{ contain: "layout style paint" }}
-        />
+          <div className="flex items-center gap-2 border-t border-neutral-800 px-5 py-3 font-mono text-[10px] tracking-wide text-neutral-400">
+            <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
+            ALWAYS LEARNING
+            <span className="ml-auto text-neutral-500">01 / 01</span>
+          </div>
+        </div>
       </div>
     </div>
   );
