@@ -132,7 +132,7 @@ jobs:
 
       - name: Get Terraform outputs
         id: tf_outputs
-        uses: dnsbty/get-terraform-outputs-action@v2.2
+        uses: dnsbty/get-terraform-outputs-action@v3
         with:
           api-token: ${{ env.TF_API_TOKEN }}
           workspace-id: ${{ steps.get_workspace_id.outputs.workspace_id }}

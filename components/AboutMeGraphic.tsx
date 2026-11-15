@@ -1,9 +1,18 @@
 type Props = {
+  fullName?: string;
   className?: string;
   style?: React.CSSProperties;
 };
 
-export default function AboutMeGraphic({ className, style }: Props) {
+function getInitials(fullName = "") {
+  const names = fullName.trim().split(/\s+/).filter(Boolean);
+  const first = names[0]?.charAt(0).toUpperCase() ?? "";
+  const last = names.length > 1 ? names[names.length - 1].charAt(0).toUpperCase() : "";
+  return { first, last };
+}
+
+export default function AboutMeGraphic({ fullName, className, style }: Props) {
+  const { first, last } = getInitials(fullName);
   return (
     <div className={className} style={style} aria-hidden="true">
       <div className="aspect-340/355 w-full overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-950">
@@ -21,18 +30,18 @@ export default function AboutMeGraphic({ className, style }: Props) {
           <circle cx="170" cy="173" r="136" fill="url(#about-monogram-glow)" />
           <circle cx="170" cy="175" r="116" fill="none" stroke="#3f3f46" />
           <circle cx="170" cy="175" r="104" fill="none" stroke="#27272a" />
-          <path
-            d="M77 253 V110 L121 173 165 110 V253"
-            fill="none"
-            stroke="url(#about-monogram-metal)"
-            strokeWidth="15"
-          />
-          <path
-            d="M192 253 V110 H269 M192 174 H255"
-            fill="none"
-            stroke="#ef4444"
-            strokeWidth="15"
-          />
+          <text
+            x="170"
+            y="253"
+            textAnchor="middle"
+            fontFamily="Arial, Helvetica, sans-serif"
+            fontSize="190"
+            fontWeight="700"
+            letterSpacing="-6"
+          >
+            <tspan fill="url(#about-monogram-metal)">{first}</tspan>
+            <tspan fill="#ef4444">{last}</tspan>
+          </text>
           <path d="M79 278 H261" stroke="#52525b" />
           <circle cx="170" cy="59" r="3" fill="#ef4444" />
           <circle cx="170" cy="291" r="3" fill="#ef4444" />

@@ -32,7 +32,11 @@ function AboutMe() {
       <div className="flex w-full max-w-384 mx-auto flex-col items-center gap-y-6 md:gap-y-8 lg:block lg:items-stretch">
         {isLargeScreen && (
           <div className="hidden lg:block lg:float-left lg:mr-10 lg:mb-4 lg:mt-3 lg:w-[40%] lg:max-w-sm">
-            <AboutMeGraphic className="w-full" style={{ contain: "layout style paint" }} />
+            <AboutMeGraphic
+              fullName={data.fullName}
+              className="w-full"
+              style={{ contain: "layout style paint" }}
+            />
           </div>
         )}
 
