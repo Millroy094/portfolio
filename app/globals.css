@@ -1070,6 +1070,23 @@ body {
   }
 }
 
+.about-monogram-orbit {
+  transform-box: view-box;
+  transform-origin: 170px 175px;
+  animation: identity-rotate 18s linear infinite;
+}
+
+.about-monogram-orbit-inner {
+  animation-duration: 26s;
+  animation-direction: reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-monogram-orbit {
+    animation: none;
+  }
+}
+
 /* About Me / Education connector: radial tech-circuit burst */
 .circuit-col {
   position: relative;
