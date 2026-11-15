@@ -5,28 +5,48 @@ import { Hub } from "aws-amplify/utils";
 import { Loader2, Moon, Sun } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+
+type AdminTheme = "dark" | "light";
+
+const ADMIN_THEME_KEY = "adminTheme";
+const themeListeners = new Set<() => void>();
+
+function getThemeSnapshot(): AdminTheme {
+  return localStorage.getItem(ADMIN_THEME_KEY) === "light" ? "light" : "dark";
+}
+
+function getThemeServerSnapshot(): AdminTheme {
+  return "dark";
+}
+
+function subscribeToTheme(listener: () => void) {
+  const handleStorage = (event: StorageEvent) => {
+    if (event.key === ADMIN_THEME_KEY) listener();
+  };
+
+  themeListeners.add(listener);
+  window.addEventListener("storage", handleStorage);
+  return () => {
+    themeListeners.delete(listener);
+    window.removeEventListener("storage", handleStorage);
+  };
+}
+
+function setStoredTheme(theme: AdminTheme) {
+  localStorage.setItem(ADMIN_THEME_KEY, theme);
+  themeListeners.forEach((listener) => listener());
+}
 
 function AdminLayoutContent({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [checking, setChecking] = useState(true);
   const [signingOut, setSigningOut] = useState(false);
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const theme = useSyncExternalStore(subscribeToTheme, getThemeSnapshot, getThemeServerSnapshot);
   const [user, setUser] = useState<AuthUser | null>(null);
   const [email, setEmail] = useState<string | null>(null);
 
   const displayName = email ?? user?.signInDetails?.loginId ?? user?.username ?? "Unknown user";
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("adminTheme") as "dark" | "light" | null;
-    if (savedTheme) {
-      setTheme(savedTheme);
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("adminTheme", theme);
-  }, [theme]);
 
   useEffect(() => {
     // `getCurrentUser` may still reject mid-OAuth-callback even though
@@ -142,7 +162,7 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
           <div className="flex flex-col w-full sm:w-auto sm:flex-row gap-2">
             <button
               type="button"
-              onClick={() => setTheme(isDark ? "light" : "dark")}
+              onClick={() => setStoredTheme(isDark ? "light" : "dark")}
               className={`h-10 px-3 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2 ${
                 isDark
                   ? "bg-neutral-800 hover:bg-neutral-700 text-neutral-300"

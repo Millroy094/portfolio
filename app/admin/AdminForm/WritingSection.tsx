@@ -34,6 +34,8 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
   const { getValues, setValue } = useFormContext<ProfileSchemaType>();
   const [fetchingIndex, setFetchingIndex] = useState<number | null>(null);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const activeExpandedIndex =
+    expandedIndex !== null && expandedIndex < posts.fields.length ? expandedIndex : null;
   const watchedPosts = useWatch({ control, name: "mediumPosts" });
   const isMountedRef = useRef(true);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -45,14 +47,8 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
     };
   }, []);
 
-  useEffect(() => {
-    if (expandedIndex !== null && expandedIndex >= posts.fields.length) {
-      setExpandedIndex(null);
-    }
-  }, [posts.fields.length, expandedIndex]);
-
   const handleExpandToggle = (index: number) => {
-    setExpandedIndex(expandedIndex === index ? null : index);
+    setExpandedIndex(activeExpandedIndex === index ? null : index);
   };
 
   const fetchDetails = async (index: number) => {
@@ -216,7 +212,7 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
                   >
                     <ChevronDown
                       className={`h-5 w-5 shrink-0 text-(--admin-text-muted) transition-transform ${
-                        expandedIndex === index ? "rotate-180" : ""
+                        activeExpandedIndex === index ? "rotate-180" : ""
                       }`}
                     />
                     <span className="flex-1 truncate text-sm font-medium text-(--admin-text) min-w-0">
@@ -224,7 +220,7 @@ export default function WritingSection({ control, disabled, posts }: WritingSect
                     </span>
                   </button>
 
-                  {expandedIndex === index && (
+                  {activeExpandedIndex === index && (
                     <div className="overflow-hidden rounded-lg border border-(--admin-border) bg-linear-to-br from-(--admin-surface-muted) to-transparent p-4 relative before:absolute before:inset-0 before:left-0 before:w-1 before:bg-linear-to-b before:from-blue-500 before:to-transparent before:opacity-40 min-w-0">
                       <div className="relative z-10 min-w-0">
                         <h4 className="mb-4 text-sm font-semibold text-(--admin-text)">
