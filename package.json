@@ -52,7 +52,7 @@
     "@aws-sdk/types": "^3.973.8",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/he": "^1.2.3",
-    "@types/node": "^25.9.8",
+    "@types/node": "^26.6.3",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
     "@types/react-scroll": "^1.8.10",
